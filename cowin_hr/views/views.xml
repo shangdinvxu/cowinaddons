@@ -8,7 +8,8 @@
       <field name="model">hr.employee</field>
       <field name="inherit_id" ref="hr.view_employee_form"/>
       <field name="arch" type="xml">
-          <!-- find field description and add the field XXX after it -->
+
+
           <xpath expr="//field[@name='work_phone']" position="after">
               <field name="backup_person"/>
               <field name="relation_to_me"/>
@@ -23,6 +24,12 @@
       <field name="model">hr.employee</field>
       <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
       <field name="arch" type="xml">
+
+           <!-- find field description and add the field XXX after it -->
+          <xpath expr="//div[@class='oe_kanban_global_click']" position="attributes">
+              <attribute name="class">oe_kanban_global_click</attribute>
+              <attribute name="id">kkkk</attribute>
+          </xpath>
           <!-- find field description and add the field XXX after it -->
           <xpath expr="//li[@t-if='record.mobile_phone.raw_value']" position="after">
               <li t-if="record.backup_person.raw_value"> <field name="backup_person"/></li>
