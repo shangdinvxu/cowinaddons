@@ -18,6 +18,22 @@
       </field>
     </record>
 
+   <record model="ir.ui.view" id="cowin_hr.kanban">
+      <field name="name">cowin_hr list</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+      <field name="arch" type="xml">
+          <!-- find field description and add the field XXX after it -->
+          <xpath expr="//li[@t-if='record.mobile_phone.raw_value']" position="after">
+              <li t-if="record.backup_person.raw_value"> <field name="backup_person"/></li>
+              <li t-if="record.relation_to_me.raw_value"> <field name="relation_to_me"/></li>
+              <li t-if="record.identification_id_contract_person.raw_value"><field name="identification_id_contract_person"/></li>
+              <li t-if="record.mobile_phone_backup_contract_person.raw_value"><field name="mobile_phone_backup_contract_person"/></li>
+          </xpath>
+      </field>
+    </record>
+
+
 
 
 
