@@ -1,0 +1,17 @@
+.employee_item_left{
+    width: 20%;
+    float: left;
+    text-align: center;
+}
+.employee_item_left img{
+    width: 50px;
+    border-radius: 50%;
+    margin-bottom: 8px;
+}
+.employee_item_wrap{
+    float: left;
+    background-color: lightgrey;
+    padding: 10px 0 10px 15px;
+    width: 30%;
+    margin: 10px;
+}
