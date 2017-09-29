@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+    <t t-name="employee_view_template_wrap">
+        <div class="employee_view_template_wrap"></div>
+    </t>
+    <t t-name="employee_view_template">
+        <t t-foreach="result" t-as="item">
+            <div class="employee_item_wrap">
+                <div class="employee_item_left">
+                    <div class="employee_headimg">
+                        <img t-attf-src="data:image/jpg;base64,{{item.image}}"/>
+                    </div>
+                    <div class="employee_name">
+                        <t t-esc="item.name"/>
+                    </div>
+                </div>
+                <div class="employee_item_right">
+                    <div class="employee_address">
+                        <t t-esc="item.address_id[1]"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+
+
+        <!--<div class="employee_item_wrap">-->
+            <!--<div class="employee_compaly_name">-->
+                <!--苏州麦田科技-->
+            <!--</div>-->
+            <!--<div class="employee_address">-->
+                <!--苏州市苏州工业园区星湖街-->
+            <!--</div>-->
+            <!--<div class="employee_name">-->
+                <!--名字-->
+            <!--</div>-->
+        <!--</div>-->
+    </t>
+
+</templates>
