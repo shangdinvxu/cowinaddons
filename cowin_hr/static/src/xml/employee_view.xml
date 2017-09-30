@@ -9,7 +9,12 @@
             <div class="employee_item_wrap">
                 <div class="employee_item_left">
                     <div class="employee_headimg">
-                        <img t-attf-src="data:image/jpg;base64,{{item.image}}"/>
+                        <t t-if="item.image">
+                             <img t-attf-src="data:image/jpg;base64,{{item.image}}"/>
+                        </t>
+                        <t t-else="">
+                            <img src="/web/static/src/img/placeholder.png"/>
+                        </t>
                     </div>
                     <div class="employee_name">
                         <t t-esc="item.name"/>

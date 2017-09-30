@@ -28,21 +28,27 @@
            <!-- find field description and add the field XXX after it -->
           <xpath expr="//div[@class='oe_kanban_global_click']" position="attributes">
               <attribute name="class">oe_kanban_global_click</attribute>
-              <attribute name="id">kkkk</attribute>
+              <attribute name="id">cowin_hr_employee_item_kb_wrap</attribute>
           </xpath>
           <!-- find field description and add the field XXX after it -->
-          <xpath expr="//li[@t-if='record.mobile_phone.raw_value']" position="after">
-              <li t-if="record.backup_person.raw_value"> <field name="backup_person"/></li>
-              <li t-if="record.relation_to_me.raw_value"> <field name="relation_to_me"/></li>
-              <li t-if="record.identification_id_contract_person.raw_value"><field name="identification_id_contract_person"/></li>
-              <li t-if="record.mobile_phone_backup_contract_person.raw_value"><field name="mobile_phone_backup_contract_person"/></li>
+          <xpath expr="//div[@class='oe_kanban_details']" position="replace">
+              <div class="oe_kanban_details">
+                  <strong>
+                    <field name="name"/>
+                 </strong>
+                 <ul>
+                    <li id="last_login"/>
+                    <li t-if="record.job_id.raw_value"><field name="job_id"/></li>
+                    <li t-if="record.department_id.raw_value"><field name="department_id"/></li>
+                    <li t-if="record.work_phone.raw_value"> <span>联系电话：</span> <field name="work_phone"/></li>
+                    <li t-if="record.work_email.raw_value"> <span>邮箱：</span> <field name="work_email"/></li>
+                    <li t-if="record.identification_id.raw_value"> <span>身份证：</span> <field name="identification_id"/></li>
+                     <li t-if="record.passport_id.raw_value"> <span>护照：</span> <field name="passport_id"/></li>
+                 </ul>
+              </div>
           </xpath>
       </field>
     </record>
-
-
-
-
 
     <!-- actions opening views on models -->
 
@@ -88,7 +94,7 @@
             <field name="res_model">hr.employee</field>
             <field name="view_mode">employee_view</field>
             <field name="context">{
-                'group_by': 'user_id',
+                    'group_by': 'user_id',
                 }
             </field>
             <!--<field name="inherit_id" ref="product.product_normal_form_view"/>-->

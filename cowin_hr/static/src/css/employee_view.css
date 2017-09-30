@@ -15,3 +15,28 @@
     width: 30%;
     margin: 10px;
 }
+.employee_name{
+    font-weight: bold;
+}
+
+/*员工看板的新建id样式*/
+#cowin_hr_employee_item_kb_wrap{
+    background-color: rgba(207,207,207,.5);
+    box-shadow: 0 0 0 0;
+    border-radius: 5px;
+}
+#cowin_hr_employee_item_kb_wrap .o_employee_summary_icons{
+    display: none;
+}
+#cowin_hr_employee_item_kb_wrap .o_kanban_image img{
+    border-radius: 50px;
+}
+#cowin_hr_employee_item_kb_wrap .o_kanban_view .o_kanban_record .o_kanban_image + div{
+    padding-left: 90px;
+}
+#cowin_hr_employee_item_kb_wrap strong{
+    font-size: 16px;
+}
+#cowin_hr_employee_item_kb_wrap ul li{
+    margin-bottom: 8px;
+}
