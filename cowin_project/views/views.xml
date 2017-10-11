@@ -1,0 +1,57 @@
+<openerp>
+    <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="cowin_project.list">
+            <field name="name">cowin_project list</field>
+            <field name="model">cowin_project.cowin_project</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="cowin_project.action_window">
+            <field name="name">cowin_project window</field>
+            <field name="res_model">cowin_project.cowin_project</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- server action to the one above -->
+        <record model="ir.actions.server" id="cowin_project.action_server">
+            <field name="name">cowin_project server</field>
+            <field name="model_id" ref="model_cowin_project_cowin_project"/>
+            <field name="code">
+                action = {
+                "type": "ir.actions.act_window",
+                "view_mode": "tree,form",
+                "res_model": self._name,
+                }
+            </field>
+        </record>
+
+        <!-- Top menu item -->
+        <menuitem name="cowin_project" id="cowin_project.menu_root"/>
+
+
+        <!-- menu categories -->
+        <menuitem name="项目管理" id="cowin_project.menu_1" parent="cowin_project.menu_root"/>
+        <menuitem name="投后审批" id="cowin_project.menu_2" parent="cowin_project.menu_root"/>
+        <menuitem name="项目查询" id="cowin_project.menu_3" parent="cowin_project.menu_root"/>
+        <menuitem name="风险管理" id="cowin_project.menu_4" parent="cowin_project.menu_root"/>
+        <!-- actions -->
+        <menuitem name="项目流程" id="cowin_project.menu_1_list" parent="cowin_project.menu_1"
+                  action="cowin_project.action_window"/>
+
+        <menuitem name="项目审批" id="cowin_project.menu_1_list2" parent="cowin_project.menu_1"
+                  action="cowin_project.action_window"/>
+
+
+        <menuitem name="投后跟进" id="cowin_project" parent="cowin_project.menu_2"
+                  action="cowin_project.action_server"/>
+
+        <menuitem name="投后审批" id="cowin_project2" parent="cowin_project.menu_2"
+                  action="cowin_project.action_server"/>
+    </data>
+</openerp>
