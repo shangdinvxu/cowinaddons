@@ -9,13 +9,19 @@
       <field name="inherit_id" ref="hr.view_employee_form"/>
       <field name="arch" type="xml">
 
-
-          <xpath expr="//field[@name='work_phone']" position="after">
-              <field name="backup_person"/>
-              <field name="relation_to_me"/>
-              <field name="identification_id_contract_person"/>
-              <field name="mobile_phone_backup_contract_person"/>
+          <xpath expr="//field[@name='coach_id']" position="replace">
           </xpath>
+
+           <xpath expr="//page[@name='public']/group" position="inside">
+               <!--<group string="Backup_contract">-->
+               <group string="紧急联系人" >
+                  <field name="backup_person"/>
+                  <field name="relation_to_me"/>
+                  <field name="identification_id_contract_person"/>
+                  <field name="mobile_phone_backup_contract_person"/>
+              </group>
+          </xpath>
+
       </field>
     </record>
 
