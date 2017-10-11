@@ -12,4 +12,13 @@ class Cowin_hr(models.Model):
     mobile_phone_backup_contract_person = fields.Char(string=u'备用联系人联系电话')
 
 
+class IrMenuExtend(models.Model):
+    _inherit = 'ir.ui.menu'
+
+    button_icon = fields.Char(string=u'按钮图标')
+
+    @api.multi
+    def read(self, fields=None, load='_classic_read'):
+        fields.append("button_icon")
+        return super(IrMenuExtend, self).read(fields, load)
 
