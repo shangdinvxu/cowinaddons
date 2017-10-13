@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+
+<odoo>
+    <data>
+        <!-- Sequences for cowin.order -->
+        <record id="seq_conwin_order" model="ir.sequence">
+            <field name="name">conwin Orders</field>
+            <field name="code">cowin.order</field>
+            <field name="prefix"></field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

@@ -2,14 +2,30 @@
   <data>
     <!-- explicit list view definition -->
 
-
-    <record model="ir.ui.view" id="cowin_hr.list">
+    <record model="ir.ui.view" id="hr_employee_list">
       <field name="name">cowin_hr list</field>
+      <field name="model">hr.employee</field>
+      <!--<field name="inherit_id" ref="hr.view_employee_form"/>-->
+      <field name="arch" type="xml">
+          <tree>
+             <field name="barcode" string="员工编码"/>
+             <field name="name"/>
+             <field name="job_id"/>
+             <field name="active"/>
+             <field name="address_home_id"/>
+             <field name="create_date"/>
+          </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_employee_form_inherit">
+      <field name="name">cowin_hr form</field>
       <field name="model">hr.employee</field>
       <field name="inherit_id" ref="hr.view_employee_form"/>
       <field name="arch" type="xml">
 
-          <xpath expr="//field[@name='coach_id']" position="replace">
+          <xpath expr="//field[@name='coach_id']" position="attributes">
+              <attribute name="invisible">1</attribute>
           </xpath>
 
            <xpath expr="//page[@name='public']/group" position="inside">
@@ -25,8 +41,8 @@
       </field>
     </record>
 
-   <record model="ir.ui.view" id="cowin_hr.kanban">
-      <field name="name">cowin_hr list</field>
+   <record model="ir.ui.view" id="hr_employee_kanban_inherit">
+      <field name="name">cowin_hr kanban</field>
       <field name="model">hr.employee</field>
       <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
       <field name="arch" type="xml">
