@@ -78,7 +78,7 @@
       <field name="name">cowin_hr window</field>
       <field name="res_model">hr.employee</field>
       <field name="view_type">form</field>
-      <field name="view_mode">kanban,tree,form</field>
+      <field name="view_mode">tree,form</field>
     </record>
 
 
@@ -89,13 +89,14 @@
 
     <!-- menu categories -->
 
-    <menuitem name="Menu 1" id="cowin_hr.menu_1" parent="cowin_hr.menu_root"/>
-    <menuitem name="Menu 2" id="cowin_hr.menu_2" parent="cowin_hr.menu_root"/>
+    <menuitem name="员工列表" id="cowin_hr.menu_1" parent="cowin_hr.menu_root" action="cowin_hr.action_window"/>
+    <menuitem name="绩效" id="cowin_hr.menu_2" parent="cowin_hr.menu_root" action="cowin_hr.action_window"/>
+    <menuitem name="薪酬" id="cowin_hr.menu_3" parent="cowin_hr.menu_root" action="cowin_hr.action_window"/>
 
     <!-- actions -->
 
-    <menuitem name="员工列表" id="cowin_hr.menu_1_list" parent="cowin_hr.menu_1"
-              action="cowin_hr.action_window"/>
+    <!--<menuitem name="员工列表" id="cowin_hr.menu_1_list" parent="cowin_hr.menu_1"-->
+              <!--action="cowin_hr.action_window"/>-->
     <!--<menuitem name="Server to list" id="cowin_hr" parent="cowin_hr.menu_2"-->
               <!--action="cowin_hr.action_server"/>-->
 
@@ -122,11 +123,11 @@
             <!--<field name="inherit_id" ref="product.product_normal_form_view"/>-->
       </record>
 
-      <menuitem id="petstore_employee"
-            name="员工"
-            action="employee_view_action"
-            parent="cowin_hr.menu_1"
-            sequence="13"/>
+      <!--<menuitem id="petstore_employee"-->
+            <!--name="员工"-->
+            <!--action="employee_view_action"-->
+            <!--parent="cowin_hr.menu_1"-->
+            <!--sequence="13"/>-->
 
   </data>
 </odoo>

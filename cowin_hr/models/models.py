@@ -17,7 +17,7 @@ class Cowin_hr(models.Model):
     @api.model
     def create(self, vals):
         if not vals.get('barcode'):
-            vals['barcode'] = self.env['ir.sequence'].next_by_code('cowin.order')
+            vals['barcode'] = self.env['ir.sequence'].next_by_code('cowin_hr.order')
 
         return super(Cowin_hr, self).create(vals)
 

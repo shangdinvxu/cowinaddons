@@ -7,6 +7,9 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
+                    <field name="project_number"/>
+                    <field name="industry"/>
+                    <field name="production"/>
                 </tree>
             </field>
         </record>

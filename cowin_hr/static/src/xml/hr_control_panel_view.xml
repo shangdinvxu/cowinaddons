@@ -1,0 +1,19 @@
+
+
+<templates>
+    <t t-name="ControlPanel_hr">
+        <div class="o_control_panel  linkloving">
+            <ol class="breadcrumb"/>
+            <div class="o_cp_searchview"/>
+            <div class="o_cp_left">
+                <div class="o_cp_buttons"/>
+                <div class="o_cp_sidebar"/>
+            </div>
+            <div class="o_cp_right">
+                <div class="btn-group o_search_options"/>
+                <div class="o_cp_pager"/>
+                <div class="btn-group btn-group-sm o_cp_switch_buttons"/>
+            </div>
+        </div>
+    </t>
+</templates>

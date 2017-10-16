@@ -4,9 +4,9 @@
 <odoo>
     <data>
         <!-- Sequences for cowin.order -->
-        <record id="seq_conwin_order" model="ir.sequence">
-            <field name="name">conwin_hr Orders</field>
-            <field name="code">cowin_hr.order</field>
+        <record id="seq_pro_order" model="ir.sequence">
+            <field name="name">conwin_project Orders</field>
+            <field name="code">cowin_project.order</field>
             <field name="prefix"></field>
             <field name="padding">4</field>
             <field name="company_id" eval="False"/>
