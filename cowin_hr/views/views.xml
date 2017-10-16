@@ -78,7 +78,7 @@
       <field name="name">cowin_hr window</field>
       <field name="res_model">hr.employee</field>
       <field name="view_type">form</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">kanban,tree,form</field>
     </record>
 
 
@@ -89,16 +89,9 @@
 
     <!-- menu categories -->
 
-    <menuitem name="员工列表" id="cowin_hr.menu_1" parent="cowin_hr.menu_root" action="cowin_hr.action_window"/>
+    <menuitem name="员工" id="cowin_hr.menu_1" parent="cowin_hr.menu_root" action="cowin_hr.action_window"/>
     <menuitem name="绩效" id="cowin_hr.menu_2" parent="cowin_hr.menu_root" action="cowin_hr.action_window"/>
     <menuitem name="薪酬" id="cowin_hr.menu_3" parent="cowin_hr.menu_root" action="cowin_hr.action_window"/>
-
-    <!-- actions -->
-
-    <!--<menuitem name="员工列表" id="cowin_hr.menu_1_list" parent="cowin_hr.menu_1"-->
-              <!--action="cowin_hr.action_window"/>-->
-    <!--<menuitem name="Server to list" id="cowin_hr" parent="cowin_hr.menu_2"-->
-              <!--action="cowin_hr.action_server"/>-->
 
 
       <record id="view_new_employee" model="ir.ui.view">

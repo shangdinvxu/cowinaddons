@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="process_tmp">
+        <div id="project_process_container">
+            <div class="project_header">
+                <h2>苏州麦田科技有限公司</h2>
+            </div>
+            <ul id="process_tab" class="nav nav-tabs">
+                <li class="active"><a href="#process_detail" data-toggle="tab">详情</a></li>
+                <li><a href="#process_data" data-toggle="tab">流程资料</a></li>
+                <li><a href="#process_contact" data-toggle="tab">联系人</a></li>
+                <li><a href="#process_record" data-toggle="tab">操作记录</a></li>
+            </ul>
+            <div id="process_tab_content" class="tab-content">
+                <div class="tab-pane fade in active" id="process_detail">
+                    <table class="table  table-bordered">
+                       <thead>
+                          <tr>
+                             <th>项目概况</th>
+                             <th colspan="9">一些基本信息</th>
+                          </tr>
+                       </thead>
+                       <tbody>
+                          <tr>
+                             <td rowspan="2">融资详情</td>
+                             <td colspan="3">项目融资情况</td>
+                             <td colspan="3">我方投资情况</td>
+                             <td colspan="3">其他需要统计的信息</td>
+                          </tr>
+                          <tr>
+                             <td>融资金额</td>
+                              <td>收益</td>
+                              <td>XXX</td>
+                              <td>融资金额</td>
+                              <td>收益</td>
+                              <td>XXX</td>
+                          </tr>
+                           <tr>
+                               <td  rowspan="2">A轮</td>
+                               <td  rowspan="2"></td>
+                               <td  rowspan="2"></td>
+                               <td  rowspan="2"></td>
+                               <td rowspan="1">基金1</td>
+                               <td rowspan="1"></td>
+                               <td rowspan="1"></td>
+                               <td rowspan="1"></td>
+                           </tr>
+                           <tr>
+                               <td rowspan="1">基金2</td>
+                               <td rowspan="1"></td>
+                               <td rowspan="1"></td>
+                               <td rowspan="1"></td>
+                           </tr>
+                            <tr>
+                               <td  rowspan="2">B轮</td>
+                               <td  rowspan="2"></td>
+                               <td  rowspan="2"></td>
+                               <td  rowspan="2"></td>
+                               <td rowspan="1">基金1</td>
+                               <td rowspan="1"></td>
+                               <td rowspan="1"></td>
+                               <td rowspan="1"></td>
+                           </tr>
+                           <tr>
+                               <td rowspan="1">基金2</td>
+                               <td rowspan="1"></td>
+                               <td rowspan="1"></td>
+                               <td rowspan="1"></td>
+                           </tr>
+                       </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="process_data">
+                    <div class="process_data_main_wrap">
+                        <div class="process_data_item_line header_line">
+                            <span class="fa fa-folder-o"></span>
+                            <span>项目设立</span>
+                        </div>
+                        <div class="process_data_item_line detail_line">
+                           <span>信息登记</span>
+                           <span>【审核通过】</span>
+                           <span><a href="javascript:void(0)">查看</a></span>
+                        </div>
+                        <div class="process_data_item_line header_line">
+                            <span class="fa fa-folder-o"></span>
+                            <span>立项</span>
+                        </div>
+                        <div class="process_data_item_line detail_line">
+                           <span>项目立项</span>
+                           <span>【审核通过】</span>
+                           <span><a href="javascript:void(0)">查看</a></span>
+                        </div>
+                         <div class="process_data_item_line detail_line">
+                           <span>立项意见书</span>
+                           <span>【审核通过】</span>
+                           <span><a href="javascript:void(0)">查看</a></span>
+                        </div>
+                        <div class="process_data_item_line header_line">
+                            <span class="fa fa-folder-o"></span>
+                            <span>尽职调查</span>
+                        </div>
+                         <div class="process_data_item_line detail_line">
+                           <span>尽调拜访记录</span>
+                           <span>【审核通过】</span>
+                           <span><a href="javascript:void(0)">查看</a></span>
+                        </div>
+                         <div class="process_data_item_line detail_line">
+                           <span>尽调拜访记录2</span>
+                           <span>【审核通过】</span>
+                           <span><a href="javascript:void(0)">查看</a></span>
+                        </div>
+                         <div class="process_data_item_line detail_line">
+                           <span>尽调报告</span>
+                           <span>【审核通过】</span>
+                           <span><a href="javascript:void(0)">查看</a></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="process_contact">
+                    <div class="process_contact_item">
+                        <div class="header_image">
+                            <div>
+                                <span class="fa fa-user"></span>
+                            </div>
+                            <span class="contact_name">王梦梦</span>
+                        </div>
+                        <div class="contact_main">
+                            <span class="contact_company">苏州麦田科技有限公司</span>
+                            <span class="contact_position">运营总监</span>
+                            <div class="contact_address">苏州市苏州工业园区星湖街200号国际科技园二期B栋201室</div>
+                            <div class="person_info">
+                                <div class="person_info_left">
+                                    <div>联系电话：155555555555</div>
+                                    <div>邮箱：rayman.lyj@maitian.com</div>
+                                    <div>身份证; 213151231321321</div>
+                                    <div>护照：132165521</div>
+                                </div>
+                                <div class="person_info_right">
+                                    <div>备用联系人：李伟</div>
+                                    <div>身份证：23123123</div>
+                                    <div>与本人关系：朋友</div>
+                                    <div>联系电话：15121321315</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="process_record">
+                    <div class="process_record_item">
+                        <div class="header_image">
+                            <div>
+                                <span class="fa fa-user"></span>
+                            </div>
+                        </div>
+                        <div class="process_record_item_main">
+                            <span class="record_operater">王小宝</span>
+                            <span class="record_operat_time">2017-07-25 12:00</span>
+                            <div class="record_describe">发起 项目MT麦田2017成长计划 立项申请</div>
+                            <div class="record_operate_detail">
+                                <div class="record_">
+                                    <span class="circle"></span>
+                                    <span>状态：项目登记→立项申请</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

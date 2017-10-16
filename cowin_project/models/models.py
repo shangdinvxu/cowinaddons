@@ -10,6 +10,8 @@ class Cowin_project(models.Model):
 
     project_number = fields.Char(string=u'项目编号')
 
+    invest_manager = fields.Char(string=u'投资经理')
+
     project_partner = fields.Char(string=u'项目合伙人')
 
     registered_address = fields.Char(string=u'注册地')
@@ -21,6 +23,10 @@ class Cowin_project(models.Model):
     industry = fields.Char(string=u'所属行业')
 
     production = fields.Text(string=u'产品')
+
+    register_person = fields.Char(string=u'登记人')
+
+    state = fields.Char(string=u'状态')
 
 
     @api.model
