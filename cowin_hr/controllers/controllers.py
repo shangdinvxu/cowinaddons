@@ -7,7 +7,8 @@ class Cowin_Hr(http.Controller):
     @http.route('/cowin_hr/cowin_hr/', auth='public')
     def index(self, **kw):
         context = request.env['ir.http'].webclient_rendering_context()
-        return request.render('cowin_hr.webclient_bootstrap', qcontext=context)
+        return u'kkkk'
+        # return request.render('cowin_hr.webclient_bootstrap', qcontext=context)
 
     @http.route('/cowin_hr/cowin_hr/objects/', auth='public')
     def list(self, **kw):

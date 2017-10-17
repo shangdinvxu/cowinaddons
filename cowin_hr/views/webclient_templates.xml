@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <data>
     <!--<template id="web.less_helpers">-->
         <!--<link rel="stylesheet" type="text/less" href="/web/static/lib/bootstrap/less/variables.less"/>-->
         <!--<link rel="stylesheet" type="text/less" href="/web/static/lib/bootstrap/less/mixins/vendor-prefixes.less"/>-->
@@ -78,7 +79,7 @@
         <!--<script type="text/javascript" src="/web/static/lib/select2/select2.js"></script>-->
     <!--</template>-->
 
-    <!--<template id="web.assets_backend">-->
+    <!--<template id="web.assets_backend_cowin_hr" >-->
         <!--<t t-call="web.less_helpers"/>-->
 
         <!--<link rel="stylesheet" type="text/less" href="/web/static/src/less/import_bootstrap.less"/>-->
@@ -135,6 +136,7 @@
         <!--<script type="text/javascript" src="/web/static/src/js/framework/view.js"></script>-->
         <!--<script type="text/javascript" src="/web/static/src/js/framework/pyeval.js"></script>-->
         <!--<script type="text/javascript" src="/web/static/src/js/action_manager.js"></script>-->
+        <!--<script type="text/javascript" src="/cowin_hr/static/src/js/control_panel.js"></script>-->
         <!--<script type="text/javascript" src="/cowin_hr/static/src/js/hr_control_panel.js"></script>-->
         <!--<script type="text/javascript" src="/web/static/src/js/view_manager.js"></script>-->
         <!--<script type="text/javascript" src="/web/static/src/js/abstract_web_client.js"></script>-->
@@ -457,49 +459,49 @@
         <!--&ndash;&gt;-->
         <!--<script type="text/javascript" src="/web/static/lib/pdfjs/src/pdf.js"></script>-->
     <!--</template>-->
-    <data>
-         <template id="webclient_bootstrap">
-            <t t-call="web.layout">
-                <t t-set="head_web">
-                    <script type="text/javascript">
-                        odoo.session_info = <t t-raw="session_info"/>;
-                    </script>
+    <!--<data>-->
+         <!--<template id="webclient_bootstrap">-->
+            <!--<t t-call="web.layout">-->
+                <!--<t t-set="head_web">-->
+                    <!--<script type="text/javascript">-->
+                        <!--odoo.session_info = <t t-raw="session_info"/>;-->
+                    <!--</script>-->
 
-                    <t t-call-assets="web.assets_common" t-js="false"/>
-                    <t t-call-assets="web.assets_backend" t-js="false"/>
-                    <t t-call-assets="web.assets_common" t-css="false"/>
-                    <t t-call-assets="web.assets_backend" t-css="false"/>
+                    <!--<t t-call-assets="web.assets_common" t-js="false"/>-->
+                    <!--<t t-call-assets="web.assets_backend" t-js="false"/>-->
+                    <!--<t t-call-assets="web.assets_common" t-css="false"/>-->
+                    <!--<t t-call-assets="web.assets_backend" t-css="false"/>-->
 
-                    <![CDATA[
-                        <!--[if lt IE 10]>
-                            <body class="ie9">
-                        <![endif]-->
-                    ]]>
+                    <!--<![CDATA[-->
+                        <!--&lt;!&ndash;[if lt IE 10]>-->
+                            <!--<body class="ie9">-->
+                        <!--<![endif]&ndash;&gt;-->
+                    <!--]]>-->
 
-                    <t t-call="web.webclient_script"/>
-                </t>
-                <t t-set="head" t-value="head_web + (head or '')"/>
-                <t t-set="body_classname" t-value="'o_web_client'"/>
+                    <!--<t t-call="web.webclient_script"/>-->
+                <!--</t>-->
+                <!--<t t-set="head" t-value="head_web + (head or '')"/>-->
+                <!--<t t-set="body_classname" t-value="'o_web_client'"/>-->
 
-                <nav id="oe_main_menu_navbar" class="navbar navbar-inverse" groups="base.group_user,base.group_portal">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                    </div>
-                    <div class="navbar-collapse collapse">
-                        <t t-call="web.menu"/>
-                    </div>
-                </nav>
-                <div class="o_main">
-                    <div class="o_sub_menu" groups="base.group_user,base.group_portal">
-                        <t t-call="web.menu_secondary"/>
-                    </div>
-                    <div class="o_main_content"/>
-                </div>
-            </t>
-        </template>
+                <!--<nav id="oe_main_menu_navbar" class="navbar navbar-inverse" groups="base.group_user,base.group_portal">-->
+                    <!--<div class="navbar-header">-->
+                        <!--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">-->
+                            <!--<span class="icon-bar"></span>-->
+                            <!--<span class="icon-bar"></span>-->
+                            <!--<span class="icon-bar"></span>-->
+                        <!--</button>-->
+                    <!--</div>-->
+                    <!--<div class="navbar-collapse collapse">-->
+                        <!--<t t-call="web.menu"/>-->
+                    <!--</div>-->
+                <!--</nav>-->
+                <!--<div class="o_main">-->
+                    <!--<div class="o_sub_menu" groups="base.group_user,base.group_portal">-->
+                        <!--<t t-call="web.menu_secondary"/>-->
+                    <!--</div>-->
+                    <!--<div class="o_main_content"/>-->
+                <!--</div>-->
+            <!--</t>-->
+        <!--</template>-->
     </data>
 </odoo>

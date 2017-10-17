@@ -27,11 +27,11 @@ var ControlPanel_hr = Widget.extend({
     start: function() {
         // Exposed jQuery nodesets
         this.nodes = {
-            $breadcrumbs: this.$('.breadcrumb'),
-            $buttons: this.$('.o_cp_buttons'),
-            $pager: this.$('.o_cp_pager'),
-            $searchview: this.$('.o_cp_searchview'),
-            $searchview_buttons: this.$('.o_search_options'),
+            $breadcrumbs: this.$('.breadcrumb_cowin_hr'),
+            $buttons: this.$('.o_cp_buttons_cowin_hr'),
+            $pager: this.$('.o_cp_pager_cowin_hr'),
+            $searchview: this.$('.o_cp_searchview_cowin_hr'),
+            $searchview_buttons: this.$('.o_search_options_cowin_hr'),
             $sidebar: this.$('.o_cp_sidebar'),
             $switch_buttons: this.$('.o_cp_switch_buttons'),
         };
