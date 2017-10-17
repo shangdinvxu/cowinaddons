@@ -13,9 +13,9 @@ class Cowin_hr(models.Model):
 
     barcode = fields.Char(string=u'员工编码')
 
-    # is_add_user=fields.Boolean()
-    # login_name=fields.Char()
-    login = fields.Char(related='user_id.login')
+    is_add_user=fields.Boolean()
+    login_name=fields.Char()
+    # login = fields.Char(related='user_id.login')
 
 
 
@@ -31,16 +31,16 @@ class Cowin_hr(models.Model):
 
 
         # # 开始对外键进行设置
-        # if vals.get('login_name'):
-        #     # 这样的命名的规则是从字段的命名规则来考虑
-        #     user_id=self.env['res.users'].create({
-        #         'login': 'nam',
-        #         'pass':'123455'
-        #
-        #     })
-        #
-        #     res_hr.user_id=user_id.id
-        #     res_hr.address_home_id=user_id.partner_id.id
+        if vals.get('login_name'):
+            # 这样的命名的规则是从字段的命名规则来考虑
+            user_id=self.env['res.users'].create({
+                'login': 'nam',
+                'pass':'123455'
+
+            })
+
+            res_hr.user_id=user_id.id
+            res_hr.address_home_id=user_id.partner_id.id
         return res
 
 
