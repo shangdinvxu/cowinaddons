@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 from odoo import models, fields, api
 
 
 class cowin_project(models.Model):
     _name = 'cowin_project.cowin_project'
 
-    name = fields.Char(string=u'项目名称')
+    name = fields.Char(string=u"项目名称")
 
     project_number = fields.Char(string=u'项目编号')
 
