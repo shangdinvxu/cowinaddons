@@ -59,7 +59,7 @@
                                 <div>运营地:<t t-esc="record.peration_place.value"/></div>
                                 <div>联系人:<t t-esc="record.contract_person.value"/></div>
                                 <div>所属行业:<t t-esc="record.industry.value"/></div>
-                                <div>产品:<t t-esc="record.production.value"/></div>
+                                <div class="kanban_project_product">产品:<t t-esc="record.production.value"/></div>
                                 <div class="kanban_project_state">【状态：<t t-esc="record.state.value"/>】</div>
                             </div>
                         </div>
@@ -70,10 +70,6 @@
         </record>
 
 
-        <!--<record id="action_project_process" model="ir.actions.client">-->
-            <!--<field name="name">project process</field>-->
-            <!--<field name="tag">project_process</field>-->
-        <!--</record>-->
 
         <record model="ir.actions.act_window" id="action_project_process">
             <field name="name">cowin_project_process window</field>
@@ -84,6 +80,12 @@
 
         <!-- Top menu item -->
         <menuitem name="cowin_project" id="cowin_project.menu_root"/>
+
+        <!--暂时把项目流程的视图放到项目审批内-->
+         <record id="action_project_approval" model="ir.actions.client">
+            <field name="name">project approval</field>
+            <field name="tag">project_process</field>
+        </record>
 
         <!-- menu categories -->
         <!--左侧菜单-->
@@ -97,7 +99,7 @@
                   action="action_project_process"/>
 
         <menuitem name="项目审批" id="cowin_project.menu_12" parent="cowin_project.menu_1"
-                  action="cowin_project.action_window"/>
+                  action="action_project_approval"/>
 
         <menuitem name="投后跟进" id="cowin_project.menu_22" parent="cowin_project.menu_2"
                   action="cowin_project.action_window"/>

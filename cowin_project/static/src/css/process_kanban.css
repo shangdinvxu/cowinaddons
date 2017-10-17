@@ -35,3 +35,11 @@
     right: 0;
     margin-top: 0;
 }
+.o_web_client .o_main .o_view_manager_content .project_process_kanban .kanban_main .kanban_project_product{
+    width: 400px;
+    height: 50px;
+    display: -webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp: 3;
+    overflow:hidden;
+}
