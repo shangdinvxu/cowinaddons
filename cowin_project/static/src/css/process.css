@@ -1,0 +1,165 @@
+#project_process_container{
+    height:100%;
+}
+#project_process_container .project_header{
+    padding: 30px;
+    margin-bottom: 10px;
+    background-color: white;
+}
+#project_process_container #process_tab{
+    background-color: white;
+    border-top:1px solid #ddd;
+}
+#project_process_container #process_tab li a{
+    color: #00B0DD;
+    border:none;
+    border-radius: 0px;
+}
+#project_process_container .nav-tabs > li.active > a, #project_process_container .nav-tabs > li.active > a:hover,#project_process_container .nav-tabs > li.active > a:focus{
+    background-color: #00B0DD;
+    border: none;
+    color: white!important;
+}
+#process_tab_content{
+    padding: 20px;
+    height:100%;
+    background-color: white;
+}
+#project_process_container #process_tab_content .table{
+    background-color: white;
+}
+#process_tab_content .process_data_main_wrap{
+    margin-left: 200px;
+}
+#process_tab_content .process_data_main_wrap .process_data_item_line{
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(134,134,134,.3);
+    overflow: hidden;
+}
+#process_tab_content .process_data_main_wrap .header_line span{
+    font-weight: bolder;
+    color: #868686;
+}
+#process_tab_content .process_data_main_wrap .header_line .fa{
+    margin-right: 4px;
+}
+#process_tab_content .process_data_main_wrap .detail_line{
+    padding-left: 20px;
+}
+#process_tab_content .process_data_main_wrap .detail_line span{
+    font-weight: lighter;
+    color: #868686;
+    float: left;
+}
+#process_tab_content .process_data_main_wrap .detail_line span:nth-child(1){
+    position: absolute;
+}
+#process_tab_content .process_data_main_wrap .detail_line span:nth-child(2){
+    margin-left: 20%;
+}
+#process_tab_content .process_data_main_wrap .detail_line span:nth-child(3){
+    margin-left: 10%;
+}
+
+#process_contact .process_contact_item{
+    background-color: rgba(242, 242, 242, 1);
+    overflow: hidden;
+    color: #797979;
+    width: 500px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+#process_contact .process_contact_item>div{
+    float: left;
+}
+#process_contact .process_contact_item .header_image{
+    padding: 20px;
+    text-align: center;
+}
+#process_contact .process_contact_item .header_image>div{
+    width: 50px;
+    height: 50px;
+    border: 1px solid #797979;
+    border-radius: 50%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+#process_contact .process_contact_item .header_image .fa{
+    font-size: 25px;
+    margin-top: 9px;
+}
+#process_contact .process_contact_item .header_image .contact_name{
+    font-weight: bold;
+    color: black;
+    font-size: 16px;
+}
+#process_contact .process_contact_item .contact_company{
+    color: #00B0DD;
+    margin-right: 20px;
+}
+#process_contact .process_contact_item .contact_address{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+#process_contact .process_contact_item .person_info{
+    overflow: hidden;
+}
+#process_contact .process_contact_item .person_info>div{
+    float: left;
+}
+#process_contact .process_contact_item .person_info .person_info_left{
+    margin-right: 30px;
+    border-right: 1px solid rgba(134,134,134,.3);
+    padding-right: 30px;
+}
+#process_contact .process_contact_item .person_info>div>div{
+    margin-bottom: 10px;
+}
+
+#process_record .process_record_item>div{
+    display: inline-block;
+    vertical-align:top;
+}
+#process_record .process_record_item .header_image{
+    padding: 20px;
+    text-align: center;
+}
+#process_record .process_record_item .header_image>div{
+    width: 50px;
+    height: 50px;
+    border: 1px solid #797979;
+    border-radius: 50%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+#process_record .process_record_item .header_image .fa{
+    font-size: 25px;
+    margin-top: 9px;
+}
+#process_record .process_record_item_main{
+    background-color: rgba(242, 242, 242, 1);
+    padding: 15px;
+    width: 88%;
+}
+#process_record .process_record_item_main .record_operater{
+    font-weight: 700;
+}
+#process_record .process_record_item_main .record_operat_time{
+    color: #949494;
+    float: right;
+}
+#process_record .process_record_item_main .record_describe{
+    color: #949494;
+    margin-top: 8px;
+    margin-left: 12px;
+    margin-bottom: 10px;
+}
+#process_record .process_record_item_main .circle{
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background-color: #949494;
+    border-radius: 50%;
+    margin-right: 3px;
+}
+

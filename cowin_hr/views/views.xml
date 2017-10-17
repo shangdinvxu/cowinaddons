@@ -2,14 +2,30 @@
   <data>
     <!-- explicit list view definition -->
 
-
-    <record model="ir.ui.view" id="cowin_hr.list">
+    <record model="ir.ui.view" id="hr_employee_list">
       <field name="name">cowin_hr list</field>
+      <field name="model">hr.employee</field>
+      <!--<field name="inherit_id" ref="hr.view_employee_form"/>-->
+      <field name="arch" type="xml">
+          <tree>
+             <field name="barcode" string="员工编码"/>
+             <field name="name"/>
+             <field name="job_id"/>
+             <field name="active"/>
+             <field name="address_home_id"/>
+             <field name="create_date"/>
+          </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_employee_form_inherit">
+      <field name="name">cowin_hr form</field>
       <field name="model">hr.employee</field>
       <field name="inherit_id" ref="hr.view_employee_form"/>
       <field name="arch" type="xml">
 
-          <xpath expr="//field[@name='coach_id']" position="replace">
+          <xpath expr="//field[@name='coach_id']" position="attributes">
+              <attribute name="invisible">1</attribute>
           </xpath>
 
            <xpath expr="//page[@name='public']/group" position="inside">
@@ -25,8 +41,8 @@
       </field>
     </record>
 
-   <record model="ir.ui.view" id="cowin_hr.kanban">
-      <field name="name">cowin_hr list</field>
+   <record model="ir.ui.view" id="hr_employee_kanban_inherit">
+      <field name="name">cowin_hr kanban</field>
       <field name="model">hr.employee</field>
       <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
       <field name="arch" type="xml">
@@ -73,15 +89,9 @@
 
     <!-- menu categories -->
 
-    <menuitem name="Menu 1" id="cowin_hr.menu_1" parent="cowin_hr.menu_root"/>
-    <menuitem name="Menu 2" id="cowin_hr.menu_2" parent="cowin_hr.menu_root"/>
-
-    <!-- actions -->
-
-    <menuitem name="员工列表" id="cowin_hr.menu_1_list" parent="cowin_hr.menu_1"
-              action="cowin_hr.action_window"/>
-    <!--<menuitem name="Server to list" id="cowin_hr" parent="cowin_hr.menu_2"-->
-              <!--action="cowin_hr.action_server"/>-->
+    <menuitem name="员工" id="cowin_hr.menu_1" parent="cowin_hr.menu_root" action="cowin_hr.action_window"/>
+    <menuitem name="绩效" id="cowin_hr.menu_2" parent="cowin_hr.menu_root" action="cowin_hr.action_window"/>
+    <menuitem name="薪酬" id="cowin_hr.menu_3" parent="cowin_hr.menu_root" action="cowin_hr.action_window"/>
 
 
       <record id="view_new_employee" model="ir.ui.view">
@@ -106,11 +116,11 @@
             <!--<field name="inherit_id" ref="product.product_normal_form_view"/>-->
       </record>
 
-      <menuitem id="petstore_employee"
-            name="员工"
-            action="employee_view_action"
-            parent="cowin_hr.menu_1"
-            sequence="13"/>
+      <!--<menuitem id="petstore_employee"-->
+            <!--name="员工"-->
+            <!--action="employee_view_action"-->
+            <!--parent="cowin_hr.menu_1"-->
+            <!--sequence="13"/>-->
 
   </data>
 </odoo>

@@ -11,6 +11,16 @@ class Cowin_hr(models.Model):
     identification_id_contract_person = fields.Char(string=u'身份证号')
     mobile_phone_backup_contract_person = fields.Char(string=u'联系电话')
 
+    barcode = fields.Char()
+
+
+    @api.model
+    def create(self, vals):
+        if not vals.get('barcode'):
+            vals['barcode'] = self.env['ir.sequence'].next_by_code('cowin_hr.order')
+
+        return super(Cowin_hr, self).create(vals)
+
 
 class IrMenuExtend(models.Model):
     _inherit = 'ir.ui.menu'

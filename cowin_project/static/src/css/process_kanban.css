@@ -1,0 +1,37 @@
+.o_web_client .o_main .o_view_manager_content .project_process_kanban{
+    box-shadow: none;
+    margin-left: 30px;
+    padding: 18px;
+    flex: none;
+}
+.o_web_client .o_main .o_view_manager_content .project_process_kanban .kanban_top{
+    overflow: hidden;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(161,161,161,.3);
+}
+.o_web_client .o_main .o_view_manager_content .project_process_kanban .project_name{
+    font-weight: 700;
+    color: #515151;
+    float: left;
+}
+.o_web_client .o_main .o_view_manager_content .project_process_kanban .project_top_right{
+    float: right;
+    color: #A1A1A1;
+}
+.o_web_client .o_main .o_view_manager_content .project_process_kanban .project_top_right span{
+    margin-left: 10px;
+}
+.o_web_client .o_main .o_view_manager_content .project_process_kanban .kanban_main>div{
+    color: #A1A1A1;
+    margin-top: 8px;
+}
+.o_web_client .o_main .o_view_manager_content .project_process_kanban .kanban_main{
+    position: relative;
+}
+.o_web_client .o_main .o_view_manager_content .project_process_kanban .kanban_main .kanban_project_state{
+    color: #00B0DD;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0;
+}

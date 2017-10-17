@@ -76,8 +76,12 @@ a.oe_menu_toggler { background-color: transparent !important; }
     z-index: 100;
 }
 .o_web_client > .o_main .o_sub_menu ul li .oe_menu_text{
-     color: white!important;
-    font-weight: 200;
+     color: #BCBCBC;
+    font-weight: 400;
+    font-size: 14px;
+}
+.o_web_client > .o_main .o_sub_menu ul .active a .oe_menu_text{
+     color: white;
 }
 .o_web_client > .o_main .o_sub_menu .o_sub_menu_content .oe_secondary_menu_section .oe_menu_text{
     font-weight: 200;
@@ -86,7 +90,7 @@ a.oe_menu_toggler { background-color: transparent !important; }
 .o_web_client > .o_main .o_sub_menu .o_sub_menu_content .oe_secondary_menu>div{
     padding-top: 10px;
     padding-bottom: 10px;
-    border-top: 1px solid rgba(106, 106, 106, 1);
+    /*border-top: 1px solid rgba(106, 106, 106, 1);*/
     /*padding-left: 35px;*/
 }
 .o_web_client > .o_main .o_sub_menu .o_sub_menu_content .oe_secondary_menu>div:last-child{
@@ -115,4 +119,50 @@ a.oe_menu_toggler { background-color: transparent !important; }
 .o_web_client > .o_main .o_sub_menu .o_sub_menu_logo .oe_logo_edit{
     left:0;
     margin: 10px 0;
+}
+
+/*2017/10/13*/
+.o_web_client > .o_main .o_sub_menu .o_sub_menu_content .oe_secondary_submenu{
+    margin: 0;
+    line-height: 2.3em;
+}
+.o_web_client > .o_main .o_sub_menu .o_sub_menu_content .oe_secondary_submenu .oe_menu_toggler:before{
+    opacity: 0;
+    display: none;
+}
+.o_web_client > .o_main .o_sub_menu .o_sub_menu_content .oe_secondary_submenu .oe_menu_toggler:after{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    content: "&darr";
+    opacity: 0.5;
+    text-indent: -99999px;
+    vertical-align: top;
+    float: right;
+    margin-top: 7px;
+    margin-right: 18px;
+    transform: rotate(45deg);
+    border: 2px solid white;
+    border-top:none;
+    border-left:none;
+}
+.o_web_client > .o_main .o_sub_menu .o_sub_menu_content .oe_secondary_submenu .oe_menu_opened:after{
+
+    border: 2px solid white;
+    border-right:none;
+    border-bottom:none;
+}
+.oe_secondary_menu .fa{
+    color: #BCBCBC;
+    font-size: 16px;
+    margin-right: 8px;
+}
+.o_web_client > .o_main .o_sub_menu .o_sub_menu_content .oe_secondary_submenu .oe_secondary_submenu > li > a {
+  padding-left: 55px;
+}
+.o_web_client > .o_main .o_sub_menu .o_sub_menu_content .oe_secondary_submenu .oe_secondary_submenu .oe_secondary_submenu > li > a {
+  padding-left: 65px;
+}
+.o_web_client > .o_main .o_sub_menu .oe_secondary_menu>ul>li{
+    border-bottom: 1px solid rgba(188,188,188,.3);
 }
