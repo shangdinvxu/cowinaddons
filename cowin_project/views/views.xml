@@ -79,7 +79,7 @@
         </record>
 
         <!-- Top menu item -->
-        <menuitem name="cowin_project" id="cowin_project.menu_root"/>
+        <menuitem name="项目" id="cowin_project.menu_root"/>
 
         <!--暂时把项目流程的视图放到项目审批内-->
          <record id="action_project_approval" model="ir.actions.client">

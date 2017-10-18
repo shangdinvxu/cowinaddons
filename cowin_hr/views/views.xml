@@ -18,8 +18,54 @@
       </field>
     </record>
 
+      <record model="ir.ui.view" id="cowin_hr_form">
+      <field name="name">cowin_hr form </field>
+      <field name="model">hr.employee</field>
+      <field name="priority">16</field>
+      <!--<field name="inherit_id" ref="hr.view_employee_form"/>-->
+      <field name="arch" type="xml">
+          <form>
+              <sheet>
+                  <group>
+                        <field name="image" widget='image' class="oe_avatar" options='{"preview_image":"image_medium"}'/>
+                        <field name="name" placeholder="Employee's Name"/>
+                        <field name="label" widget="priority"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="work_location"/>
+                        <field name="job_id"/>
+                        <field name="title"/>
+                        <field name="work_phone"/>
+                        <field name="work_email" widget="email"/>
+                        <field name="identification_id" groups="hr.group_hr_user"/>
+                        <field name="passport_id" groups="hr.group_hr_user"/>
+
+
+
+                  </group>
+
+                 <group string="备用联系人信息" >
+                        <field name="backup_person"/>
+                        <field name="relation_to_me"/>
+                        <field name="identification_id_contract_person"/>
+                        <field name="mobile_phone_backup_contract_person"/>
+                 </group>
+
+                  <group>
+                      <field name="is_add_user"/>
+                      <field name="login_name" attrs="{'invisible': [('is_add_user', '=', False)]}"/>
+                      <field name="label" widget="priority"/>
+                  </group>
+
+
+              </sheet>
+
+          </form>
+
+      </field>
+      </record>
+
     <record model="ir.ui.view" id="hr_employee_form_inherit">
-      <field name="name">cowin_hr form</field>
+      <field name="name">cowin_hr form inherit</field>
       <field name="model">hr.employee</field>
       <field name="inherit_id" ref="hr.view_employee_form"/>
       <field name="arch" type="xml">
@@ -30,16 +76,27 @@
 
            <xpath expr="//page[@name='public']/group" position="inside">
                <!--<group string="Backup_contract">-->
+
+               <group string="">
+                  <field name="is_add_user"/>
+                  <field name="login_name" attrs="{'invisible': [('is_add_user', '=', False)]}"/>
+                  <field name="label" widget="priority"/>
+               </group>
+
                <group string="紧急联系人" >
                   <field name="backup_person"/>
                   <field name="relation_to_me"/>
                   <field name="identification_id_contract_person"/>
                   <field name="mobile_phone_backup_contract_person"/>
 
-                  <field name="is_add_user"/>
-                  <field name="login_name" attrs="{'invisible': [('is_add_user', '=', False)]}"/>
-                  <field name="priority" widget="priority"/>
+
               </group>
+
+
+          </xpath>
+
+           <xpath expr="//page[@name='hr_settings']" position="attributes">
+              <attribute name="invisible">1</attribute>
           </xpath>
 
       </field>

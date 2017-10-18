@@ -29,7 +29,7 @@
 		<xpath expr="//div[@class='col-md-6 col-md-offset-3 o_database_list']" position="after">
 			 <t t-set="para" t-value="images"/>
              <t t-foreach="para" t-as="item">
-                  <!--<img t-att-src="'data:image/png;base64,'+item" alt=""/>-->
+                  <img t-att-src="'data:image/png;base64,'+item" alt=""/>
              </t>
    		</xpath>
 
