@@ -13,9 +13,7 @@
             <xpath expr="//a/span[@class='oe_menu_text']" position="replace">
                 <span class="oe_menu_text">
                     <span t-att-class="menu['button_icon']"></span>
-                    <!--<div data-toggle="tooltip" data-placement="right" t-att-title="menu['tip_text']">-->
                     <t t-esc="menu['name']"/>
-                    <!--</div>-->
                 </span>
             </xpath>
         </template>
