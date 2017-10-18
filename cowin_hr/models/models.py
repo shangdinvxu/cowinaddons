@@ -29,7 +29,7 @@ class Cowin_hr(models.Model):
 
     # is_add_user = fields.Boolean(string=u'添加登陆用户', default=False, compute='_compute_login_name_active')
     is_add_user = fields.Boolean(string=u'添加登陆用户', default=True)
-    login_name = fields.Char(string=u'登陆用户名')
+    login_name = fields.Char(string=u'邮箱')
 
     title = fields.Many2one(related=u'user_id.title')
 
