@@ -1,9 +1,22 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
+from odoo.modules.module import get_module_resource
+from odoo import tools
 
 
 class cowin_project(models.Model):
     _name = 'cowin_project.cowin_project'
+
+
+
+
+    @api.model
+    def _default_image(self):
+        image_path = get_module_resource('hr', 'static/src/img', 'default_image.png')
+        return tools.image_resize_image_big(open(image_path, 'rb').read().encode('base64'))
+
+    image = fields.Binary("Photo", default=_default_image, attachment=True,
+                          help="This field holds the image used as photo for the employee, limited to 1024x1024px.")
 
     name = fields.Char(string=u"项目名称")
 
@@ -33,3 +46,4 @@ class cowin_project(models.Model):
             vals['project_number'] = self.env['ir.sequence'].next_by_code('cowin_project.order')
 
         return super(cowin_project, self).create(vals)
+
