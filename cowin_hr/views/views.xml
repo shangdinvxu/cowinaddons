@@ -38,9 +38,6 @@
                         <field name="work_email" widget="email"/>
                         <field name="identification_id" groups="hr.group_hr_user"/>
                         <field name="passport_id" groups="hr.group_hr_user"/>
-
-
-
                   </group>
 
                  <group string="备用联系人信息" >
@@ -63,52 +60,6 @@
       </field>
       </record>
 
-    <!--<record model="ir.ui.view" id="hr_employee_form_inherit">-->
-      <!--<field name="name">cowin_hr form inherit</field>-->
-      <!--<field name="model">hr.employee</field>-->
-      <!--<field name="inherit_id" ref="hr.view_employee_form"/>-->
-      <!--<field name="arch" type="xml">-->
-
-          <!--<xpath expr="//field[@name='coach_id']" position="attributes">-->
-              <!--<attribute name="invisible">1</attribute>-->
-          <!--</xpath>-->
-
-           <!--<xpath expr="//page[@name='public']/group" position="inside">-->
-               <!--&lt;!&ndash;<group string="Backup_contract">&ndash;&gt;-->
-
-               <!--<group string="">-->
-                  <!--<field name="is_add_user"/>-->
-                  <!--<field name="login_name" attrs="{'invisible': [('is_add_user', '=', False)]}"/>-->
-                  <!--<field name="label" widget="priority"/>-->
-               <!--</group>-->
-
-               <!--<group string="紧急联系人" >-->
-                  <!--<field name="backup_person"/>-->
-                  <!--<field name="relation_to_me"/>-->
-                  <!--<field name="identification_id_contract_person"/>-->
-                  <!--<field name="mobile_phone_backup_contract_person"/>-->
-
-
-              <!--</group>-->
-
-
-          <!--</xpath>-->
-
-           <!--<xpath expr="//page[@name='HR Settings']" position="attributes">-->
-              <!--<attribute name="invisible">1</attribute>-->
-          <!--</xpath>-->
-
-      <!--</field>-->
-    <!--</record>-->
-
-      <!-- 添加上下文form视图 by res_users  -->
-      <!--<record model="ir.ui.view" id="hr_employee_form_cotext_by_res_users ">-->
-        <!--<field name="name">cowin_hr context form by users</field>-->
-        <!--<field name="model">res.users</field>-->
-        <!--<field name="arch" type="xml">-->
-            <!--<field name="email" string="电子邮箱信息"/>-->
-        <!--</field>-->
-      <!--</record>-->
 
    <record model="ir.ui.view" id="hr_employee_kanban_inherit">
       <field name="name">cowin_hr kanban</field>

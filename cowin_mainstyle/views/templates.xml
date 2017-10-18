@@ -7,6 +7,28 @@
            </template>
 
 
+        <!--导航部分logo-->
+        <template id="nav_logo_inherit" inherit_id="web.webclient_bootstrap" name="nav Inherit">
+            <xpath expr="//nav[@id='oe_main_menu_navbar']" position="replace">
+                <nav id="oe_main_menu_navbar" class="navbar navbar-inverse" groups="base.group_user,base.group_portal">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <a class="o_sub_menu_logo cowin_nav_logo" t-att-href="'/web/?debug' if debug else '/web'">
+                            <span class="oe_logo_edit">Edit Company data</span>
+                            <img src='/web/binary/company_logo'/>
+                        </a>
+                        <t t-call="web.menu"/>
+                    </div>
+                </nav>
+            </xpath>
+        </template>
+
 
         <!--按钮前的图标-->
         <template id="menu_link_inherit" inherit_id="web.menu_link" name="menu Inherit">

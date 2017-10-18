@@ -1,5 +1,5 @@
 /*主菜单条底色*/
-#oe_main_menu_navbar { background-color: rgba(58, 143, 184, 1)  !important;border: none !important; margin-left: 219px}
+#oe_main_menu_navbar { background-color: rgba(58, 143, 184, 1)  !important;border: none !important;}
 .o_no_chat_window #oe_main_menu_navbar{
     margin-left: 0px!important;
 }
@@ -72,7 +72,7 @@ a.oe_menu_toggler { background-color: transparent !important; }
 
 .o_web_client > .o_main .o_sub_menu{
     background-color: rgba(19, 31, 55, 1);
-    margin-top: -47px;
+    /*margin-top: -47px;*/
     z-index: 100;
 }
 .o_web_client > .o_main .o_sub_menu ul li .oe_menu_text{
@@ -165,4 +165,37 @@ a.oe_menu_toggler { background-color: transparent !important; }
 }
 .o_web_client > .o_main .o_sub_menu .oe_secondary_menu>ul>li{
     border-bottom: 1px solid rgba(188,188,188,.3);
+}
+
+
+/*导航部分logo的样式*/
+#oe_main_menu_navbar .navbar-collapse{
+    padding-left: 0;
+}
+.o_web_client > #oe_main_menu_navbar .cowin_nav_logo{
+    -webkit-box-flex:0;
+    -webkit-flex:0 0 auto;
+    flex:0 0 auto;
+    text-align:center;
+    position: relative;
+    float: left;
+    margin-top: -8px;
+    height: 44px;
+    margin-right: 32px;
+}
+.o_web_client > #oe_main_menu_navbar .cowin_nav_logo .oe_logo_edit{
+    position: absolute;
+    top: 1px;
+    width: 100%;
+    padding: 4px;
+    margin: 5px 0;
+    display: none;
+    color: #eee;
+    background: rgba(37,37,37,0.9);
+}
+.o_web_client > #oe_main_menu_navbar .cowin_nav_logo img{
+    height: 100%;
+}
+.o_web_client > #oe_main_menu_navbar .cowin_nav_logo:hover .oe_logo_edit_admin{
+    display: block;
 }
