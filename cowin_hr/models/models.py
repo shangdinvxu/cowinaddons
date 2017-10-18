@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 class Cowin_hr(models.Model):
     _inherit = 'hr.employee'
@@ -13,9 +14,8 @@ class Cowin_hr(models.Model):
 
     barcode = fields.Char(string=u'员工编码')
 
-    is_add_user=fields.Boolean()
-    login_name=fields.Char()
-    # login = fields.Char(related='user_id.login')
+    is_add_user = fields.Boolean()
+    login_name = fields.Char(string=u'邮箱地址')
 
 
 
@@ -27,21 +27,37 @@ class Cowin_hr(models.Model):
 
 
         # 创建当前的hr.employee实例
-        res_hr=super(Cowin_hr, self).create(vals)
+        res_hr = super(Cowin_hr, self).create(vals)
 
 
         # # 开始对外键进行设置
         if vals.get('login_name'):
             # 这样的命名的规则是从字段的命名规则来考虑
-            user_id=self.env['res.users'].create({
-                'login': 'nam',
-                'pass':'123455'
 
+            if self.env['res.users'].search([('name', '=', vals.get('login_name'))]).ids:
+                print u'该用户已经被添加在其中!!,我们不需要再去做添加的操作了!!'
+                # return UserWarning(u'该用户已经存在!!!')
+
+                raise UserError(u'该用户已经存在!!!')
+
+            user_id = self.env['res.users'].create({
+                'name': vals.get('login_name'),
+                'login':vals.get('login_name')
             })
 
-            res_hr.user_id=user_id.id
-            res_hr.address_home_id=user_id.partner_id.id
-        return res
+            pass_wizard = self.env['change.password.wizard'].create({})
+
+            pass_wizard_user = self.env['change.password.user'].create({
+                'wizard_id': pass_wizard.id,
+                'user_id': user_id.id,
+                'new_passwd': '123456'
+            })
+
+            pass_wizard.change_password_button()
+
+            res_hr.user_id = user_id.id
+            res_hr.address_home_id = user_id.partner_id.id
+        return res_hr
 
 
 class IrMenuExtend(models.Model):

@@ -36,11 +36,21 @@
                   <field name="identification_id_contract_person"/>
                   <field name="mobile_phone_backup_contract_person"/>
                   <!--<field name="login" string="登陆角色名字"></field>-->
+                  <field name="login_name" string="登陆角色名字"></field>
               </group>
           </xpath>
 
       </field>
     </record>
+
+      <!-- 添加上下文form视图 by res_users  -->
+      <!--<record model="ir.ui.view" id="hr_employee_form_cotext_by_res_users ">-->
+        <!--<field name="name">cowin_hr context form by users</field>-->
+        <!--<field name="model">res.users</field>-->
+        <!--<field name="arch" type="xml">-->
+            <!--<field name="email" string="电子邮箱信息"/>-->
+        <!--</field>-->
+      <!--</record>-->
 
    <record model="ir.ui.view" id="hr_employee_kanban_inherit">
       <field name="name">cowin_hr kanban</field>
