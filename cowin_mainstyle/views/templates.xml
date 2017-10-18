@@ -34,7 +34,9 @@
         <template id="menu_link_inherit" inherit_id="web.menu_link" name="menu Inherit">
             <xpath expr="//a/span[@class='oe_menu_text']" position="replace">
                 <span class="oe_menu_text">
-                    <span t-att-class="menu['button_icon']"></span>
+                    <t t-if="menu['button_icon']">
+                        <span t-att-class="menu['button_icon']"></span>
+                    </t>
                     <t t-esc="menu['name']"/>
                 </span>
             </xpath>
