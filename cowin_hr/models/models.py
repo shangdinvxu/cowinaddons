@@ -3,10 +3,21 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 
+
+AVAILABLE_PRIORITIES = [
+    ('0', 'badly'),
+    ('1', 'Low'),
+    ('2', 'Normal'),
+    ('3', 'High'),
+    ('4', 'Very High'),
+    ('5', 'top level'),
+]
+
+
 class Cowin_hr(models.Model):
     _inherit = 'hr.employee'
 
-
+    priority = fields.Selection(AVAILABLE_PRIORITIES, string=u'标签', index=True, default=AVAILABLE_PRIORITIES[0][0])
     backup_person = fields.Char(string=u'联系人')
     relation_to_me = fields.Char(string=u'关系')
     identification_id_contract_person = fields.Char(string=u'身份证号')
@@ -14,10 +25,16 @@ class Cowin_hr(models.Model):
 
     barcode = fields.Char(string=u'员工编码')
 
-    is_add_user = fields.Boolean()
-    login_name = fields.Char(string=u'邮箱地址')
+    # is_add_user = fields.Boolean(string=u'添加登陆用户', default=False, compute='_compute_login_name_active')
+    is_add_user = fields.Boolean(string=u'添加登陆用户', default=False)
+    login_name = fields.Char(string=u'登陆用户名')
 
 
+    # @api.multi
+    # def _compute_login_name_active(self):
+    #     self.ensure_one()
+    #     print u'开始切换开关!!!'
+    #     # self.login_name.readonly = True
 
 
     @api.model
@@ -60,13 +77,17 @@ class Cowin_hr(models.Model):
         return res_hr
 
 
-class IrMenuExtend(models.Model):
-    _inherit = 'ir.ui.menu'
-
-    button_icon = fields.Char(string=u'按钮图标')
-
     @api.multi
-    def read(self, fields=None, load='_classic_read'):
-        fields.append("button_icon")
-        return super(IrMenuExtend, self).read(fields, load)
+    def write(self, vals):
+        print u'开始进入到write方法中开始去执行的操作!!!'
+        print self.login_name
+        print vals.get('login_name')
+        if vals.get('login_name') and not self.login_name == vals.get('login_name'):
+            raise UserError(u'目前不支持用户角色改写!!!')
+
+        res = super(Cowin_hr, self).write(vals)
+        # self.create_reorder_rule()
+        return res
+
+
 

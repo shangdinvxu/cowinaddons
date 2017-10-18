@@ -35,8 +35,10 @@
                   <field name="relation_to_me"/>
                   <field name="identification_id_contract_person"/>
                   <field name="mobile_phone_backup_contract_person"/>
-                  <!--<field name="login" string="登陆角色名字"></field>-->
-                  <field name="login_name" string="登陆角色名字"></field>
+
+                  <field name="is_add_user"/>
+                  <field name="login_name" attrs="{'invisible': [('is_add_user', '=', False)]}"/>
+                  <field name="priority" widget="priority"/>
               </group>
           </xpath>
 
