@@ -105,20 +105,21 @@
 
 
     <!-- Top menu item -->
-    <menuitem
-            id="hr.menu_hr_root"
+
+      <menuitem
+            id="hr.menu_open_view_employee_list_my"
             name="人力资源"
-            groups="hr.group_hr_manager,hr.group_hr_user,base.group_user"
-            web_icon="hr,static/description/icon.png"
-            sequence="75000"/>
+            parent="hr.menu_hr_main"
+            sequence="30"/>
+
 
 
 
     <!-- menu categories -->
 
-    <!--<menuitem name="员工" id="cowin_hr.menu_1" parent="hr.menu_hr_root" action="cowin_hr.action_window"/>-->
-    <menuitem name="绩效" id="cowin_hr.menu_2" parent="hr.menu_hr_root" action="cowin_hr.action_window" sequence="110"/>
-    <menuitem name="薪酬" id="cowin_hr.menu_3" parent="hr.menu_hr_root" action="cowin_hr.action_window" sequence="120"/>
+    <!--<menuitem name="员工" id="cowin_hr.menu_1" parent="hr.menu_hr_main" action="cowin_hr.action_window" sequence="33"/>-->
+    <menuitem name="绩效" id="cowin_hr.menu_2" parent="hr.menu_hr_main" action="cowin_hr.action_window" sequence="110"/>
+    <menuitem name="薪酬" id="cowin_hr.menu_3" parent="hr.menu_hr_main" action="cowin_hr.action_window" sequence="120"/>
 
 
       <record id="view_new_employee" model="ir.ui.view">
