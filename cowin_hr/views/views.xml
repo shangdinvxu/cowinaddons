@@ -29,11 +29,11 @@
                   <group>
                         <field name="image" widget='image' class="oe_avatar" options='{"preview_image":"image_medium"}'/>
                         <field name="name" placeholder="Employee's Name"/>
-                        <field name="label" string="所属行业" widget="priority"/>
+                        <field name="label"  widget="priority"/>
                         <field name="company_id" groups="base.group_multi_company"/>
                         <field name="work_location"/>
                         <field name="job_id"/>
-                        <field name="title"/>
+                        <field name="title" string="所属行业"/>
                         <field name="work_phone"/>
                         <field name="work_email" widget="email"/>
                         <field name="identification_id" groups="hr.group_hr_user"/>
@@ -53,7 +53,6 @@
                   <group>
                       <field name="is_add_user"/>
                       <field name="login_name" attrs="{'invisible': [('is_add_user', '=', False)]}"/>
-                      <field name="label" widget="priority"/>
                   </group>
 
 
