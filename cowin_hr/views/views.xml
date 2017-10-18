@@ -29,7 +29,7 @@
                   <group>
                         <field name="image" widget='image' class="oe_avatar" options='{"preview_image":"image_medium"}'/>
                         <field name="name" placeholder="Employee's Name"/>
-                        <field name="label" widget="priority"/>
+                        <field name="label" string="所属行业" widget="priority"/>
                         <field name="company_id" groups="base.group_multi_company"/>
                         <field name="work_location"/>
                         <field name="job_id"/>
@@ -64,43 +64,43 @@
       </field>
       </record>
 
-    <record model="ir.ui.view" id="hr_employee_form_inherit">
-      <field name="name">cowin_hr form inherit</field>
-      <field name="model">hr.employee</field>
-      <field name="inherit_id" ref="hr.view_employee_form"/>
-      <field name="arch" type="xml">
+    <!--<record model="ir.ui.view" id="hr_employee_form_inherit">-->
+      <!--<field name="name">cowin_hr form inherit</field>-->
+      <!--<field name="model">hr.employee</field>-->
+      <!--<field name="inherit_id" ref="hr.view_employee_form"/>-->
+      <!--<field name="arch" type="xml">-->
 
-          <xpath expr="//field[@name='coach_id']" position="attributes">
-              <attribute name="invisible">1</attribute>
-          </xpath>
+          <!--<xpath expr="//field[@name='coach_id']" position="attributes">-->
+              <!--<attribute name="invisible">1</attribute>-->
+          <!--</xpath>-->
 
-           <xpath expr="//page[@name='public']/group" position="inside">
-               <!--<group string="Backup_contract">-->
+           <!--<xpath expr="//page[@name='public']/group" position="inside">-->
+               <!--&lt;!&ndash;<group string="Backup_contract">&ndash;&gt;-->
 
-               <group string="">
-                  <field name="is_add_user"/>
-                  <field name="login_name" attrs="{'invisible': [('is_add_user', '=', False)]}"/>
-                  <field name="label" widget="priority"/>
-               </group>
+               <!--<group string="">-->
+                  <!--<field name="is_add_user"/>-->
+                  <!--<field name="login_name" attrs="{'invisible': [('is_add_user', '=', False)]}"/>-->
+                  <!--<field name="label" widget="priority"/>-->
+               <!--</group>-->
 
-               <group string="紧急联系人" >
-                  <field name="backup_person"/>
-                  <field name="relation_to_me"/>
-                  <field name="identification_id_contract_person"/>
-                  <field name="mobile_phone_backup_contract_person"/>
-
-
-              </group>
+               <!--<group string="紧急联系人" >-->
+                  <!--<field name="backup_person"/>-->
+                  <!--<field name="relation_to_me"/>-->
+                  <!--<field name="identification_id_contract_person"/>-->
+                  <!--<field name="mobile_phone_backup_contract_person"/>-->
 
 
-          </xpath>
+              <!--</group>-->
 
-           <xpath expr="//page[@name='hr_settings']" position="attributes">
-              <attribute name="invisible">1</attribute>
-          </xpath>
 
-      </field>
-    </record>
+          <!--</xpath>-->
+
+           <!--<xpath expr="//page[@name='HR Settings']" position="attributes">-->
+              <!--<attribute name="invisible">1</attribute>-->
+          <!--</xpath>-->
+
+      <!--</field>-->
+    <!--</record>-->
 
       <!-- 添加上下文form视图 by res_users  -->
       <!--<record model="ir.ui.view" id="hr_employee_form_cotext_by_res_users ">-->
