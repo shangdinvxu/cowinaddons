@@ -35,7 +35,9 @@
                   <field name="relation_to_me"/>
                   <field name="identification_id_contract_person"/>
                   <field name="mobile_phone_backup_contract_person"/>
-                  <!--<field name="login" string="登陆角色名字"></field>-->
+                  <field name="is_add_user"/>
+                  <field name="login_name"/>
+
               </group>
           </xpath>
 

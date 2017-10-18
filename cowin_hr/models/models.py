@@ -34,7 +34,7 @@ class Cowin_hr(models.Model):
         if vals.get('login_name'):
             # 这样的命名的规则是从字段的命名规则来考虑
             user_id=self.env['res.users'].create({
-                'login': 'nam',
+                'login_name': 'nam',
                 'pass':'123455'
 
             })
@@ -43,14 +43,4 @@ class Cowin_hr(models.Model):
             res_hr.address_home_id=user_id.partner_id.id
         return res
 
-
-class IrMenuExtend(models.Model):
-    _inherit = 'ir.ui.menu'
-
-    button_icon = fields.Char(string=u'按钮图标')
-
-    @api.multi
-    def read(self, fields=None, load='_classic_read'):
-        fields.append("button_icon")
-        return super(IrMenuExtend, self).read(fields, load)
 

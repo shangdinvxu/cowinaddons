@@ -2,8 +2,6 @@
     <data>
          <template id="cowin_hr_static" name="test_view" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
-                <!--<script type="text/javascript" src="/linkloving_project/static/src/js/new_gantt.js"/>-->
-                <!--<script type="text/javascript" src="/linkloving_project/static/src/js/dhtmlxgantt.js"/>-->
                 <script type="text/javascript" src="/cowin_hr/static/src/js/employee_view.js"/>
                 <link rel="stylesheet" href="/cowin_hr/static/src/css/employee_view.css"/>
             </xpath>
@@ -11,64 +9,7 @@
 
 
 
-
-
-        <template id="menu_link_inherit" inherit_id="web.menu_link" name="menu Inherit">
-
-            <xpath expr="//a/span[@class='oe_menu_text']" position="replace">
-                <span class="oe_menu_text">
-                    <span t-att-class="menu['button_icon']"></span>
-                    <!--<div data-toggle="tooltip" data-placement="right" t-att-title="menu['tip_text']">-->
-                    <t t-esc="menu['name']"/>
-                    <!--</div>-->
-                </span>
-            </xpath>
-        </template>
-
-
-
-        <record id="base.edit_menu_access" model="ir.ui.view">
-            <field name="model">ir.ui.menu</field>
-            <field name="arch" type="xml">
-                <form string="Menu">
-                  <sheet>
-                    <group>
-                        <group>
-                            <field name="name"/>
-                            <field name="button_icon"/>
-                            <field name="parent_id" groups="base.group_no_one"/>
-                            <field name="sequence" groups="base.group_no_one"/>
-                        </group>
-                        <group groups="base.group_no_one">
-                            <field name="complete_name"/>
-                            <field name="action"/>
-                            <field name="web_icon"/>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page string="Access Rights">
-                            <field name="groups_id"/>
-                        </page>
-                        <page string="Submenus" groups="base.group_no_one">
-                            <!-- Note: make sure you have 'ir.ui.menu.full_list'
-                                 in the context to see all submenus! -->
-                            <field name="child_id"
-                                    context="{'default_parent_id': active_id}">
-                                <tree string="Menu">
-                                    <field name="sequence"/>
-                                    <field icon="icon" name="name" string="Menu"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                   </sheet>
-                </form>
-            </field>
-        </record>
-
     <!-- 对菜单数据进行折叠设置  -->
-
-
 
     <template id="web.menu">
         <ul class="nav navbar-nav navbar-left oe_application_menu_placeholder" style="display: none;">
@@ -101,20 +42,7 @@
                 </div>
             </t>
         </div>
-
-        <!--<div class="o_sub_menu_content">-->
-            <!--<t t-foreach="menu_data['children']" t-as="menu">-->
-                <!--<div style="display: none" class="oe_secondary_menu" t-att-data-menu-parent="menu['id']">-->
-                    <!--<t t-foreach="menu['children']" t-as="menu">-->
-                        <!--<div class="oe_secondary_menu_section" t-att-data-menu-xmlid="menu.get('xmlid')">-->
-                            <!--<t t-if="menu['children']"><t t-esc="menu['name']"/></t>-->
-                            <!--<t t-if="not menu['children']"><t t-call="web.menu_link"/></t>-->
-                        <!--</div>-->
-                        <!--<t t-call="web.menu_secondary_submenu"/>-->
-                    <!--</t>-->
-                <!--</div>-->
-            <!--</t>-->
-        <!--</div>-->
+        
         <div class="o_sub_menu_footer">
             Powered by <a href="http://www.odoo.com" target="_blank"><span>Odoo</span></a>
         </div>

@@ -14,7 +14,8 @@ class Home(Home):
         images = request.env['hr.employee'].sudo().search([])
         list = []
         for img in images:
-            list.append(img.image_medium)
+            if img.image_medium:
+                list.append(img.image_medium)
         request.params['images'] = list
 
         resp = super(Home, self).web_login(redirect, **kw)
