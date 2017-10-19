@@ -101,7 +101,30 @@
       <field name="view_mode">kanban,tree,form</field>
     </record>
 
+    <!--对hr模块中的顶级菜单,添加action动作,否则会出现顶级菜单忽略状态,继而第一个子菜单会继承下来  -->
 
+     <delete model="ir.ui.menu" id="hr.menu_hr_root"/>
+    <menuitem
+            id="hr.menu_hr_root"
+            name="人力资源"
+            groups="hr.group_hr_manager,hr.group_hr_user,base.group_user"
+            web_icon="hr,static/description/icon.png"
+            action="hr.open_view_employee_list_my"
+            sequence="75"/>
+
+     <!--<delete>-->
+         <!--<record id="hr.menu_hr_department_tree" model="ir.ui.menu"/>-->
+         <!---->
+     <!--</delete>-->
+      <!---->
+      <delete model="ir.ui.menu" id="hr.menu_hr_department_tree"/>
+
+       <menuitem
+            id="hr.menu_hr_department_tree"
+            parent="hr.menu_hr_root"
+            sequence="90"
+            action=""
+            groups="hr.group_hr_user"/>
 
 
     <!-- Top menu item -->
@@ -112,12 +135,18 @@
             <!--parent="hr.menu_hr_main"-->
             <!--sequence="30"/>-->
 
+     <menuitem
+            id="hr.menu_open_view_employee_list_my"
+            name="员工"
+            action="hr.open_view_employee_list_my"
+            parent="hr.menu_hr_root"
+            sequence="75"/>
 
 
 
     <!-- menu categories -->
 
-    <menuitem name="员工" id="cowin_hr.menu_1" parent="hr.menu_hr_root" action="cowin_hr.action_window" sequence="33"/>
+    <!--<menuitem name="员工1" id="cowin_hr.menu_1" parent="hr.menu_hr_root" action="cowin_hr.action_window" sequence="33"/>-->
     <menuitem name="绩效" id="cowin_hr.menu_2" parent="hr.menu_hr_root" action="cowin_hr.action_window" sequence="110"/>
     <menuitem name="薪酬" id="cowin_hr.menu_3" parent="hr.menu_hr_root" action="cowin_hr.action_window" sequence="120"/>
 
