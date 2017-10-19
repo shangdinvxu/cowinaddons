@@ -108,7 +108,7 @@
 
       <menuitem
             id="hr.menu_open_view_employee_list_my"
-            name="人力资源"
+            name="人力资源3"
             parent="hr.menu_hr_main"
             sequence="30"/>
 
