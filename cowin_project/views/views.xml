@@ -23,7 +23,7 @@
 
 
 
-         <!--项目流程-->
+         <!--项目流程 看板-->
         <record id="project_process_kanban_view" model="ir.ui.view">
             <field name="name">coowin_project.process.kanban</field>
             <field name="model">cowin_project.cowin_project</field>
@@ -31,6 +31,7 @@
             <field name="arch" type="xml">
                 <kanban class="project_process_kanban_wrap">
                     <field name="name"/>
+                    <field name="image" widget="image"/>
                     <field name="register_person"/>
                     <field name="project_number"/>
                     <field name="write_date"/>
@@ -52,6 +53,14 @@
                                     <span><t t-esc="record.write_date.value"/> </span>
                                 </div>
                             </div>
+                            <div class="kanban_project_logo">
+                                <t t-if="record.image.value">
+                                    <img t-att-src="'data:image/png;base64,'+record.image.value"/>
+                                </t>
+                                <t t-else="">
+                                    <img src="/cowin_project/static/src/img/project_logo.png"/>
+                                </t>
+                            </div>
                             <div class="kanban_main">
                                 <div>投资经理：<t t-esc="record.invest_manager.value"/></div>
                                 <div>项目合伙人：<t t-esc="record.project_partner.value"/></div>
@@ -66,6 +75,34 @@
                     </t>
                     </templates>
                 </kanban>
+            </field>
+        </record>
+
+        <!--项目流程的form视图-->
+        <record model="ir.ui.view" id="project_process_form_view">
+            <field name="name">coowin_project.process.kanban</field>
+            <field name="model">cowin_project.cowin_project</field>
+            <!--<field name="priority">10</field>-->
+            <field name="arch" type="xml">
+                <form string="Fiscal year">
+                    <div class="cowin_process_form_wrap">
+                        <group>
+                            <field name="name"/>
+                            <field name="image" widget="image"/>
+                            <field name="register_person"/>
+                            <field name="project_number"/>
+                            <field name="write_date"/>
+                            <field name="invest_manager"/>
+                            <field name="project_partner"/>
+                            <field name="registered_address"/>
+                            <field name="peration_place"/>
+                            <field name="contract_person"/>
+                            <field name="industry"/>
+                            <field name="production"/>
+                            <field name="state"/>
+                        </group>
+                    </div>
+                </form>
             </field>
         </record>
 
