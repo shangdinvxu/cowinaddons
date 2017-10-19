@@ -101,6 +101,17 @@
       <field name="view_mode">kanban,tree,form</field>
     </record>
 
+
+      <!-- hr模块默认会以来mail模块,所以其中的Discuss菜单会出现在菜单顶部, 我们需要修改它 -->
+        <delete model="ir.ui.menu" id="mail.mail_channel_menu_root_chat"/>
+        <menuitem
+            id="mail.mail_channel_menu_root_chat"
+            name="Discuss"
+            web_icon="mail,static/description/icon.png"
+            groups="base.group_user"
+            sequence="1"/>
+
+
     <!--对hr模块中的顶级菜单,添加action动作,否则会出现顶级菜单忽略状态,继而第一个子菜单会继承下来  -->
 
      <delete model="ir.ui.menu" id="hr.menu_hr_root"/>
