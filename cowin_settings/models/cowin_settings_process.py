@@ -8,4 +8,4 @@ class cowin_settings_process(models.Model):
 
     name = fields.Char()
 
-    stage_ids = fields.One2many()
+    stage_ids = fields.One2many('cowin_settings_process_stage', 'process_id', string='Stage id')
