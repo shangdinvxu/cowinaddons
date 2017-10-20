@@ -1,16 +1,6 @@
 <odoo>
     <data>
-         <!-- Top menu item -->
 
-        <menuitem name="系统" id="cowin_settings.menu_root"/>
-
-        <!-- menu categories -->
-        <menuitem name="系统配置" id="cowin_settings.menu_1" parent="cowin_settings.menu_root"/>
-        <menuitem name="Menu 2" id="cowin_settings.menu_2" parent="cowin_settings.menu_root"/>
-        <menuitem name="Menu 2" id="cowin_settings.menu_3" parent="cowin_settings.menu_root"/>
-
-        <menuitem name="流程配置" id="cowin_settings.menu_1_list_1" parent="cowin_settings.menu_1"
-                          action="cowin_settings.process"/>
 
          <!--<menuitem name="项目" id="cowin_settings.menu_1_list_2" parent="cowin_settings.menu_1"-->
                           <!--action="cowin_settings.process"/>-->
@@ -46,5 +36,17 @@
           <field name="res_model">cowin_settings.process_tache</field>
           <field name="view_mode">tree,form</field>
         </record>
+
+            <!-- Top menu item -->
+
+        <menuitem name="系统" id="cowin_settings.menu_root"/>
+
+        <!-- menu categories -->
+        <menuitem name="系统配置" id="cowin_settings.menu_1" parent="cowin_settings.menu_root"/>
+        <menuitem name="Menu 2" id="cowin_settings.menu_2" parent="cowin_settings.menu_root"/>
+        <menuitem name="Menu 2" id="cowin_settings.menu_3" parent="cowin_settings.menu_root"/>
+
+        <menuitem name="流程配置" id="cowin_settings.menu_1_list_1" parent="cowin_settings.menu_1"
+                          action="cowin_settings.process"/>
     </data>
 </odoo>
