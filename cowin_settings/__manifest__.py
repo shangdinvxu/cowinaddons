@@ -25,7 +25,10 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/views.xml',
+        'views/menu_actions.xml',
+        'views/cowin_setting_process.xml',
+        'views/cowin_settings_process_stage.xml',
+        'views/cowin_settings_process_tache.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode

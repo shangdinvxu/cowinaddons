@@ -51,6 +51,30 @@
         </ul>
     </template>
 
+    <!-- 折叠选项,目前并没有实现 -->
+     <template id="web.menu_secondary_submenu_cowin_hr">
+          <ul t-if="menu['children']" class="oe_secondary_submenu nav nav-pills nav-stacked oe_menu_opened">
+               <li t-foreach="menu['children']" t-first="m" t-as="menu">
+                   <t t-if="m" >
+                        <t t-call="web.menu_link"/>
+                        <t t-call="web.menu_secondary_submenu_cowin_hr"/>
+                   </t>
+                </li>
+          </ul>
+
+         <ul t-if="menu['children']" class="oe_secondary_submenu nav nav-pills nav-stacked ">
+               <li t-foreach="menu['children']" t-first="m" t-as="menu">
+                   <t t-if="not m" >
+                        <t t-call="web.menu_link"/>
+                        <t t-call="web.menu_secondary_submenu"/>
+                   </t>
+                </li>
+          </ul>
+
+     </template>
+
+
+    <!--   -->
 
 
 	<!--登陆页面-->

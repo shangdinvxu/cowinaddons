@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+            <record model="ir.ui.view" id="cowin_settings_process_tache_list">
+              <field name="name">cowin_settings process_tache list</field>
+              <field name="model">cowin_settings.process_tache</field>
+              <field name="arch" type="xml">
+                <tree>
+                  <field name="name"/>
+                  <field name="stage_id"/>
+                  <field name="unlock_condition"/>
+                  <field name="description"/>
+                  <field name="state"/>
+                  <!--<field name="value2"/>-->
+                </tree>
+              </field>
+            </record>
+    </data>
+</odoo>

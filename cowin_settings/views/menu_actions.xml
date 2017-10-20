@@ -1,0 +1,50 @@
+<odoo>
+    <data>
+         <!-- Top menu item -->
+
+        <menuitem name="系统" id="cowin_settings.menu_root"/>
+
+        <!-- menu categories -->
+        <menuitem name="系统配置" id="cowin_settings.menu_1" parent="cowin_settings.menu_root"/>
+        <menuitem name="Menu 2" id="cowin_settings.menu_2" parent="cowin_settings.menu_root"/>
+        <menuitem name="Menu 2" id="cowin_settings.menu_3" parent="cowin_settings.menu_root"/>
+
+        <menuitem name="流程配置" id="cowin_settings.menu_1_list_1" parent="cowin_settings.menu_1"
+                          action="cowin_settings.process"/>
+
+         <!--<menuitem name="项目" id="cowin_settings.menu_1_list_2" parent="cowin_settings.menu_1"-->
+                          <!--action="cowin_settings.process"/>-->
+
+
+         <!--<menuitem name="分类" id="cowin_settings.menu_1_list_3" parent="cowin_settings.menu_1"-->
+                  <!--action="cowin_settings.process_stage"/>-->
+
+         <!--<menuitem name="环节" id="cowin_settings.menu_1_list_4" parent="cowin_settings.menu_1"-->
+                  <!--action="cowin_settings.process_tache"/>-->
+
+        <!--<menuitem name="Server to list" id="cowin_settings" parent="cowin_settings.menu_2"-->
+                  <!--action="cowin_settings.action_server"/>-->
+
+
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="cowin_settings.process">
+          <field name="name">cowin_settings window</field>
+          <field name="res_model">cowin_settings.process</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+
+         <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="cowin_settings.process_stage">
+          <field name="name">cowin_settings window</field>
+          <field name="res_model">cowin_settings.process_stage</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+
+         <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="cowin_settings.process_tache">
+          <field name="name">cowin_settings window</field>
+          <field name="res_model">cowin_settings.process_tache</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+         <record model="ir.ui.view" id="cowin_settings_process_stage_list">
+          <field name="name">cowin_settings process_stage list</field>
+          <field name="model">cowin_settings.process_stage</field>
+          <field name="arch" type="xml">
+            <tree>
+              <field name="name"/>
+              <field name="process_id"/>
+              <field name="tache_ids"/>
+            </tree>
+          </field>
+        </record>
+
+         <record model="ir.ui.view" id="cowin_settings_process_stage_form">
+          <field name="name">cowin_settings process_stage form</field>
+          <field name="model">cowin_settings.process_stage</field>
+          <field name="arch" type="xml">
+               <form>
+                    <field name="process_id"/><br/>
+                    <field name="name"/>
+                    <field name="tache_ids">
+                         <tree string="stages">
+                            <field name="name"/>
+                         </tree>
+                </field>
+               </form>
+          </field>
+        </record>
+    </data>
+</odoo>

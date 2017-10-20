@@ -4,8 +4,8 @@ from odoo.modules.module import get_module_resource
 from odoo import tools
 
 
-class cowin_project(models.Model):
-    _name = 'cowin_project'
+class Cowin_project(models.Model):
+    _name = 'cowin_project.cowin_project'
 
     @api.model
     def _default_image(self):
@@ -42,4 +42,4 @@ class cowin_project(models.Model):
         if not vals.get('project_number'):
             vals['project_number'] = self.env['ir.sequence'].next_by_code('cowin_project.order')
 
-        return super(cowin_project, self).create(vals)
+        return super(Cowin_project, self).create(vals)
