@@ -5,10 +5,7 @@ from odoo import tools
 
 
 class cowin_project(models.Model):
-    _name = 'cowin_project.cowin_project'
-
-
-
+    _name = 'cowin_project'
 
     @api.model
     def _default_image(self):
@@ -46,4 +43,3 @@ class cowin_project(models.Model):
             vals['project_number'] = self.env['ir.sequence'].next_by_code('cowin_project.order')
 
         return super(cowin_project, self).create(vals)
-
