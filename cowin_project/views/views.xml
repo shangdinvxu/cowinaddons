@@ -3,7 +3,7 @@
         <!-- explicit list view definition -->
         <record model="ir.ui.view" id="cowin_project.list">
             <field name="name">cowin_project list</field>
-            <field name="model">cowin_project.cowin_project</field>
+            <field name="model">cowin_project</field>
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
@@ -17,7 +17,7 @@
         <!-- actions opening views on models -->
         <record model="ir.actions.act_window" id="cowin_project.action_window">
             <field name="name">cowin_project window</field>
-            <field name="res_model">cowin_project.cowin_project</field>
+            <field name="res_model">cowin_project</field>
             <field name="view_mode">tree,form</field>
         </record>
 
@@ -26,7 +26,7 @@
          <!--项目流程 看板-->
         <record id="project_process_kanban_view" model="ir.ui.view">
             <field name="name">coowin_project.process.kanban</field>
-            <field name="model">cowin_project.cowin_project</field>
+            <field name="model">cowin_project</field>
             <!--<field name="priority">10</field>-->
             <field name="arch" type="xml">
                 <kanban class="project_process_kanban_wrap">
@@ -81,7 +81,7 @@
         <!--项目流程的form视图-->
         <record model="ir.ui.view" id="project_process_form_view">
             <field name="name">coowin_project.process.kanban</field>
-            <field name="model">cowin_project.cowin_project</field>
+            <field name="model">cowin_project</field>
             <!--<field name="priority">10</field>-->
             <field name="arch" type="xml">
                 <form string="Fiscal year">
@@ -110,7 +110,7 @@
 
         <record model="ir.actions.act_window" id="action_project_process">
             <field name="name">cowin_project_process window</field>
-            <field name="res_model">cowin_project.cowin_project</field>
+            <field name="res_model">cowin_project</field>
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form</field>
         </record>
