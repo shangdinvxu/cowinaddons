@@ -31,7 +31,6 @@
         'views/views.xml',
         'views/templates.xml',
         'views/sequences.xml',
-        # 'views/webclient_templates.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

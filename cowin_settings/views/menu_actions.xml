@@ -1,21 +1,6 @@
 <odoo>
     <data>
 
-
-         <!--<menuitem name="项目" id="cowin_settings.menu_1_list_2" parent="cowin_settings.menu_1"-->
-                          <!--action="cowin_settings.process"/>-->
-
-
-         <!--<menuitem name="分类" id="cowin_settings.menu_1_list_3" parent="cowin_settings.menu_1"-->
-                  <!--action="cowin_settings.process_stage"/>-->
-
-         <!--<menuitem name="环节" id="cowin_settings.menu_1_list_4" parent="cowin_settings.menu_1"-->
-                  <!--action="cowin_settings.process_tache"/>-->
-
-        <!--<menuitem name="Server to list" id="cowin_settings" parent="cowin_settings.menu_2"-->
-                  <!--action="cowin_settings.action_server"/>-->
-
-
         <!-- actions opening views on models -->
         <record model="ir.actions.act_window" id="cowin_settings.process">
           <field name="name">cowin_settings window</field>
