@@ -9,6 +9,8 @@ odoo.define('cowin_settings.process_conf', function (require) {
     var Widget = require('web.Widget');
     var View = require('web.View');
     var QWeb = core.qweb;
+    var ControlPanelMixin = require('web.ControlPanelMixin');
+    var ControlPanel = require('web.ControlPanel');
     var Dialog = require('web.Dialog');
     var ControlPanelMixin = require('web.ControlPanelMixin');
     var SearchView = require('web.SearchView');

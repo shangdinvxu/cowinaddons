@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="process_conf_detail_tmp">
+        <div id="conf_detail_container">
+            <div class="project_header">
+                <h2><t t-esc="result.name"/></h2>
+            </div>
+            <div class="button_wrap">
+                <div class="new_group_button">
+                    <span class="fa fa-plus"></span>
+                    新建分组
+                </div>
+                <div class="sort_button">
+                    <span class="fa fa-exchange fa-rotate-90"></span>
+                    排序
+                </div>
+                <div class="new_link_button">
+                    <span class="fa fa-plus"></span>
+                    新增环节
+                </div>
+            </div>
+            <div class="detail_main_wrap">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>进度</th>
+                      <th>解锁条件</th>
+                      <th>说明</th>
+                      <th>启用状态</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <t t-foreach="result.stage_ids" t-as="item">
+                        <tr t-att-data-id="item.id" class="process_detail_group_line">
+                            <td>
+                                <span class="fa fa-folder-o"></span>
+                                <span class="group_name"><t t-esc="item.name"/></span>
+                                <span class="fa fa-edit"></span>
+                                <span class="fa fa-trash-o"></span>
+                            </td>
+                            <td></td><td></td><td></td><td></td>
+                        </tr>
+                        <t t-foreach="item.tache_ids" t-as="obj">
+                            <tr class="process_detail_group_detail_line">
+                                <td><t t-esc="obj.name"/></td>
+                                <td><t t-esc="obj.unlock_condition"/></td>
+                                <td><t t-esc="obj.description"/></td>
+                                <td>
+                                    <input type="checkbox"/>
+                                </td>
+                                <td class="operate_wrap">
+                                    <span>编辑</span>
+                                    <span>移动到</span>
+                                    <span>删除</span>
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+                  </tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+
+</templates>

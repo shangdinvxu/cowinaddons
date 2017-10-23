@@ -1,3 +1,52 @@
 .process_conf_name_lists tbody tr{
     cursor: pointer;
 }
+#conf_detail_container .project_header{
+    padding: 30px;
+    margin-bottom: 10px;
+    background-color: white;
+}
+#conf_detail_container .button_wrap{
+    background-color: white;
+    padding: 8px 30px;
+    color: #38ADFF;
+    border-bottom: 1px solid rgba(242, 242, 242, 1);
+}
+#conf_detail_container .button_wrap>div{
+    display: inline-block;
+    margin-right: 30px;
+    cursor: pointer;
+}
+#conf_detail_container .detail_main_wrap{
+    margin-top: 8px;
+    background-color: white;
+}
+#conf_detail_container table th,#conf_detail_container table td{
+    border: 0px solid transparent;
+}
+#conf_detail_container table .process_detail_group_line{
+    background-color: rgba(242, 242, 242, 1);
+}
+#conf_detail_container table th:nth-child(1),#conf_detail_container table td:nth-child(1){
+    padding-left: 35px;
+}
+#conf_detail_container .process_detail_group_line td:nth-child(1){
+    padding-left: 11px;
+    width: 220px;
+}
+#conf_detail_container .process_detail_group_line .group_name{
+    font-weight: bolder;
+}
+#conf_detail_container .process_detail_group_line span{
+    margin-right: 8px;
+}
+#conf_detail_container .process_detail_group_detail_line{
+    font-weight: 400;
+    font-size:12px;
+    color: #868686;
+}
+#conf_detail_container .process_detail_group_detail_line .operate_wrap span{
+    color: #38ADFF;
+    cursor: pointer;
+    margin-right: 8px;
+}
