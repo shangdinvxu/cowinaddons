@@ -2,10 +2,9 @@
     <data>
 
         <!-- actions opening views on models -->
-        <record model="ir.actions.act_window" id="cowin_settings.process">
-          <field name="name">cowin_settings window</field>
-          <field name="res_model">cowin_settings.process</field>
-          <field name="view_mode">tree,form</field>
+        <record id="cowin_settings.process" model="ir.actions.client">
+            <field name="name">settings configuration</field>
+            <field name="tag">process_conf</field>
         </record>
 
          <!-- actions opening views on models -->

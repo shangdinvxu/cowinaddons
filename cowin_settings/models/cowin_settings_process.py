@@ -59,12 +59,11 @@ class Cowin_settings_process(models.Model):
         result = []
         objs = self.env['cowin_settings.process'].search([])
         for item in objs:
-            tmp = {}
-            tmp['name'] = item.name
-            tmp['module'] = item.module
-            tmp['description'] = item.description
-
-            result.append(tmp)
-
+            result.append({
+                'name':item.name,
+                'module':item.module,
+                'description':item.description,
+                "id":item.id
+            })
         return result
 
