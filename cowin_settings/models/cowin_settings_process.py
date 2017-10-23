@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-
+import json
 
 class Cowin_settings_process(models.Model):
     _name = 'cowin_settings.process'
@@ -27,7 +27,7 @@ class Cowin_settings_process(models.Model):
             tmp_stage = {}
             tmp_stage['id'] = stage.id
             tmp_stage['name'] = stage.name
-            tmp_stage['process_id'] = stage.process_id
+            tmp_stage['process_id'] = stage.process_id.id
 
             tmp_stage['tache_ids'] = []
 
@@ -38,7 +38,7 @@ class Cowin_settings_process(models.Model):
                 tmp_tache['unlock_condition'] = tache.unlock_condition
                 tmp_tache['description'] = tache.description
                 tmp_tache['state'] = tache.state
-                tmp_tache['stage_id'] = tache.stage_id
+                tmp_tache['stage_id'] = tache.stage_id.id
 
                 tmp_stage['tache_ids'].append(tmp_tache)
 
@@ -47,8 +47,6 @@ class Cowin_settings_process(models.Model):
         result = {
             'id': self.id,
             'name': self.name,
-            # 'module': self.module,
-            # 'description': self.description,
             'stage_ids': stages
         }
 
@@ -65,7 +63,7 @@ class Cowin_settings_process(models.Model):
                 'name':item.name,
                 'module':item.module,
                 'description':item.description,
-                "id":item.id
+                "id": item.id
             })
         return result
 
