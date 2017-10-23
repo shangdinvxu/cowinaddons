@@ -35,7 +35,7 @@ class Cowin_settings_process(models.Model):
                 tmp_tache = {}
                 tmp_tache['id'] = tache.id
                 tmp_tache['name'] = tache.name
-                tmp_tache['unlock_condition'] = tache.unlock_condition
+                tmp_tache['parent_id'] = tache.parent_id.name
                 tmp_tache['description'] = tache.description
                 tmp_tache['state'] = tache.state
                 tmp_tache['stage_id'] = tache.stage_id.id
