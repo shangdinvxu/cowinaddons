@@ -1,6 +1,6 @@
 <openerp>
     <data>
-        <!-- explicit list view definition -->
+         <!--explicit list view definition-->
         <record model="ir.ui.view" id="cowin_project.list">
             <field name="name">cowin_project list</field>
             <field name="model">cowin_project.cowin_project</field>
