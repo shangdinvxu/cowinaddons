@@ -6,4 +6,4 @@ class Cowin_project_task(models.Model):
 
     name = fields.Char()
 
-    project_id = fields.Many2one('cowin_project')
+    project_id = fields.Many2one('cowin_project.cowin_project')
