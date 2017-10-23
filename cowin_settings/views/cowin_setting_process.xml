@@ -7,7 +7,8 @@
           <field name="arch" type="xml">
             <tree>
               <field name="name"/>
-              <field name="stage_ids"/>
+              <field name="module"/>
+              <field name="description"/>
               <!--<field name="value2"/>-->
             </tree>
           </field>
@@ -18,23 +19,15 @@
           <field name="model">cowin_settings.process</field>
           <field name="arch" type="xml">
             <form>
-                <field name="name"></field>
+                <field name="name" string="流程名"/><br/>
+                <field name="module" string="模块"/><br/>
+                <field name="description" string="说明"/>
                 <field name="stage_ids">
                      <tree string="stages">
                         <field name="name"/>
-                        <field name="tache_ids">
-                            <tree>
-                                <form>
-                                    <field name="name"/>
-                                </form>
-
-                            </tree>
-                        </field>
-
+                        <field name="tache_ids"/>
                      </tree>
                 </field>
-
-                <!--<field name="stage_ids"></field>-->
             </form>
           </field>
         </record>
