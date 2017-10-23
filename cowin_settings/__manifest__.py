@@ -30,9 +30,11 @@
         'views/cowin_settings_process_stage.xml',
         'views/cowin_settings_process_tache.xml',
         'views/templates.xml',
+        'views/views.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
+    'qweb': ['static/src/xml/*.xml'],
 }

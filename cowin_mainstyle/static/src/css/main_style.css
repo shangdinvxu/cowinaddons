@@ -180,7 +180,7 @@ a.oe_menu_toggler { background-color: transparent !important; }
     position: relative;
     float: left;
     margin-top: -8px;
-    height: 44px;
+    width: 219px;
     margin-right: 32px;
 }
 .o_web_client > #oe_main_menu_navbar .cowin_nav_logo .oe_logo_edit{
@@ -194,7 +194,7 @@ a.oe_menu_toggler { background-color: transparent !important; }
     background: rgba(37,37,37,0.9);
 }
 .o_web_client > #oe_main_menu_navbar .cowin_nav_logo img{
-    height: 100%;
+    width: 100%;
 }
 .o_web_client > #oe_main_menu_navbar .cowin_nav_logo:hover .oe_logo_edit_admin{
     display: block;

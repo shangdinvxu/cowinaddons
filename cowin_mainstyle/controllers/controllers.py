@@ -11,11 +11,11 @@ class Home(Home):
         request.params['disable_footer'] = True
         request.params['disable_database_manager'] = True
         request.params['background_src'] = '/cowin_mainstyle/static/src/img/login_bg.jpg'
-        images = request.env['hr.employee'].sudo().search([])
+        images = request.env['cowin_project.cowin_project'].sudo().search([])
         list = []
         for img in images:
-            if img.image_medium:
-                list.append(img.image_medium)
+            if img.image:
+                list.append(img.image)
         request.params['images'] = list
 
         resp = super(Home, self).web_login(redirect, **kw)

@@ -1,12 +1,11 @@
 <openerp>
   <data>
-
-
-
-
-
-
-
-
+      <template id="cowin_settings_static" name="cowin_settings_assets" inherit_id="web.assets_backend">
+          <xpath expr="." position="inside">
+              <script type="text/javascript" src="/cowin_settings/static/src/js/process_conf.js"/>
+              <script type="text/javascript" src="/cowin_settings/static/src/js/process_conf_detail.js"/>
+              <link rel="stylesheet" href="/cowin_settings/static/src/css/process_conf.css"/>
+          </xpath>
+      </template>
   </data>
 </openerp>

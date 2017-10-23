@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="process_conf_tmp">
+        <div id="project_process_container">
+            <div class="project_header">
+                <h2>流程配置</h2>
+            </div>
+            <ul id="process_tab" class="nav nav-tabs">
+                <li class="active"><a href="#process_detail" data-toggle="tab">项目</a></li>
+                <li><a href="#process_data" data-toggle="tab">基金</a></li>
+                <li><a href="#process_contact" data-toggle="tab">OA</a></li>
+                <!--<li><a href="#process_record" data-toggle="tab">XXX</a></li>-->
+                <!--<li><a href="#process_record" data-toggle="tab">XXX</a></li>-->
+            </ul>
+            <div id="process_tab_content" class="tab-content">
+                <div class="tab-pane fade in active" id="process_detail">
+                    <!--<t t-call="process_conf_projects" />-->
+                </div>
+                <div class="tab-pane fade" id="process_data">
+
+                </div>
+                <div class="tab-pane fade" id="process_contact">
+
+                </div>
+                <div class="tab-pane fade" id="process_record">
+
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="process_conf_projects">
+        <table class="table table-hover process_conf_name_lists">
+          <thead>
+            <tr class="active">
+              <th>流程名称</th>
+              <th>模块</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <t t-foreach="result" t-as="item">
+                <tr t-att-data-id="item.id" class="process_conf_click_to_detail">
+                    <td><t t-esc="item.name"/></td>
+                    <td><t t-esc="item.module"/></td>
+                    <td><t t-esc="item.description"/></td>
+                </tr>
+            </t>
+          </tbody>
+        </table>
+    </t>
+</templates>

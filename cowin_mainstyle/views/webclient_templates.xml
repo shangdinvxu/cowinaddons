@@ -98,10 +98,15 @@
    		</xpath>
 
 		<xpath expr="//div[@class='col-md-6 col-md-offset-3 o_database_list']" position="after">
-			 <t t-set="para" t-value="images"/>
-             <t t-foreach="para" t-as="item">
-                  <img t-att-src="'data:image/png;base64,'+item" alt=""/>
-             </t>
+            <p class="login_logo_h">投资项目</p>
+            <div class="login_logo_wrap">
+                <t t-set="para" t-value="images"/>
+                <t t-foreach="para" t-as="item">
+                    <div>
+                        <img t-att-src="'data:image/png;base64,'+item" alt=""/>
+                    </div>
+                </t>
+            </div>
    		</xpath>
 
 
