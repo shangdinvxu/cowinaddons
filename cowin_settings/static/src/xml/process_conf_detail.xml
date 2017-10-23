@@ -45,7 +45,7 @@
                         <t t-foreach="item.tache_ids" t-as="obj">
                             <tr class="process_detail_group_detail_line">
                                 <td><t t-esc="obj.name"/></td>
-                                <td><t t-esc="obj.unlock_condition"/></td>
+                                <td><t t-esc="obj.parent_id"/></td>
                                 <td><t t-esc="obj.description"/></td>
                                 <td>
                                     <input type="checkbox"/>
