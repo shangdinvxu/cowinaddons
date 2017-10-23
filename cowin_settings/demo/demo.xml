@@ -1,30 +1,45 @@
 <openerp>
     <data>
         <!--  -->
-        <!--   <record id="object0" model="cowin_settings.cowin_settings"> -->
-        <!--     <field name="name">Object 0</field> -->
-        <!--     <field name="value">0</field> -->
-        <!--   </record> -->
-        <!--  -->
-        <!--   <record id="object1" model="cowin_settings.cowin_settings"> -->
-        <!--     <field name="name">Object 1</field> -->
-        <!--     <field name="value">10</field> -->
-        <!--   </record> -->
-        <!--  -->
-        <!--   <record id="object2" model="cowin_settings.cowin_settings"> -->
-        <!--     <field name="name">Object 2</field> -->
-        <!--     <field name="value">20</field> -->
-        <!--   </record> -->
-        <!--  -->
-        <!--   <record id="object3" model="cowin_settings.cowin_settings"> -->
-        <!--     <field name="name">Object 3</field> -->
-        <!--     <field name="value">30</field> -->
-        <!--   </record> -->
-        <!--  -->
-        <!--   <record id="object4" model="cowin_settings.cowin_settings"> -->
-        <!--     <field name="name">Object 4</field> -->
-        <!--     <field name="value">40</field> -->
-        <!--   </record> -->
-        <!--  -->
+        <record id="cowin_setting_process_01" model="cowin_settings.process">
+         <field name="name">项目设立进度</field>
+        </record>
+
+
+        <record id="cowin_settings_process_stage_01" model="cowin_settings.process_stage">
+         <field name="name">项目设立1</field>
+         <field name="process_id" ref="cowin_settings.cowin_setting_process_01"/>
+        </record>
+
+        <record id="cowin_settings_process_stage_02" model="cowin_settings.process_stage">
+         <field name="name">项目设立2</field>
+         <field name="process_id" ref="cowin_settings.cowin_setting_process_01"/>
+        </record>
+
+         <record id="cowin_settings_process_stage_03" model="cowin_settings.process_stage">
+         <field name="name">项目设立3</field>
+         <field name="process_id" ref="cowin_settings.cowin_setting_process_01"/>
+        </record>
+
+
+
+        <record id="cowin_settings_process_tache_01" model="cowin_settings.process_tache">
+         <field name="name">环节1</field>
+         <field name="stage_id" ref="cowin_settings.cowin_settings_process_stage_01"/>
+        </record>
+
+         <record id="cowin_settings_process_tache_02" model="cowin_settings.process_tache">
+         <field name="name">环节2</field>
+         <field name="stage_id" ref="cowin_settings.cowin_settings_process_stage_02"/>
+        </record>
+
+         <record id="cowin_settings_process_tache_03" model="cowin_settings.process_tache">
+         <field name="name">环节3</field>
+         <field name="stage_id" ref="cowin_settings.cowin_settings_process_stage_03"/>
+        </record>
+
+
+
+
     </data>
 </openerp>
