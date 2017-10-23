@@ -17,14 +17,8 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
 
 
     var ProcessConfDetail = Widget.extend({
-        template: '',
         events:{
 
-        },
-        to_process_conf_detail:function (e) {
-            var e = e || window.event;
-            var target = e.target || e.srcElement;
-            var active_detail_id = $(target).parent('tr').attr('data-id');
         },
         init: function (parent, action) {
             this._super.apply(this, arguments);
@@ -37,6 +31,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                     .call("get_info", [this.id])
                     .then(function (result) {
                         console.log(result);
+                        self.$el.append(QWeb.render('process_conf_detail_tmp', {result: result}))
                     })
         }
     });
