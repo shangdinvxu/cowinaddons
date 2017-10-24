@@ -31,11 +31,12 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                 Dialog.alert(target, "分组名不能为空！");
                 return;
             }
-            new Model("cowin_settings.process_stage")
-                    .call("rpc_create_group", [[]], {name:$('.create_group_input').val(),process_id:self.id})
+            new Model("cowin_settings.process")
+                    .call("rpc_create_group", [self.id], {name:$('.create_group_input').val(),process_id:self.id})
                     .then(function (result) {
                         console.log(result);
                         $('.create_new_group').hide();
+                        $("#conf_detail_container").replaceWith(QWeb.render('process_conf_detail_tmp', {result: result}))
                     })
         },
         close_create_wrap:function () {

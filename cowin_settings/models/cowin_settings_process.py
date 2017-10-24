@@ -69,15 +69,11 @@ class Cowin_settings_process(models.Model):
         return result
 
 
-    # 使用rpc方法来对该实例对象来建立新的分组数据
-    def rpc_create_group(self, name):
-        if not name:
-            raise UserError('分组名不能为空!!!')
+        # 使用rpc方法来对该实例对象来建立新的分组数据
 
-        stage = self.env['cowin_settings.process_stage'].create({'name':name,
-                                                                 'process_id': self.id
-                                                                 })
-        return {'id': stage.id,
-                'name': stage.name,
-                'process_id': self.id
-                }
+
+    def rpc_create_group(self, **kwargs):
+        stage = self.env['cowin_settings.process_stage'].create({'name': kwargs.get("name"),
+                                                                 'process_id': kwargs.get("process_id")
+                                                                   })
+        return self.get_info()
