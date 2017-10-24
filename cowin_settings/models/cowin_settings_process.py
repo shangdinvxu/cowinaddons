@@ -64,8 +64,6 @@ class Cowin_settings_process(models.Model):
                 "id": item.id
             })
         return result
-<<<<<<< HEAD
-=======
 
 
 
@@ -87,8 +85,9 @@ class Cowin_settings_process(models.Model):
             raise UserError('环节名不能为空!!!')
 
         self.env['cowin_settings.process_tache'].create({'name': kwargs.get('name'),
-                                                        'stage_id': kwargs.get('stage_id')
+                                                        'stage_id': kwargs.get('stage_id'),
+                                                        'description': kwargs.get('description'),
+                                                        'once_or_more': kwargs.get('once_or_more'),
                                                          })
 
         return self.get_info()
->>>>>>> fa8b66f743fa6e95347009bff3a99a9bc1c8410c
