@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 import json
+from odoo.exceptions import UserError
 
 
 class Cowin_settings_process(models.Model):
@@ -63,3 +64,31 @@ class Cowin_settings_process(models.Model):
                 "id": item.id
             })
         return result
+<<<<<<< HEAD
+=======
+
+
+
+     # 使用rpc方法来对该实例对象来建立新的分组数据
+    def rpc_create_group(self, **kwargs):
+        if not kwargs.get('name') or not kwargs.get('process_id'):
+            raise UserError('分组名或者环节名不能为空!!!')
+
+
+        self.env['cowin_settings.process_stage'].create({'name': kwargs.get("name"),
+                                                                 'process_id': kwargs.get("process_id")
+                                                                   })
+        return self.get_info()
+
+
+    # 使用rpc来新建环节,但前提必须是stage对象需要存在
+    def rpc_create_tache(self, **kwargs):
+        if not kwargs.get('name') or not kwargs.get('stage_id'):
+            raise UserError('分组名或者环节名不能为空!!!')
+
+        self.env['cowin_settings.process_tache'].create({'name': kwargs.get('name'),
+                                                        'stage_id': kwargs.get('stage_id')
+                                                         })
+
+        return self.get_info()
+>>>>>>> fa8b66f743fa6e95347009bff3a99a9bc1c8410c
