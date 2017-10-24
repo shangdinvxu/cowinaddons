@@ -3,6 +3,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 
+
 class Cowin_settings_process_tache(models.Model):
     _name = 'cowin_settings.process_tache'
 
@@ -16,7 +17,6 @@ class Cowin_settings_process_tache(models.Model):
 
     stage_id = fields.Many2one('cowin_settings.process_stage', ondelete="cascade")
 
-<<<<<<< HEAD
     def _check_parent_id(self, parent_id, ids):
         parent = self.env['cowin_settings.process_tache'].browse(parent_id)
         if parent:
@@ -36,6 +36,3 @@ class Cowin_settings_process_tache(models.Model):
         ids = []
         if self._check_parent_id(self, parent_id, ids):
             self.parent_id = parent_id
-=======
-
->>>>>>> fa8b66f743fa6e95347009bff3a99a9bc1c8410c
