@@ -91,3 +91,12 @@ class Cowin_settings_process(models.Model):
                                                          })
 
         return self.get_info()
+
+
+
+    # 使用rpc来删除环节记录(实体),
+    def rpc_delete_tache(self, **kwargs):
+        id = kwargs.get('tache_id')
+        self.env['cowin_settings.process_tache'].search([('id', '=', id)]).unlink()
+
+        return self.get_info()
