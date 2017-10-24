@@ -72,9 +72,9 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             var tache_name = $(".new_tache_name").val();
             var tach_info = $(".tache_info textarea").val();
             if($('.tache_chose_times input').prop('checked')){
-                 var more = true
+                 var more = true;
             }else {
-                var more = false
+                var more = false;
             }
              new Model("cowin_settings.process")
                     .call("rpc_create_tache", [self.id], {name:tache_name,stage_id:stage_id,description:tach_info,once_or_more:more})

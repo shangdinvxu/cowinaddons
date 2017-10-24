@@ -36,7 +36,7 @@
                         <tr t-att-data-id="item.id" class="process_detail_group_line">
                             <td>
                                 <span class="fa fa-folder-o"></span>
-                                <span class="group_name"><t t-esc="item.name"/></span>
+                                <span class="group_name"><t t-esc="item.name"/> </span>
                                 <span class="fa fa-edit trans"></span>
                                 <span class="fa fa-trash-o trans group_delete"></span>
                             </td>
