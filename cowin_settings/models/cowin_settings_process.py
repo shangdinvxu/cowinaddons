@@ -4,6 +4,7 @@ from odoo import models, fields, api
 import json
 from odoo.exceptions import UserError
 
+
 class Cowin_settings_process(models.Model):
     _name = 'cowin_settings.process'
 
@@ -14,8 +15,6 @@ class Cowin_settings_process(models.Model):
     module = fields.Char(string=u'模块')
 
     description = fields.Char(string=u'说明')
-
-
 
     # rpc调用方法,前端页面直接获取后端数据的所需要的方法,
     # 该方法对应的是当前model类中的一条实例对象
@@ -53,20 +52,20 @@ class Cowin_settings_process(models.Model):
 
         return result
 
-
-
     # 该rpc方法用于获取所有的列表信息
     def get_infos(self):
         result = []
         objs = self.env['cowin_settings.process'].search([])
         for item in objs:
             result.append({
-                'name':item.name,
-                'module':item.module,
-                'description':item.description,
+                'name': item.name,
+                'module': item.module,
+                'description': item.description,
                 "id": item.id
             })
         return result
+<<<<<<< HEAD
+=======
 
 
 
@@ -92,3 +91,4 @@ class Cowin_settings_process(models.Model):
                                                          })
 
         return self.get_info()
+>>>>>>> fa8b66f743fa6e95347009bff3a99a9bc1c8410c
