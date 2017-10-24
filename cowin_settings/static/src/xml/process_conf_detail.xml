@@ -37,8 +37,8 @@
                             <td>
                                 <span class="fa fa-folder-o"></span>
                                 <span class="group_name"><t t-esc="item.name"/></span>
-                                <span class="fa fa-edit"></span>
-                                <span class="fa fa-trash-o"></span>
+                                <span class="fa fa-edit trans"></span>
+                                <span class="fa fa-trash-o trans"></span>
                             </td>
                             <td></td><td></td><td></td><td></td>
                         </tr>
@@ -60,6 +60,19 @@
                     </t>
                   </tbody>
                 </table>
+            </div>
+        </div>
+
+        <div class="create_new_group close_this_container">
+            <div class="modal-backdrop  in"></div>
+            <div class="create_wrap">
+                <div class="create_wrap_head">
+                    新建分组
+                </div>
+                <div class="create_input_wrap">分组名称: <input class="create_group_input" type="text"/></div>
+                <div class="create_texts">提示：新建分组后，您可对所有分组进行排序，将该分组放在合适的位置。并在该分组下新增所属环节</div>
+                <button class=" btn btn-primary alia_confirm" style="margin-left:112px">确定</button>
+                <button class="btn btn-default alia_cancel">取消</button>
             </div>
         </div>
     </t>

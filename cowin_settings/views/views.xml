@@ -7,5 +7,7 @@
               <link rel="stylesheet" href="/cowin_settings/static/src/css/process_conf.css"/>
           </xpath>
       </template>
+
+
   </data>
 </openerp>
