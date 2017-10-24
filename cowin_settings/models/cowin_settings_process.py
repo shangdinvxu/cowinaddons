@@ -82,7 +82,7 @@ class Cowin_settings_process(models.Model):
 
     # 使用rpc方法来对删除分组所对应的实例(记录)
     def rpc_delete_group(self, **kwargs):
-        id = kwargs.get('stage_id')
+        id = int(kwargs.get('stage_id'))
         self.env['cowin_settings.process_stage'].browse(id).unlink()
 
         return self.get_info()
@@ -105,7 +105,7 @@ class Cowin_settings_process(models.Model):
 
     # 使用rpc来删除环节记录(实体)
     def rpc_delete_tache(self, **kwargs):
-        id = kwargs.get('tache_id')
+        id = int(kwargs.get('tache_id'))
         self.env['cowin_settings.process_tache'].browse(id).unlink()
 
         return self.get_info()
