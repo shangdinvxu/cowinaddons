@@ -60,7 +60,6 @@ class Cowin_settings_process_tache(models.Model):
         #         return False
         # return False
 
-    def on_set_parent_id(self, parent_id):
+    def on_set_parent_id(self):
         ids = []
-        if self._check_parent_id(ids):
-            self.parent_id = parent_id
+        return self._check_parent_id()

@@ -36,14 +36,14 @@
                         <tr t-att-data-id="item.id" class="process_detail_group_line">
                             <td>
                                 <span class="fa fa-folder-o"></span>
-                                <span class="group_name"><t t-esc="item.name"/></span>
+                                <span class="group_name"><t t-esc="item.name"/> </span>
                                 <span class="fa fa-edit trans"></span>
-                                <span class="fa fa-trash-o trans"></span>
+                                <span class="fa fa-trash-o trans group_delete"></span>
                             </td>
                             <td></td><td></td><td></td><td></td>
                         </tr>
                         <t t-foreach="item.tache_ids" t-as="obj">
-                            <tr class="process_detail_group_detail_line">
+                            <tr class="process_detail_group_detail_line" t-att-data-tache-id="obj.id">
                                 <td><t t-esc="obj.name"/></td>
                                 <td><t t-esc="obj.parent_id"/></td>
                                 <td><t t-esc="obj.description"/></td>
@@ -53,7 +53,7 @@
                                 <td class="operate_wrap">
                                     <span>编辑</span>
                                     <span>移动到</span>
-                                    <span>删除</span>
+                                    <span class="tache_delete">删除</span>
                                 </td>
                             </tr>
                         </t>
@@ -72,6 +72,37 @@
                 <div class="create_input_wrap">分组名称: <input class="create_group_input" type="text"/></div>
                 <div class="create_texts">提示：新建分组后，您可对所有分组进行排序，将该分组放在合适的位置。并在该分组下新增所属环节</div>
                 <button class=" btn btn-primary alia_confirm" style="margin-left:112px">确定</button>
+                <button class="btn btn-default alia_cancel">取消</button>
+            </div>
+        </div>
+
+        <div class="create_new_tache close_this_container">
+            <div class="modal-backdrop  in"></div>
+            <div class="create_wrap">
+                <div class="create_wrap_head">
+                    新建环节
+                </div>
+                <div class="create_input_wrap">所属分组:
+                    <select class="form-control">
+                        <t t-foreach="result.stage_ids" t-as="item">
+                            <option t-att-data-id="item.id"><t t-esc="item.name"/></option>
+                        </t>
+                    </select>
+                </div>
+                <div class="create_input_wrap">环节名称: <input class="create_group_input new_tache_name" type="text"/></div>
+                <div class="tache_chose_times">
+                    <span>发起多次：</span>
+                    <input type="checkbox" name="more"/><span>可发起多次</span>
+                    <span style="color:#A1A1A1">（选择多次后该环节一旦解锁，可使用多次）</span>
+                </div>
+                <div class="tache_info">
+                    <span>环节说明:</span>
+                     <textarea></textarea>
+                </div>
+                <div class="create_tache_texts">
+                    提示：新建环节后，您可对该环节配置解锁条件、模板和审批流。配置完成后可启用
+                </div>
+                <button class=" btn btn-primary create_tache_confirm" style="margin-left:112px">确定</button>
                 <button class="btn btn-default alia_cancel">取消</button>
             </div>
         </div>

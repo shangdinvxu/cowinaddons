@@ -18,9 +18,75 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
 
     var ProcessConfDetail = Widget.extend({
         events:{
-            'click .new_group_button':'create_new_group_func',
+            'click .new_group_button':'show_new_group_func',
             'click .alia_cancel':'close_create_wrap',
-            'click .alia_confirm':'confirm_create_group'
+            'click .alia_confirm':'confirm_create_group',
+            'click .new_link_button':'show_new_tache_func',
+            'click .create_tache_confirm':'confirm_create_tache',
+            'click .tache_delete':'delete_tache_func',
+            'click .group_delete':'delete_group_func'
+        },
+        delete_group_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            var del_group_id = $(target).parents('tr').attr('data-id');
+            Dialog.confirm(this, _t("确定删除这条分组吗?"), {
+                confirm_callback: function() {
+                    new Model("cowin_settings.process")
+                        .call("rpc_delete_group", [self.id], {stage_id:del_group_id})
+                        .then(function (result) {
+                            console.log(result);
+                            $('.create_new_tache').hide();
+                            self.$el.html('');
+                            self.$el.append(QWeb.render('process_conf_detail_tmp', {result: result}));
+                        })
+                },
+            });
+        },
+        //删除环节
+        delete_tache_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            var del_tache_id = $(target).parents('tr').attr('data-tache-id');
+            Dialog.confirm(this, _t("确定删除这条环节吗?"), {
+                confirm_callback: function() {
+                    new Model("cowin_settings.process")
+                        .call("rpc_delete_tache", [self.id], {tache_id:del_tache_id})
+                        .then(function (result) {
+                            console.log(result);
+                            $('.create_new_tache').hide();
+                            self.$el.html('');
+                            self.$el.append(QWeb.render('process_conf_detail_tmp', {result: result}));
+                        })
+                },
+            });
+        },
+        //新建环节
+        confirm_create_tache:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            var stage_id = $(".create_input_wrap select").find("option:selected").attr('data-id');
+            var tache_name = $(".new_tache_name").val();
+            var tach_info = $(".tache_info textarea").val();
+            if($('.tache_chose_times input').prop('checked')){
+                 var more = true;
+            }else {
+                var more = false;
+            }
+             new Model("cowin_settings.process")
+                    .call("rpc_create_tache", [self.id], {name:tache_name,stage_id:stage_id,description:tach_info,once_or_more:more})
+                    .then(function (result) {
+                        console.log(result);
+                        $('.create_new_tache').hide();
+                        self.$el.html('');
+                        self.$el.append(QWeb.render('process_conf_detail_tmp', {result: result}));
+                    })
+        },
+        show_new_tache_func:function () {
+            $('.create_new_tache').show()
         },
         //新建分组
         confirm_create_group:function (e) {
@@ -36,14 +102,14 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                     .then(function (result) {
                         console.log(result);
                         $('.create_new_group').hide();
-                        $("#conf_detail_container").replaceWith(QWeb.render('process_conf_detail_tmp', {result: result}))
+                        self.$el.html('');
+                        self.$el.append(QWeb.render('process_conf_detail_tmp', {result: result}));
                     })
         },
         close_create_wrap:function () {
             $(".close_this_container").hide()
         },
-        create_new_group_func:function () {
-            console.log('ssssssss');
+        show_new_group_func:function () {
             $(".create_new_group").show();
         },
         init: function (parent, action) {

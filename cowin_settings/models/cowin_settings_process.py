@@ -82,8 +82,8 @@ class Cowin_settings_process(models.Model):
 
     # 使用rpc方法来对删除分组所对应的实例(记录)
     def rpc_delete_group(self, **kwargs):
-        id = int(kwargs.get('stage_id'))
-        self.env['cowin_settings.process_stage'].browse(id).unlink()
+        id = kwargs.get('stage_id')
+        self.env['cowin_settings.process_stage'].search([('id', '=', id)]).unlink()
 
         return self.get_info()
 
@@ -105,7 +105,26 @@ class Cowin_settings_process(models.Model):
 
     # 使用rpc来删除环节记录(实体)
     def rpc_delete_tache(self, **kwargs):
-        id = int(kwargs.get('tache_id'))
-        self.env['cowin_settings.process_tache'].browse(id).unlink()
+        id = kwargs.get('tache_id')
+        self.env['cowin_settings.process_tache'].search([('id', '=', id)]).unlink()
 
         return self.get_info()
+
+
+
+    def unlock_condition(self,  **kwargs):
+        tache_id = kwargs.get('tache_id')
+        tache_parent_id = kwargs.get('tache_parent_id')
+
+        tache_parent = self.env['cowin_settings.process_tache'].search([('id', '=', tache_parent_id)])
+        tache = self.env['cowin_settings.process_tache'].search([('id', '=', tache_id)])
+
+        # 先把之前的父类数据保存下来
+        tmp = tache.parent_id
+        tache.parent_id = tache_parent
+
+        if tache.on_set_parent_id():
+            tache.write({'parent_id': tache_parent_id})
+        else:
+            tache.write({'parent_id': tmp.id})
+
