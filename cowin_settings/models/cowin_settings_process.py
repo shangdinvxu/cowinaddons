@@ -112,7 +112,7 @@ class Cowin_settings_process(models.Model):
 
 
 
-    def unlock_condition(self,  **kwargs):
+    def rpc_unlock_condition(self,  **kwargs):
         tache_id = kwargs.get('tache_id')
         tache_parent_id = kwargs.get('tache_parent_id')
 
