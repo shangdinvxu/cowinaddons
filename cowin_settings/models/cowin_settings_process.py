@@ -116,18 +116,23 @@ class Cowin_settings_process(models.Model):
         tache_id = kwargs.get('tache_id')
         tache_parent_id = kwargs.get('tache_parent_id')
 
-        tache_parent = self.env['cowin_settings.process_tache'].search([('id', '=', tache_parent_id)])
         tache = self.env['cowin_settings.process_tache'].search([('id', '=', tache_id)])
 
-        # 先把之前的父类数据保存下来
-        tmp = tache.parent_id
-        tache.parent_id = tache_parent
-
-        if tache.on_set_parent_id():
-            tache.write({'parent_id': tache_parent_id})
+        # 环节的前置条件可以设置为空
+        if not tache_parent_id:
+            tache.write({'parent_id': None})
             return self.get_info()
         else:
-            tache.write({'parent_id': tmp.id})
-            raise UserError(u'解锁条件之间冲突行成环状!!!')
+            tache_parent = self.env['cowin_settings.process_tache'].search([('id', '=', tache_parent_id)])
 
-       
+            # 先把之前的父类数据保存下来
+            tmp = tache.parent_id
+            tache.parent_id = tache_parent
+
+            if tache.on_set_parent_id():
+                tache.write({'parent_id': tache_parent_id})
+                return self.get_info()
+            else:
+                tache.write({'parent_id': tmp.id})
+                raise UserError(u'解锁条件之间冲突行成环状!!!')
+
