@@ -23,7 +23,7 @@ class Cowin_settings_process_tache(models.Model):
     def _check_parent_id(self, ids=[]):
 
         # 如果parent_id为空的情况下,到达了顶层
-        if not self.parent_id.id or not ids:
+        if not self.parent_id.id:
             return True
 
         # 如果parent_id不为空的, 相互引用的话,直接返回为False
@@ -47,4 +47,5 @@ class Cowin_settings_process_tache(models.Model):
     # 检查依赖的记录之间时候会有环的形成!!1
     def on_set_parent_id(self):
         ids = []
-        return self._check_parent_id()
+        print u'kkkk'
+        return self._check_parent_id(ids)
