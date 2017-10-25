@@ -15,6 +15,7 @@ class Cowin_settings_process_tache(models.Model):
     state = fields.Boolean(string=u'启用状态', default=True)
 
     stage_id = fields.Many2one('cowin_settings.process_stage', ondelete="cascade")
+    process_id=fields.Many2one('cowin_settings.process', related='stage_id.process_id')
 
     once_or_more = fields.Boolean(string=u'发起次数', default=True)
 

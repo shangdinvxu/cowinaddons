@@ -44,6 +44,7 @@
     font-weight: 400;
     font-size:12px;
     color: #868686;
+    border-bottom: 1px solid rgba(242, 242, 242, 1);
 }
 #conf_detail_container .process_detail_group_detail_line .operate_wrap span{
     color: #38ADFF;
@@ -57,7 +58,7 @@
     opacity: 1;
     cursor: pointer;
 }
-.create_new_group,.create_new_tache{
+.create_new_group,.create_new_tache,.unlock_condition{
     display: none;
 }
 .close_this_container .create_wrap{
@@ -93,7 +94,7 @@
     margin-top: 10px;
     margin-bottom: 20px;
 }
-.close_this_container .create_wrap .create_input_wrap select{
+.close_this_container .create_wrap select{
     display: inline-block;
     width: 70%;
 }

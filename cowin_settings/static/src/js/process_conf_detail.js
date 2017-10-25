@@ -24,7 +24,32 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             'click .new_link_button':'show_new_tache_func',
             'click .create_tache_confirm':'confirm_create_tache',
             'click .tache_delete':'delete_tache_func',
-            'click .group_delete':'delete_group_func'
+            'click .group_delete':'delete_group_func',
+            'click .tache_parent':'show_tache_parent',
+            'click .confirm_unlock_condition':'confirm_unlock_condition'
+        },
+        //确定解锁条件
+        confirm_unlock_condition:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            var tache_parent_id = $(".condition_wrap select").find("option:selected").attr('data-id');  //解锁条件
+             new Model("cowin_settings.process")
+                    .call("rpc_unlock_condition", [self.id], {tache_parent_id:tache_parent_id,tache_id:self.unlock_tache_id})
+                    .then(function (result) {
+                        console.log(result);
+                        $('.create_new_tache').hide();
+                        self.$el.html('');
+                        self.$el.append(QWeb.render('process_conf_detail_tmp', {result: result}));
+                    })
+        },
+        show_tache_parent:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            $('.unlock_condition').show();
+            $('.current_tache').html($(target).prev().html())
+            self.unlock_tache_id = $(target).parents('tr').attr('data-tache-id')
         },
         delete_group_func:function (e) {
             var e = e || window.event;
