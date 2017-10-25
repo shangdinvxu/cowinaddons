@@ -9,5 +9,25 @@
       </template>
 
 
+
+      <!--<record id="cowin_settings_process_tache_form" model="ir.ui.view">-->
+            <!--<field name="name">cowin_settings.process_tache.form</field>-->
+            <!--<field name="model">cowin_settings.process_tache</field>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<form string="">-->
+                    <!--<field name="process_id" invisible="1"/>-->
+                    <!--<field name="stage_id" invisible="1"/>-->
+                    <!--<span>当前环节：</span><field name="name" readonly="1"/>-->
+                    <!--<div></div>-->
+                    <!--<span>解锁条件：</span><field name="parent_id" domain="[('process_id','=',process_id),('stage_id','!=',stage_id)]"/>-->
+                    <!--<footer>-->
+                        <!--<button string="保存" type="object" name="rpc_unlock_condition"-->
+                                <!--class="btn-primary"/>-->
+                        <!--<button string='取消' class='oe_link review_reload' special='cancel'/>-->
+                    <!--</footer>-->
+                <!--</form>-->
+            <!--</field>-->
+        <!--</record>-->
+
   </data>
 </openerp>

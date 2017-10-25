@@ -130,3 +130,4 @@ class Cowin_settings_process(models.Model):
             tache.write({'parent_id': tmp.id})
             raise UserError(u'解锁条件之间冲突行成环状!!!')
 
+        return self.get_info()
