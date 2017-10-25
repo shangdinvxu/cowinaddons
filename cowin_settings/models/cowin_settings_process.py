@@ -125,6 +125,7 @@ class Cowin_settings_process(models.Model):
 
         if tache.on_set_parent_id():
             tache.write({'parent_id': tache_parent_id})
+            return self.get_info()
         else:
             tache.write({'parent_id': tmp.id})
             raise UserError(u'解锁条件之间冲突行成环状!!!')

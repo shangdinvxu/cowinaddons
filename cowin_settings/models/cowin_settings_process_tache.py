@@ -43,23 +43,7 @@ class Cowin_settings_process_tache(models.Model):
 
 
 
-
-        # if parent:
-        #     # if ids.contains(parent.id):
-        #     if parent.id in ids:
-        #         return False
-        #     if self.id != parent.id:
-        #         if parent.parent_id:
-        #             ids.append(self.id)
-        #             # ids.append(parent.id)
-        #             return parent._check_parent_id(parent.id, ids)
-        #         else:
-        #
-        #             return True
-        #     else:
-        #         return False
-        # return False
-
+    # 检查依赖的记录之间时候会有环的形成!!1
     def on_set_parent_id(self):
         ids = []
         return self._check_parent_id()
