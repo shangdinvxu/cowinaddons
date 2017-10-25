@@ -23,10 +23,14 @@ class Cowin_settings_process(models.Model):
     def get_info(self):
         stages = []
 
-        for stage in self.stage_ids:
+        # 需要新的排序
+        asc_by_show_orders = sorted(self.stage_ids, key=lambda stage: stage.show_order)
+
+        for stage in asc_by_show_orders:
             tmp_stage = {}
             tmp_stage['id'] = stage.id
             tmp_stage['name'] = stage.name
+            tmp_stage['show_order'] = stage.show_order
             tmp_stage['process_id'] = stage.process_id.id
 
             tmp_stage['tache_ids'] = []
@@ -69,13 +73,30 @@ class Cowin_settings_process(models.Model):
 
      # 使用rpc方法来对该实例对象来建立新的分组数据
     def rpc_create_group(self, **kwargs):
+        '''
+            kwargs参数中
+                name 分组名
+                show_order 前端显示顺序依赖
+        :param kwargs:
+        :return:
+        '''
+
         if not kwargs.get('name') or not kwargs.get('process_id'):
             raise UserError('分组名不能为空!!!')
 
 
-        self.env['cowin_settings.process_stage'].create({'name': kwargs.get("name"),
+        source = self.env['cowin_settings.process_stage'].create({'name': kwargs.get("name"),
                                                                  'process_id': kwargs.get("process_id")
-                                                                   })
+                                                                       })
+
+        show_number = int(kwargs.get('show_order'))
+
+        if show_number >= 0 and show_number < source.id:
+            target = self.env['cowin_settings.process_stage'].search([('show_order', '=', show_number)])
+            if target:
+                source.substitution_stage_by_show_order(target)
+
+
         return self.get_info()
 
 
@@ -136,3 +157,12 @@ class Cowin_settings_process(models.Model):
                 tache.write({'parent_id': tmp.id})
                 raise UserError(u'解锁条件之间冲突行成环状!!!')
 
+
+
+    # # 前端指定的顺序来显示
+    # def _substitution_stage(self, source_stage, target_stage):
+    #     if source_stage.id == target_stage.id:
+    #         return
+    #
+    #     source_stage.show_order, target_stage.show_order = source_stage.show_order, target_stage.show_order
+    #
