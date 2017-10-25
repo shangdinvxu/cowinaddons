@@ -24,7 +24,9 @@ class Cowin_settings_process(models.Model):
         stages = []
 
         # 需要新的排序
-        asc_by_show_orders = sorted(self.stage_ids, key=lambda stage: stage.show_order)
+        # asc_by_show_orders = sorted(self.stage_ids, key=lambda stage: stage.show_order)
+        asc_by_show_orders = self.env['cowin_settings.process_stage'].search([('process_id', '=', self.id)],
+                                                                             order='show_order asc')
 
         for stage in asc_by_show_orders:
             tmp_stage = {}
@@ -88,15 +90,6 @@ class Cowin_settings_process(models.Model):
         source = self.env['cowin_settings.process_stage'].create({'name': kwargs.get("name"),
                                                                  'process_id': kwargs.get("process_id")
                                                                        })
-
-        show_number = int(kwargs.get('show_order'))
-
-        if show_number >= 0 and show_number < source.id:
-            target = self.env['cowin_settings.process_stage'].search([('show_order', '=', show_number)])
-            if target:
-                source.substitution_stage_by_show_order(target)
-
-
         return self.get_info()
 
 
