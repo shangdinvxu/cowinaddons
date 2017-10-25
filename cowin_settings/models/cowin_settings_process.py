@@ -76,7 +76,7 @@ class Cowin_settings_process(models.Model):
         '''
             kwargs参数中
                 name 分组名
-                show_order 前端显示顺序依赖
+                show_order 前端显示顺序序号
         :param kwargs:
         :return:
         '''
@@ -85,9 +85,10 @@ class Cowin_settings_process(models.Model):
             raise UserError('分组名不能为空!!!')
 
 
-        source = self.env['cowin_settings.process_stage'].create({'name': kwargs.get("name"),
-                                                                 'process_id': kwargs.get("process_id")
-                                                                       })
+        source = self.env['cowin_settings.process_stage'].create(
+            {'name': kwargs.get("name"),
+            'process_id': kwargs.get("process_id")
+            })
 
         show_number = int(kwargs.get('show_order'))
 
