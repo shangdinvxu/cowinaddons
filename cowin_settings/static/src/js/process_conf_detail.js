@@ -48,7 +48,13 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             var target = e.target || e.srcElement;
             var self = this;
             $('.unlock_condition').show();
-            $('.current_tache').html($(target).prev().html())
+            $('.current_tache').html($(target).prev().html());
+            $('.condition_wrap option').each(function () {
+                $(this).show()
+                if($(this).html() == $(target).prev().html()){
+                    $(this).hide()
+                }
+            })
             self.unlock_tache_id = $(target).parents('tr').attr('data-tache-id')
         },
         delete_group_func:function (e) {
