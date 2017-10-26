@@ -199,3 +199,6 @@ a.oe_menu_toggler { background-color: transparent !important; }
 .o_web_client > #oe_main_menu_navbar .cowin_nav_logo:hover .oe_logo_edit_admin{
     display: block;
 }
+.o_web_client > .o_main .o_main_content .o_content .o_view_manager_content{
+    background-color: white!important;
+}

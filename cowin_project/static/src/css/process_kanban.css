@@ -3,6 +3,7 @@
     margin-left: 30px;
     padding: 18px;
     flex: none;
+    background-color: rgba(207,207,207,.5);
 }
 .o_web_client .o_main .o_view_manager_content .project_process_kanban .kanban_top{
     overflow: hidden;
@@ -13,9 +14,17 @@
     font-weight: 700;
     color: #515151;
     float: left;
+    width: 180px;
+    /*height: 50px;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:3;
 }
 .o_web_client .o_main .o_view_manager_content .project_process_kanban .project_top_right{
     float: right;
+    width: 312px;
     color: #A1A1A1;
 }
 .o_web_client .o_main .o_view_manager_content .project_process_kanban .project_top_right span{

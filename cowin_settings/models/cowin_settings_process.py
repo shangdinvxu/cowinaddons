@@ -24,8 +24,10 @@ class Cowin_settings_process(models.Model):
         stages = []
 
         # 需要新的排序
+        # asc_by_show_orders = sorted(self.stage_ids, key=lambda stage: stage.show_order)
         asc_by_show_orders = self.env['cowin_settings.process_stage'].search([('process_id', '=', self.id)],
-                                                                           order='show_order asc')
+                                                                             order='show_order asc')
+
         for stage in asc_by_show_orders:
             tmp_stage = {}
             tmp_stage['id'] = stage.id
@@ -157,7 +159,6 @@ class Cowin_settings_process(models.Model):
     #     source_stage.show_order, target_stage.show_order = source_stage.show_order, target_stage.show_order
     #
 
-
     def rpc_save_order_by_stage(self, **kwargs):
         '''
             show_status: 传递过来的大字典 {stage_id1: show_order1, stage_id2: show_order2 ...}
@@ -170,8 +171,7 @@ class Cowin_settings_process(models.Model):
 
         show_status = kwargs.get('show_status')
         for stage_id, show_order in show_status.items():
-            stage = self.env['cowin_settings.process_stage'].browse(stage_id)
-            stage.write({'show_order': show_order})
-
+            stage = self.env['cowin_settings.process_stage'].browse(int(stage_id))
+            stage.write({'show_order': int(show_order)})
 
         return self.get_info()
