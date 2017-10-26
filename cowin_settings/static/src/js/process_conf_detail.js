@@ -8,13 +8,13 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
     var Model = require('web.Model');
     var Widget = require('web.Widget');
     var View = require('web.View');
+    var framework = require('web.framework');
     var QWeb = core.qweb;
     var Dialog = require('web.Dialog');
     var ControlPanelMixin = require('web.ControlPanelMixin');
     var SearchView = require('web.SearchView');
     var data = require('web.data');
     var _t = core._t;
-
 
     var ProcessConfDetail = Widget.extend({
         events:{
@@ -26,7 +26,68 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             'click .tache_delete':'delete_tache_func',
             'click .group_delete':'delete_group_func',
             'click .tache_parent':'show_tache_parent',
-            'click .confirm_unlock_condition':'confirm_unlock_condition'
+            'click .confirm_unlock_condition':'confirm_unlock_condition',
+            'click .sort_group':'sort_group_show',
+            'click .sort_group_save':'sort_group_save',
+            'dragover tr':'prevent_default',
+            'dragstart tr': 'move_start',
+            'drop tr':'move_func'
+        },
+        //拖动开始时的操作
+        move_start:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            this.move_group_id = parseInt($(target).attr('data-id'));
+            this.move_group = $(target);
+        },
+        //拖动完成时的操作,把拖动的组及其下面的环节一起放到目标组下面
+        move_func:function (e) {
+            e.preventDefault();
+            var self = this;
+            var targetEle = e.target;    //松开鼠标释放节点时光标所在元素
+            var target_group_id = $(targetEle).parents('tr').attr('data-id');
+            var move_taches = $(".process_detail_group_detail_line[data-stage-id="+self.move_group_id+"]");
+            $('.process_detail_group_detail_line[data-stage-id='+self.move_group_id+']').remove();
+            self.move_group.remove();
+            if($(".process_detail_group_detail_line[data-stage-id="+target_group_id+"]:last").length>0){
+                var append_ele = $(".process_detail_group_detail_line[data-stage-id="+target_group_id+"]:last");
+            }else {
+                var append_ele = $(targetEle).parents('tr');
+            }
+            $(self.move_group).insertAfter(append_ele);
+            $(move_taches).insertAfter(self.move_group);
+        },
+        prevent_default:function (ev) {
+            ev.preventDefault(); //阻止向上冒泡
+        },
+        //保存排序分组
+        sort_group_save:function () {
+            var self = this;
+            var json_data = {};
+            $('.process_detail_group_line').each(function (index) {
+                json_data[$(this).attr('data-id')] = index
+            });
+            framework.blockUI();
+            new Model("cowin_settings.process")
+                    .call("rpc_save_order_by_stage", [self.id],{show_status:json_data})
+                    .then(function (result) {
+                        console.log(result);
+                        $('.create_new_tache').hide();
+                        self.$el.html('');
+                        self.$el.append(QWeb.render('process_conf_detail_tmp', {result: result}));
+                        $('.drag_show').hide();
+                        $('.sort_group_save .sort_state').html('排序');
+                        $('.sort_group_save').addClass('sort_group');
+                        $('.sort_group_save').removeClass('sort_group_save');
+                        framework.unblockUI();
+                    })
+        },
+        sort_group_show:function () {
+            $('.drag_show').show();
+            $('.sort_group .sort_state').html('保存');
+            $('.sort_group').addClass('sort_group_save');
+            $('.sort_group').removeClass('sort_group');
+            $('.process_detail_group_line').attr('draggable','true');
         },
         //确定解锁条件
         confirm_unlock_condition:function (e) {

@@ -11,9 +11,9 @@
                     <span class="fa fa-plus"></span>
                     新建分组
                 </div>
-                <div class="sort_button">
+                <div class="sort_button sort_group">
                     <span class="fa fa-exchange fa-rotate-90"></span>
-                    排序
+                    <span class="sort_state">排序</span>
                 </div>
                 <div class="new_link_button">
                     <span class="fa fa-plus"></span>
@@ -24,16 +24,19 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
+                      <th class="drag_show">拖拽框</th>
                       <th>进度</th>
                       <th>解锁条件</th>
-                      <th>说明</th>
+                      <th style="width:500px">说明</th>
                       <th>启用状态</th>
                       <th>操作</th>
                     </tr>
                   </thead>
                   <tbody>
                     <t t-foreach="result.stage_ids" t-as="item">
+                        <!--  data-id是stage_id -->
                         <tr t-att-data-id="item.id" class="process_detail_group_line">
+                            <td class="drag_show"><span class="fa fa-bars"></span></td>
                             <td>
                                 <span class="fa fa-folder-o"></span>
                                 <span class="group_name"><t t-esc="item.name"/> </span>
@@ -43,7 +46,9 @@
                             <td></td><td></td><td></td><td></td>
                         </tr>
                         <t t-foreach="item.tache_ids" t-as="obj">
-                            <tr class="process_detail_group_detail_line" t-att-data-tache-id="obj.id">
+                            <!--  data-tache-id是环节的id data-stage-id是分组的id -->
+                            <tr class="process_detail_group_detail_line" t-att-data-tache-id="obj.id" t-att-data-stage-id="obj.stage_id">
+                                <td class="drag_show"><span></span></td>
                                 <td><t t-esc="obj.name"/></td>
                                 <td class="tache_parent"><t t-esc="obj.parent_id"/></td>
                                 <td><t t-esc="obj.description"/></td>
