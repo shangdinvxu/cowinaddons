@@ -32,24 +32,24 @@
                 <kanban class="project_process_kanban_wrap">
                     <field name="name"/>
                     <field name="image" widget="image"/>
-                    <field name="register_person"/>
+                    <!--<field name="register_person"/>-->
                     <field name="project_number"/>
                     <field name="write_date"/>
                     <field name="invest_manager"/>
-                    <field name="project_partner"/>
+                    <!--<field name="project_partner"/>-->
                     <field name="registered_address"/>
                     <field name="peration_place"/>
                     <field name="contract_person"/>
                     <field name="industry"/>
                     <field name="production"/>
-                    <field name="state"/>
+                    <field name="stage"/>
                     <templates>
                     <t t-name="kanban-box">
                         <div class="project_process_kanban oe_kanban_global_click">
                             <div class="kanban_top">
                                 <div class="project_name">项目名称：<t t-esc="record.name.value"/></div>
                                 <div class="project_top_right">
-                                    <span>登记人：<t t-esc="record.register_person.value"/> </span>
+                                    <!--<span>登记人：<t t-esc="record.register_person.value"/> </span>-->
                                     <span><t t-esc="record.write_date.value"/> </span>
                                 </div>
                             </div>
@@ -63,13 +63,13 @@
                             </div>
                             <div class="kanban_main">
                                 <div>投资经理：<t t-esc="record.invest_manager.value"/></div>
-                                <div>项目合伙人：<t t-esc="record.project_partner.value"/></div>
+                                <!--<div>项目合伙人：<t t-esc="record.project_partner.value"/></div>-->
                                 <div>注册地:<t t-esc="record.registered_address.value"/></div>
                                 <div>运营地:<t t-esc="record.peration_place.value"/></div>
                                 <div>联系人:<t t-esc="record.contract_person.value"/></div>
                                 <div>所属行业:<t t-esc="record.industry.value"/></div>
                                 <div class="kanban_project_product">产品:<t t-esc="record.production.value"/></div>
-                                <div class="kanban_project_state">【状态：<t t-esc="record.state.value"/>】</div>
+                                <div class="kanban_project_state">【状态：<t t-esc="record.stage.value"/>】</div>
                             </div>
                         </div>
                     </t>
@@ -89,17 +89,20 @@
                         <group>
                             <field name="name"/>
                             <field name="image" widget="image"/>
-                            <field name="register_person"/>
-                            <field name="project_number"/>
+                            <!--<field name="register_person"/>-->
+                            <!--<field name="project_number"/>-->
                             <field name="write_date"/>
                             <field name="invest_manager"/>
-                            <field name="project_partner"/>
+                            <!--<field name="project_partner"/>-->
                             <field name="registered_address"/>
                             <field name="peration_place"/>
                             <field name="contract_person"/>
                             <field name="industry"/>
                             <field name="production"/>
-                            <field name="state"/>
+                            <field name="stage"/>
+                            <!--<field name="attachment_ids" widget="one2many"/>-->
+                            <!--<field name="attachment_ids" widget="one2many_list"/>-->
+                            <field name="attachment_ids" widget="many2many_binary"/>
                         </group>
                     </div>
                 </form>
