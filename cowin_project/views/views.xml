@@ -91,18 +91,26 @@
                             <field name="image" widget="image"/>
                             <!--<field name="register_person"/>-->
                             <!--<field name="project_number"/>-->
-                            <field name="write_date"/>
-                            <field name="invest_manager"/>
-                            <!--<field name="project_partner"/>-->
+                            <field name="project_source"/>
+                            <field name="project_source_note"/>
+                            <field name="round_financing"/>
+                            <field name="round_money"/>
+                            <field name="project_company_profile"/>
+                            <field name="project_appraisal"/>
+                            <field name="project_note"/>
+                            <field name="industry"/>
+                            <field name="stage"/>
+                            <field name="production"/>
                             <field name="registered_address"/>
                             <field name="peration_place"/>
+                            <field name="founding_time"/>
+                            <field name="invest_manager"/>
                             <field name="contract_person"/>
-                            <field name="industry"/>
-                            <field name="production"/>
-                            <field name="stage"/>
+                            <field name="contract_email"/>
                             <!--<field name="attachment_ids" widget="one2many"/>-->
                             <!--<field name="attachment_ids" widget="one2many_list"/>-->
                             <field name="attachment_ids" widget="many2many_binary"/>
+                            <field name="attachment_note"/>
                         </group>
                     </div>
                 </form>

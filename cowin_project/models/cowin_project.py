@@ -24,6 +24,8 @@ class Cowin_project(models.Model):
     invest_manager = fields.Many2one('hr.employee', string=u'投资经理')
     round_financing = fields.Selection([(1, u'天使轮'), (2, u'A轮'), (3, u'B轮'), (4, u'C轮')],
                               string=u'融资轮次', required=True, default=1)
+    round_money = fields.Float(string=u'本次融资额')
+
     project_company_profile = fields.Text(string=u'项目公司概况')
     project_appraisal = fields.Text(string=u'项目评价')
     project_note = fields.Text(string=u'备注')
