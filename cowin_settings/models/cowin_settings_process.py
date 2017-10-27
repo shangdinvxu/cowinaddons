@@ -78,14 +78,13 @@ class Cowin_settings_process(models.Model):
         '''
             kwargs参数中
                 name 分组名
-                show_order 前端显示顺序依赖
+                show_order 前端显示顺序序号
         :param kwargs:
         :return:
         '''
 
         if not kwargs.get('name') or not kwargs.get('process_id'):
             raise UserError('分组名不能为空!!!')
-
 
         source = self.env['cowin_settings.process_stage'].create({'name': kwargs.get("name"),
                                                                  'process_id': kwargs.get("process_id")
@@ -159,3 +158,20 @@ class Cowin_settings_process(models.Model):
     #
     #     source_stage.show_order, target_stage.show_order = source_stage.show_order, target_stage.show_order
     #
+
+    def rpc_save_order_by_stage(self, **kwargs):
+        '''
+            show_status: 传递过来的大字典 {stage_id1: show_order1, stage_id2: show_order2 ...}
+                字典中的内容:
+                stage_id*:   阶段的id
+                show_order*: 每个阶段显示的位置
+        :param kwargs:
+        :return:
+        '''
+
+        show_status = kwargs.get('show_status')
+        for stage_id, show_order in show_status.items():
+            stage = self.env['cowin_settings.process_stage'].browse(int(stage_id))
+            stage.write({'show_order': int(show_order)})
+
+        return self.get_info()

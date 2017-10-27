@@ -27,10 +27,16 @@
 #conf_detail_container table .process_detail_group_line{
     background-color: rgba(242, 242, 242, 1);
 }
-#conf_detail_container table th:nth-child(1),#conf_detail_container table td:nth-child(1){
+#conf_detail_container table th:nth-child(1),#conf_detail_container table tr td:nth-child(1){
+    width: 60px;
+}
+#conf_detail_container table tr td:nth-child(1){
+    padding-left: 15px;
+}
+#conf_detail_container table th:nth-child(2),#conf_detail_container table td:nth-child(2){
     padding-left: 35px;
 }
-#conf_detail_container .process_detail_group_line td:nth-child(1){
+#conf_detail_container .process_detail_group_line td:nth-child(2){
     padding-left: 11px;
     width: 220px;
 }
@@ -107,4 +113,12 @@
 }
 #conf_detail_container .detail_main_wrap tr .tache_parent{
     cursor: pointer;
+}
+#conf_detail_container .drag_show{
+    display: none;
+}
+#conf_detail_container .drag_show span{
+    display: inline-block;
+    color: #4c4c4c!important;
+    cursor: move;
 }

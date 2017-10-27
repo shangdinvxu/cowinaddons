@@ -12,34 +12,47 @@ class Cowin_project(models.Model):
         image_path = get_module_resource('hr', 'static/src/img', 'default_image.png')
         return tools.image_resize_image_big(open(image_path, 'rb').read().encode('base64'))
 
-    image = fields.Binary("Photo", default=_default_image, attachment=True,
-                          help="This field holds the image used as photo for the employee, limited to 1024x1024px.")
+    image = fields.Binary("LOGO", default=_default_image, attachment=True,
+                          help="This field holds the image used as photo for the cowin_project, limited to 1024x1024px.")
 
-    name = fields.Char(string=u"项目名称")
+    name = fields.Char(string=u"项目名称", required=True)
 
-    project_number = fields.Char(string=u'项目编号')
+    project_number = fields.Char(string=u'项目编号',
+                                 defualt=lambda self: self.env['ir.sequence'].next_by_code('cowin_project.order'))
+    project_source = fields.Char(string=u'项目来源')
+    project_source_note = fields.Char(string=u'项目来源备注')
+    invest_manager = fields.Many2one('hr.employee', string=u'投资经理')
+    round_financing = fields.Selection([(1, u'天使轮'), (2, u'A轮'), (3, u'B轮'), (4, u'C轮')],
+                              string=u'融资轮次', required=True, default=1)
+    round_money = fields.Float(string=u'本次融资额')
 
-    invest_manager = fields.Char(string=u'投资经理')
-
-    project_partner = fields.Char(string=u'项目合伙人')
-
-    registered_address = fields.Char(string=u'注册地')
-
-    peration_place = fields.Char(string=u'运营地')
-
-    contract_person = fields.Char(string=u'联系人')
-
-    industry = fields.Char(string=u'所属行业')
-
+    project_company_profile = fields.Text(string=u'项目公司概况')
+    project_appraisal = fields.Text(string=u'项目评价')
+    project_note = fields.Text(string=u'备注')
+    industry = fields.Many2one('cowin_project.cowin_common', string=u'所属行业')
+    stage = fields.Selection([(1, u'种子期'), (2, u'成长早期'), (3, u'成长期'), (4, u'成熟期')], string=u'所属阶段')
     production = fields.Text(string=u'产品')
+    registered_address = fields.Char(string=u'注册地')
+    peration_place = fields.Char(string=u'运营地')
+    founding_time = fields.Date(string=u'成立时间')
+    contract_person = fields.Char(string=u'联系人')
+    contract_phone = fields.Char(string=u'联系电话')
+    contract_email = fields.Char(string=u'Email')
+    # attachment_ids = fields.One2many('ir.attachment', 'res_id', domain=lambda self: [('res_model', '=', self._name)],
+    #                                  auto_join=True, string=u"附件")
 
-    register_person = fields.Char(string=u'登记人')
+    attachment_ids = fields.Many2many('ir.attachment', string=u"附件")
 
-    state = fields.Char(string=u'状态')
+    # displayed_image_id = fields.Many2one('ir.attachment', domain="[('res_model', '=', 'project.task'), ('res_id', '=', id), ('mimetype', 'ilike', 'image')]", string='Displayed Image')
 
-    @api.model
-    def create(self, vals):
-        if not vals.get('project_number'):
-            vals['project_number'] = self.env['ir.sequence'].next_by_code('cowin_project.order')
+    attachment_note = fields.Char(string=u'附件说明')
 
-        return super(Cowin_project, self).create(vals)
+
+
+    #
+    # @api.model
+    # def create(self, vals):
+    #     if not vals.get('project_number'):
+    #         vals['project_number'] = self.env['ir.sequence'].next_by_code('cowin_project.order')
+    #
+    #     return super(Cowin_project, self).create(vals)
