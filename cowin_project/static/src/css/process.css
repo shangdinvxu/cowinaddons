@@ -163,6 +163,25 @@
     margin-right: 3px;
 }
 
-.cowin_process_form_wrap .o_form_field_image img{
-    width: 300px;
+
+.o_content .cowin_process_form_wrap{
+    width: 60%;
+    max-width: 650px;
+    padding-left: 50px;
+    padding-bottom: 100px;
 }
+.cowin_process_form_wrap .o_form_field_image img{
+    height:100px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
