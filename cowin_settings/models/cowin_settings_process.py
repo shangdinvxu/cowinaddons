@@ -16,7 +16,7 @@ class Cowin_settings_process(models.Model):
 
     description = fields.Char(string=u'说明')
 
-    # rpc调用方法,前端页面直接获取后端数据的所需要的方法,
+    # rpc调用方法,前端页面直接获取后端数据的所需要的方法,git
     # 该方法对应的是当前model类中的一条实例对象
 
     # 该实例方法用于获取一条数据信息
