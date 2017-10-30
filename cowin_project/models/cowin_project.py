@@ -12,6 +12,9 @@ class Cowin_project(models.Model):
         image_path = get_module_resource('hr', 'static/src/img', 'default_image.png')
         return tools.image_resize_image_big(open(image_path, 'rb').read().encode('base64'))
 
+    # 关联到settings中,把该字段看成配置选项的操作
+    process_id = fields.Many2one('cowin_settings.process', ondelete="cascade", required=True)
+
     image = fields.Binary("LOGO", default=_default_image, attachment=True,
                           help="This field holds the image used as photo for the cowin_project, limited to 1024x1024px.")
 
@@ -23,6 +26,9 @@ class Cowin_project(models.Model):
                               string=u'项目来源', required=True)
     project_source_note = fields.Char(string=u'项目来源备注')
     invest_manager = fields.Many2one('hr.employee', string=u'投资经理')
+
+    # investment_fund = fields.One2many('xxxx.xxxx', 'rrrr_id', string=u'投资基金')
+    investment_fund = fields.Char(string=u'投资基金')
     round_financing = fields.Selection([(1, u'天使轮'), (2, u'A轮'), (3, u'B轮'), (4, u'C轮')],
                               string=u'融资轮次', required=True, default=1)
     round_money = fields.Float(string=u'本次融资额')
@@ -57,3 +63,16 @@ class Cowin_project(models.Model):
     #         vals['project_number'] = self.env['ir.sequence'].next_by_code('cowin_project.order')
     #
     #     return super(Cowin_project, self).create(vals)
+
+
+    # 获得每个project的xiang详细信息
+    def _get_info(self):
+        return {'id': self.id,
+                'name': self.name,
+                'process_id': self.process_id.id
+                }
+
+
+    # 通过rpc调用,把详细的信息传递到前端以便于显示操作
+    def rpc_get_info(self):
+        return self._get_info()

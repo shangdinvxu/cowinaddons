@@ -124,6 +124,33 @@ class Cowin_settings_process(models.Model):
         return self.get_info()
 
 
+    # 使用rpc来编辑环节名称
+    def rpc_edit_tache(self, **kwargs):
+        # 可能需要解锁依赖环的问题
+        try:
+            self.rpc_unlock_condition(**kwargs)
+        except UserError, e:
+            raise UserError(u'编辑过程中 解锁条件之间冲突行成环状')
+
+
+
+        tache_id = kwargs.get('tache_id')
+        name = kwargs.get('tache_name')
+        tache_parent_id = int(kwargs.get('tache_parent_id'))
+
+
+        description = kwargs.get('description')
+
+        tache = self.env['cowin_settings.process_tache'].browse(tache_id)
+        tache.write({'name': name,
+                     'parent_id': tache_parent_id,
+                     'description': description
+                     })
+
+        return self.get_info()
+
+
+
 
     def rpc_unlock_condition(self,  **kwargs):
         tache_id = kwargs.get('tache_id')

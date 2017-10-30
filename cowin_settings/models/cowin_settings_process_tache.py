@@ -18,6 +18,10 @@ class Cowin_settings_process_tache(models.Model):
 
     once_or_more = fields.Boolean(string=u'发起次数', default=True)
 
+    model_name = fields.Char(string=u'自定义model的名字')
+
+
+
 
     def _check_parent_id(self, ids=[]):
 
