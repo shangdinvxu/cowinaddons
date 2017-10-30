@@ -49,9 +49,9 @@
                             <!--  data-tache-id是环节的id data-stage-id是分组的id -->
                             <tr class="process_detail_group_detail_line" t-att-data-tache-id="obj.id" t-att-data-stage-id="obj.stage_id">
                                 <td class="drag_show"><span></span></td>
-                                <td><t t-esc="obj.name"/></td>
+                                <td class="tache_name"><t t-esc="obj.name"/></td>
                                 <td class="tache_parent"><t t-esc="obj.parent_id"/></td>
-                                <td><t t-esc="obj.description"/></td>
+                                <td class="tache_description"><t t-esc="obj.description"/></td>
                                 <td>
                                     <t t-if="obj.state==true">
                                         <input type="checkbox" checked="checked"/>
@@ -61,7 +61,7 @@
                                     </t>
                                 </td>
                                 <td class="operate_wrap">
-                                    <span>编辑</span>
+                                    <span class="edit_tache">编辑</span>
                                     <span>移动到</span>
                                     <span class="tache_delete">删除</span>
                                 </td>
@@ -73,6 +73,7 @@
             </div>
         </div>
 
+        <!--新建分组-->
         <div class="create_new_group close_this_container">
             <div class="modal-backdrop  in"></div>
             <div class="create_wrap">
@@ -86,6 +87,7 @@
             </div>
         </div>
 
+        <!--新建环节-->
         <div class="create_new_tache close_this_container">
             <div class="modal-backdrop  in"></div>
             <div class="create_wrap">
@@ -117,13 +119,14 @@
             </div>
         </div>
 
+        <!--环节编辑-->
         <div class="unlock_condition close_this_container">
             <div class="modal-backdrop  in"></div>
             <div class="create_wrap">
                 <div class="create_wrap_head">
-                    解锁条件
+                    环节编辑
                 </div>
-                <div class="create_input_wrap">当前环节: <span class="current_tache"></span></div>
+                <div class="create_input_wrap">当前环节: <input class="current_tache" type="text"/></div>
                 <div class="condition_wrap">解锁条件:
                     <select class="form-control">
                         <option data-id="">无条件</option>
@@ -133,6 +136,10 @@
                             </t>
                         </t>
                     </select>
+                </div>
+                <div class="edit_tache_desc">
+                    环节说明：
+                    <textarea></textarea>
                 </div>
                 <div class="create_texts">提示：解锁条件是指当该条件对应的事项完成后，此环节才可使用。例如：当项目登记完成后，才可发起立项申请，那么可设置立项申请的解锁条件为项目登记</div>
                 <button class=" btn btn-primary confirm_unlock_condition" style="margin-left:112px">确定</button>
