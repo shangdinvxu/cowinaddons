@@ -25,7 +25,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             'click .create_tache_confirm':'confirm_create_tache',
             'click .tache_delete':'delete_tache_func',
             'click .group_delete':'delete_group_func',
-            'click .tache_parent':'show_tache_parent',
+            'click .edit_tache':'show_tache_parent',
             'click .confirm_unlock_condition':'confirm_unlock_condition',
             'click .sort_group':'sort_group_show',
             'click .sort_group_save':'sort_group_save',
@@ -89,14 +89,16 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             $('.sort_group').removeClass('sort_group');
             $('.process_detail_group_line').attr('draggable','true');
         },
-        //确定解锁条件
+        //确定环节编辑
         confirm_unlock_condition:function (e) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
             var self = this;
+            var edit_tache_name = $('.current_tache').val();
+            var edit_tache_descs = $('.edit_tache_desc textarea').val();
             var tache_parent_id = $(".condition_wrap select").find("option:selected").attr('data-id');  //解锁条件
              new Model("cowin_settings.process")
-                    .call("rpc_unlock_condition", [self.id], {tache_parent_id:tache_parent_id,tache_id:self.unlock_tache_id})
+                    .call("rpc_edit_tache", [self.id], {tache_parent_id:tache_parent_id,tache_id:self.unlock_tache_id,tache_name:edit_tache_name,description:edit_tache_descs})
                     .then(function (result) {
                         console.log(result);
                         $('.create_new_tache').hide();
@@ -109,13 +111,14 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             var target = e.target || e.srcElement;
             var self = this;
             $('.unlock_condition').show();
-            $('.current_tache').html($(target).prev().html());
+            $('.current_tache').val($(target).parents('.operate_wrap').prevAll('.tache_name').html());
             $('.condition_wrap option').each(function () {
-                $(this).show()
-                if($(this).html() == $(target).prev().html()){
-                    $(this).hide()
+                $(this)[0].selected =  false
+                if($(this).html() == $(target).parents('.operate_wrap').prevAll('.tache_parent').html()){
+                    $(this)[0].selected = true
                 }
-            })
+            });
+            $('.edit_tache_desc textarea').val($(target).parents('.operate_wrap').prevAll('.tache_description').html());
             self.unlock_tache_id = $(target).parents('tr').attr('data-tache-id')
         },
         delete_group_func:function (e) {

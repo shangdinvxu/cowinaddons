@@ -9,6 +9,7 @@
 #project_process_container #process_tab{
     background-color: white;
     border-top:1px solid #ddd;
+    padding-left: 20px;
 }
 #project_process_container #process_tab li a{
     color: #00B0DD;
@@ -21,7 +22,6 @@
     color: white!important;
 }
 #process_tab_content{
-    padding: 20px;
     height:100%;
     background-color: white;
 }

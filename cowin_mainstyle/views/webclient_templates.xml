@@ -38,7 +38,7 @@
         </div>
 
         <div class="o_sub_menu_footer">
-            Powered by <a href="http://www.odoo.com" target="_blank"><span>Odoo</span></a>
+            <!--Powered by <a href="http://www.odoo.com" target="_blank"><span>Odoo</span></a>-->
         </div>
     </template>
 
