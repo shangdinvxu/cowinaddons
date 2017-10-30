@@ -111,9 +111,6 @@
     border-bottom: 1px solid #A1A1A1;
     margin-bottom: 15px;
 }
-#conf_detail_container .detail_main_wrap tr .tache_parent{
-    cursor: pointer;
-}
 #conf_detail_container .drag_show{
     display: none;
 }
@@ -121,4 +118,22 @@
     display: inline-block;
     color: #4c4c4c!important;
     cursor: move;
+}
+.process_conf_click_to_detail td:nth-child(1),.process_conf_name_lists thead th:nth-child(1){
+    padding-left: 25px;
+}
+#process_detail .process_conf_name_lists thead{
+    font-weight: bolder;
+    color: #434343;
+}
+#process_detail .process_conf_name_lists tbody{
+    font-weight: 400;
+    color: #797979;
+}
+.create_wrap .current_tache{
+    display: inline-block;
+    width: 70%;
+}
+.create_wrap .edit_tache_desc{
+    margin-top: 15px;
 }
