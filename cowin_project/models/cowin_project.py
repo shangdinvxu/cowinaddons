@@ -69,7 +69,30 @@ class Cowin_project(models.Model):
     def _get_info(self):
         return {'id': self.id,
                 'name': self.name,
-                'process_id': self.process_id.id
+                'process_id': self.process_id.id,
+                'image': self.image,
+                'project_number': self.project_number,
+                'project_source': self.project_source,
+                'project_source_note': self.project_source_note,
+                'invest_manager': self.invest_manager,
+                'investment_fund': self.investment_fund,
+                'round_financing': self.round_financing,
+                'round_money': self.round_money,
+                'project_company_profile': self.project_company_profile,
+                'project_appraisal': self.project_appraisal,
+                'project_note': self.project_note,
+                'industry': self.industry,
+                'stage': self.stage,
+                'production': self.production,
+                'registered_address': self.registered_address,
+                'peration_place': self.peration_place,
+                'founding_time': self.founding_time,
+                'contract_person': self.contract_person,
+                'contract_phone': self.contract_phone,
+                'contract_email': self.contract_email,
+                'attachment_ids': self.attachment_ids,
+                'attachment_note': self.attachment_note,
+                'process': self.process_id.get_info()
                 }
 
 
