@@ -28,7 +28,7 @@ class Cowin_project(models.Model):
     invest_manager = fields.Many2one('hr.employee', string=u'投资经理')
 
     # investment_fund = fields.One2many('xxxx.xxxx', 'rrrr_id', string=u'投资基金')
-    investment_fund = fields.Char(string=u'投资基金')
+    investment_funds = fields.Many2many('cowin_project.cowin_foudation', string=u'投资基金')
     round_financing = fields.Selection([(1, u'天使轮'), (2, u'A轮'), (3, u'B轮'), (4, u'C轮')],
                               string=u'融资轮次', required=True, default=1)
     round_money = fields.Float(string=u'本次融资额')
@@ -65,8 +65,37 @@ class Cowin_project(models.Model):
     #     return super(Cowin_project, self).create(vals)
 
 
+
+    # 由于project表有许多其他的表动态关联到该project之中,所以,此方法的
+    # 目的在于动态的查找出该project所对应的one2many的所有的对象实体,
+    # 由于是动态的操作模型,所以该project不方便使用one2many的操作
+    def _check_request_is_exist(self):
+        taches = self.process_id.get_all_taches()
+        temp = [tache for tache in taches]
+        t = None
+        temp = []
+        for tache in taches:
+            if tache.model_name:
+                # 当前表和model_name表属于同一张表,由于设计上的缺陷!!!
+                if tache.model_name == self._name:
+                    t = self.id
+                else:
+                    t = self.env[tache.model_name].search([('project_id', '=', self.id)]).id
+            else:
+                t = False
+            temp.append({'tache_id': tache,
+                         'model_name': tache.model_name,
+                         'res_id': t
+                         })
+
+        return temp
+
+
+
     # 获得每个project的xiang详细信息
     def _get_info(self):
+        # check_result = self._check_request_is_exist()
+
         return {'id': self.id,
                 'name': self.name,
                 'process_id': self.process_id.id,
@@ -75,13 +104,12 @@ class Cowin_project(models.Model):
                 'project_source': self.project_source,
                 'project_source_note': self.project_source_note,
                 'invest_manager': self.invest_manager,
-                'investment_fund': self.investment_fund,
                 'round_financing': self.round_financing,
                 'round_money': self.round_money,
                 'project_company_profile': self.project_company_profile,
                 'project_appraisal': self.project_appraisal,
                 'project_note': self.project_note,
-                'industry': self.industry,
+                # 'industry': self.industry,
                 'stage': self.stage,
                 'production': self.production,
                 'registered_address': self.registered_address,
@@ -90,10 +118,40 @@ class Cowin_project(models.Model):
                 'contract_person': self.contract_person,
                 'contract_phone': self.contract_phone,
                 'contract_email': self.contract_email,
-                'attachment_ids': self.attachment_ids,
+                # 'attachment_ids': self.attachment_ids,
                 'attachment_note': self.attachment_note,
-                'process': self.process_id.get_info()
+                'process': self.process_id.get_info(),
+                'investment_funds': self.get_investment_funds(),
+                'check_result': self._check_request_is_exist()
                 }
+
+
+    # 获得该项目中的投资基金的个数
+    def get_investment_funds(self):
+        investment_funds = self.investment_funds
+        round_range = [u'天使轮', u'A轮', u'B轮', u'C轮', u'D轮', u'E轮']
+        res = {}
+        for i in round_range:
+            res[i] = []
+
+        for investment_fund in investment_funds:
+            # 融资轮次
+            round_temp = investment_fund.round_financing
+            if round_temp:
+                res[round_temp].append({
+                    'id': investment_fund.id,
+                    'name': investment_fund.name,
+                    'project_id':investment_fund.project_id.id,
+                    'investment_amount':investment_fund.investment_amount,
+                    'ownership_interest':investment_fund.ownership_interest,
+                    'round_financing':investment_fund.round_financing
+                })
+
+
+        return res
+
+
+
 
 
     # 通过rpc调用,把详细的信息传递到前端以便于显示操作

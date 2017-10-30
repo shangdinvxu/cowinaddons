@@ -4,7 +4,7 @@ from odoo import models, fields, api
 
 
 class Cowin_foudation(models.Model):
-    _name = ''
+    _name = 'cowin_project.cowin_foudation'
 
 
     name = fields.Char(string=u'基金名称')
@@ -16,3 +16,6 @@ class Cowin_foudation(models.Model):
 
     round_financing = fields.Selection([(1, u'天使轮'), (2, u'A轮'), (3, u'B轮'), (4, u'C轮')],
                                        string=u'融资轮次', required=True, default=1)
+
+
+

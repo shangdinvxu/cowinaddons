@@ -224,3 +224,15 @@ class Cowin_settings_process(models.Model):
             stage.write({'show_order': int(show_order)})
 
         return self.get_info()
+
+
+    def get_all_taches(self):
+        result = self.get_info()
+
+        taches = [tache for stage in result['stage_ids']
+                  for tache in stage['tache_ids']]
+
+        return taches
+
+
+
