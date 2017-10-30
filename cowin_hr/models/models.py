@@ -61,9 +61,9 @@ class Cowin_hr(models.Model):
         # 创建当前的hr.employee实例
         res_hr = super(Cowin_hr, self).create(vals)
 
-        login_name_strip = vals.get('login_name').strip()
+        login_name_strip = vals.get('login_name')
         # # 开始对外键进行设置
-        if login_name_strip:
+        if login_name_strip and login_name_strip.strip():
 
             if not self._check_emial_format(login_name_strip):
                 raise UserError(u'邮箱格式错误!!!')

@@ -23,7 +23,7 @@ class Cowin_settings_process_stage(models.Model):
     # @api.model
     # def create(self, vals):
     #     if not vals.get('show_order'):
-    #         vals['show_order'] = int(self.env['ir.sequence'].next_by_code('cowin_settings.order'))
+    #         vals['show_order'] = self.env['ir.sequence'].next_by_code('cowin_settings.order')
     #
     #     return super(Cowin_settings_process_stage, self).create(vals)
 
