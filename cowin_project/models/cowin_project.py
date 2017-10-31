@@ -79,13 +79,8 @@ class Cowin_project(models.Model):
         if not foudation_id or not round_financing:
             return None
 
-        # 某个基金的stage(实例)/(记录)
-        foudation = self.env['cowin_project.cowin_foudation'].browse(int(foudation_id))
-        foudation_stage_id = foudation.get_round_financing(round_financing).id
-
         # 拿到该项目中配置信息的所有的环节数据
         taches = self.process_id.get_all_taches()
-
 
         t = None
         temp = []
@@ -95,6 +90,10 @@ class Cowin_project(models.Model):
                 if tache.model_name == self._name:
                     t = self.id
                 else:
+
+                    # 某个基金的stage(实例)/(记录)
+                    foudation = self.env['cowin_project.cowin_foudation'].browse(int(foudation_id))
+                    foudation_stage_id = foudation.get_round_financing(round_financing).id
                     t = self.env[tache.model_name].search([('foudation_stage_id', '=', foudation_stage_id)]).id
             else:
                 t = False
