@@ -18,7 +18,7 @@ class Cowin_settings_process_tache(models.Model):
 
     once_or_more = fields.Boolean(string=u'发起次数', default=True)
 
-    model_name = fields.Char(string=u'自定义model的名字')
+    model_name = fields.Many2one(u'cowin_settings.custome_model_data', string=u'自定义model的名字', default=u'cowin_project.cowin_project')
 
 
 

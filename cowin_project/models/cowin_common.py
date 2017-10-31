@@ -3,7 +3,7 @@ from odoo import models, fields, api
 
 
 class Cowin_Common(models.Model):
-    _name = 'cowin_project.cowin_common'
+    _name = 'cowin_project.cowin_industry'
 
     name = fields.Char(string=u'行业', required=True)
 
@@ -12,8 +12,11 @@ class Cowin_Common(models.Model):
     ]
 
 
+class Cowin_round_financing(models.Model):
+    _name = 'cowin_project.round_financing'
 
+    name = fields.Char(string=u'轮次')
 
-
-class Cowin_Attachment(models.Model):
-    _inherit = 'ir.attachment'
+    _sql_constraints = [
+            ('name_key', 'UNIQUE (name)', u'轮次名不能够相同')
+        ]

@@ -27,17 +27,17 @@ class Cowin_project(models.Model):
     project_source_note = fields.Char(string=u'项目来源备注')
     invest_manager = fields.Many2one('hr.employee', string=u'投资经理')
 
-    # investment_fund = fields.One2many('xxxx.xxxx', 'rrrr_id', string=u'投资基金')
-    investment_funds = fields.Many2many('cowin_project.cowin_foudation', string=u'投资基金')
-    round_financing = fields.Selection([(1, u'天使轮'), (2, u'A轮'), (3, u'B轮'), (4, u'C轮')],
-                              string=u'融资轮次', required=True, default=1)
+    investment_funds = fields.One2many('cowin_project.cowin_foudation', 'project_id', string=u'投资基金')
+    # investment_funds = fields.Many2one('cowin_project.cowin_foudation', string=u'投资基金')
+    round_financing = fields.Many2one('cowin_project.round_financing', string=u'融资轮次')
     round_money = fields.Float(string=u'本次融资额')
 
     project_company_profile = fields.Text(string=u'项目公司概况')
     project_appraisal = fields.Text(string=u'项目评价')
     project_note = fields.Text(string=u'备注')
-    industry = fields.Many2one('cowin_project.cowin_common', string=u'所属行业')
-    stage = fields.Selection([(1, u'种子期'), (2, u'成长早期'), (3, u'成长期'), (4, u'成熟期')], string=u'所属阶段')
+    industry = fields.Many2one('cowin_project.cowin_industry', string=u'所属行业')
+    stage = fields.Selection([(1, u'种子期'), (2, u'成长早期'), (3, u'成长期'), (4, u'成熟期')], string=u'所属阶段', default=1)
+    # stage = fields.Many2one('cowin_project.round_financing', string=u'融资轮次')
     production = fields.Text(string=u'产品')
     registered_address = fields.Char(string=u'注册地')
     peration_place = fields.Char(string=u'运营地')
@@ -69,9 +69,24 @@ class Cowin_project(models.Model):
     # 由于project表有许多其他的表动态关联到该project之中,所以,此方法的
     # 目的在于动态的查找出该project所对应的one2many的所有的对象实体,
     # 由于是动态的操作模型,所以该project不方便使用one2many的操作
-    def _check_request_is_exist(self):
+    def _check_view_status(self, foudation_id, round_financing):
+        '''
+
+        :param foudation_id:   基金 id
+        :param round_financing:  基金所在的某个轮次
+        :return:
+        '''
+        if not foudation_id or not round_financing:
+            return None
+
+        # 某个基金的stage(实例)/(记录)
+        foudation = self.env['cowin_project.cowin_foudation'].browse(int(foudation_id))
+        foudation_stage_id = foudation.get_round_financing(round_financing).id
+
+        # 拿到该项目中配置信息的所有的环节数据
         taches = self.process_id.get_all_taches()
-        temp = [tache for tache in taches]
+
+
         t = None
         temp = []
         for tache in taches:
@@ -80,7 +95,7 @@ class Cowin_project(models.Model):
                 if tache.model_name == self._name:
                     t = self.id
                 else:
-                    t = self.env[tache.model_name].search([('project_id', '=', self.id)]).id
+                    t = self.env[tache.model_name].search([('foudation_stage_id', '=', foudation_stage_id)]).id
             else:
                 t = False
             temp.append({'tache_id': tache,
@@ -122,30 +137,36 @@ class Cowin_project(models.Model):
                 'attachment_note': self.attachment_note,
                 'process': self.process_id.get_info(),
                 'investment_funds': self.get_investment_funds(),
-                'check_result': self._check_request_is_exist()
+                'check_view_status': self._check_view_status()
                 }
 
 
-    # 获得该项目中的投资基金的个数
+    # 获得该项目中的所有投资基金的详细信息
     def get_investment_funds(self):
-        investment_funds = self.investment_funds
-        round_range = [u'天使轮', u'A轮', u'B轮', u'C轮', u'D轮', u'E轮']
-        res = {}
-        for i in round_range:
-            res[i] = []
+        res = []
+        for investment_fund in self.investment_funds:
+            res.append({
+                'investment_fund': investment_fund.get_all_stage()
+            })
 
-        for investment_fund in investment_funds:
-            # 融资轮次
-            round_temp = investment_fund.round_financing
-            if round_temp:
-                res[round_temp].append({
-                    'id': investment_fund.id,
-                    'name': investment_fund.name,
-                    'project_id':investment_fund.project_id.id,
-                    'investment_amount':investment_fund.investment_amount,
-                    'ownership_interest':investment_fund.ownership_interest,
-                    'round_financing':investment_fund.round_financing
-                })
+
+        # round_range = [u'天使轮', u'A轮', u'B轮', u'C轮', u'D轮', u'E轮']
+        # res = {}
+        # for i in round_range:
+        #     res[i] = []
+        #
+        # for investment_fund in investment_funds:
+        #     # 融资轮次
+        #     round_temp = investment_fund.round_financing
+        #     if round_temp:
+        #         res[round_temp].append({
+        #             'id': investment_fund.id,
+        #             'name': investment_fund.name,
+        #             'project_id':investment_fund.project_id.id,
+        #             'investment_amount':investment_fund.investment_amount,
+        #             'ownership_interest':investment_fund.ownership_interest,
+        #             'round_financing':investment_fund.round_financing
+        #         })
 
 
         return res
