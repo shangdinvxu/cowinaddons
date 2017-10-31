@@ -140,33 +140,25 @@ class Cowin_project(models.Model):
                 }
 
 
-    # 获得该项目中的所有投资基金的详细信息
+    # 获得该项目中投资基金所在的投资轮次,
     def get_investment_funds(self):
-        res = []
+
+        res = {}
         for investment_fund in self.investment_funds:
-            res.append({
-                'investment_fund': investment_fund.get_all_stage()
-            })
+            stages = investment_fund.get_all_stage()
+            for stage in stages:
+                if not res.get(stage.round_financing):
+                    res[stage.round_financing] = []
+                res[stage.round_financing].append({
+                    'foudation_id': investment_fund.id,
+                    'foudation_name': investment_fund.name
+                })
 
 
-        # round_range = [u'天使轮', u'A轮', u'B轮', u'C轮', u'D轮', u'E轮']
-        # res = {}
-        # for i in round_range:
-        #     res[i] = []
-        #
-        # for investment_fund in investment_funds:
-        #     # 融资轮次
-        #     round_temp = investment_fund.round_financing
-        #     if round_temp:
-        #         res[round_temp].append({
-        #             'id': investment_fund.id,
-        #             'name': investment_fund.name,
-        #             'project_id':investment_fund.project_id.id,
-        #             'investment_amount':investment_fund.investment_amount,
-        #             'ownership_interest':investment_fund.ownership_interest,
-        #             'round_financing':investment_fund.round_financing
-        #         })
-
+        # 根据基金的id来对数据进行排序操作
+        for k, v in res.items():
+            sorted(v, key=lambda x: x['foudation_id'])
+            res[k] = v
 
         return res
 
