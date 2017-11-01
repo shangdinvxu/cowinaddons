@@ -13,7 +13,7 @@ class Cowin_project(models.Model):
         return tools.image_resize_image_big(open(image_path, 'rb').read().encode('base64'))
 
     # 关联到settings中,把该字段看成配置选项的操作
-    process_id = fields.Many2one('cowin_settings.process', ondelete="cascade", required=True)
+    process_id = fields.Many2one('cowin_settings.process', ondelete="cascade")
 
     image = fields.Binary("LOGO", default=_default_image, attachment=True,
                           help="This field holds the image used as photo for the cowin_project, limited to 1024x1024px.")
@@ -108,8 +108,6 @@ class Cowin_project(models.Model):
 
     # 获得每个project的xiang详细信息
     def _get_info(self):
-        # check_result = self._check_request_is_exist()
-
         return {'id': self.id,
                 'name': self.name,
                 'process_id': self.process_id.id,
@@ -117,8 +115,8 @@ class Cowin_project(models.Model):
                 'project_number': self.project_number,
                 'project_source': self.project_source,
                 'project_source_note': self.project_source_note,
-                'invest_manager': self.invest_manager,
-                'round_financing': self.round_financing,
+                # 'invest_manager': self.invest_manager,
+                'round_financing': self.round_financing.name,
                 'round_money': self.round_money,
                 'project_company_profile': self.project_company_profile,
                 'project_appraisal': self.project_appraisal,
@@ -132,7 +130,6 @@ class Cowin_project(models.Model):
                 'contract_person': self.contract_person,
                 'contract_phone': self.contract_phone,
                 'contract_email': self.contract_email,
-                # 'attachment_ids': self.attachment_ids,
                 'attachment_note': self.attachment_note,
                 'process': self.process_id.get_info(),
                 'investment_funds': self.get_investment_funds(),
