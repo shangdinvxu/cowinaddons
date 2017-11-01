@@ -136,7 +136,7 @@ class Cowin_project(models.Model):
                 'attachment_note': self.attachment_note,
                 'process': self.process_id.get_info(),
                 'investment_funds': self.get_investment_funds(),
-                'check_view_status': self._check_view_status()
+                # 'check_view_status': self._check_view_status()
                 }
 
 
