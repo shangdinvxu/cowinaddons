@@ -164,7 +164,8 @@ class Cowin_project(models.Model):
 
                 })
 
-        return res
+            return res
+
 
 
     def rpc_select_dislay_foundation(self, foundation_stage_id):
