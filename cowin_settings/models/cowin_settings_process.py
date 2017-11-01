@@ -133,13 +133,13 @@ class Cowin_settings_process(models.Model):
 
         tache_id = kwargs.get('tache_id')
         name = kwargs.get('tache_name')
-        tache_parent_id = int(kwargs.get('tache_parent_id'))
+        tache_parent_id = int(kwargs.get('tache_parent_id')) if kwargs.get('tache_parent_id') else None
 
         description = kwargs.get('description')
 
         tache = self.env['cowin_settings.process_tache'].browse(int(tache_id))
         tache.write({'name': name,
-                     'parent_id': int(tache_parent_id),
+                     'parent_id': tache_parent_id,
                      'description': description
                      })
 
