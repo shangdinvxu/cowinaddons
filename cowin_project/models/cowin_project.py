@@ -136,6 +136,7 @@ class Cowin_project(models.Model):
                 'attachment_note': self.attachment_note,
                 'process': self.process_id.get_info(),
                 'investment_funds': self.get_investment_funds(),
+                # 'investment_funds': None,
                 # 'check_view_status': self._check_view_status()
                 'default_display_foundation': self.get_default_display_foundation_stage()
                 }
@@ -146,25 +147,27 @@ class Cowin_project(models.Model):
             taches = self.process_id.get_all_taches()
             res = []
             for tache in taches:
-                examine_and_verify = tache.examine_and_verify
-                if tache.model_name == self._name:
-                    view_or_launch = True
-                else:
-                    target = self.env[tache.model_name].search([('foundation_stage_id',
-                                                                         '=', fundation_stage.id)])
-                    view_or_launch = True if target else False
 
-                once_or_more = tache.once_or_more
+                if tache['model_name'] == self._name:
+                    view_or_launch = True
+                    examine_and_verify = self.examine_and_verify
+                else:
+
+                    target = self.env[tache['model_name']].search([('foundation_stage_id', '=', fundation_stage.id)])
+                    view_or_launch = True if target else False
+                    examine_and_verify = target.examine_and_verify
+
+                once_or_more = tache['once_or_more']
 
                 res.append({
-                    'tache_id': tache.id,
+                    'tache_id': tache['id'],
                     'examine_and_verify': examine_and_verify,
                     'view_or_launch': view_or_launch,
                     'once_or_more': once_or_more,
 
                 })
 
-        return res
+            return res
 
 
     def rpc_select_dislay_foundation(self, foundation_stage_id):
@@ -204,8 +207,8 @@ class Cowin_project(models.Model):
             stages = investment_fund.get_all_stage()
             for stage in stages:
                 if not res.get(stage.round_financing):
-                    res[stage.round_financing] = []
-                res[stage.round_financing].append({
+                    res[stage.round_financing.name] = []
+                res[stage.round_financing.name].append({
                     'foudation_id': investment_fund.id,
                     'foudation_name': investment_fund.name
                 })

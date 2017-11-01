@@ -30,17 +30,18 @@ class Cowin_foudation(models.Model):
 
     # 获取该基金在该项目中的各个基金的投资的状态
     def get_all_stage(self):
-        res = []
-        for stage in self.foudation_stages:
-            res.append({
-                'id': stage.id,
-                'round_financing': stage.round_financing  # 融资轮次
-            })
+        # res = []
+        # for stage in self.foudation_stages:
+        #     res.append({
+        #         'id': stage.id,
+        #         'round_financing': stage.round_financing  # 融资轮次
+        #     })
+        return [stage for stage in self.foudation_stages]
+        # return {
+        #     'id': self.id,
+        #     'foudation_stages': res
+        # }
 
-        return {
-            'id': self.id,
-            'foudation_stages': res
-        }
 
 
 
