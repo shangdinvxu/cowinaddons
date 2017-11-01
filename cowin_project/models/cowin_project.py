@@ -14,6 +14,9 @@ class Cowin_project(models.Model):
 
     # 关联到settings中,把该字段看成配置选项的操作
     process_id = fields.Many2one('cowin_settings.process', ondelete="cascade")
+    examine_and_verify = fields.Selection([(1, u'无'), (2, u'审核中'), (3, u'审核通过')],
+                              string=u'审核校验', required=True, default=1)
+
 
     image = fields.Binary("LOGO", default=_default_image, attachment=True,
                           help="This field holds the image used as photo for the cowin_project, limited to 1024x1024px.")
@@ -134,10 +137,66 @@ class Cowin_project(models.Model):
                 'process': self.process_id.get_info(),
                 'investment_funds': self.get_investment_funds(),
                 # 'check_view_status': self._check_view_status()
+                'default_display_foundation': self.get_default_display_foundation_stage()
                 }
 
+    def get_default_display_foundation_stage(self):
+        if self.investment_funds:
+            fundation_stage = self.investment_funds[0][0]
+            taches = self.process_id.get_all_taches()
+            res = []
+            for tache in taches:
+                examine_and_verify = tache.examine_and_verify
+                if tache.model_name == self._name:
+                    view_or_launch = True
+                else:
+                    target = self.env[tache.model_name].search([('foundation_stage_id',
+                                                                         '=', fundation_stage.id)])
+                    view_or_launch = True if target else False
 
-    # 获得该项目中投资基金所在的投资轮次,
+                once_or_more = tache.once_or_more
+
+                res.append({
+                    'tache_id': tache.id,
+                    'examine_and_verify': examine_and_verify,
+                    'view_or_launch': view_or_launch,
+                    'once_or_more': once_or_more,
+
+                })
+
+        return res
+
+
+    def rpc_select_dislay_foundation(self, foundation_stage_id):
+
+        fundation_stage = self.env['cowin_project.cowin_foudation_stage'].browse(int(foundation_stage_id))
+        taches = self.process_id.get_all_taches()
+        res = []
+        for tache in taches:
+            examine_and_verify = tache.examine_and_verify
+            if tache.model_name == self._name:
+                view_or_launch = True
+            else:
+                target = self.env[tache.model_name].search([('foundation_stage_id',
+                                                             '=', fundation_stage.id)])
+                view_or_launch = True if target else False
+
+            once_or_more = tache.once_or_more
+
+            res.append({
+                'tache_id': tache.id,
+                'examine_and_verify': examine_and_verify,
+                'view_or_launch': view_or_launch,
+                'once_or_more': once_or_more,
+
+            })
+
+        result = self._get_info()
+        result['select_display_foundation'] = res
+        return result
+
+
+        # 获得该项目中投资基金所在的投资轮次,
     def get_investment_funds(self):
 
         res = {}
