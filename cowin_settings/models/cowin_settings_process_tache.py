@@ -14,13 +14,26 @@ class Cowin_settings_process_tache(models.Model):
     state = fields.Boolean(string=u'启用状态', default=True)
 
     stage_id = fields.Many2one('cowin_settings.process_stage', ondelete="cascade")
-    process_id=fields.Many2one('cowin_settings.process', related='stage_id.process_id')
+    # process_id=fields.Many2one('cowin_settings.process', related='stage_id.process_id')
 
     once_or_more = fields.Boolean(string=u'发起次数', default=True)
 
-    model_name = fields.Many2one(u'cowin_settings.custome_model_data', string=u'自定义model的名字', default=u'cowin_project.cowin_project')
+    model_name = fields.Many2one(u'cowin_settings.custome_model_data', string=u'自定义model的名字')
 
 
+    @api.model
+    def create(self, vals):
+        entity = self.env['cowin_settings.custome_model_data'].search([('model_name', '=', 'cowin_project.cowin_project')])
+        if not entity:
+            entity = entity.create({
+                'name': 'cowin_project.cowin_project',
+                'model_name': 'cowin_project.cowin_project'
+            })
+
+        res = super(Cowin_settings_process_tache, self).create(vals)
+
+        res.model_name = entity
+        return res
 
 
     def _check_parent_id(self, ids=[]):
