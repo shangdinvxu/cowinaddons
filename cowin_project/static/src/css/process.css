@@ -66,6 +66,7 @@
 }
 #process_tab_content .process_rounds_wrap>ul>li{
     margin-bottom: 8px;
+    cursor: pointer;
 }
 #process_tab_content .process_rounds_wrap>ul>.active_fund{
     color: #00B0DD;
