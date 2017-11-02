@@ -14,8 +14,9 @@ class Cowin_project(models.Model):
 
     # 关联到settings中,把该字段看成配置选项的操作
     process_id = fields.Many2one('cowin_settings.process', ondelete="cascade")
-    examine_and_verify = fields.Selection([(1, u'无'), (2, u'审核中'), (3, u'审核通过')],
-                              string=u'审核校验', required=True, default=1)
+    # examine_and_verify = fields.Selection([(1, u'无'), (2, u'审核中'), (3, u'审核通过')],
+    #                           string=u'审核校验', required=True, default=1)
+    examine_and_verify = fields.Char(string=u'审核校验', default=u'未开始审核')
 
 
     image = fields.Binary("LOGO", default=_default_image, attachment=True,
