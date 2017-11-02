@@ -6,6 +6,7 @@
             <div class="project_header">
                 <h2><t t-esc="result.name"/></h2>
             </div>
+            <div style="width:100%;height:10px;background:rgba(242, 242, 242, 1)"></div>
             <ul id="process_tab" class="nav nav-tabs">
                 <li><a href="#process_detail" data-toggle="tab">详情</a></li>
                 <li class="active"><a href="#process_data" data-toggle="tab">流程资料</a></li>
@@ -17,20 +18,50 @@
 
                 </div>
                 <div class="tab-pane fade in active" id="process_data">
+                    <div class="process_data_rounds">
+                        <div>项目流程</div>
+                        <t t-set="active_flag" t-value="1"/>
+                        <t t-foreach="result.investment_funds" t-as="item">
+                            <div class="process_rounds_wrap">
+                                <strong><t t-esc="item.round_financing"/>轮</strong>
+                                <ul>
+                                    <t t-foreach="item.foudation_stages" t-as="obj">
+                                        <t t-if="active_flag==1">
+                                            <li class="active_fund"><t t-esc="obj.name"/> <span class="fa fa-chevron-right"></span></li>
+                                            <t t-set="active_flag" t-value="0"/>
+                                        </t>
+                                        <t t-else="">
+                                            <li><t t-esc="obj.name"/> </li>
+                                        </t>
+                                    </t>
+                                </ul>
+                            </div>
+                        </t>
+                    </div>
+
+
+                    <!--<div class="process_data_rounds">-->
+                        <!--<div>项目流程</div>-->
+                        <!--<div class="process_rounds_wrap">-->
+                            <!--<strong>A轮</strong>-->
+                            <!--<ul>-->
+                                <!--<li>基金1XXX <span class="fa fa-chevron-right"></span></li>-->
+                                <!--<li>基金2XXX </li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+
+                    <!--</div>-->
+
                     <div class="process_data_main_wrap">
-                        <!--<t t-foreach="result.process.stage_ids" t-as="item">-->
-                            <!--<div class="process_data_item_line header_line">-->
-                                <!--<span class="fa fa-folder-o"></span>-->
-                                <!--<span><t t-esc="item.name"/></span>-->
-                            <!--</div>-->
-                            <!--<t t-foreach="item.tache_ids" t-as="obj">-->
-                                 <!--<div class="process_data_item_line detail_line">-->
-                                     <!--<span><t t-esc="obj.name"/> </span>-->
-                                     <!--<span>【审核通过】</span>-->
-                                     <!--<span><a href="javascript:void(0)">查看</a></span>-->
-                                 <!--</div>-->
-                            <!--</t>-->
-                        <!--</t>-->
+                            <div class="process_data_item_line header_line">
+                                <span class="fa fa-folder-o"></span>
+                                <span>多快好省</span>
+                            </div>
+                             <div class="process_data_item_line detail_line">
+                                 <span>第三方</span>
+                                 <span>【审核通过】</span>
+                                 <span><a href="javascript:void(0)">查看</a></span>
+                             </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="process_contact">

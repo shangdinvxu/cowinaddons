@@ -40,5 +40,5 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
     });
     core.action_registry.add('process_kanban_to_detail', ProcessKanbanToDetail);
 
-    return ProcessConf;
+    return ProcessKanbanToDetail;
 });
