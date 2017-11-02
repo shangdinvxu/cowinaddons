@@ -23,7 +23,7 @@
                         <t t-set="active_flag" t-value="1"/>
                         <t t-foreach="result.investment_funds" t-as="item">
                             <div class="process_rounds_wrap">
-                                <strong><t t-esc="item.round_financing"/>轮</strong>
+                                <strong><t t-esc="item.round_financing"/></strong>
                                 <ul>
                                     <t t-foreach="item.foudation_stages" t-as="obj">
                                         <t t-if="active_flag==1">

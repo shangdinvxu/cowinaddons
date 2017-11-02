@@ -176,7 +176,8 @@ class Cowin_project(models.Model):
                 for f_stage in f_stages:
                     # 融资轮次
                     round_financing_name = f_stage.round_financing.name
-                    if not look_up_table.get(round_financing_name):
+                    # 切记,这里要关注的是返回None的值的序列
+                    if look_up_table.get(round_financing_name) is None:
                         i = look_up_table[round_financing_name] = count
                         res.append({})
                         # 融资轮次
