@@ -44,6 +44,8 @@ class Cowin_settings_process(models.Model):
                 tmp_tache['parent_id'] = tache.parent_id.name
                 tmp_tache['description'] = tache.description
                 tmp_tache['state'] = tache.state
+                tmp_tache['once_or_more'] = tache.once_or_more
+                tmp_tache['model_name'] = tache.model_name.model_name
                 tmp_tache['stage_id'] = tache.stage_id.id
 
                 tmp_stage['tache_ids'].append(tmp_tache)

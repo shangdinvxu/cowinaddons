@@ -172,7 +172,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                 var more = false;
             }
              new Model("cowin_settings.process")
-                    .call("rpc_create_tache", [self.id], {name:tache_name,stage_id:stage_id,description:tach_info,once_or_more:more})
+                    .call("rpc_create_tache", [self.id], {name:tache_name,stage_id:parseInt(stage_id),description:tach_info,once_or_more:more})
                     .then(function (result) {
                         console.log(result);
                         $('.create_new_tache').hide();

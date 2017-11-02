@@ -2,7 +2,7 @@
 from odoo import models, fields, api
 from odoo.modules.module import get_module_resource
 from odoo import tools
-
+import copy
 
 class Cowin_project(models.Model):
     _name = 'cowin_project.cowin_project'
@@ -109,7 +109,96 @@ class Cowin_project(models.Model):
 
 
 
-    # 获得每个project的xiang详细信息
+
+    def get_investment_funds2(self):
+
+        # 1 构建 轮次 --> index 索引
+        look_up_table = {}
+        count = 0
+
+
+        res = []
+
+        # f_stage 基金状态记录
+        def process_settings(f_stage):
+            # 获得基础的配置信息
+            stages = self.process_id.get_info()['stage_ids']
+            stages = copy.deepcopy(stages)
+            # 深拷贝的目的在于不让数据产生干扰,因为stages是公共数据
+            for stage in stages:
+                for tache in stage['tache_ids']:
+                    if tache['model_name'] == self._name:
+                        examine_and_verify = self.examine_and_verify
+                        view_or_launch = True
+                    else:
+                        model_name = tache['model_name']
+                        target = self.env[model_name].search([('foundation_stage_id', '=', f_stage.id)])
+                        examine_and_verify = target.examine_and_verify
+                        view_or_launch = True if target else False
+
+                    tache['examine_and_verify'] = examine_and_verify
+                    tache['view_or_launch'] = view_or_launch
+
+            return stages
+
+        foundations = self.get_all_investment_funds()
+        # 某些情况下基金并没有构建起来
+        if not foundations:
+            # 获得基础的配置信息
+            stages = self.process_id.get_info()['stage_ids']
+            stages = copy.deepcopy(stages)
+            for stage in stages:
+                for tache in stage['tache_ids']:
+                    if tache['model_name'] == self._name:
+                        examine_and_verify = self.examine_and_verify
+                        view_or_launch = True
+                    else:
+                        # model_name = tache['model_name']
+                        # target = self.env[model_name].search([('foundation_stage_id', '=', f_stage.id)])
+                        examine_and_verify = False
+                        view_or_launch = False
+
+                    tache['examine_and_verify'] = examine_and_verify
+                    tache['view_or_launch'] = view_or_launch
+
+            res.append({})
+            res[0]['round_financing'] = u''
+            res[0]['foudation_stages'] = []
+            res[0]['foudation_stages'].append({
+                'foudation_stage_id': -1,
+                'name': u'',
+                'process': stages
+            })
+
+
+        else:
+
+            for foundation in foundations:
+                f_stages = foundation.get_all_stage()
+
+                for f_stage in f_stages:
+                    # 融资轮次
+                    round_financing_name = f_stage.round_financing.name
+                    if not look_up_table.get(round_financing_name):
+                        i = look_up_table[round_financing_name] = count
+                        res.append({})
+                        # 融资轮次
+                        res[i]['round_financing'] = round_financing_name
+                        # 融资基金
+                        res[i]['foudation_stages'] = []
+                        count += 1
+                    index = look_up_table[round_financing_name]
+                    res[index]['foudation_stages'].append({
+                        'foudation_stage_id': f_stage.id,
+                        'name': f_stage.foudation_id.name,
+                        'process': process_settings(f_stage)
+                    })
+
+        return res
+
+
+
+    # 获得每个project的详细信息
     def _get_info(self):
         return {'id': self.id,
                 'name': self.name,
@@ -135,7 +224,8 @@ class Cowin_project(models.Model):
                 'contract_email': self.contract_email,
                 'attachment_note': self.attachment_note,
                 'process': self.process_id.get_info(),
-                'investment_funds': self.get_investment_funds(),
+                'investment_funds': self.get_investment_funds2(),
+                # 'investment_funds': None,
                 # 'check_view_status': self._check_view_status()
                 'default_display_foundation': self.get_default_display_foundation_stage()
                 }
@@ -146,18 +236,20 @@ class Cowin_project(models.Model):
             taches = self.process_id.get_all_taches()
             res = []
             for tache in taches:
-                examine_and_verify = tache.examine_and_verify
-                if tache.model_name == self._name:
-                    view_or_launch = True
-                else:
-                    target = self.env[tache.model_name].search([('foundation_stage_id',
-                                                                         '=', fundation_stage.id)])
-                    view_or_launch = True if target else False
 
-                once_or_more = tache.once_or_more
+                if tache['model_name'] == self._name:
+                    view_or_launch = True
+                    examine_and_verify = self.examine_and_verify
+                else:
+
+                    target = self.env[tache['model_name']].search([('foundation_stage_id', '=', fundation_stage.id)])
+                    view_or_launch = True if target else False
+                    examine_and_verify = target.examine_and_verify
+
+                once_or_more = tache['once_or_more']
 
                 res.append({
-                    'tache_id': tache.id,
+                    'tache_id': tache['id'],
                     'examine_and_verify': examine_and_verify,
                     'view_or_launch': view_or_launch,
                     'once_or_more': once_or_more,
@@ -197,6 +289,9 @@ class Cowin_project(models.Model):
         return result
 
 
+    def get_all_investment_funds(self):
+        return [funds for funds in self.investment_funds]
+
         # 获得该项目中投资基金所在的投资轮次,
     def get_investment_funds(self):
 
@@ -205,8 +300,8 @@ class Cowin_project(models.Model):
             stages = investment_fund.get_all_stage()
             for stage in stages:
                 if not res.get(stage.round_financing):
-                    res[stage.round_financing] = []
-                res[stage.round_financing].append({
+                    res[stage.round_financing.name] = []
+                res[stage.round_financing.name].append({
                     'foudation_id': investment_fund.id,
                     'foudation_name': investment_fund.name
                 })
