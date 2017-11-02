@@ -108,38 +108,35 @@ class Cowin_project(models.Model):
         return temp
 
 
+    # 用来处理每个基金投资阶段中settings配置信息的改变
+    # f_stage 基金状态记录
+    def process_settings(self, f_stage_id):
+        # 获得基础的配置信息
+        stages = self.process_id.get_info()['stage_ids']
+        stages = copy.deepcopy(stages)
+        # 深拷贝的目的在于不让数据产生干扰,因为stages是公共数据
+        for stage in stages:
+            for tache in stage['tache_ids']:
+                if tache['model_name'] == self._name:
+                    examine_and_verify = self.examine_and_verify
+                    view_or_launch = True
+                else:
+                    model_name = tache['model_name']
+                    target = self.env[model_name].search([('foundation_stage_id', '=', f_stage_id)])
+                    examine_and_verify = target.examine_and_verify
+                    view_or_launch = True if target else False
 
+                tache['examine_and_verify'] = examine_and_verify
+                tache['view_or_launch'] = view_or_launch
+
+        return stages
 
     def get_investment_funds2(self):
 
         # 1 构建 轮次 --> index 索引
         look_up_table = {}
         count = 0
-
-
         res = []
-
-        # f_stage 基金状态记录
-        def process_settings(f_stage):
-            # 获得基础的配置信息
-            stages = self.process_id.get_info()['stage_ids']
-            stages = copy.deepcopy(stages)
-            # 深拷贝的目的在于不让数据产生干扰,因为stages是公共数据
-            for stage in stages:
-                for tache in stage['tache_ids']:
-                    if tache['model_name'] == self._name:
-                        examine_and_verify = self.examine_and_verify
-                        view_or_launch = True
-                    else:
-                        model_name = tache['model_name']
-                        target = self.env[model_name].search([('foundation_stage_id', '=', f_stage.id)])
-                        examine_and_verify = target.examine_and_verify
-                        view_or_launch = True if target else False
-
-                    tache['examine_and_verify'] = examine_and_verify
-                    tache['view_or_launch'] = view_or_launch
-
-            return stages
 
         foundations = self.get_all_investment_funds()
         # 某些情况下基金并没有构建起来
@@ -191,7 +188,7 @@ class Cowin_project(models.Model):
                     res[index]['foudation_stages'].append({
                         'foudation_stage_id': f_stage.id,
                         'name': f_stage.foudation_id.name,
-                        'process': process_settings(f_stage)
+                        # 'process': self.process_settings(f_stage)
                     })
 
         return res
@@ -200,6 +197,9 @@ class Cowin_project(models.Model):
 
     # 获得每个project的详细信息
     def _get_info(self):
+        investment_funds = self.get_investment_funds2()
+        f_stage_id = investment_funds[0]['foudation_stages'][0]['foudation_stage_id']
+        process = self.process_settings(f_stage_id)
         return {'id': self.id,
                 'name': self.name,
                 'process_id': self.process_id.id,
@@ -223,10 +223,8 @@ class Cowin_project(models.Model):
                 'contract_phone': self.contract_phone,
                 'contract_email': self.contract_email,
                 'attachment_note': self.attachment_note,
-                'process': self.process_id.get_info(),
-                'investment_funds': self.get_investment_funds2(),
-                # 'investment_funds': None,
-                # 'check_view_status': self._check_view_status()
+                'investment_funds': investment_funds,
+                'process': process,
                 'default_display_foundation': self.get_default_display_foundation_stage()
                 }
 
