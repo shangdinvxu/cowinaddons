@@ -137,3 +137,6 @@
 .create_wrap .edit_tache_desc{
     margin-top: 15px;
 }
+#conf_detail_container .button_wrap>.cancel_sort{
+    display: none;
+}
