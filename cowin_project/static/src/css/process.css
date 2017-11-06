@@ -1,9 +1,11 @@
 #project_process_container{
     height:100%;
 }
+.o_content{
+    background-color: white;
+}
 #project_process_container .project_header{
     padding: 30px;
-    margin-bottom: 10px;
     background-color: white;
 }
 #project_process_container #process_tab{
@@ -25,12 +27,59 @@
     height:100%;
     background-color: white;
 }
+#project_process_container #process_data{
+    /*overflow: hidden;*/
+}
 #project_process_container #process_tab_content .table{
     background-color: white;
 }
 #process_tab_content .process_data_main_wrap{
-    margin-left: 200px;
+    float: left;
+    width: 70%;
+    margin-left: 50px;
 }
+#process_tab_content .process_data_rounds{
+    float: left;
+    width: 180px;
+    padding: 10px;
+    background-color: rgba(242, 242, 242, 1);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.349019607843137);
+    margin-top: 15px;
+    margin-left: 15px;
+}
+#process_tab_content .process_data_rounds>div:nth-child(1){
+    text-align: center;
+    border-bottom: 1px solid rgba(134,134,134,.3);
+    padding-bottom: 8px;
+    color: #868686;
+    margin-bottom: 10px;
+}
+#process_tab_content .process_rounds_wrap>strong{
+    color: #949494;
+    font-size:18px;
+    font-weight: 700;
+}
+#process_tab_content .process_rounds_wrap>ul{
+    padding-left: 18px;
+    color: #949494;
+    margin-top: 15px;
+}
+#process_tab_content .process_rounds_wrap>ul>li{
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+#process_tab_content .process_rounds_wrap>ul>.active_fund{
+    color: #00B0DD;
+}
+#process_tab_content .process_rounds_wrap>ul>li>span{
+    float: right;
+    margin-top: 3px;
+}
+#process_tab_content .process_rounds_wrap{
+    margin-bottom: 30px;
+}
+
+
 #process_tab_content .process_data_main_wrap .process_data_item_line{
     padding: 10px 0;
     border-bottom: 1px solid rgba(134,134,134,.3);

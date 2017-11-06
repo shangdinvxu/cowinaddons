@@ -44,6 +44,8 @@ class Cowin_settings_process(models.Model):
                 tmp_tache['parent_id'] = tache.parent_id.name
                 tmp_tache['description'] = tache.description
                 tmp_tache['state'] = tache.state
+                tmp_tache['once_or_more'] = tache.once_or_more
+                tmp_tache['model_name'] = tache.model_name.model_name
                 tmp_tache['stage_id'] = tache.stage_id.id
 
                 tmp_stage['tache_ids'].append(tmp_tache)
@@ -133,17 +135,20 @@ class Cowin_settings_process(models.Model):
 
         tache_id = kwargs.get('tache_id')
         name = kwargs.get('tache_name')
-        tache_parent_id = int(kwargs.get('tache_parent_id'))
+        tache_parent_id = int(kwargs.get('tache_parent_id')) if kwargs.get('tache_parent_id') else None
 
         description = kwargs.get('description')
 
         tache = self.env['cowin_settings.process_tache'].browse(int(tache_id))
         tache.write({'name': name,
-                     'parent_id': int(tache_parent_id),
+                     'parent_id': tache_parent_id,
                      'description': description
                      })
 
         return self.get_info()
+
+
+
 
 
 
@@ -197,3 +202,15 @@ class Cowin_settings_process(models.Model):
             stage.write({'show_order': int(show_order)})
 
         return self.get_info()
+
+
+    def get_all_taches(self):
+        result = self.get_info()
+
+        taches = [tache for stage in result['stage_ids']
+                  for tache in stage['tache_ids']]
+
+        return taches
+
+
+

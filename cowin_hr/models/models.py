@@ -24,6 +24,7 @@ class Cowin_hr(models.Model):
     relation_to_me = fields.Char(string=u'与本人关系')
     identification_id_contract_person = fields.Char(string=u'身份证')
     mobile_phone_backup_contract_person = fields.Char(string=u'联系电话')
+    # job_id = fields.Many2many('hr.job', string='Job Title')
 
     barcode = fields.Char(string=u'员工编码')
 

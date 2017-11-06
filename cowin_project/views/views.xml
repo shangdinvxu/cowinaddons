@@ -78,19 +78,17 @@
             </field>
         </record>
 
+        <!-- 此试图的含义在于新建时候所需要关联的视图结构 -->
         <!--项目流程的form视图-->
         <record model="ir.ui.view" id="project_process_form_view">
-            <field name="name">coowin_project.process.kanban</field>
+            <field name="name">coowin_project.process.form</field>
             <field name="model">cowin_project.cowin_project</field>
-            <!--<field name="priority">10</field>-->
             <field name="arch" type="xml">
                 <form string="Fiscal year">
                     <div class="cowin_process_form_wrap">
                         <group>
                             <field name="name"/>
                             <field name="image" widget="image"/>
-                            <!--<field name="register_person"/>-->
-                            <!--<field name="project_number"/>-->
                             <field name="project_source"/>
                             <field name="project_source_note"/>
                             <field name="round_financing"/>
@@ -107,8 +105,6 @@
                             <field name="invest_manager"/>
                             <field name="contract_person"/>
                             <field name="contract_email"/>
-                            <!--<field name="attachment_ids" widget="one2many"/>-->
-                            <!--<field name="attachment_ids" widget="one2many_list"/>-->
                             <field name="attachment_ids" widget="many2many_binary"/>
                             <field name="attachment_note"/>
                         </group>
@@ -117,6 +113,40 @@
             </field>
         </record>
 
+        <!-- 此视图代表着项目视图form默认显示的列表的视图 -->
+         <record model="ir.ui.view" id="project_process_form_view_profile">
+            <field name="name">coowin_project.process.profile</field>
+            <field name="model">cowin_project.cowin_project</field>
+            <field name="arch" type="xml">
+                <form string="Fiscal year">
+                    <div class="cowin_process_form_wrap">
+                        <group>
+                            <field name="name"/>
+                            <field name="image" widget="image"/>
+                            <field name="process_id"/>
+                            <field name="project_source"/>
+                            <field name="project_source_note"/>
+                            <field name="round_financing"/>
+                            <field name="round_money"/>
+                            <field name="project_company_profile"/>
+                            <field name="project_appraisal"/>
+                            <field name="project_note"/>
+                            <field name="industry"/>
+                            <field name="stage"/>
+                            <field name="production"/>
+                            <field name="registered_address"/>
+                            <field name="peration_place"/>
+                            <field name="founding_time"/>
+                            <field name="invest_manager"/>
+                            <field name="contract_person"/>
+                            <field name="contract_email"/>
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                            <field name="attachment_note"/>
+                        </group>
+                    </div>
+                </form>
+            </field>
+        </record>
 
 
         <record model="ir.actions.act_window" id="action_project_process">

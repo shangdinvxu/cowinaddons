@@ -98,7 +98,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             var edit_tache_descs = $('.edit_tache_desc textarea').val();
             var tache_parent_id = $(".condition_wrap select").find("option:selected").attr('data-id');  //解锁条件
              new Model("cowin_settings.process")
-                    .call("rpc_edit_tache", [self.id], {tache_parent_id:tache_parent_id,tache_id:self.unlock_tache_id,tache_name:edit_tache_name,description:edit_tache_descs})
+                    .call("rpc_edit_tache", [self.id], {tache_parent_id:parseInt(tache_parent_id),tache_id:parseInt(self.unlock_tache_id),tache_name:edit_tache_name,description:edit_tache_descs})
                     .then(function (result) {
                         console.log(result);
                         $('.create_new_tache').hide();
@@ -172,7 +172,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                 var more = false;
             }
              new Model("cowin_settings.process")
-                    .call("rpc_create_tache", [self.id], {name:tache_name,stage_id:stage_id,description:tach_info,once_or_more:more})
+                    .call("rpc_create_tache", [self.id], {name:tache_name,stage_id:parseInt(stage_id),description:tach_info,once_or_more:more})
                     .then(function (result) {
                         console.log(result);
                         $('.create_new_tache').hide();
