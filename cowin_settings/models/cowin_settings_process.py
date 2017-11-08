@@ -18,8 +18,6 @@ class Cowin_settings_process(models.Model):
 
     category = fields.Char(string=u'流程配置分类')
 
-    # rpc调用方法,前端页面直接获取后端数据的所需要的方法,
-    # 该方法对应的是当前model类中的一条实例对象
 
     # 该实例方法用于获取一条数据信息
     def get_info(self):
