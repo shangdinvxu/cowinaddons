@@ -16,6 +16,8 @@ class Cowin_settings_process(models.Model):
 
     description = fields.Char(string=u'说明')
 
+    category = fields.Char(string=u'流程配置分类')
+
     # rpc调用方法,前端页面直接获取后端数据的所需要的方法,
     # 该方法对应的是当前model类中的一条实例对象
 
@@ -47,6 +49,7 @@ class Cowin_settings_process(models.Model):
                 tmp_tache['once_or_more'] = tache.once_or_more
                 tmp_tache['model_name'] = tache.model_name.model_name
                 tmp_tache['stage_id'] = tache.stage_id.id
+                tmp_tache['approval_flow_settings_id'] = tache.approval_flow_settings.id
 
                 tmp_stage['tache_ids'].append(tmp_tache)
 
@@ -213,4 +216,27 @@ class Cowin_settings_process(models.Model):
         return taches
 
 
+    def get_approval_flow_settings(self):
+        taches = self.get_all_taches()
 
+
+
+
+    # 开始做审批流设置
+    def rpc_approval_flow_setting(self, **kwargs):
+
+
+
+        return self.get_info()
+
+
+
+    def rpc_edit_approva_flow_settings(self, **kwargs):
+        approval_flow_settings_id = int(kwargs.get('approval_flow_settings_id'))
+
+        # 获得该审批流实体
+        approval_flow_settings = self.env['cowin_settings.approval_flow_settings'].browse(approval_flow_settings_id)
+
+        res = approval_flow_settings.get_all_approval_flow_setting_nodes()
+
+        return res

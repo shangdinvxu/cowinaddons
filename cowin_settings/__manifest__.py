@@ -27,6 +27,7 @@
         # 'security/ir.model.access.csv',
         'views/menu_actions.xml',
         'views/sequences.xml',
+        'views/init_settings.xml',
         'views/cowin_setting_process.xml',
         'views/cowin_settings_process_stage.xml',
         'views/cowin_settings_process_tache.xml',

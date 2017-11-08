@@ -60,13 +60,16 @@ class Cowin_project(models.Model):
 
 
 
-    #
-    # @api.model
-    # def create(self, vals):
-    #     if not vals.get('project_number'):
-    #         vals['project_number'] = self.env['ir.sequence'].next_by_code('cowin_project.order')
-    #
-    #     return super(Cowin_project, self).create(vals)
+
+    @api.model
+    def create(self, vals):
+        if not vals.get('project_number'):
+            vals['project_number'] = self.env['ir.sequence'].next_by_code('cowin_project.order')
+
+        if not vals.get('process_id'):
+            vals['process_id'] = self.env['cowin_settings.process'].search([('category', '=', 'init_preinvestment')]).id
+
+        return super(Cowin_project, self).create(vals)
 
 
 

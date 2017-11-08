@@ -20,6 +20,8 @@ class Cowin_settings_process_tache(models.Model):
 
     model_name = fields.Many2one(u'cowin_settings.custome_model_data', string=u'自定义model的名字')
 
+    approval_flow_settings = fields.One2many('cowin_settings.approval_flow_settings', 'tache_id', string=u'审批流程')
+
 
     @api.model
     def create(self, vals):
@@ -31,6 +33,11 @@ class Cowin_settings_process_tache(models.Model):
             })
 
         res = super(Cowin_settings_process_tache, self).create(vals)
+        # begin 添加审批流
+        res.write({'approval_flow_settings': res.get_approval_flow_settings()})
+
+        # --end
+
 
         res.model_name = entity
         return res
@@ -65,3 +72,15 @@ class Cowin_settings_process_tache(models.Model):
         ids = []
         print u'kkkk'
         return self._check_parent_id(ids)
+
+
+
+    def get_approval_flow_settings(self):
+        res = None
+        if not self.approval_flow_settings:
+            res = self.env['cowin_settings.approval_flow_settings'].create({'name': u'审批流'})
+            res.tache_id = self
+
+        else:
+            res = self.approval_flow_settings
+        return res
