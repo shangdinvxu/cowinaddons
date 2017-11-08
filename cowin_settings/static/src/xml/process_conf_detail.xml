@@ -11,13 +11,17 @@
                     <span class="fa fa-plus"></span>
                     新建分组
                 </div>
+                <div class="new_link_button">
+                    <span class="fa fa-plus"></span>
+                    新增环节
+                </div>
                 <div class="sort_button sort_group">
                     <span class="fa fa-exchange fa-rotate-90"></span>
                     <span class="sort_state">排序</span>
                 </div>
-                <div class="new_link_button">
-                    <span class="fa fa-plus"></span>
-                    新增环节
+                <div class="cancel_sort">
+                    <span class="fa fa-times"></span>
+                    <span class="">取消排序</span>
                 </div>
             </div>
             <div class="detail_main_wrap">

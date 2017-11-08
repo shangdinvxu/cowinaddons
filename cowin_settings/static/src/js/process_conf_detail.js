@@ -31,7 +31,19 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             'click .sort_group_save':'sort_group_save',
             'dragover tr':'prevent_default',
             'dragstart tr': 'move_start',
-            'drop tr':'move_func'
+            'drop tr':'move_func',
+            'click .cancel_sort':'cancel_sort'
+        },
+        //取消排序
+        cancel_sort:function () {
+            var self = this;
+            return new Model("cowin_settings.process")
+                    .call("get_info", [this.id])
+                    .then(function (result) {
+                        console.log(self.$el)
+                        self.$el.html('');
+                        self.$el.append(QWeb.render('process_conf_detail_tmp', {result: result}));
+                    })
         },
         //拖动开始时的操作
         move_start:function (e) {
@@ -45,6 +57,10 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             e.preventDefault();
             var self = this;
             var targetEle = e.target;    //松开鼠标释放节点时光标所在元素
+            if($(targetEle).parents('tr').attr('data-id') == this.move_group_id || $(targetEle).parents('tr').attr('data-stage-id') == this.move_group_id){
+                return
+            }
+
             var target_group_id = $(targetEle).parents('tr').attr('data-id');
             var move_taches = $(".process_detail_group_detail_line[data-stage-id="+self.move_group_id+"]");
             $('.process_detail_group_detail_line[data-stage-id='+self.move_group_id+']').remove();
@@ -88,6 +104,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             $('.sort_group').addClass('sort_group_save');
             $('.sort_group').removeClass('sort_group');
             $('.process_detail_group_line').attr('draggable','true');
+            $('.cancel_sort').css('display','inline-block');
         },
         //确定环节编辑
         confirm_unlock_condition:function (e) {

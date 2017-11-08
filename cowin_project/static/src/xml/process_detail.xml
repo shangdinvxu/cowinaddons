@@ -27,7 +27,14 @@
                                 <ul>
                                     <t t-foreach="item.foudation_stages" t-as="obj">
                                         <t t-if="active_flag==1">
-                                            <li class="active_fund"><t t-esc="obj.name"/> <span class="fa fa-chevron-right"></span></li>
+                                            <li class="active_fund">
+                                                <t t-if="obj.name==''">
+                                                    暂无基金
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-esc="obj.name"/> <span class="fa fa-chevron-right"></span>
+                                                </t>
+                                            </li>
                                             <t t-set="active_flag" t-value="0"/>
                                         </t>
                                         <t t-else="">
