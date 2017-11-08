@@ -31,7 +31,8 @@
         'views/cowin_settings_process_stage.xml',
         'views/cowin_settings_process_tache.xml',
         'views/templates.xml',
-        'views/views.xml'
+        'views/views.xml',
+        'security/init_process.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
