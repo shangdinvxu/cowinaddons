@@ -17,8 +17,9 @@ class Cowin_settings_process_stage(models.Model):
 
     tache_ids = fields.One2many('cowin_settings.process_tache', 'stage_id', string='Tache ids')
 
-
-
+    _sql_constraints = [
+        ('login_key', 'UNIQUE (name)', u'阶段配置名不能相同!!!')
+    ]
 
     # @api.model
     # def create(self, vals):

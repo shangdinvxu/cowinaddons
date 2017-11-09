@@ -11,5 +11,14 @@
             <field name="padding">4</field>
             <field name="company_id" eval="False"/>
         </record>
+
+
+        <record id="seq_pro_order" model="ir.sequence">
+            <field name="name">conwin_project_settings Orders</field>
+            <field name="code">cowin_project_settings.order</field>
+            <field name="prefix"></field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
     </data>
 </odoo>

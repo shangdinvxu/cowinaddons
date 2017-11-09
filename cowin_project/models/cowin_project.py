@@ -13,9 +13,8 @@ class Cowin_project(models.Model):
         return tools.image_resize_image_big(open(image_path, 'rb').read().encode('base64'))
 
     # 关联到settings中,把该字段看成配置选项的操作
-    process_id = fields.Many2one('cowin_settings.process', ondelete="cascade")
-    # examine_and_verify = fields.Selection([(1, u'无'), (2, u'审核中'), (3, u'审核通过')],
-    #                           string=u'审核校验', required=True, default=1)
+    process_id = fields.Many2one('cowin_project.process', ondelete="cascade")
+
     examine_and_verify = fields.Char(string=u'审核校验', default=u'未开始审核')
 
 
@@ -29,19 +28,16 @@ class Cowin_project(models.Model):
     project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')],
                               string=u'项目来源', required=True)
     project_source_note = fields.Char(string=u'项目来源备注')
-    invest_manager = fields.Many2one('hr.employee', string=u'投资经理')
+    # invest_manager = fields.Many2one('hr.employee', string=u'投资经理')
 
-    investment_funds = fields.One2many('cowin_project.cowin_foudation', 'project_id', string=u'投资基金')
-    # investment_funds = fields.Many2one('cowin_project.cowin_foudation', string=u'投资基金')
-    round_financing = fields.Many2one('cowin_project.round_financing', string=u'融资轮次')
+    round_financing = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
     round_money = fields.Float(string=u'本次融资额')
 
     project_company_profile = fields.Text(string=u'项目公司概况')
     project_appraisal = fields.Text(string=u'项目评价')
     project_note = fields.Text(string=u'备注')
-    industry = fields.Many2one('cowin_project.cowin_industry', string=u'所属行业')
+    industry = fields.Many2one('cowin_common.cowin_industry', string=u'所属行业')
     stage = fields.Selection([(1, u'种子期'), (2, u'成长早期'), (3, u'成长期'), (4, u'成熟期')], string=u'所属阶段', default=1)
-    # stage = fields.Many2one('cowin_project.round_financing', string=u'融资轮次')
     production = fields.Text(string=u'产品')
     registered_address = fields.Char(string=u'注册地')
     peration_place = fields.Char(string=u'运营地')
@@ -49,12 +45,9 @@ class Cowin_project(models.Model):
     contract_person = fields.Char(string=u'联系人')
     contract_phone = fields.Char(string=u'联系电话')
     contract_email = fields.Char(string=u'Email')
-    # attachment_ids = fields.One2many('ir.attachment', 'res_id', domain=lambda self: [('res_model', '=', self._name)],
-    #                                  auto_join=True, string=u"附件")
 
     attachment_ids = fields.Many2many('ir.attachment', string=u"附件")
 
-    # displayed_image_id = fields.Many2one('ir.attachment', domain="[('res_model', '=', 'project.task'), ('res_id', '=', id), ('mimetype', 'ilike', 'image')]", string='Displayed Image')
 
     attachment_note = fields.Char(string=u'附件说明')
 
@@ -67,9 +60,17 @@ class Cowin_project(models.Model):
             vals['project_number'] = self.env['ir.sequence'].next_by_code('cowin_project.order')
 
         if not vals.get('process_id'):
-            vals['process_id'] = self.env['cowin_settings.process'].search([('category', '=', 'init_preinvestment')]).id
+            meta_setting_entity = self.env['cowin_settings.process'].search([('category', '=', 'init_preinvestment')])
+
+            # 每次创建的实例 都要从数据
+            process = self.env['cowin_project.process'].create_process_info(meta_setting_entity.copy_custom(),
+                                                                            meta_setting_entity.id)
+
+            vals['process_id'] = process.id
+
 
         return super(Cowin_project, self).create(vals)
+
 
 
 
@@ -99,7 +100,7 @@ class Cowin_project(models.Model):
                 else:
 
                     # 某个基金的stage(实例)/(记录)
-                    foudation = self.env['cowin_project.cowin_foudation'].browse(int(foudation_id))
+                    foudation = self.env['cowin_foudation.cowin_foudation'].browse(int(foudation_id))
                     foudation_stage_id = foudation.get_round_financing(round_financing).id
                     t = self.env[tache.model_name].search([('foudation_stage_id', '=', foudation_stage_id)]).id
             else:
@@ -134,6 +135,68 @@ class Cowin_project(models.Model):
                 tache['view_or_launch'] = view_or_launch
 
         return stages
+
+    def process_settings2(self, round_financing_and_foundation_id):
+        '''
+
+        :param round_financing_and_foundation_id: 轮次基金实体id
+        :return:
+        '''
+
+        # 待处理的proces信息
+        process = self.process_id.get_info()
+
+        res = {}
+
+        round_financing_and_foundation = None
+        # 代表着第一次默认选择第一个来显示,当然,如果存在的情况下
+        if not round_financing_and_foundation_id:
+            round_financing_and_foundations = self.round_financing.round_financing_for_foundation_ids
+            # 第一条数据存在
+            if round_financing_and_foundations:
+                round_financing_and_foundation = round_financing_and_foundations[0]
+
+        else:
+            round_financing_and_foundation = self.round_financing.browse(round_financing_and_foundation_id)
+
+
+        # 代表当前存在某个基金环节实体记录
+        if round_financing_and_foundation:
+
+            # 或得到当前的基金环节记录实体
+            for stage in process['stage_ids']:
+                for tache in stage['tache_ids']:
+                    if tache['model_name'] == self._name:
+                        examine_and_verify = self.examine_and_verify
+                        view_or_launch = True
+                    else:
+                        model_name = tache['model_name']
+                        target = self.env[model_name].search([('foundation_stage_id', '=', round_financing_and_foundation.id)])
+                        examine_and_verify = target.examine_and_verify
+                        view_or_launch = True if target else False
+
+                    tache['examine_and_verify'] = examine_and_verify
+                    tache['view_or_launch'] = view_or_launch
+
+        # 如果当前没有任何基金,只需要能够显示project的状态信息
+        else:
+            for stage in process['stage_ids']:
+                for tache in stage['tache_ids']:
+                    if tache['model_name'] == self._name:
+                        examine_and_verify = self.examine_and_verify
+                        view_or_launch = True
+                        tache['examine_and_verify'] = examine_and_verify
+                        tache['view_or_launch'] = view_or_launch
+
+                        break
+
+        return process['stage_ids']
+
+
+
+
+
+
 
     def get_investment_funds2(self):
 
@@ -201,10 +264,8 @@ class Cowin_project(models.Model):
 
 
     # 获得每个project的详细信息
-    def _get_info(self):
-        investment_funds = self.get_investment_funds2()
-        f_stage_id = investment_funds[0]['foudation_stages'][0]['foudation_stage_id']
-        process = self.process_settings(f_stage_id)
+    def _get_info(self, round_financing_and_foundation_id=None):
+
         return {'id': self.id,
                 'name': self.name,
                 'process_id': self.process_id.id,
@@ -228,9 +289,8 @@ class Cowin_project(models.Model):
                 'contract_phone': self.contract_phone,
                 'contract_email': self.contract_email,
                 'attachment_note': self.attachment_note,
-                'investment_funds': investment_funds,
-                'process': process,
-                'default_display_foundation': self.get_default_display_foundation_stage()
+                'investment_funds': self.get_investment_funds(),
+                'process': self.process_settings2(round_financing_and_foundation_id),
                 }
 
     def get_default_display_foundation_stage(self):
@@ -265,7 +325,7 @@ class Cowin_project(models.Model):
 
     def rpc_select_dislay_foundation(self, foundation_stage_id):
 
-        fundation_stage = self.env['cowin_project.cowin_foudation_stage'].browse(int(foundation_stage_id))
+        fundation_stage = self.env['cowin_foudation.cowin_foudation_stage'].browse(int(foundation_stage_id))
         taches = self.process_id.get_all_taches()
         res = []
         for tache in taches:
@@ -298,22 +358,26 @@ class Cowin_project(models.Model):
         # 获得该项目中投资基金所在的投资轮次,
     def get_investment_funds(self):
 
-        res = {}
-        for investment_fund in self.investment_funds:
-            stages = investment_fund.get_all_stage()
-            for stage in stages:
-                if not res.get(stage.round_financing):
-                    res[stage.round_financing.name] = []
-                res[stage.round_financing.name].append({
-                    'foudation_id': investment_fund.id,
-                    'foudation_name': investment_fund.name
+        res = []
+
+        # 拿到所有的轮次
+        round_financings = self.env['cowin_common.round_financing'].search([])
+
+        for round_financing in round_financings:
+            # 拿到所有的基金
+            current = {
+                'round_financing_id': round_financing.id,
+                'round_financing_name': round_financing.name,
+                'foundations': []
+            }
+            for foundation in round_financing.round_financing_for_foundation_ids:
+                current['foundations'].append({
+                    'foundation_id': foundation.id,
+                    'foundation_name': foundation.name,
                 })
 
+            res.append(current)
 
-        # 根据基金的id来对数据进行排序操作
-        for k, v in res.items():
-            sorted(v, key=lambda x: x['foudation_id'])
-            res[k] = v
 
         return res
 

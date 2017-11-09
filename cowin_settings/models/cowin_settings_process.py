@@ -18,6 +18,18 @@ class Cowin_settings_process(models.Model):
 
     category = fields.Char(string=u'流程配置分类')
 
+    _sql_constraints = [
+        ('login_key', 'UNIQUE (name)', u'流程配置名不能相同!!!')
+    ]
+
+    # 对当前的节点以及子孙节点进行拷贝,手动获取数据信息
+    def copy_custom(self):
+        return self.get_info()
+
+
+
+
+
 
     # 该实例方法用于获取一条数据信息
     def get_info(self):
@@ -47,7 +59,7 @@ class Cowin_settings_process(models.Model):
                 tmp_tache['once_or_more'] = tache.once_or_more
                 tmp_tache['model_name'] = tache.model_name.model_name
                 tmp_tache['stage_id'] = tache.stage_id.id
-                tmp_tache['approval_flow_settings_id'] = tache.approval_flow_settings.id
+                # tmp_tache['approval_flow_settings_id'] = tache.approval_flow_settings.id
 
                 tmp_stage['tache_ids'].append(tmp_tache)
 
@@ -56,6 +68,9 @@ class Cowin_settings_process(models.Model):
         result = {
             'id': self.id,
             'name': self.name,
+            'module': self.module,
+            'description': self.description,
+            'category': self.category,
             'stage_ids': stages
         }
 
@@ -212,6 +227,13 @@ class Cowin_settings_process(models.Model):
                   for tache in stage['tache_ids']]
 
         return taches
+
+
+    def get_all_tache_entities(self):
+        return [tache
+                 for stage in self.stage_ids
+                 for tache in stage.tache_ids
+                 ]
 
 
     def get_approval_flow_settings(self):

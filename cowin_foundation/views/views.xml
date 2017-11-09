@@ -1,0 +1,59 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="cowin_foudation.list">
+      <field name="name">cowin_foudation list</field>
+      <field name="model">cowin_foudation.cowin_foudation</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="cowin_foudation.action_window">
+      <field name="name">cowin_foudation window</field>
+      <field name="res_model">cowin_foudation.cowin_foudation</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="cowin_foudation.action_server">
+      <field name="name">cowin_foudation server</field>
+      <field name="model_id" ref="model_cowin_foudation_cowin_foudation"/>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="cowin_foudation" id="cowin_foudation.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="cowin_foudation.menu_1" parent="cowin_foudation.menu_root"/>
+    <menuitem name="Menu 2" id="cowin_foudation.menu_2" parent="cowin_foudation.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="cowin_foudation.menu_1_list" parent="cowin_foudation.menu_1"
+              action="cowin_foudation.action_window"/>
+    <menuitem name="Server to list" id="cowin_foudation" parent="cowin_foudation.menu_2"
+              action="cowin_foudation.action_server"/>
+    -->
+  </data>
+</odoo>

@@ -5,26 +5,22 @@ from odoo.exceptions import UserError
 
 
 class Cowin_settings_process_tache(models.Model):
-    _name = 'cowin_settings.process_tache'
+    _name = 'cowin_project.process_tache'
 
     name = fields.Char(string=u'环节')
-    parent_id = fields.Many2one('cowin_settings.process_tache', string=u'解锁条件')
+    parent_id = fields.Many2one('cowin_project.process_tache', string=u'解锁条件')
 
     description = fields.Char(string=u'说明')
     state = fields.Boolean(string=u'启用状态', default=True)
 
-    stage_id = fields.Many2one('cowin_settings.process_stage', ondelete="cascade")
+    stage_id = fields.Many2one('cowin_project.process_stage', ondelete="cascade")
     # process_id=fields.Many2one('cowin_settings.process', related='stage_id.process_id')
 
     once_or_more = fields.Boolean(string=u'发起次数', default=True)
 
     model_name = fields.Many2one(u'cowin_settings.custome_model_data', string=u'自定义model的名字')
 
-    # approval_flow_settings = fields.One2many('cowin_settings.approval_flow_settings', 'tache_id', string=u'审批流程')
-
-    _sql_constraints = [
-        ('login_key', 'UNIQUE (name)', u'环节配置名不能相同!!!')
-    ]
+    approval_flow_settings = fields.One2many('cowin_project.approval_flow_settings', 'tache_id', string=u'审批流程')
 
 
     @api.model
@@ -82,9 +78,24 @@ class Cowin_settings_process_tache(models.Model):
     def get_approval_flow_settings(self):
         res = None
         if not self.approval_flow_settings:
-            res = self.env['cowin_settings.approval_flow_settings'].create({'name': u'审批流'})
+            res = self.env['cowin_project.approval_flow_settings'].create({'name': u'审批流'})
             res.tache_id = self
 
         else:
             res = self.approval_flow_settings
         return res
+
+
+    def create_tache_info(self, tache_info, stage_id):
+
+        model_name = self.env['cowin_settings.custome_model_data'].search([('model_name', '=', tache_info['model_name'])])
+        self.create({
+            'name': tache_info['name'],
+            # 'parent_id': int(tache_info['parent_id']),
+            'description': tache_info['description'],
+            'state': tache_info['state'],
+            'once_or_more': tache_info['once_or_more'],
+            'model_name': model_name.id,
+            'stage_id': stage_id,
+            # 'approval_flow_settings_id': tache_info['approval_flow_settings_id'],
+        })

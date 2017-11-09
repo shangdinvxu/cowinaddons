@@ -35,7 +35,7 @@
                     <!--<field name="register_person"/>-->
                     <field name="project_number"/>
                     <field name="write_date"/>
-                    <field name="invest_manager"/>
+                    <!--<field name="invest_manager"/>-->
                     <!--<field name="project_partner"/>-->
                     <field name="registered_address"/>
                     <field name="peration_place"/>
@@ -62,7 +62,7 @@
                                 </t>
                             </div>
                             <div class="kanban_main">
-                                <div>投资经理：<t t-esc="record.invest_manager.value"/></div>
+                                <!--<div>投资经理：<t t-esc="record.invest_manager.value"/></div>-->
                                 <!--<div>项目合伙人：<t t-esc="record.project_partner.value"/></div>-->
                                 <div>注册地:<t t-esc="record.registered_address.value"/></div>
                                 <div>运营地:<t t-esc="record.peration_place.value"/></div>
@@ -102,7 +102,7 @@
                             <field name="registered_address"/>
                             <field name="peration_place"/>
                             <field name="founding_time"/>
-                            <field name="invest_manager"/>
+                            <!--<field name="invest_manager"/>-->
                             <field name="contract_person"/>
                             <field name="contract_email"/>
                             <field name="attachment_ids" widget="many2many_binary"/>
@@ -115,7 +115,7 @@
 
         <!-- 此视图代表着项目视图form默认显示的列表的视图 -->
          <record model="ir.ui.view" id="project_process_form_view_profile">
-            <field name="name">coowin_project.process.profile</field>
+            <field name="name">cowin_project.process.profile</field>
             <field name="model">cowin_project.cowin_project</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year">
@@ -137,7 +137,7 @@
                             <field name="registered_address"/>
                             <field name="peration_place"/>
                             <field name="founding_time"/>
-                            <field name="invest_manager"/>
+                            <!--<field name="invest_manager"/>-->
                             <field name="contract_person"/>
                             <field name="contract_email"/>
                             <field name="attachment_ids" widget="many2many_binary"/>

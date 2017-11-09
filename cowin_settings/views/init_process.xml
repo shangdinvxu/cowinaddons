@@ -5,6 +5,7 @@
         <record id="init_process_project_1" model="cowin_settings.process">
             <field name="name">投前流程</field>
             <field name="description">项目投前的流程配置</field>
+            <field name="category">init_preinvestment</field>
         </record>
 
         <!-- 1.1 项目设立-->
