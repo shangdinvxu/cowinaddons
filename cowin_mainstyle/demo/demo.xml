@@ -1,30 +1,12 @@
 <odoo>
     <data>
-        <!--  -->
-        <!--   <record id="object0" model="cowin_mainstyle.cowin_mainstyle"> -->
-        <!--     <field name="name">Object 0</field> -->
-        <!--     <field name="value">0</field> -->
-        <!--   </record> -->
-        <!--  -->
-        <!--   <record id="object1" model="cowin_mainstyle.cowin_mainstyle"> -->
-        <!--     <field name="name">Object 1</field> -->
-        <!--     <field name="value">10</field> -->
-        <!--   </record> -->
-        <!--  -->
-        <!--   <record id="object2" model="cowin_mainstyle.cowin_mainstyle"> -->
-        <!--     <field name="name">Object 2</field> -->
-        <!--     <field name="value">20</field> -->
-        <!--   </record> -->
-        <!--  -->
-        <!--   <record id="object3" model="cowin_mainstyle.cowin_mainstyle"> -->
-        <!--     <field name="name">Object 3</field> -->
-        <!--     <field name="value">30</field> -->
-        <!--   </record> -->
-        <!--  -->
-        <!--   <record id="object4" model="cowin_mainstyle.cowin_mainstyle"> -->
-        <!--     <field name="name">Object 4</field> -->
-        <!--     <field name="value">40</field> -->
-        <!--   </record> -->
-        <!--  -->
+        <!--<menuitem name="系统配置" id="cowin_settings.menu_1" parent="cowin_settings.menu_root" button_icon="fa fa-user"/>-->
+
+           <!--<record id="menu_sss" model="ir.ui.menu">-->
+             <!--<field name="name">系统配置</field>-->
+               <!--<field name="parent">cowin_settings.menu_root</field>-->
+             <!--<field name="button_icon">fa fa-bolt</field>-->
+           <!--</record>-->
+
     </data>
 </odoo>

@@ -156,6 +156,8 @@ a.oe_menu_toggler { background-color: transparent !important; }
     color: #BCBCBC;
     font-size: 16px;
     margin-right: 8px;
+    width: 15px;
+    text-align: center;
 }
 .o_web_client > .o_main .o_sub_menu .o_sub_menu_content .oe_secondary_submenu .oe_secondary_submenu > li > a {
   padding-left: 55px;

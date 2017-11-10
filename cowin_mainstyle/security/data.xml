@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+       <record id="cowin_settings.menu_settings" model="ir.ui.menu">
+         <field name="name">系统配置</field>
+         <field name="button_icon">fa fa-cog</field>
+       </record>
+
+        <record id="cowin_project.menu_1" model="ir.ui.menu">
+         <field name="name">项目管理</field>
+         <field name="button_icon">fa fa-bars</field>
+       </record>
+
+        <record id="cowin_project.menu_2" model="ir.ui.menu">
+         <field name="name">投后管理</field>
+         <field name="button_icon">fa fa-sitemap</field>
+       </record>
+
+        <record id="cowin_project.menu_3" model="ir.ui.menu">
+         <field name="name">项目查询</field>
+         <field name="button_icon">fa fa-search</field>
+       </record>
+
+        <record id="hr.menu_open_view_employee_list_my" model="ir.ui.menu">
+         <field name="name">员工</field>
+         <field name="button_icon">fa fa-users</field>
+       </record>
+
+        <record id="cowin_hr.menu_2" model="ir.ui.menu">
+         <field name="name">绩效</field>
+         <field name="button_icon">fa fa-bar-chart</field>
+       </record>
+
+        <record id="cowin_hr.menu_3" model="ir.ui.menu">
+         <field name="name">薪酬</field>
+         <field name="button_icon">fa fa-cny</field>
+       </record>
+
+</data>
+</odoo>
