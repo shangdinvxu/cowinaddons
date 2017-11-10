@@ -7,5 +7,59 @@
         <record id="init_custom_model_2" model="cowin_settings.custome_model_data">
             <field name="model_name">cowin_project.cowin_subproject</field>
         </record>
+
+        <record id="init_custom_model_3" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_opinion_book</field>
+        </record>
+
+        <record id="init_custom_model_4" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_call_up_record</field>
+        </record>
+
+        <record id="init_custom_model_5" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.subt_dispatch_report</field>
+        </record>
+
+        <record id="init_custom_model_6" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_invest_decision_app</field>
+        </record>
+
+        <record id="init_custom_model_7" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_sum_invest_decision_committee</field>
+        </record>
+
+        <record id="init_custom_model_8" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.conference_resolutions</field>
+        </record>
+
+        <record id="init_custom_model_9" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_invest_decision_committee_res</field>
+        </record>
+
+        <record id="init_custom_model_10" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_appointment_and_dismissal</field>
+        </record>
+
+        <record id="init_custom_model_11" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_invest_contract</field>
+        </record>
+
+        <record id="init_custom_model_12" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_app_form_pro_investment</field>
+        </record>
+
+        <record id="init_custom_model_13" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_entrusted_loan_app_form</field>
+        </record>
+
+        <record id="init_custom_model_14" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_payment_app_form</field>
+        </record>
+
+        <record id="init_custom_model_15" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_project_data_archiving</field>
+        </record>
+
+
     </data>
 </odoo>
