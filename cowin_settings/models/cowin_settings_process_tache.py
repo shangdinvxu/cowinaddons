@@ -38,7 +38,7 @@ class Cowin_settings_process_tache(models.Model):
 
         res = super(Cowin_settings_process_tache, self).create(vals)
         # begin 添加审批流
-        res.write({'approval_flow_settings': res.get_approval_flow_settings()})
+        # res.write({'approval_flow_settings': res.get_approval_flow_settings()})
 
         # --end
 

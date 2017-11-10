@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <!-- 1. 投前流程 -->
         <record id="init_process_project_1" model="cowin_settings.process">
             <field name="name">投前流程</field>
@@ -16,8 +16,10 @@
 
         <record id="init_process_stage_1_tache_1" model="cowin_settings.process_tache">
             <field name="name">信息登记</field>
+
             <field name="stage_id" eval="ref('init_process_stage_1')"/>
             <field name="description">说明：登记项目信息，完成项目前期调研，群发项目资料邮件</field>
+            <field name="model_name">cowin_project.cowin_project</field>
         </record>
 
         <!-- 1.2 立项-->
@@ -31,6 +33,7 @@
             <field name="stage_id" eval="ref('init_process_stage_2')"/>
             <field name="parent_id" eval="ref('init_process_stage_1_tache_1')"/>
             <field name="description">说明：业务总监填写立项申请表，上传立项资料</field>
+             <field name="model_name">cowin_project.cowin_subproject</field>
         </record>
 
         <record id="init_process_stage_2_tache_2" model="cowin_settings.process_tache">

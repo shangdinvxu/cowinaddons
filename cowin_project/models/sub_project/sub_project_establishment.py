@@ -11,7 +11,7 @@ class Cowin_project_subproject(models.Model):
     _name = 'cowin_project.cowin_subproject'
 
     '''
-        立项意见书
+        项目立项
     '''
 
 
