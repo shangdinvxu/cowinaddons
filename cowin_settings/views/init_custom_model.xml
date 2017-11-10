@@ -59,7 +59,5 @@
         <record id="init_custom_model_15" model="cowin_settings.custome_model_data">
             <field name="model_name">cowin_project.sub_project_data_archiving</field>
         </record>
-
-
     </data>
 </odoo>
