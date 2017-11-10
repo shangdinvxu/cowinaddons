@@ -32,6 +32,7 @@
         'views/cowin_settings_process_tache.xml',
         'views/templates.xml',
         'views/views.xml',
+        'views/init_custom_model.xml',
         'views/init_process.xml'
     ],
     # only loaded in demonstration mode

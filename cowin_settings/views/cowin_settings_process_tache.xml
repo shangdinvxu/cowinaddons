@@ -10,7 +10,7 @@
                   <field name="parent_id"/>
                   <field name="description"/>
                   <field name="state"/>
-                  <field name="model_name"/>
+                  <field name="model_id"/>
                 </tree>
               </field>
             </record>

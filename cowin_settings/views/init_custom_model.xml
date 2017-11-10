@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+        <record id="init_custom_model_1" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.cowin_project</field>
+        </record>
+
+        <record id="init_custom_model_2" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.cowin_subproject</field>
+        </record>
+    </data>
+</odoo>
