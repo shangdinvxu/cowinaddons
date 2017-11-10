@@ -18,7 +18,11 @@ class Cowin_settings_process_tache(models.Model):
 
     once_or_more = fields.Boolean(string=u'发起次数', default=True)
 
-    model_name = fields.Many2one(u'cowin_settings.custome_model_data', string=u'自定义model的名字')
+    # model_name = fields.Many2one(u'cowin_settings.custome_model_data', string=u'自定义model的名字')
+
+    model_name = fields.Char(string=u'自定义model的名字')
+
+    res_id = fields.Integer(string=u'该环节对应该实例另一个字段model_name中的一个实例')
 
     approval_flow_settings = fields.One2many('cowin_project.approval_flow_settings', 'tache_id', string=u'审批流程')
 

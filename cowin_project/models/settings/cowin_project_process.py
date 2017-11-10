@@ -50,7 +50,7 @@ class Cowin_project_process(models.Model):
                 tmp_tache['description'] = tache.description
                 tmp_tache['state'] = tache.state
                 tmp_tache['once_or_more'] = tache.once_or_more
-                tmp_tache['model_name'] = tache.model_name.model_name
+                tmp_tache['model_name'] = tache.model_name
                 tmp_tache['stage_id'] = tache.stage_id.id
                 # tmp_tache['approval_flow_settings_id'] = tache.approval_flow_settings.id
 
