@@ -13,6 +13,8 @@ class Cowin_settings_process_tache(models.Model):
     description = fields.Char(string=u'说明')
     state = fields.Boolean(string=u'启用状态', default=True)
 
+    is_unlocked = fields.Boolean(string=u'是否已解锁', default=False)
+
     stage_id = fields.Many2one('cowin_project.process_stage', ondelete="cascade")
     # process_id=fields.Many2one('cowin_settings.process', related='stage_id.process_id')
 

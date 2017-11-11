@@ -15,6 +15,8 @@ class Cowin_settings_process_tache(models.Model):
 
     stage_id = fields.Many2one('cowin_settings.process_stage', ondelete="cascade")
 
+    is_unlocked = fields.Boolean(string=u'是否已解锁', default=False)
+
     once_or_more = fields.Boolean(string=u'发起次数', default=False)
 
     model_id = fields.Many2one(u'cowin_settings.custome_model_data', string=u'自定义model的名字')
