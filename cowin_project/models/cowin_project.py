@@ -14,6 +14,7 @@ class Cowin_project(models.Model):
 
     # 关联到settings中,把该字段看成配置选项的操作
     process_id = fields.Many2one('cowin_project.process', ondelete="cascade")
+    sub_project_ids = fields.One2many('cowin_project.cowin_subproject', 'project_id', string=u'所有的基金轮次实例')
 
     examine_and_verify = fields.Char(string=u'审核校验', default=u'未开始审核')
 
@@ -359,24 +360,49 @@ class Cowin_project(models.Model):
     def get_investment_funds(self):
 
         res = []
+        count = 0
 
-        # 拿到所有的轮次
-        round_financings = self.env['cowin_common.round_financing'].search([])
+        # 获得所有的子工程
+        sub_projects = self.sub_project_ids
 
-        for round_financing in round_financings:
-            # 拿到所有的基金
-            current = {
-                'round_financing_id': round_financing.id,
-                'round_financing_name': round_financing.name,
-                'foundations': []
-            }
-            for foundation in round_financing.round_financing_for_foundation_ids:
-                current['foundations'].append({
-                    'foundation_id': foundation.id,
-                    'foundation_name': foundation.name,
+        # 如果没有相应的实例,就直接返回
+        if not sub_projects:
+            return res
+
+        # 如果有实例的情况
+        for sub_pro in sub_projects:
+            # 理论上只有一条记录 轮次_基金
+            round_financing_and_foundation_entity = sub_pro.get_round_financing_and_foundation()
+
+            # 输入 轮次基金id -->  res[i] (i需要的索引)
+
+            found = False
+            for i, round_financing_dict in enumerate(res):
+                if round_financing_dict.get('round_financing_id') == round_financing_and_foundation_entity.\
+                        round_financing_id.id:
+
+                    round_financing_dict['foundation_names'].append({
+                        'foundation_id': round_financing_and_foundation_entity.foundation_id.id,
+                        'foundation_name': round_financing_and_foundation_entity.foundation_id.name,
+                    })
+                    # break 最里面的一层循环
+                    found = True
+                    break
+
+
+
+            if not found:
+                res.append({
+                    # 轮次
+                    'round_financing_id': round_financing_and_foundation_entity.round_financing_id.id,
+                    'round_financing_name': round_financing_and_foundation_entity.round_financing_id.name,
+                    'foundation_names': [{
+                        'foundation_id': round_financing_and_foundation_entity.foundation_id.id,
+                        'foundation_name': round_financing_and_foundation_entity.foundation_id.name,
+                    }],
                 })
 
-            res.append(current)
+                count += 1
 
 
         return res

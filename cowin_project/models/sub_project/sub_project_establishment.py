@@ -27,9 +27,12 @@ class Cowin_project_subproject(models.Model):
 
 
     image = fields.Binary("LOGO", default=_default_image, attachment=True,
-                          help="This field holds the image used as photo for the cowin_project, limited to 1024x1024px.")
+                        help="This field holds the image used as photo for the cowin_project, limited to 1024x1024px.")
 
     name = fields.Char(string=u"项目名称")
+
+    subproject_foundation_rund_financing_ids = fields.One2many('cowin_project.round_financing_and_foundation',
+                                                               'sub_project_id', string=u'基金_轮次')
 
     project_number = fields.Char(string=u'项目编号')
     project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')],
@@ -66,3 +69,8 @@ class Cowin_project_subproject(models.Model):
 
 
     attachment_note = fields.Char(string=u'附件说明')
+
+
+    # 获得轮次基金实例
+    def get_round_financing_and_foundation(self):
+        return self.subproject_foundation_rund_financing_ids

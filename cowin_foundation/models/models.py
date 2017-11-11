@@ -12,6 +12,10 @@ class Cowin_foundation(models.Model):
 
     foundation_for_rund_financing_ids = fields.One2many('cowin_project.round_financing_and_foundation', 'foundation_id', string=u'基金轮次')
 
+    _sql_constraints = [
+        ('name_key', 'UNIQUE (name)', u'基金名不能够相同')
+    ]
+
     # 得到该基金的某个阶段的实例(记录)
     def get_round_financing(self, round_financing):
         '''

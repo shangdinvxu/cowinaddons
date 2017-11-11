@@ -27,12 +27,12 @@ class Cowin_settings_process_tache(models.Model):
 
     @api.model
     def create(self, vals):
-        entity = self.env['cowin_settings.custome_model_data'].search([('model_name', '=', 'cowin_project.cowin_project')])
-        if not entity:
-            entity = entity.create({
-                'name': 'cowin_project.cowin_project',
-                'model_name': 'cowin_project.cowin_project'
-            })
+        # entity = self.env['cowin_settings.custome_model_data'].search([('model_name', '=', 'cowin_project.cowin_project')])
+        # if not entity:
+        #     entity = entity.create({
+        #         'name': 'cowin_project.cowin_project',
+        #         'model_name': 'cowin_project.cowin_project'
+        #     })
 
         res = super(Cowin_settings_process_tache, self).create(vals)
         # begin 添加审批流
@@ -41,7 +41,7 @@ class Cowin_settings_process_tache(models.Model):
         # --end
 
 
-        res.model_name = entity
+        # res.model_name = entity
         return res
 
 
@@ -93,11 +93,10 @@ class Cowin_settings_process_tache(models.Model):
         model_name = self.env['cowin_settings.custome_model_data'].search([('model_name', '=', tache_info['model_name'])])
         self.create({
             'name': tache_info['name'],
-            # 'parent_id': int(tache_info['parent_id']),
             'description': tache_info['description'],
             'state': tache_info['state'],
             'once_or_more': tache_info['once_or_more'],
-            'model_name': model_name.id,
+            'model_id': model_name.id,
             'stage_id': stage_id,
             # 'approval_flow_settings_id': tache_info['approval_flow_settings_id'],
         })

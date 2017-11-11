@@ -23,22 +23,22 @@
                         <t t-set="active_flag" t-value="1"/>
                         <t t-foreach="result.investment_funds" t-as="item">
                             <div class="process_rounds_wrap">
-                                <strong><t t-esc="item.round_financing"/></strong>
+                                <strong><t t-esc="item.round_financing_name"/></strong>
                                 <ul>
-                                    <t t-foreach="item.foudation_stages" t-as="obj">
+                                    <t t-foreach="item.foundation_names" t-as="obj">
                                         <t t-if="active_flag==1">
                                             <li class="active_fund">
-                                                <t t-if="obj.name==''">
+                                                <t t-if="obj.foundation_name==''">
                                                     暂无基金
                                                 </t>
                                                 <t t-else="">
-                                                    <t t-esc="obj.name"/> <span class="fa fa-chevron-right"></span>
+                                                    <t t-esc="obj.foundation_name"/> <span class="fa fa-chevron-right"></span>
                                                 </t>
                                             </li>
                                             <t t-set="active_flag" t-value="0"/>
                                         </t>
                                         <t t-else="">
-                                            <li><t t-esc="obj.name"/> </li>
+                                            <li><t t-esc="obj.foundation_name"/> </li>
                                         </t>
                                     </t>
                                 </ul>

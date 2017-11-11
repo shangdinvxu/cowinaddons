@@ -31,12 +31,12 @@ class Cowin_settings_process_tache(models.Model):
 
     @api.model
     def create(self, vals):
-        entity = self.env['cowin_settings.custome_model_data'].search([('model_name', '=', 'cowin_project.cowin_project')])
-        if not entity:
-            entity = entity.create({
-                'name': 'cowin_project.cowin_project',
-                'model_name': 'cowin_project.cowin_project'
-            })
+        # entity = self.env['cowin_settings.custome_model_data'].search([('model_name', '=', 'cowin_project.cowin_project')])
+        # if not entity:
+        #     entity = entity.create({
+        #         'name': 'cowin_project.cowin_project',
+        #         'model_name': 'cowin_project.cowin_project'
+        #     })
 
         res = super(Cowin_settings_process_tache, self).create(vals)
         # begin 添加审批流
@@ -45,7 +45,7 @@ class Cowin_settings_process_tache(models.Model):
         # --end
 
 
-        res.model_name = entity
+        # res.model_name = entity
         return res
 
 
