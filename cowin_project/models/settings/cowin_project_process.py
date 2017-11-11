@@ -61,6 +61,10 @@ class Cowin_project_process(models.Model):
 
             stages.append(tmp_stage)
 
+
+
+
+
         result = {
             'id': self.id,
             'name': self.name,
@@ -70,7 +74,23 @@ class Cowin_project_process(models.Model):
             'stage_ids': stages
         }
 
+        # 检查 设置 解锁条件
+        self._check_unlock_condition(result)
+
         return result
+
+
+    # 因为有依赖条件的限制,所以需要检验解锁条件对前端的显示的操作
+    def _check_unlock_condition(self, info):
+
+        for stage in info['stage_ids']:
+            for tache in stage['tache_ids']:
+                if not tache['is_unlocked']:
+                    tache['once_or_more'] = False
+                    tache['res_id'] = False
+
+
+
 
     # 该rpc方法用于获取所有的列表信息
     def get_infos(self):
