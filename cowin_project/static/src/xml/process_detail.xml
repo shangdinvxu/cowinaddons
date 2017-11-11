@@ -54,18 +54,28 @@
                             <t t-foreach="item.tache_ids" t-as="obj">
                                 <div class="process_data_item_line detail_line">
                                     <span><t t-esc="obj.name"/> </span>
-                                    <span>【<t t-esc="obj.examine_and_verify"/>】</span>
-                                    <span>
-                                        <t t-if="obj.view_or_launch==true">
-                                            <a href="javascript:void(0)">查看</a>
+                                    <span>【
+                                        <t t-if="obj.examine_and_verify">
+                                            <t t-esc="obj.examine_and_verify"/>
                                         </t>
                                         <t t-else="">
-                                            <a href="javascript:void(0)">发起</a>
+                                            暂无
                                         </t>
+                                        】
                                     </span>
-                                    <t t-if="obj.once_or_more==true">
-                                        <span style="margin-left:15px"><a href="javascript:void(0)">新增</a></span>
-                                    </t>
+                                    <div class="button_wrap">
+                                        <t t-if="is_unlocked==true">
+                                            <t t-if="view_or_launch==true">
+                                                <span><a href="javascript:void(0)">查看</a></span>
+                                            </t>
+                                            <t t-else="">
+                                                <span><a href="javascript:void(0)">发起</a></span>
+                                            </t>
+                                            <t t-if="once_or_more==true">
+                                                <span><a href="javascript:void(0)">新增</a></span>
+                                            </t>
+                                        </t>
+                                    </div>
                                 </div>
                             </t>
                         </t>

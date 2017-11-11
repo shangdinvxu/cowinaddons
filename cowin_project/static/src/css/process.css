@@ -94,6 +94,7 @@
 }
 #process_tab_content .process_data_main_wrap .detail_line{
     padding-left: 20px;
+    position: relative;
 }
 #process_tab_content .process_data_main_wrap .detail_line span{
     font-weight: lighter;
@@ -224,7 +225,13 @@
 }
 
 
-
+.process_data_main_wrap .process_data_item_line .button_wrap{
+    position: absolute;
+    left: 400px;
+}
+#process_tab_content .process_data_main_wrap .process_data_item_line .button_wrap span{
+    position: initial;
+}
 
 
 
