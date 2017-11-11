@@ -21,8 +21,6 @@ KanbanRecord.include({
         if (this.model === 'project.project') {
             this.$('.o_project_kanban_boxes a').first().click();
         }else if(this.model === 'cowin_project.cowin_project'){
-            console.log('sssssssss');
-            console.log(this.record.id.raw_value)
             var action = {
                 type: 'ir.actions.client',
                 name: 'process',

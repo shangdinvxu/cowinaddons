@@ -69,7 +69,7 @@
                                 <div>联系人:<t t-esc="record.contract_person.value"/></div>
                                 <div>所属行业:<t t-esc="record.industry.value"/></div>
                                 <div class="kanban_project_product">产品:<t t-esc="record.production.value"/></div>
-                                <div class="kanban_project_state">【状态：<t t-esc="record.stage.value"/>】</div>
+                                <!--<div class="kanban_project_state">【状态：<t t-esc="record.stage.value"/>】</div>-->
                             </div>
                         </div>
                     </t>

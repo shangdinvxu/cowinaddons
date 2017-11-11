@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'cowin_hr', 'cowin_settings', 'cowin_common'],
+    'depends': ['base', 'cowin_hr', 'cowin_settings', 'cowin_foundation'],
 
     # always loaded
     'data': [

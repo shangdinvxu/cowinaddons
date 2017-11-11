@@ -49,6 +49,9 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
         move_start:function (e) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
+            if(target.nodeName == 'TD'){
+                target = $(target).parents('tr');
+            }
             this.move_group_id = parseInt($(target).attr('data-id'));
             this.move_group = $(target);
         },

@@ -66,8 +66,8 @@
                                 </td>
                                 <td class="operate_wrap">
                                     <span class="edit_tache">编辑</span>
-                                    <span>移动到</span>
-                                    <span class="tache_delete">删除</span>
+                                    <!--<span>移动到</span>-->
+                                    <!--<span class="tache_delete">删除</span>-->
                                 </td>
                             </tr>
                         </t>
