@@ -7,11 +7,6 @@ class Cowin_foundation(models.Model):
 
     name = fields.Char(string=u'基金名称')
 
-
-
-
-    foundation_for_rund_financing_ids = fields.One2many('cowin_project.round_financing_and_foundation', 'foundation_id', string=u'基金轮次')
-
     _sql_constraints = [
         ('name_key', 'UNIQUE (name)', u'基金名不能够相同')
     ]

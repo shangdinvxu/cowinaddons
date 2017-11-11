@@ -116,26 +116,26 @@ class Cowin_project(models.Model):
 
     # 用来处理每个基金投资阶段中settings配置信息的改变
     # f_stage 基金状态记录
-    def process_settings(self, f_stage_id):
-        # 获得基础的配置信息
-        stages = self.process_id.get_info()['stage_ids']
-        stages = copy.deepcopy(stages)
-        # 深拷贝的目的在于不让数据产生干扰,因为stages是公共数据
-        for stage in stages:
-            for tache in stage['tache_ids']:
-                if tache['model_name'] == self._name:
-                    examine_and_verify = self.examine_and_verify
-                    view_or_launch = True
-                else:
-                    model_name = tache['model_name']
-                    target = self.env[model_name].search([('foundation_stage_id', '=', f_stage_id)])
-                    examine_and_verify = target.examine_and_verify
-                    view_or_launch = True if target else False
-
-                tache['examine_and_verify'] = examine_and_verify
-                tache['view_or_launch'] = view_or_launch
-
-        return stages
+    # def process_settings(self, f_stage_id):
+    #     # 获得基础的配置信息
+    #     stages = self.process_id.get_info()['stage_ids']
+    #     stages = copy.deepcopy(stages)
+    #     # 深拷贝的目的在于不让数据产生干扰,因为stages是公共数据
+    #     for stage in stages:
+    #         for tache in stage['tache_ids']:
+    #             if tache['model_name'] == self._name:
+    #                 examine_and_verify = self.examine_and_verify
+    #                 view_or_launch = True
+    #             else:
+    #                 model_name = tache['model_name']
+    #                 target = self.env[model_name].search([('foundation_stage_id', '=', f_stage_id)])
+    #                 examine_and_verify = target.examine_and_verify
+    #                 view_or_launch = True if target else False
+    #
+    #             tache['examine_and_verify'] = examine_and_verify
+    #             tache['view_or_launch'] = view_or_launch
+    #
+    #     return stages
 
     def process_settings2(self, round_financing_and_foundation_id):
         '''
@@ -147,11 +147,13 @@ class Cowin_project(models.Model):
         # 待处理的proces信息
         process = self.process_id.get_info()
 
-        res = {}
+        # res = {}
 
         round_financing_and_foundation = None
         # 代表着第一次默认选择第一个来显示,当然,如果存在的情况下
+        # 返回给客户的时候页面需要默认显示的一条轮次基金数据
         if not round_financing_and_foundation_id:
+            '''代表着是数据第一次要显示,但是不了解该如何去显示'''
             round_financing_and_foundations = self.round_financing.round_financing_for_foundation_ids
             # 第一条数据存在
             if round_financing_and_foundations:
@@ -171,10 +173,10 @@ class Cowin_project(models.Model):
                         examine_and_verify = self.examine_and_verify
                         view_or_launch = True
                     else:
-                        model_name = tache['model_name']
-                        target = self.env[model_name].search([('foundation_stage_id', '=', round_financing_and_foundation.id)])
-                        examine_and_verify = target.examine_and_verify
-                        view_or_launch = True if target else False
+                        # model_name = tache['model_name']
+                        # target = self.env[model_name].search([('id', '=', round_financing_and_foundation.id)])
+                        examine_and_verify = tache['examine_and_verify']
+                        view_or_launch = True if tache['res_id'] else False
 
                     tache['examine_and_verify'] = examine_and_verify
                     tache['view_or_launch'] = view_or_launch
@@ -185,9 +187,8 @@ class Cowin_project(models.Model):
                 for tache in stage['tache_ids']:
                     if tache['model_name'] == self._name:
                         examine_and_verify = self.examine_and_verify
-                        view_or_launch = True
                         tache['examine_and_verify'] = examine_and_verify
-                        tache['view_or_launch'] = view_or_launch
+                        tache['view_or_launch'] = True
 
                         break
 
@@ -199,68 +200,68 @@ class Cowin_project(models.Model):
 
 
 
-    def get_investment_funds2(self):
-
-        # 1 构建 轮次 --> index 索引
-        look_up_table = {}
-        count = 0
-        res = []
-
-        foundations = self.get_all_investment_funds()
-        # 某些情况下基金并没有构建起来
-        if not foundations:
-            # 获得基础的配置信息
-            stages = self.process_id.get_info()['stage_ids']
-            stages = copy.deepcopy(stages)
-            for stage in stages:
-                for tache in stage['tache_ids']:
-                    if tache['model_name'] == self._name:
-                        examine_and_verify = self.examine_and_verify
-                        view_or_launch = True
-                    else:
-                        # model_name = tache['model_name']
-                        # target = self.env[model_name].search([('foundation_stage_id', '=', f_stage.id)])
-                        examine_and_verify = False
-                        view_or_launch = False
-
-                    tache['examine_and_verify'] = examine_and_verify
-                    tache['view_or_launch'] = view_or_launch
-
-            res.append({})
-            res[0]['round_financing'] = u''
-            res[0]['foudation_stages'] = []
-            res[0]['foudation_stages'].append({
-                'foudation_stage_id': -1,
-                'name': u'',
-                'process': stages
-            })
-
-
-        else:
-
-            for foundation in foundations:
-                f_stages = foundation.get_all_stage()
-
-                for f_stage in f_stages:
-                    # 融资轮次
-                    round_financing_name = f_stage.round_financing.name
-                    # 切记,这里要关注的是返回None的值的序列
-                    if look_up_table.get(round_financing_name) is None:
-                        i = look_up_table[round_financing_name] = count
-                        res.append({})
-                        # 融资轮次
-                        res[i]['round_financing'] = round_financing_name
-                        # 融资基金
-                        res[i]['foudation_stages'] = []
-                        count += 1
-                    index = look_up_table[round_financing_name]
-                    res[index]['foudation_stages'].append({
-                        'foudation_stage_id': f_stage.id,
-                        'name': f_stage.foudation_id.name,
-                        # 'process': self.process_settings(f_stage)
-                    })
-
-        return res
+    # def get_investment_funds2(self):
+    #
+    #     # 1 构建 轮次 --> index 索引
+    #     look_up_table = {}
+    #     count = 0
+    #     res = []
+    #
+    #     foundations = self.get_all_investment_funds()
+    #     # 某些情况下基金并没有构建起来
+    #     if not foundations:
+    #         # 获得基础的配置信息
+    #         stages = self.process_id.get_info()['stage_ids']
+    #         stages = copy.deepcopy(stages)
+    #         for stage in stages:
+    #             for tache in stage['tache_ids']:
+    #                 if tache['model_name'] == self._name:
+    #                     examine_and_verify = self.examine_and_verify
+    #                     view_or_launch = True
+    #                 else:
+    #                     # model_name = tache['model_name']
+    #                     # target = self.env[model_name].search([('foundation_stage_id', '=', f_stage.id)])
+    #                     examine_and_verify = False
+    #                     view_or_launch = False
+    #
+    #                 tache['examine_and_verify'] = examine_and_verify
+    #                 tache['view_or_launch'] = view_or_launch
+    #
+    #         res.append({})
+    #         res[0]['round_financing'] = u''
+    #         res[0]['foudation_stages'] = []
+    #         res[0]['foudation_stages'].append({
+    #             'foudation_stage_id': -1,
+    #             'name': u'',
+    #             'process': stages
+    #         })
+    #
+    #
+    #     else:
+    #
+    #         for foundation in foundations:
+    #             f_stages = foundation.get_all_stage()
+    #
+    #             for f_stage in f_stages:
+    #                 # 融资轮次
+    #                 round_financing_name = f_stage.round_financing.name
+    #                 # 切记,这里要关注的是返回None的值的序列
+    #                 if look_up_table.get(round_financing_name) is None:
+    #                     i = look_up_table[round_financing_name] = count
+    #                     res.append({})
+    #                     # 融资轮次
+    #                     res[i]['round_financing'] = round_financing_name
+    #                     # 融资基金
+    #                     res[i]['foudation_stages'] = []
+    #                     count += 1
+    #                 index = look_up_table[round_financing_name]
+    #                 res[index]['foudation_stages'].append({
+    #                     'foudation_stage_id': f_stage.id,
+    #                     'name': f_stage.foudation_id.name,
+    #                     # 'process': self.process_settings(f_stage)
+    #                 })
+    #
+    #     return res
 
 
 
@@ -294,63 +295,63 @@ class Cowin_project(models.Model):
                 'process': self.process_settings2(round_financing_and_foundation_id),
                 }
 
-    def get_default_display_foundation_stage(self):
-        if self.investment_funds:
-            fundation_stage = self.investment_funds[0][0]
-            taches = self.process_id.get_all_taches()
-            res = []
-            for tache in taches:
+    # def get_default_display_foundation_stage(self):
+    #     if self.investment_funds:
+    #         fundation_stage = self.investment_funds[0][0]
+    #         taches = self.process_id.get_all_taches()
+    #         res = []
+    #         for tache in taches:
+    #
+    #             if tache['model_name'] == self._name:
+    #                 view_or_launch = True
+    #                 examine_and_verify = self.examine_and_verify
+    #             else:
+    #
+    #                 target = self.env[tache['model_name']].search([('foundation_stage_id', '=', fundation_stage.id)])
+    #                 view_or_launch = True if target else False
+    #                 examine_and_verify = target.examine_and_verify
+    #
+    #             once_or_more = tache['once_or_more']
+    #
+    #             res.append({
+    #                 'tache_id': tache['id'],
+    #                 'examine_and_verify': examine_and_verify,
+    #                 'view_or_launch': view_or_launch,
+    #                 'once_or_more': once_or_more,
+    #
+    #             })
+    #
+    #         return res
 
-                if tache['model_name'] == self._name:
-                    view_or_launch = True
-                    examine_and_verify = self.examine_and_verify
-                else:
-
-                    target = self.env[tache['model_name']].search([('foundation_stage_id', '=', fundation_stage.id)])
-                    view_or_launch = True if target else False
-                    examine_and_verify = target.examine_and_verify
-
-                once_or_more = tache['once_or_more']
-
-                res.append({
-                    'tache_id': tache['id'],
-                    'examine_and_verify': examine_and_verify,
-                    'view_or_launch': view_or_launch,
-                    'once_or_more': once_or_more,
-
-                })
-
-            return res
 
 
-
-    def rpc_select_dislay_foundation(self, foundation_stage_id):
-
-        fundation_stage = self.env['cowin_foudation.cowin_foudation_stage'].browse(int(foundation_stage_id))
-        taches = self.process_id.get_all_taches()
-        res = []
-        for tache in taches:
-            examine_and_verify = tache.examine_and_verify
-            if tache.model_name == self._name:
-                view_or_launch = True
-            else:
-                target = self.env[tache.model_name].search([('foundation_stage_id',
-                                                             '=', fundation_stage.id)])
-                view_or_launch = True if target else False
-
-            once_or_more = tache.once_or_more
-
-            res.append({
-                'tache_id': tache.id,
-                'examine_and_verify': examine_and_verify,
-                'view_or_launch': view_or_launch,
-                'once_or_more': once_or_more,
-
-            })
-
-        result = self._get_info()
-        result['select_display_foundation'] = res
-        return result
+    # def rpc_select_dislay_foundation(self, foundation_stage_id):
+    #
+    #     fundation_stage = self.env['cowin_foudation.cowin_foudation_stage'].browse(int(foundation_stage_id))
+    #     taches = self.process_id.get_all_taches()
+    #     res = []
+    #     for tache in taches:
+    #         examine_and_verify = tache.examine_and_verify
+    #         if tache.model_name == self._name:
+    #             view_or_launch = True
+    #         else:
+    #             target = self.env[tache.model_name].search([('foundation_stage_id',
+    #                                                          '=', fundation_stage.id)])
+    #             view_or_launch = True if target else False
+    #
+    #         once_or_more = tache.once_or_more
+    #
+    #         res.append({
+    #             'tache_id': tache.id,
+    #             'examine_and_verify': examine_and_verify,
+    #             'view_or_launch': view_or_launch,
+    #             'once_or_more': once_or_more,
+    #
+    #         })
+    #
+    #     result = self._get_info()
+    #     result['select_display_foundation'] = res
+    #     return result
 
 
     def get_all_investment_funds(self):

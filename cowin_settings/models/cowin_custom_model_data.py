@@ -10,3 +10,7 @@ class Cowin_custom_model_data(models.Model):
     # name = fields.Char(string=u'ID')
 
     model_name = fields.Char(string=u'model ID')
+
+    _sql_constraints = [
+        ('model_name_key', 'UNIQUE (model_name)', u'model_name标识名不能相同!!!')
+    ]

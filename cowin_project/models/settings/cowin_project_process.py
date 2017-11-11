@@ -47,11 +47,14 @@ class Cowin_project_process(models.Model):
                 tmp_tache['id'] = tache.id
                 tmp_tache['name'] = tache.name
                 tmp_tache['parent_id'] = tache.parent_id.name
+                # parent_id 就是解锁条件
+                tmp_tache['is_unlocked'] = not tache.parent_id.id
                 tmp_tache['description'] = tache.description
                 tmp_tache['state'] = tache.state
                 tmp_tache['once_or_more'] = tache.once_or_more
                 tmp_tache['model_name'] = tache.model_id.model_name
                 tmp_tache['stage_id'] = tache.stage_id.id
+                tmp_tache['res_id'] = tache.res_id
                 # tmp_tache['approval_flow_settings_id'] = tache.approval_flow_settings.id
 
                 tmp_stage['tache_ids'].append(tmp_tache)
@@ -243,6 +246,11 @@ class Cowin_project_process(models.Model):
         :return:
         '''
 
+        # 元配置信息setings中的环节
+        meta_taches = [tache
+                       for stage in meta_process_info['stage_ids']
+                       for tache in stage['tache_ids']]
+
         name = meta_process_info['name']
         module = meta_process_info['module']
         description = meta_process_info['description']
@@ -257,26 +265,19 @@ class Cowin_project_process(models.Model):
             'meta_process_id': meta_process_id,
         })
 
-        # process.write({
-        #     'meta_process_id': meta_process_id,
-        # })
-
         # 在该工程下的另一张settings中的环节
         self.env['cowin_project.process_stage'].create_stage_info(meta_process_info, process.id)
 
-
-        # 每个工程都有自己的配置的信息的环节
-        taches_res = process.get_all_taches()
-
-        # 元配置信息setings中的环节
-        meta_taches = self.meta_process_id.get_all_tache_entities()
+        # 每个工程都有自己的配置的信息的环节实体
+        taches_res = process.get_all_tache_entities()
 
         # 修复环节依赖的问题
         for tache_in_pro in taches_res:
             for tache_in_meta in meta_taches:
-                if tache_in_pro.name == tache_in_meta.name:
-                    for target in tache_in_pro:
-                        if target.name == tache_in_meta.name:
+                if tache_in_pro.name == tache_in_meta['name']:
+                    parent_name = tache_in_meta['parent_id']
+                    for target in taches_res:
+                        if target.name == parent_name:
                             tache_in_pro.write({
                                 'parent_id': target.id
                             })
