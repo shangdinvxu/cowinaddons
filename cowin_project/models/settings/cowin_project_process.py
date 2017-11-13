@@ -239,6 +239,11 @@ class Cowin_project_process(models.Model):
                  for tache in stage.tache_ids
                  ]
 
+    def get_tache_entity(self, tache_id):
+        for tache in self.get_all_tache_entities():
+            if tache.id == tache_id:
+                return tache
+
     def get_approval_flow_settings(self):
         taches = self.get_all_taches()
 

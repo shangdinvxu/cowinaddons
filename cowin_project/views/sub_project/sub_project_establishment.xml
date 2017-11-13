@@ -1,0 +1,39 @@
+<odoo>
+    <data>
+         <!--项目流程的form视图-->
+        <record model="ir.ui.view" id="sub_project_establishment_form">
+            <field name="name">cowin_project.cowin_subproject form</field>
+            <field name="model">cowin_project.cowin_subproject</field>
+            <field name="arch" type="xml">
+                <form string="Fiscal year">
+                    <field name="name"/>
+                    <field name="image" widget="image"/>
+                    <field name="project_id"/>
+                    <field name="project_number"/>
+                    <field name="project_source"/>
+                    <field name="project_source_note"/>
+                    <field name="invest_manager"/>
+                    <field name="foundation_id"/>
+                    <field name="ratio_between_investments"/>
+                    <field name="ownership_interest"/>
+                    <field name="round_financing_id"/>
+                    <field name="financing_money"/>
+                    <field name="project_company_profile"/>
+                    <field name="project_appraisal"/>
+                    <field name="project_note"/>
+                    <field name="industry"/>
+                    <field name="stage"/>
+                    <field name="production"/>
+                    <field name="registered_address"/>
+                    <field name="peration_place"/>
+                    <field name="founding_time"/>
+                    <field name="contract_person"/>
+                    <field name="contract_phone"/>
+                    <field name="contract_email"/>
+                    <field name="attachment_ids"  widget="many2many_binary"/>
+                    <field name="attachment_note"/>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

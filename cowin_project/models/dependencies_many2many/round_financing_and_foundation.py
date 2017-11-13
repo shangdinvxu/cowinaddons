@@ -32,7 +32,7 @@ class Round_financing_and_Foundation(models.Model):
     _name = 'cowin_project.round_financing_and_foundation'
 
 
-    name = fields.Char(string=u'阶段表')
+    name = fields.Char(string=u'轮次基金表')
     sub_project_id = fields.Many2one('cowin_project.cowin_sub_project', string=u'子工程')
 
     round_financing_id = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')

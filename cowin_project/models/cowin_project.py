@@ -298,13 +298,102 @@ class Cowin_project(models.Model):
         '''
             总体分为两大类: 查看  发起
             字典中的key view_or_launch
-            view_or_launch: True  查看
-            view_or_launch: False  发起
+                view_or_launch: True    查看
+                view_or_launch: False   发起
+
+            tache_id : 环节id
+
         :param kwargs:
         :return:
         '''
 
-        pass
+        ''' 
+            参数1 : sub_project   轮次基金所在的子工程
+            参数2 : view_or_launch   发起或者查看
+            参数1 : sub_project   轮次基金所在的子工程
+        '''
+
+        # 刚开始的情况下,没有子工程
+        # 理论上,只能有发起子工程 或者是查看主工程的事件操作
+        if not kwargs.get('sub_project_id'):
+            # 查看主工程
+            if kwargs.get('view_or_launch'):
+                return self._get_info()
+            # 发起子工程
+            else:
+                tache_id = int(kwargs.get('tache_id'))
+                tache_entity = self.process_id.get_tache_entity(tache_id)
+                model_name = tache_entity.model_id.name
+                # self.env[model_name]
+
+
+            # 在这种情况下,就只有查看主project的操作
+            return self._get_info()
+
+        # 在有子工程的情况下,需要根据子工程,而且子工程的子配置信息
+        # 也可以获取到
+        else:
+            sub_project_id = int(kwargs.get('sub_project_id'))
+
+
+        #
+        #     tache_id = int(kwargs.get('tache_id'))
+        #     tache_entities = self.process_id.get_all_tache_entities()
+        #     tache_target = None
+        #     for tache in tache_entities:
+        #         if tache.id == tache_id:
+        #             tache_target = tache
+        #             break
+        #
+        #     if kwargs.get('view_or_launch'):
+        #         if tache_target.model_name == self._name:
+        #             return self._get_info()
+        #         else:
+        #             # 拿到子工程 子配置的信息
+        #             tache_status = tache_target.tache_status_id
+        #             # tache_status.
+        #
+        #     else:
+        #         pass
+        #
+        #     if tache_target.model_name == self._name:
+        #
+        #
+        #
+        # else:
+        #     sup_project_id = int(kwargs.get('sub_project'))
+        #
+        #
+        #     # 如果代表的是查看
+        #     if kwargs.get('view_or_launch') == True:
+        #         tache_entities = self.process_id.get_all_tache_entities()
+        #         tache_target = None
+        #         for tache in tache_entities:
+        #             if tache.id == kwargs.get('tache_id'):
+        #                 tache_target = tache
+        #                 break
+        #
+        #
+        #
+        #         if tache_target.model_name == self._name:
+        #             # 这种情况指的是主project的实体,所以就可以直接返回
+        #             return self._get_info()
+        #         else:
+        #             tache_status = tache_target.tache_status_id
+        #
+        #
+        #     # 这种情况则是代表着发起
+        #     else:
+        #         pass
+
+
+
+
+
+
+
+
+
 
 
 

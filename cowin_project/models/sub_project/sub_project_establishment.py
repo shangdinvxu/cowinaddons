@@ -52,8 +52,8 @@ class Cowin_project_subproject(models.Model):
     # -------
     
 
-    round_financing = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
-    round_money = fields.Float(string=u'本次融资额')
+    # round_financing = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
+    # round_money = fields.Float(string=u'本次融资额')
 
     project_company_profile = fields.Text(string=u'项目公司概况')
     project_appraisal = fields.Text(string=u'项目评价')
