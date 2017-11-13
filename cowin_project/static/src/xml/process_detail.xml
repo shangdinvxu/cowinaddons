@@ -52,7 +52,7 @@
                                 <span><t t-esc="item.name"/> </span>
                             </div>
                             <t t-foreach="item.tache_ids" t-as="obj">
-                                <div class="process_data_item_line detail_line">
+                                <div class="process_data_item_line detail_line" t-att-data-tache-id="obj.id">
                                     <span><t t-esc="obj.name"/> </span>
                                     <span>【
                                         <t t-if="obj.examine_and_verify">

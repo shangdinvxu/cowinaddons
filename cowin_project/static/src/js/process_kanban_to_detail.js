@@ -23,14 +23,18 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
         events:{
             'click .initiate':'initiate_func'
         },
-        initiate_func:function () {
+        initiate_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var tache_id = parseInt($(target).parents('.process_data_item_line').attr('data-tache-id'));
+
             var self = this;
             var action = {
                 view_type: 'form',
                 view_mode: 'form',
                 views: [[false, 'form']],
                 res_model: 'cowin_project.cowin_subproject',
-                context: {'res_id': self.id},
+                context: {'project_id': self.id,"tache_id":tache_id},
                 type: 'ir.actions.act_window',
                 target:'new'
             }
