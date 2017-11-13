@@ -10,6 +10,8 @@ class Cowin_settings_process_tache(models.Model):
     name = fields.Char(string=u'环节')
     parent_id = fields.Many2one('cowin_project.process_tache', string=u'解锁条件')
 
+    tache_status_id = fields.One2many('cowin_project.subproject_process_tache', 'tache_id', '各个子工程的环节配置信息')
+
     description = fields.Char(string=u'说明')
     state = fields.Boolean(string=u'启用状态', default=True)
 
@@ -19,11 +21,14 @@ class Cowin_settings_process_tache(models.Model):
     # process_id=fields.Many2one('cowin_settings.process', related='stage_id.process_id')
 
     once_or_more = fields.Boolean(string=u'发起次数', default=False)
+    view_or_launch = fields.Boolean(string=u'发起或者新增', default=False)
 
     model_id = fields.Many2one(u'cowin_settings.custome_model_data', string=u'自定义model的名字')
 
-    res_id = fields.Integer(string=u'该环节对应该实例另一个字段model_id中的一个实例')
 
+    # 这种情况只适用于主project的使用,子project只适用于环节的下一级表
+    res_id = fields.Integer(string=u'该环节对应该实例另一个字段model_id中的一个实例')
+    # 这种情况只适用于主project的使用,子project只适用于环节的下一级表
     approval_flow_settings = fields.One2many('cowin_project.approval_flow_settings', 'tache_id', string=u'审批流程')
 
 
@@ -100,5 +105,6 @@ class Cowin_settings_process_tache(models.Model):
             'once_or_more': tache_info['once_or_more'],
             'model_id': model_name.id,
             'stage_id': stage_id,
+            # 'view_or_launch': tache_info['view_or_launch'],
             # 'approval_flow_settings_id': tache_info['approval_flow_settings_id'],
         })

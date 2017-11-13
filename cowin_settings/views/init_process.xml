@@ -24,7 +24,6 @@
             <field name="stage_id" eval="ref('init_process_stage_1')"/>
             <field name="description">说明：登记项目信息，完成项目前期调研，群发项目资料邮件</field>
             <field name="model_id" eval="ref('init_custom_model_1')"/>
-            <field name="is_unlocked" eval="True"/>
         </record>
 
         <!-- 1.2 立项-->

@@ -23,6 +23,9 @@ class Cowin_project_subproject(models.Model):
     # 关联到settings中,把该字段看成配置选项的操作
     project_id = fields.Many2one('cowin_project.cowin_project', ondelete="cascade")
 
+    # 关联到自环节表(缓解状态表中)
+    sub_process_tache_status_id = fields.One2many('cowin_project.subproject_process_tache', "sub_project_id")
+
     examine_and_verify = fields.Char(string=u'审核校验', default=u'未开始审核')
 
 
@@ -73,4 +76,23 @@ class Cowin_project_subproject(models.Model):
 
     # 获得轮次基金实例
     def get_round_financing_and_foundation(self):
-        return self.subproject_foundation_rund_financing_ids
+
+        # 为了方便代码的整理,这样的写法有助于抽象与统一
+        for subproject_foundation_rund_financing in self.subproject_foundation_rund_financing_ids:
+            if subproject_foundation_rund_financing.stage == 2:
+                return subproject_foundation_rund_financing
+
+        if len(self.subproject_foundation_rund_financing_ids) == 0:
+            return self.subproject_foundation_rund_financing_ids
+
+
+
+
+
+    # 得到所有的的上下文环节信息
+    def get_all_base_taches(self):
+        return self.sub_process_tache_status_id.get_tache()
+
+    # 得到所有的该子工程的配置环节信息
+    def get_all_sub_tache_status(self):
+        return self.sub_process_tache_status_id

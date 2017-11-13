@@ -14,7 +14,7 @@ class Cowin_project(models.Model):
 
     # 关联到settings中,把该字段看成配置选项的操作
     process_id = fields.Many2one('cowin_project.process', ondelete="cascade")
-    sub_project_ids = fields.One2many('cowin_project.cowin_subproject', 'project_id', string=u'所有的基金轮次实例')
+    sub_project_ids = fields.One2many('cowin_project.cowin_subproject', 'project_id', string=u'子工程')
 
     examine_and_verify = fields.Char(string=u'审核校验', default=u'未开始审核')
 
@@ -57,6 +57,7 @@ class Cowin_project(models.Model):
 
     @api.model
     def create(self, vals):
+        process = None
         if not vals.get('project_number'):
             vals['project_number'] = self.env['ir.sequence'].next_by_code('cowin_project.order')
 
@@ -70,7 +71,22 @@ class Cowin_project(models.Model):
             vals['process_id'] = process.id
 
 
-        return super(Cowin_project, self).create(vals)
+        project = super(Cowin_project, self).create(vals)
+
+        for tache in process.get_all_tache_entities():
+            if tache.model_id.model_name == self._name:
+                # 主工程的实例id需要根据思路写入res_id之中
+                # 主工程所在的环节的解锁条件需要开启
+                tache.write({
+                    'res_id': project.id,
+                    'is_unlocked': True,
+                    'view_or_launch': True,
+                    'once_or_more': False,
+                })
+
+                break
+
+        return project
 
 
 
@@ -114,154 +130,71 @@ class Cowin_project(models.Model):
         return temp
 
 
-    # 用来处理每个基金投资阶段中settings配置信息的改变
-    # f_stage 基金状态记录
-    # def process_settings(self, f_stage_id):
-    #     # 获得基础的配置信息
-    #     stages = self.process_id.get_info()['stage_ids']
-    #     stages = copy.deepcopy(stages)
-    #     # 深拷贝的目的在于不让数据产生干扰,因为stages是公共数据
-    #     for stage in stages:
-    #         for tache in stage['tache_ids']:
-    #             if tache['model_name'] == self._name:
-    #                 examine_and_verify = self.examine_and_verify
-    #                 view_or_launch = True
-    #             else:
-    #                 model_name = tache['model_name']
-    #                 target = self.env[model_name].search([('foundation_stage_id', '=', f_stage_id)])
-    #                 examine_and_verify = target.examine_and_verify
-    #                 view_or_launch = True if target else False
-    #
-    #             tache['examine_and_verify'] = examine_and_verify
-    #             tache['view_or_launch'] = view_or_launch
-    #
-    #     return stages
 
-    def process_settings2(self, round_financing_and_foundation_id):
+    # 主工程配置的环节需要和子工程的配置的环节进行关联处理
+    def process_settings2(self, sub_project_id):
         '''
 
-        :param round_financing_and_foundation_id: 轮次基金实体id
+        :param sub_project_id: 子工程实例id
         :return:
         '''
 
         # 待处理的proces信息
         process = self.process_id.get_info()
 
-        # res = {}
-
-        round_financing_and_foundation = None
+        sub_project_entity = None
         # 代表着第一次默认选择第一个来显示,当然,如果存在的情况下
         # 返回给客户的时候页面需要默认显示的一条轮次基金数据
-        if not round_financing_and_foundation_id:
-            '''代表着是数据第一次要显示,但是不了解该如何去显示'''
-            round_financing_and_foundations = self.round_financing.round_financing_for_foundation_ids
+        if not sub_project_id:
+            '''意思在于如果主工程子工程数据,那就显示子工程数据,否则就返回为空'''
+            sub_project_entity = self.sub_project_ids
+
             # 第一条数据存在
-            if round_financing_and_foundations:
-                round_financing_and_foundation = round_financing_and_foundations[0]
+            if sub_project_entity:
+                sub_project_entity = sub_project_entity[0]
 
         else:
-            round_financing_and_foundation = self.round_financing.browse(round_financing_and_foundation_id)
+            for r_and_f in self.sub_project_ids:
+                if r_and_f.id == sub_project_id:
+                    sub_project_entity = r_and_f
 
 
-        # 代表当前存在某个基金环节实体记录
-        if round_financing_and_foundation:
 
-            # 或得到当前的基金环节记录实体
-            for stage in process['stage_ids']:
-                for tache in stage['tache_ids']:
-                    if tache['model_name'] == self._name:
-                        examine_and_verify = self.examine_and_verify
-                        view_or_launch = True
-                    else:
-                        # model_name = tache['model_name']
-                        # target = self.env[model_name].search([('id', '=', round_financing_and_foundation.id)])
-                        examine_and_verify = tache['examine_and_verify']
-                        view_or_launch = True if tache['res_id'] else False
+        # 代表当前存在某个sub_project实体记录
+        if sub_project_entity:
+            # 该工程所有关联的环节状态的信息
+            tache_status_entities = sub_project_entity.get_all_sub_tache_status()
 
-                    tache['examine_and_verify'] = examine_and_verify
-                    tache['view_or_launch'] = view_or_launch
+            for tache_status in tache_status_entities:
+                for stage in process['stage_ids']:
+                    for tache in stage['tache_ids']:
+                        if tache['id'] == tache_status.id:
+                            # tache['examine_and_verify'] = tache.examine_and_verify
+                            tache['view_or_launch'] = tache_status.view_or_launch
+                            # 当前子工程 只从的得到的主配置和子配置的内存实例去做数据的改变, 并不影响数据库中is_unlocked的值
 
-        # 如果当前没有任何基金,只需要能够显示project的状态信息
+                            tache_entity = tache_status.get_tache()
+
+                            parent_entity = tache_entity.parent_id
+
+                            if parent_entity.model_id.name == self._name:
+                                tache['is_unlocked'] = parent_entity.is_unlocked
+                            else:
+                                parent_status_entity = parent_entity.tache_status_id
+                                tache['is_unlocked'] = parent_status_entity.is_unlocked
+
+                            break
+
+        # 如果当前没有工程,需要开启第二个环节的调条件 特殊情况,特殊对待
         else:
-            for stage in process['stage_ids']:
-                for tache in stage['tache_ids']:
-                    if tache['model_name'] == self._name:
-                        examine_and_verify = self.examine_and_verify
-                        tache['examine_and_verify'] = examine_and_verify
-                        tache['view_or_launch'] = True
+            stages = process['stage_ids'][1]
+            tache2 = stages['tache_ids'][0]
+            tache2['is_unlocked'] = True
 
-                        break
+
+
 
         return process['stage_ids']
-
-
-
-
-
-
-
-    # def get_investment_funds2(self):
-    #
-    #     # 1 构建 轮次 --> index 索引
-    #     look_up_table = {}
-    #     count = 0
-    #     res = []
-    #
-    #     foundations = self.get_all_investment_funds()
-    #     # 某些情况下基金并没有构建起来
-    #     if not foundations:
-    #         # 获得基础的配置信息
-    #         stages = self.process_id.get_info()['stage_ids']
-    #         stages = copy.deepcopy(stages)
-    #         for stage in stages:
-    #             for tache in stage['tache_ids']:
-    #                 if tache['model_name'] == self._name:
-    #                     examine_and_verify = self.examine_and_verify
-    #                     view_or_launch = True
-    #                 else:
-    #                     # model_name = tache['model_name']
-    #                     # target = self.env[model_name].search([('foundation_stage_id', '=', f_stage.id)])
-    #                     examine_and_verify = False
-    #                     view_or_launch = False
-    #
-    #                 tache['examine_and_verify'] = examine_and_verify
-    #                 tache['view_or_launch'] = view_or_launch
-    #
-    #         res.append({})
-    #         res[0]['round_financing'] = u''
-    #         res[0]['foudation_stages'] = []
-    #         res[0]['foudation_stages'].append({
-    #             'foudation_stage_id': -1,
-    #             'name': u'',
-    #             'process': stages
-    #         })
-    #
-    #
-    #     else:
-    #
-    #         for foundation in foundations:
-    #             f_stages = foundation.get_all_stage()
-    #
-    #             for f_stage in f_stages:
-    #                 # 融资轮次
-    #                 round_financing_name = f_stage.round_financing.name
-    #                 # 切记,这里要关注的是返回None的值的序列
-    #                 if look_up_table.get(round_financing_name) is None:
-    #                     i = look_up_table[round_financing_name] = count
-    #                     res.append({})
-    #                     # 融资轮次
-    #                     res[i]['round_financing'] = round_financing_name
-    #                     # 融资基金
-    #                     res[i]['foudation_stages'] = []
-    #                     count += 1
-    #                 index = look_up_table[round_financing_name]
-    #                 res[index]['foudation_stages'].append({
-    #                     'foudation_stage_id': f_stage.id,
-    #                     'name': f_stage.foudation_id.name,
-    #                     # 'process': self.process_settings(f_stage)
-    #                 })
-    #
-    #     return res
 
 
 
@@ -295,69 +228,12 @@ class Cowin_project(models.Model):
                 'process': self.process_settings2(round_financing_and_foundation_id),
                 }
 
-    # def get_default_display_foundation_stage(self):
-    #     if self.investment_funds:
-    #         fundation_stage = self.investment_funds[0][0]
-    #         taches = self.process_id.get_all_taches()
-    #         res = []
-    #         for tache in taches:
-    #
-    #             if tache['model_name'] == self._name:
-    #                 view_or_launch = True
-    #                 examine_and_verify = self.examine_and_verify
-    #             else:
-    #
-    #                 target = self.env[tache['model_name']].search([('foundation_stage_id', '=', fundation_stage.id)])
-    #                 view_or_launch = True if target else False
-    #                 examine_and_verify = target.examine_and_verify
-    #
-    #             once_or_more = tache['once_or_more']
-    #
-    #             res.append({
-    #                 'tache_id': tache['id'],
-    #                 'examine_and_verify': examine_and_verify,
-    #                 'view_or_launch': view_or_launch,
-    #                 'once_or_more': once_or_more,
-    #
-    #             })
-    #
-    #         return res
-
-
-
-    # def rpc_select_dislay_foundation(self, foundation_stage_id):
-    #
-    #     fundation_stage = self.env['cowin_foudation.cowin_foudation_stage'].browse(int(foundation_stage_id))
-    #     taches = self.process_id.get_all_taches()
-    #     res = []
-    #     for tache in taches:
-    #         examine_and_verify = tache.examine_and_verify
-    #         if tache.model_name == self._name:
-    #             view_or_launch = True
-    #         else:
-    #             target = self.env[tache.model_name].search([('foundation_stage_id',
-    #                                                          '=', fundation_stage.id)])
-    #             view_or_launch = True if target else False
-    #
-    #         once_or_more = tache.once_or_more
-    #
-    #         res.append({
-    #             'tache_id': tache.id,
-    #             'examine_and_verify': examine_and_verify,
-    #             'view_or_launch': view_or_launch,
-    #             'once_or_more': once_or_more,
-    #
-    #         })
-    #
-    #     result = self._get_info()
-    #     result['select_display_foundation'] = res
-    #     return result
 
 
     def get_all_investment_funds(self):
         return [funds for funds in self.investment_funds]
 
-        # 获得该项目中投资基金所在的投资轮次,
+    # 获得该项目中投资基金所在的投资轮次, 相当于子工程 sub_project
     def get_investment_funds(self):
 
         res = []
@@ -372,7 +248,7 @@ class Cowin_project(models.Model):
 
         # 如果有实例的情况
         for sub_pro in sub_projects:
-            # 理论上只有一条记录 轮次_基金
+            # 理论上只有一条记录 轮次_基金 finish状态 实例
             round_financing_and_foundation_entity = sub_pro.get_round_financing_and_foundation()
 
             # 输入 轮次基金id -->  res[i] (i需要的索引)
@@ -415,3 +291,21 @@ class Cowin_project(models.Model):
     # 通过rpc调用,把详细的信息传递到前端以便于显示操作
     def rpc_get_info(self):
         return self._get_info()
+
+
+    # 查看或者发起
+    def view_or_launch(self, **kwargs):
+        '''
+            总体分为两大类: 查看  发起
+            字典中的key view_or_launch
+            view_or_launch: True  查看
+            view_or_launch: False  发起
+        :param kwargs:
+        :return:
+        '''
+
+        pass
+
+
+
+
