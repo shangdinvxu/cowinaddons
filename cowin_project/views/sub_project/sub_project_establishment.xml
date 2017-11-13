@@ -6,9 +6,11 @@
             <field name="model">cowin_project.cowin_subproject</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year">
-                    <field name="name"/>
+                    <group>
+
+                    <field name="name" string="名称"/>
                     <field name="image" widget="image"/>
-                    <field name="project_id"/>
+                    <!--<field name="project_id"/>-->
                     <field name="project_number"/>
                     <field name="project_source"/>
                     <field name="project_source_note"/>
@@ -32,6 +34,8 @@
                     <field name="contract_email"/>
                     <field name="attachment_ids"  widget="many2many_binary"/>
                     <field name="attachment_note"/>
+                                        </group>
+
                 </form>
             </field>
         </record>

@@ -69,7 +69,7 @@
                                                 <span><a href="javascript:void(0)">查看</a></span>
                                             </t>
                                             <t t-else="">
-                                                <span><a href="javascript:void(0)">发起</a></span>
+                                                <span class="initiate"><a href="javascript:void(0)">发起</a></span>
                                             </t>
                                             <t t-if="once_or_more==true">
                                                 <span><a href="javascript:void(0)">新增</a></span>

@@ -21,7 +21,20 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
     var ProcessKanbanToDetail = Widget.extend({
         template: '',
         events:{
-
+            'click .initiate':'initiate_func'
+        },
+        initiate_func:function () {
+            var self = this;
+            var action = {
+                view_type: 'form',
+                view_mode: 'form',
+                views: [[false, 'form']],
+                res_model: 'cowin_project.cowin_subproject',
+                context: {'res_id': self.id},
+                type: 'ir.actions.act_window',
+                target:'new'
+            }
+            self.do_action(action)
         },
         init: function (parent, action) {
             this._super.apply(this, arguments);
@@ -34,6 +47,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     .call("rpc_get_info", [self.id])
                     .then(function (result) {
                         console.log(result);
+                        self.id = parseInt(result.id);
                         self.$el.append(QWeb.render('project_process_detail_tmp', {result: result}))
                     })
         }
