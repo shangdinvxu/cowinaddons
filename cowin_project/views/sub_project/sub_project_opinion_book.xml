@@ -12,11 +12,9 @@
                     <group>
 
                         <field name="name" string="名称"/>
-                        <field name="image" widget="image"/>
                         <field name="project_number"/>
-                        <field name="project_source"/>
-                        <field name="project_source_note"/>
                         <field name="invest_manager"/>
+                        <field name="date_of_project"/>
                         <!--投资基金-->
                         <field name="foundation_id"/>
                         <field name="the_amount_of_investment"/>
@@ -24,20 +22,10 @@
                         <field name="round_financing_id"/>
                         <field name="the_amount_of_financing"/>
                         <!---->
-                        <field name="project_company_profile"/>
-                        <field name="project_appraisal"/>
-                        <field name="project_note"/>
-                        <field name="industry"/>
-                        <field name="stage"/>
-                        <field name="production"/>
-                        <field name="registered_address"/>
-                        <field name="peration_place"/>
-                        <field name="founding_time"/>
-                        <field name="contract_person"/>
-                        <field name="contract_phone"/>
-                        <field name="contract_email"/>
-                        <field name="attachment_ids"  widget="many2many_binary"/>
-                        <field name="attachment_note"/>
+                        <field name="project_mumbers"/>
+                        <field name="partner_opinion"/>
+                        <field name="business_director_option"/>
+                        <field name="policy_making_committee"/>
                     </group>
 
                 </form>

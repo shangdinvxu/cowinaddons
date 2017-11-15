@@ -204,7 +204,7 @@ class Cowin_project(models.Model):
 
 
 
-                    #  <--------------- 需要传递的上下文信息,共享的基金轮次实体
+                    #  1  <--------------- 需要传递的上下文信息,共享的基金轮次实体
                     tache['round_financing_and_foundation'] = {}
 
                     tache['round_financing_and_foundation']['round_financing_and_foundation_id'] = meta_sub_project_entity.\
@@ -226,6 +226,15 @@ class Cowin_project(models.Model):
                         round_financing_and_Foundation_ids[0].the_amount_of_financing
 
                     # -------------->
+
+                    # 2 ------->   共享的子工程实例  可能为空,不过odoo特性很良好
+                    tache['sub_project'] = {}
+                    tache['sub_project']['sub_project_id'] = meta_sub_project_entity.sub_project_id.id
+                    tache['sub_project']['name'] = meta_sub_project_entity.sub_project_id.name
+                    tache['sub_project']['project_number'] = meta_sub_project_entity.sub_project_id.project_number
+                    tache['sub_project']['invest_manager_id'] = meta_sub_project_entity.sub_project_id.invest_manager.id
+
+
 
 
 

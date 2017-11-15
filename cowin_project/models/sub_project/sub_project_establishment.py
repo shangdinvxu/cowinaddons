@@ -38,8 +38,6 @@ class Cowin_project_subproject(models.Model):
 
     name = fields.Char(string=u"项目名称")
 
-    # subproject_foundation_rund_financing_ids = fields.One2many('cowin_project.round_financing_and_foundation',
-    #                                                            'sub_project_id', string=u'基金_轮次')
 
     project_number = fields.Char(string=u'项目编号')
     project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')],
@@ -85,31 +83,9 @@ class Cowin_project_subproject(models.Model):
 
     attachment_note = fields.Char(string=u'附件说明')
 
-    #
-    # # 获得轮次基金实例
-    # def get_round_financing_and_foundation(self):
-    #
-    #     # 为了方便代码的整理,这样的写法有助于抽象与统一
-    #     for subproject_foundation_rund_financing in self.subproject_foundation_rund_financing_ids:
-    #         if subproject_foundation_rund_financing.stage == 2:
-    #             return subproject_foundation_rund_financing
-    #
-    #     if len(self.subproject_foundation_rund_financing_ids) == 0:
-    #         return self.subproject_foundation_rund_financing_ids
-
-
-
-
-
-    # # 得到所有的的上下文环节信息
-    # def get_all_base_taches(self):
-    #     return self.sub_process_tache_status_id.get_tache()
-
 
     @api.model
     def create(self, vals):
-
-        # project_id = int(self._context['project_id'])
 
         tache = self._context['tache']
 
