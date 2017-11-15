@@ -46,13 +46,15 @@
                         </t>
                     </div>
                     <div class="process_data_main_wrap">
+                        <t t-set="tache_index" t-value="0"/>
                         <t t-foreach="result.process" t-as="item">
                             <div class="process_data_item_line header_line">
                                 <span class="fa fa-folder-o"></span>
                                 <span><t t-esc="item.name"/> </span>
                             </div>
                             <t t-foreach="item.tache_ids" t-as="obj">
-                                <div class="process_data_item_line detail_line" t-att-data-tache-id="obj.id">
+                                <div class="process_data_item_line detail_line" t-att-data-tache-id="obj.id" t-att-tache-index="tache_index">
+                                    <t t-set="tache_index" t-value="tache_index + 1"/>
                                     <span><t t-esc="obj.name"/> </span>
                                     <span>【
                                         <t t-if="obj.examine_and_verify">
