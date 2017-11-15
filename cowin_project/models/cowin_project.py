@@ -200,6 +200,7 @@ class Cowin_project(models.Model):
             for tache in taches:
                 if tache['id'] == sub_tache.tache_id.id:
                     tache['sub_tache_id'] = sub_tache.id
+                    tache['res_id'] = sub_tache.res_id
 
 
 
