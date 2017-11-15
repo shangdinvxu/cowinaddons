@@ -54,7 +54,7 @@ class Cowin_project_subproject(models.Model):
     round_financing_id = fields.Many2one('cowin_common.round_financing',
                                          related='round_financing_and_foundation_id.round_financing_id', string=u'轮次')
 
-    foundation_id = fields.Many2one('cowin_common.round_financing',
+    foundation_id = fields.Many2one('cowin_foundation.cowin_foudation',
                                     related='round_financing_and_foundation_id.foundation_id', string=u'基金')
 
     the_amount_of_financing = fields.Float(
