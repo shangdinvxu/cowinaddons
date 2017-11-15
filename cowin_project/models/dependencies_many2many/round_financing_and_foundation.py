@@ -41,8 +41,14 @@ class Round_financing_and_Foundation(models.Model):
     sub_invest_decision_committee_res_id = fields.Many2one('cowin_project.sub_invest_decision_committee_res',
                                                            string=u'投资决策会议实例')
 
-    round_financing_id = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
 
-    foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金')
 
     stage = fields.Selection([(1, u'registed'), (2, u'finish')], string=u'状态', default=1)
+
+
+
+    the_amount_of_investment = fields.Float(string=u'本次投资金额')
+    foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金')
+    ownership_interest = fields.Float(string=u'股份比例')
+    round_financing_id = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
+    the_amount_of_financing = fields.Float(string=u'本次融资额')

@@ -200,8 +200,34 @@ class Cowin_project(models.Model):
             for tache in taches:
                 if tache['id'] == sub_tache.tache_id.id:
                     tache['sub_tache_id'] = sub_tache.id
-                    tache['round_financing_and_foundation_id'] = meta_sub_project_entity.\
+
+
+
+                    #  <--------------- 需要传递的上下文信息,共享的基金轮次实体
+                    tache['round_financing_and_foundation'] = {}
+
+                    tache['round_financing_and_foundation']['round_financing_and_foundation_id'] = meta_sub_project_entity.\
                                                          round_financing_and_Foundation_ids[0].id
+
+                    tache['round_financing_and_foundation']['foundation_id'] = meta_sub_project_entity.\
+                                                         round_financing_and_Foundation_ids[0].foundation_id.id
+
+                    tache['round_financing_and_foundation']['round_financing_id'] = meta_sub_project_entity. \
+                        round_financing_and_Foundation_ids[0].round_financing_id.id
+
+                    tache['round_financing_and_foundation']['the_amount_of_investment'] =  meta_sub_project_entity. \
+                        round_financing_and_Foundation_ids[0].the_amount_of_investment
+
+                    tache['round_financing_and_foundation']['ownership_interest'] = meta_sub_project_entity. \
+                        round_financing_and_Foundation_ids[0].ownership_interest
+
+                    tache['round_financing_and_foundation']['the_amount_of_financing'] = meta_sub_project_entity. \
+                        round_financing_and_Foundation_ids[0].the_amount_of_financing
+
+                    # -------------->
+
+
+
                     # tache['examine_and_verify'] = tache.examine_and_verify
                     tache['view_or_launch'] = sub_tache.view_or_launch
                     tache['meta_sub_project_id'] = meta_sub_project_entity.id
