@@ -21,8 +21,31 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
     var ProcessKanbanToDetail = Widget.extend({
         template: '',
         events:{
-            'click .initiate':'initiate_func'
+            'click .initiate':'initiate_func',
+            'click .view_tache':'view_tache_func'
         },
+        //查看按钮的点击事件
+        view_tache_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var tache_index = $(target).parents('.process_data_item_line').attr('tache-index');
+            var tache_id = parseInt($(target).parents('.process_data_item_line').attr('data-tache-id'));
+            var self = this;
+
+            var action = {
+                view_type: 'form',
+                view_mode: 'form',
+                views: [[false, 'form']],
+                res_model: self.model_arr[parseInt(tache_index)],
+                res_id: self.tache_arr[tache_index].res_id,
+                name: self.tache_arr[tache_index].name,
+                type: 'ir.actions.act_window',
+                target:'new'
+            }
+            self.do_action(action)
+
+        },
+        //发起按钮的点击事件
         initiate_func:function (e) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
@@ -37,9 +60,17 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                 view_mode: 'form',
                 views: [[false, 'form']],
                 res_model: self.model_arr[parseInt(tache_index)],
-                // context: self.tache_arr[tache_index],
-                context: {'tache': self.tache_arr[tache_index]},
+                context: {
+                    'tache': self.tache_arr[tache_index],
+                    'default_foundation_id':self.tache_arr[tache_index].round_financing_and_foundation.foundation_id,
+                    'default_ownership_interest':self.tache_arr[tache_index].round_financing_and_foundation.ownership_interest,
+                    'default_round_financing_and_foundation_id':self.tache_arr[tache_index].round_financing_and_foundation.round_financing_and_foundation_id,
+                    'default_round_financing_id':self.tache_arr[tache_index].round_financing_and_foundation.round_financing_id,
+                    'default_the_amount_of_financing': self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_financing,
+                    'default_the_amount_of_investment':self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_investment
+                },
                 type: 'ir.actions.act_window',
+                name: self.tache_arr[tache_index].name,
                 target:'new'
             }
             self.do_action(action)
@@ -58,7 +89,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             return new Model("cowin_project.cowin_project")
                     .call("rpc_get_info", [self.id])
                     .then(function (result) {
-                        console.log(result)
+                        console.log(result);
                         //获取每个环节的model_name存入数组
                         result.process.forEach(function (value) {
                             value.tache_ids.forEach(function (model) {
@@ -66,7 +97,6 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                                 self.tache_arr.push((model))
                             });
                         });
-                        console.log(self.tache_arr[0])
 
                         self.id = parseInt(result.id);
                         self.$el.append(QWeb.render('project_process_detail_tmp', {result: result}))
