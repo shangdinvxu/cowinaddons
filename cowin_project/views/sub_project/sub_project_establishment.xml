@@ -16,10 +16,10 @@
                     <field name="project_source_note"/>
                     <field name="invest_manager"/>
                     <!--投资基金-->
-                    <!--<field name="foundation_id"/>-->
+                    <field name="foundation_id"/>
                     <!--<field name="ratio_between_investments"/>-->
                     <!--<field name="ownership_interest"/>-->
-                    <!--<field name="round_financing_id"/>-->
+                    <field name="round_financing_id"/>
                     <!--<field name="financing_money"/>-->
                     <!---->
                     <field name="project_company_profile"/>

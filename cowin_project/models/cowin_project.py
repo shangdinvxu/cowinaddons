@@ -200,6 +200,8 @@ class Cowin_project(models.Model):
             for tache in taches:
                 if tache['id'] == sub_tache.tache_id.id:
                     tache['sub_tache_id'] = sub_tache.id
+                    tache['round_financing_and_foundation_id'] = meta_sub_project_entity.\
+                                                         round_financing_and_Foundation_ids[0].id
                     # tache['examine_and_verify'] = tache.examine_and_verify
                     tache['view_or_launch'] = sub_tache.view_or_launch
                     tache['meta_sub_project_id'] = meta_sub_project_entity.id

@@ -48,6 +48,14 @@ class Cowin_project_subproject(models.Model):
     invest_manager = fields.Many2one('hr.employee', string=u'投资经理')
     # # ------  投资基金
     #
+    round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation', string=u'基金轮次')
+
+    round_financing_id = fields.Many2one('cowin_common.round_financing',
+                                         related='round_financing_and_foundation_id.round_financing_id', string=u'融资轮次')
+
+    foundation_id = fields.Many2one('cowin_common.round_financing',
+                                    related='round_financing_and_foundation_id.foundation_id', string=u'基金')
+
     # foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金名称')
     # ratio_between_investments = fields.Float(string=u'本次投资金额')
     # ownership_interest = fields.Float(string=u'股份比例')
