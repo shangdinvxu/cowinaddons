@@ -37,7 +37,8 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                 view_mode: 'form',
                 views: [[false, 'form']],
                 res_model: self.model_arr[parseInt(tache_index)],
-                context: self.tache_arr[tache_index],
+                // context: self.tache_arr[tache_index],
+                context: {'tache': self.tache_arr[tache_index]},
                 type: 'ir.actions.act_window',
                 target:'new'
             }

@@ -202,7 +202,7 @@ class Cowin_project(models.Model):
                     tache['sub_tache_id'] = sub_tache.id
                     # tache['examine_and_verify'] = tache.examine_and_verify
                     tache['view_or_launch'] = sub_tache.view_or_launch
-                    tache['meta_sub_project_entity_id'] = meta_sub_project_entity.id
+                    tache['meta_sub_project_id'] = meta_sub_project_entity.id
                     # 当前子工程 只从的得到的主配置和子配置的内存实例去做数据的改变, 并不影响数据库中is_unlocked的值
 
                     # 由于原始环节可能对应多个自环节实体,  原因在于:  有多个元子工程  每个子工程对应一组子环节实体
