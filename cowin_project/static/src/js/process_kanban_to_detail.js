@@ -31,6 +31,20 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             var tache_index = $(target).parents('.process_data_item_line').attr('tache-index');
             var tache_id = parseInt($(target).parents('.process_data_item_line').attr('data-tache-id'));
             var self = this;
+            var context ={
+                    'tache': self.tache_arr[tache_index],
+                };
+            if(self.tache_arr[tache_index].round_financing_and_foundation){
+                context = {
+                    'tache': self.tache_arr[tache_index],
+                    'default_foundation_id': self.tache_arr[tache_index].round_financing_and_foundation.foundation_id,
+                    'default_ownership_interest':self.tache_arr[tache_index].round_financing_and_foundation.ownership_interest,
+                    'default_round_financing_and_foundation_id':self.tache_arr[tache_index].round_financing_and_foundation.round_financing_and_foundation_id,
+                    'default_round_financing_id':self.tache_arr[tache_index].round_financing_and_foundation.round_financing_id,
+                    'default_the_amount_of_financing': self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_financing,
+                    'default_the_amount_of_investment':self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_investment
+                }
+            }
 
             var action = {
                 view_type: 'form',
@@ -40,6 +54,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                 res_id: self.tache_arr[tache_index].res_id,
                 name: self.tache_arr[tache_index].name,
                 type: 'ir.actions.act_window',
+                context: context,
                 target:'new'
             }
             self.do_action(action)
