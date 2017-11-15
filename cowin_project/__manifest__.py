@@ -28,6 +28,7 @@
         'views/views.xml',
         'views/templates.xml',
         'views/sub_project/sub_project_establishment.xml',
+        # 'views/sub_project/sub_project_opinion_book.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

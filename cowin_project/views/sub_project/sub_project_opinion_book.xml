@@ -1,10 +1,12 @@
-<!--# 项目立项  构建小项目-->
 <odoo>
     <data>
-         <!--项目流程的form视图-->
-        <record model="ir.ui.view" id="sub_project_establishment_form">
-            <field name="name">cowin_project.cowin_subproject form</field>
-            <field name="model">cowin_project.cowin_subproject</field>
+        <!-- 立项意见书-->
+
+
+           <!--项目流程的form视图-->
+        <record model="ir.ui.view" id="sub_project_opinion_book_form">
+            <field name="name">cowin_project.sub_opinion_book form</field>
+            <field name="model">cowin_project.sub_opinion_book</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year">
                     <group>
@@ -41,5 +43,7 @@
                 </form>
             </field>
         </record>
+
+
     </data>
 </odoo>
