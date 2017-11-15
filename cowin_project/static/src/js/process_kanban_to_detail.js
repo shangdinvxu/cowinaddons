@@ -53,6 +53,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             return new Model("cowin_project.cowin_project")
                     .call("rpc_get_info", [self.id])
                     .then(function (result) {
+                        console.log(result)
                         //获取每个环节的model_name存入数组
                         result.process.forEach(function (value) {
                             value.tache_ids.forEach(function (model) {

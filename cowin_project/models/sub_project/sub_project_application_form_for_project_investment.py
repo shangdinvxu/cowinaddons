@@ -17,11 +17,11 @@ class Cowin_project_subproject_application_form_for_project_investment(models.Mo
 
     # ------  投资基金
 
-    foundation_id = fields.Many2one(related='subproject_id.foundation_id', string=u'基金名称')
-    ratio_between_investments = fields.Float(related='subproject_id.ratio_between_investments', string=u'本次投资金额')
-    ownership_interest = fields.Float(related='subproject_id.ownership_interest', string=u'股份比例')
-    round_financing_id = fields.Many2one('cowin_common.round_financing', related='subproject_id.round_financing_id', string=u'融资轮次')
-    financing_money = fields.Float(related='subproject_id.financing_money', string=u'本次融资额')
+    # foundation_id = fields.Many2one(related='subproject_id.foundation_id', string=u'基金名称')
+    # ratio_between_investments = fields.Float(related='subproject_id.ratio_between_investments', string=u'本次投资金额')
+    # ownership_interest = fields.Float(related='subproject_id.ownership_interest', string=u'股份比例')
+    # round_financing_id = fields.Many2one('cowin_common.round_financing', related='subproject_id.round_financing_id', string=u'融资轮次')
+    # financing_money = fields.Float(related='subproject_id.financing_money', string=u'本次融资额')
 
     # -------
 

@@ -14,7 +14,8 @@ class Cowin_project(models.Model):
 
     # 关联到settings中,把该字段看成配置选项的操作
     process_id = fields.Many2one('cowin_project.process', ondelete="cascade")
-    sub_project_ids = fields.One2many('cowin_project.cowin_subproject', 'project_id', string=u'子工程')
+    # sub_project_ids = fields.One2many('cowin_project.cowin_subproject', 'project_id', string=u'子工程')
+    meta_sub_project_ids = fields.One2many('cowin_project.meat_sub_project', 'project_id', string=u'元子工程')
 
     examine_and_verify = fields.Char(string=u'审核校验', default=u'未开始审核')
 
@@ -54,9 +55,11 @@ class Cowin_project(models.Model):
 
 
 
-
+    # 考虑到设计上的规则性,每个工程的创建需要做很多的事情
     @api.model
     def create(self, vals):
+
+        # 1, 创建工程配置实例
         process = None
         if not vals.get('project_number'):
             vals['project_number'] = self.env['ir.sequence'].next_by_code('cowin_project.order')
@@ -73,7 +76,11 @@ class Cowin_project(models.Model):
 
         project = super(Cowin_project, self).create(vals)
 
+
+        #  更改解锁条件
+        #  修改这个需求的作用在于对之后的环节进行处理
         for tache in process.get_all_tache_entities():
+
             if tache.model_id.model_name == self._name:
                 # 主工程的实例id需要根据思路写入res_id之中
                 # 主工程所在的环节的解锁条件需要开启
@@ -85,6 +92,25 @@ class Cowin_project(models.Model):
                 })
 
                 break
+
+
+
+        # 2-1 默认创建 元子工程实例
+
+        meta_sub_project = self.env['cowin_project.meat_sub_project'].create({
+            'project_id': project.id,
+        })
+
+        # 2-2 默认创建该元子工程实例一个基金轮次实例
+        r_f_a_f = self.env['cowin_project.round_financing_and_foundation'].create({
+            'meta_sub_project_id': meta_sub_project.id,
+            'sub_invest_decision_committee_res_id': 0,
+        })
+
+        # # 2-3 默认构建一条轮次基金实体
+        # meta_sub_project.write({
+        #     'round_financing_and_Foundation': r_f_a_f.id,
+        # })
 
         return project
 
@@ -132,66 +158,66 @@ class Cowin_project(models.Model):
 
 
     # 主工程配置的环节需要和子工程的配置的环节进行关联处理
-    def process_settings2(self, sub_project_id):
+    def process_settings2(self, meta_sub_project_id):
         '''
 
-        :param sub_project_id: 子工程实例id
+        :param meta_sub_project_id: 子工程实例id
         :return:
         '''
 
-        # 待处理的proces信息
+        # 1 获取原始的配置信息
         process = self.process_id.get_info()
 
-        sub_project_entity = None
+
+        # 2 获取指定的一个元子工程信息
+        meta_sub_project_entity = None
         # 代表着第一次默认选择第一个来显示,当然,如果存在的情况下
         # 返回给客户的时候页面需要默认显示的一条轮次基金数据
-        if not sub_project_id:
+        if not meta_sub_project_id:
             '''意思在于如果主工程子工程数据,那就显示子工程数据,否则就返回为空'''
-            sub_project_entity = self.sub_project_ids
+            meta_sub_project_entity = self.meta_sub_project_ids
 
             # 第一条数据存在
-            if sub_project_entity:
-                sub_project_entity = sub_project_entity[0]
+            if meta_sub_project_entity:
+                meta_sub_project_entity = meta_sub_project_entity[0]
 
         else:
-            for r_and_f in self.sub_project_ids:
-                if r_and_f.id == sub_project_id:
-                    sub_project_entity = r_and_f
+            for meta_sub_pro in self.meta_sub_project_ids:
+                if meta_sub_pro.id == meta_sub_project_id:
+                    meta_sub_project_entity = meta_sub_pro
 
 
 
-        # 代表当前存在某个sub_project实体记录
-        if sub_project_entity:
-            # 该工程所有关联的环节状态的信息
-            tache_status_entities = sub_project_entity.get_all_sub_tache_status()
-
-            for tache_status in tache_status_entities:
-                for stage in process['stage_ids']:
-                    for tache in stage['tache_ids']:
-                        if tache['id'] == tache_status.id:
-                            # tache['examine_and_verify'] = tache.examine_and_verify
-                            tache['view_or_launch'] = tache_status.view_or_launch
-                            # 当前子工程 只从的得到的主配置和子配置的内存实例去做数据的改变, 并不影响数据库中is_unlocked的值
-
-                            tache_entity = tache_status.get_tache()
-
-                            parent_entity = tache_entity.parent_id
-
-                            if parent_entity.model_id.name == self._name:
-                                tache['is_unlocked'] = parent_entity.is_unlocked
-                            else:
-                                parent_status_entity = parent_entity.tache_status_id
-                                tache['is_unlocked'] = parent_status_entity.is_unlocked
-
-                            break
-
-        # 如果当前没有工程,需要开启第二个环节的调条件 特殊情况,特殊对待
-        else:
-            stages = process['stage_ids'][1]
-            tache2 = stages['tache_ids'][0]
-            tache2['is_unlocked'] = True
+        # 3 元子工程信息中存在的字环节与原始环节进行合并配置
 
 
+        sub_taches = meta_sub_project_entity.get_sub_taches()
+
+        taches = [tache for stage in process['stage_ids']
+                  for tache in stage['tache_ids']]
+
+        for sub_tache in sub_taches:
+            for tache in taches:
+                if tache['id'] == sub_tache.tache_id.id:
+                    tache['sub_tache_id'] = sub_tache.id
+                    # tache['examine_and_verify'] = tache.examine_and_verify
+                    tache['view_or_launch'] = sub_tache.view_or_launch
+                    tache['meta_sub_project_entity_id'] = meta_sub_project_entity.id
+                    # 当前子工程 只从的得到的主配置和子配置的内存实例去做数据的改变, 并不影响数据库中is_unlocked的值
+
+                    # 由于原始环节可能对应多个自环节实体,  原因在于:  有多个元子工程  每个子工程对应一组子环节实体
+                    # 不过在于子环节数据的获取是从元子工程的角度来获取
+                    tache_entity = sub_tache.get_tache()
+
+                    parent_entity = tache_entity.parent_id
+
+                    if parent_entity.model_id.model_name == self._name:
+                        tache['is_unlocked'] = parent_entity.is_unlocked
+                    else:
+                        parent_status_entity = parent_entity.tache_status_id
+                        tache['is_unlocked'] = parent_status_entity.is_unlocked
+
+                    break
 
 
         return process['stage_ids']
@@ -229,9 +255,9 @@ class Cowin_project(models.Model):
                 }
 
 
-
-    def get_all_investment_funds(self):
-        return [funds for funds in self.investment_funds]
+    #
+    # def get_all_investment_funds(self):
+    #     return [funds for funds in self.investment_funds]
 
     # 获得该项目中投资基金所在的投资轮次, 相当于子工程 sub_project
     def get_investment_funds(self):
@@ -240,16 +266,16 @@ class Cowin_project(models.Model):
         count = 0
 
         # 获得所有的子工程
-        sub_projects = self.sub_project_ids
+        meta_sub_projects = self.meta_sub_project_ids
 
         # 如果没有相应的实例,就直接返回
-        if not sub_projects:
+        if not meta_sub_projects:
             return res
 
         # 如果有实例的情况
-        for sub_pro in sub_projects:
-            # 理论上只有一条记录 轮次_基金 finish状态 实例
-            round_financing_and_foundation_entity = sub_pro.get_round_financing_and_foundation()
+        for meta_sub_pro in meta_sub_projects:
+            # 从设计的角度考虑,这里方法只会返回一条基金轮次数据
+            round_financing_and_foundation_entity = meta_sub_pro.get_target_financing_and_foundation()
 
             # 输入 轮次基金id -->  res[i] (i需要的索引)
 

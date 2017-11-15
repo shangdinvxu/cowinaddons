@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import meta_sub_project
 import sub_project_establishment
 import sub_project_opinion_book
 import sub_project_call_up_record

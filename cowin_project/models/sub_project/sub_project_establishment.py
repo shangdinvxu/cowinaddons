@@ -21,10 +21,14 @@ class Cowin_project_subproject(models.Model):
         return tools.image_resize_image_big(open(image_path, 'rb').read().encode('base64'))
 
     # 关联到settings中,把该字段看成配置选项的操作
-    project_id = fields.Many2one('cowin_project.cowin_project', ondelete="cascade")
+    # project_id = fields.Many2one('cowin_project.cowin_project', ondelete="cascade")
+    meta_sub_project_id = fields.Many2one('cowin_project.meat_sub_project', string=u'元子工程实例' , ondelete="cascade")
+
+    # # 这个字段仅仅是为了让程序设计更加的完备性!!!
+    # subproject_id = fields.Many2one('cowin_project.cowin_subproject')
 
     # 关联到自环节表(缓解状态表中)
-    sub_process_tache_status_id = fields.One2many('cowin_project.subproject_process_tache', "sub_project_id")
+    # sub_process_tache_status_id = fields.One2many('cowin_project.subproject_process_tache', "sub_project_id")
 
     examine_and_verify = fields.Char(string=u'审核校验', default=u'未开始审核')
 
@@ -34,22 +38,33 @@ class Cowin_project_subproject(models.Model):
 
     name = fields.Char(string=u"项目名称")
 
-    subproject_foundation_rund_financing_ids = fields.One2many('cowin_project.round_financing_and_foundation',
-                                                               'sub_project_id', string=u'基金_轮次')
+    # subproject_foundation_rund_financing_ids = fields.One2many('cowin_project.round_financing_and_foundation',
+    #                                                            'sub_project_id', string=u'基金_轮次')
 
     project_number = fields.Char(string=u'项目编号')
     project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')],
                               string=u'项目来源', required=True)
     project_source_note = fields.Char(string=u'项目来源备注')
     invest_manager = fields.Many2one('hr.employee', string=u'投资经理')
+    # # ------  投资基金
+    #
+    # foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金名称')
+    # ratio_between_investments = fields.Float(string=u'本次投资金额')
+    # ownership_interest = fields.Float(string=u'股份比例')
+    # round_financing_id = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
+    # financing_money = fields.Float(string=u'本次融资额')
+    # # -------
+
     # ------  投资基金
 
-    foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金名称')
-    ratio_between_investments = fields.Float(string=u'本次投资金额')
-    ownership_interest = fields.Float(string=u'股份比例')
-    round_financing_id = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
-    financing_money = fields.Float(string=u'本次融资额')
+    # foundation_id = fields.Many2one('cowin_project.meat_sub_project', related='meta_sub_project_id.foundation_id')
+    # ratio_between_investments = fields.Float(related='round_financing_and_Foundation.foundation_id')
+    # ownership_interest = fields.Float(string=u'股份比例')
+    # round_financing_id = fields.Many2one('cowin_project.meat_sub_project', related='meta_sub_project_id.round_financing_id')
+    # financing_money = fields.Float(string=u'本次融资额')
     # -------
+
+
     
 
     # round_financing = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
@@ -73,26 +88,49 @@ class Cowin_project_subproject(models.Model):
 
     attachment_note = fields.Char(string=u'附件说明')
 
-
-    # 获得轮次基金实例
-    def get_round_financing_and_foundation(self):
-
-        # 为了方便代码的整理,这样的写法有助于抽象与统一
-        for subproject_foundation_rund_financing in self.subproject_foundation_rund_financing_ids:
-            if subproject_foundation_rund_financing.stage == 2:
-                return subproject_foundation_rund_financing
-
-        if len(self.subproject_foundation_rund_financing_ids) == 0:
-            return self.subproject_foundation_rund_financing_ids
-
-
+    #
+    # # 获得轮次基金实例
+    # def get_round_financing_and_foundation(self):
+    #
+    #     # 为了方便代码的整理,这样的写法有助于抽象与统一
+    #     for subproject_foundation_rund_financing in self.subproject_foundation_rund_financing_ids:
+    #         if subproject_foundation_rund_financing.stage == 2:
+    #             return subproject_foundation_rund_financing
+    #
+    #     if len(self.subproject_foundation_rund_financing_ids) == 0:
+    #         return self.subproject_foundation_rund_financing_ids
 
 
 
-    # 得到所有的的上下文环节信息
-    def get_all_base_taches(self):
-        return self.sub_process_tache_status_id.get_tache()
 
-    # 得到所有的该子工程的配置环节信息
-    def get_all_sub_tache_status(self):
-        return self.sub_process_tache_status_id
+
+    # # 得到所有的的上下文环节信息
+    # def get_all_base_taches(self):
+    #     return self.sub_process_tache_status_id.get_tache()
+
+
+    @api.model
+    def create(self, vals):
+
+        # project_id = int(self._context['project_id'])
+
+        tache = self._context['tache']
+
+        meta_sub_project_id = int(tache['meta_sub_project_id'])
+
+        vals['meta_sub_project_id'] = meta_sub_project_id
+
+        sub_tache_id = int(tache['sub_tache_id'])
+
+        sub_tache = self.env['cowin_project.subproject_process_tache'].browse(sub_tache_id)
+
+        sub_project = super(Cowin_project_subproject, self).create(vals)
+        sub_tache.write({
+            'res_id': sub_project.id,
+            'is_unlocked': True,
+            'view_or_launch': True,
+        })
+
+        return sub_project
+
+
