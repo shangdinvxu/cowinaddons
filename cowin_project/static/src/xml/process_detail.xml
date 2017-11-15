@@ -68,7 +68,7 @@
                                     <div class="button_wrap">
                                         <t t-if="is_unlocked==true">
                                             <t t-if="view_or_launch==true">
-                                                <span><a href="javascript:void(0)">查看</a></span>
+                                                <span class="view_tache"><a href="javascript:void(0)">查看</a></span>
                                             </t>
                                             <t t-else="">
                                                 <span class="initiate"><a href="javascript:void(0)">发起</a></span>
