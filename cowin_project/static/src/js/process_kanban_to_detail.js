@@ -29,22 +29,26 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
         fund_func:function (e) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
+            $('.active_fund').html($('.active_fund').text());
+            $('.active_fund').removeClass('active_fund');
+            $(target).addClass('active_fund');
+            $(target).append("<span class='fa fa-chevron-right'></span>");
             var sub_id = $(target).attr('data-sub-id');
             var self =this;
             return new Model("cowin_project.cowin_project")
-                    .call("rpc_get_info", [parseInt(self.id)],{meta_project_id:sub_id})
+                    .call("rpc_get_info", [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
                     .then(function (result) {
                         console.log(result);
-                        //获取每个环节的model_name存入数组
-                        // result.process.forEach(function (value) {
-                        //     value.tache_ids.forEach(function (model) {
-                        //         self.model_arr.push(model.model_name);
-                        //         self.tache_arr.push((model))
-                        //     });
-                        // });
-                        //
-                        // self.id = parseInt(result.id);
-                        // self.$el.append(QWeb.render('project_process_detail_tmp', {result: result}))
+                        $('.process_data_main_wrap').html('');
+                        // 获取每个环节的model_name存入数组
+                        result.process.forEach(function (value) {
+                            value.tache_ids.forEach(function (model) {
+                                self.model_arr.push(model.model_name);
+                                self.tache_arr.push((model))
+                            });
+                        });
+                        self.id = parseInt(result.id);
+                        $('.process_data_main_wrap').append(QWeb.render('process_info_right_tmpl', {result: result}))
                     })
         },
         //查看按钮的点击事件
