@@ -42,7 +42,11 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     'default_round_financing_and_foundation_id':self.tache_arr[tache_index].round_financing_and_foundation.round_financing_and_foundation_id,
                     'default_round_financing_id':self.tache_arr[tache_index].round_financing_and_foundation.round_financing_id,
                     'default_the_amount_of_financing': self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_financing,
-                    'default_the_amount_of_investment':self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_investment
+                    'default_the_amount_of_investment':self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_investment,
+                    'default_invest_manager_id':self.tache_arr[tache_index].sub_project.invest_manager_id,
+                    'default_name':self.tache_arr[tache_index].sub_project.name,
+                    'default_project_number':self.tache_arr[tache_index].sub_project.project_number,
+                    'default_sub_project_id':self.tache_arr[tache_index].sub_project.sub_project_id,
                 }
             }
 
@@ -82,7 +86,11 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     'default_round_financing_and_foundation_id':self.tache_arr[tache_index].round_financing_and_foundation.round_financing_and_foundation_id,
                     'default_round_financing_id':self.tache_arr[tache_index].round_financing_and_foundation.round_financing_id,
                     'default_the_amount_of_financing': self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_financing,
-                    'default_the_amount_of_investment':self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_investment
+                    'default_the_amount_of_investment':self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_investment,
+                    'default_invest_manager_id':self.tache_arr[tache_index].sub_project.invest_manager_id,
+                    'default_name':self.tache_arr[tache_index].sub_project.name,
+                    'default_project_number':self.tache_arr[tache_index].sub_project.project_number,
+                    'default_sub_project_id':self.tache_arr[tache_index].sub_project.sub_project_id,
                 },
                 type: 'ir.actions.act_window',
                 name: self.tache_arr[tache_index].name,
