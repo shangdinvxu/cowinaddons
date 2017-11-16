@@ -275,7 +275,7 @@ class Cowin_project(models.Model):
 
 
     # 获得每个project的详细信息
-    def _get_info(self, round_financing_and_foundation_id=None):
+    def _get_info(self, meta_project_id=None):
 
         return {'id': self.id,
                 'name': self.name,
@@ -301,7 +301,7 @@ class Cowin_project(models.Model):
                 'contract_email': self.contract_email,
                 'attachment_note': self.attachment_note,
                 'investment_funds': self.get_investment_funds(),
-                'process': self.process_settings2(round_financing_and_foundation_id),
+                'process': self.process_settings2(meta_project_id),
                 }
 
 
@@ -367,8 +367,8 @@ class Cowin_project(models.Model):
 
 
     # 通过rpc调用,把详细的信息传递到前端以便于显示操作
-    def rpc_get_info(self):
-        return self._get_info()
+    def rpc_get_info(self, meta_project_id=None):
+        return self._get_info(meta_project_id)
 
 
     # 查看或者发起
