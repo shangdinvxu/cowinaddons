@@ -276,7 +276,8 @@ class Cowin_project(models.Model):
 
     # 获得每个project的详细信息
     def _get_info(self, **kwargs):
-        meta_project_id = kwargs.get("meta_project_id")
+        tmp = kwargs.get("meta_project_id")
+        meta_project_id = 0 if not tmp else int(tmp)
 
         return {'id': self.id,
                 'name': self.name,
