@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+
+        <!-- 投资决策委员会会议纪要-->
+        <!--投资决策委员会会议纪要的form视图-->
+
+        <record model="ir.ui.view" id="sub_sum_invest_decision_committee_form">
+            <field name="name">cowin_project.sub_sum_invest_decision_committee form</field>
+            <field name="model">cowin_project.sub_sum_invest_decision_committee</field>
+            <field name="arch" type="xml">
+                <form string="Fiscal year">
+                    <group>
+
+                        <field name="name" string="名称"/>
+                        <field name="project_number"/>
+                        <field name="invest_manager_id"/>
+
+                        <field name="voting_committee_date"/>
+                        <field name="conference_recorder"/>
+                        <field name="checker"/>
+                        <field name="investment_decision_committee"/>
+                        <field name="conference_highlights"/>
+                    </group>
+
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

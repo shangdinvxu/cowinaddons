@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+        <!-- 尽调拜访记录-->
+
+
+           <!--尽调拜访记录的form视图-->
+        <record model="ir.ui.view" id="sub_call_up_record_form">
+            <field name="name">cowin_project.sub_call_up_record form</field>
+            <field name="model">cowin_project.sub_call_up_record</field>
+            <field name="arch" type="xml">
+                <form string="Fiscal year">
+                    <group>
+
+                        <field name="name" string="名称"/>
+                        <field name="project_number"/>
+                        <field name="invest_manager_id"/>
+                        <field name="visit_date"/>
+                        <field name="customer_type"/>
+                        <field name="customer_name"/>
+                        <field name="customer_position"/>
+                        <field name="customer_contract"/>
+                        <field name="customer_email"/>
+                        <field name="customer_company_name"/>
+                        <field name="customer_relation_investment"/>
+                        <field name="customer_relation_value"/>
+                        <field name="customer_relation_opinion"/>
+                        <field name="recommended_visit_object"/>
+                    </group>
+
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

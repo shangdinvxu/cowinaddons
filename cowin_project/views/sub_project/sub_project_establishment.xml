@@ -1,7 +1,7 @@
 <!--# 项目立项  构建小项目-->
 <odoo>
     <data>
-         <!--项目流程的form视图-->
+         <!--项目立项的form视图-->
         <record model="ir.ui.view" id="sub_project_establishment_form">
             <field name="name">cowin_project.cowin_subproject form</field>
             <field name="model">cowin_project.cowin_subproject</field>
@@ -15,7 +15,7 @@
                             <field name="project_number"/>
                             <field name="project_source"/>
                             <field name="project_source_note"/>
-                            <field name="invest_manager"/>
+                            <field name="invest_manager_id"/>
                             <field name="project_company_profile"/>
                             <field name="project_appraisal"/>
                             <field name="project_note"/>

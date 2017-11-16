@@ -29,6 +29,18 @@
         'views/templates.xml',
         'views/sub_project/sub_project_establishment.xml',
         'views/sub_project/sub_project_opinion_book.xml',
+        'views/sub_project/sub_project_call_up_record.xml',
+        'views/sub_project/sub_project_dispatch_report.xml',
+        'views/sub_project/sub_project_investment_decision_application.xml',
+        'views/sub_project/sub_project_sum_investment_decision_committee.xml',
+        'views/sub_project/sub_project_conference_resolutions.xml',
+        'views/sub_project/sub_project_investment_decision_committee_meeting_resolution.xml',
+        'views/sub_project/sub_project_appointment_and_dismissal.xml',
+        'views/sub_project/sub_project_investment_contract.xml',
+        'views/sub_project/sub_project_application_form_for_project_investment.xml',
+        'views/sub_project/sub_project_project_entrusted_loan_application_form.xml',
+        'views/sub_project/sub_project_payment_application_form.xml',
+        'views/sub_project/sub_project_project_data_archiving.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

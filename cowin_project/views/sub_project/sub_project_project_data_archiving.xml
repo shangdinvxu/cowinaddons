@@ -1,12 +1,14 @@
 <odoo>
     <data>
-        <!-- 立项意见书-->
 
 
-           <!--立项意见书的form视图-->
-        <record model="ir.ui.view" id="sub_project_opinion_book_form">
-            <field name="name">cowin_project.sub_opinion_book form</field>
-            <field name="model">cowin_project.sub_opinion_book</field>
+        <!-- 项目资料归档-->
+
+
+           <!--项目资料归档的form视图-->
+        <record model="ir.ui.view" id="sub_project_data_archiving_form">
+            <field name="name">cowin_project.sub_project_data_archiving form</field>
+            <field name="model">cowin_project.sub_project_data_archiving</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year">
                     <group>
@@ -14,7 +16,7 @@
                         <field name="name" string="名称"/>
                         <field name="project_number"/>
                         <field name="invest_manager_id"/>
-                        <field name="date_of_project"/>
+                        <field name="engagement_partner"/>
                         <!--投资基金-->
                         <field name="foundation_id"/>
                         <field name="the_amount_of_investment"/>
@@ -22,16 +24,17 @@
                         <field name="round_financing_id"/>
                         <field name="the_amount_of_financing"/>
                         <!---->
-                        <field name="project_mumbers"/>
-                        <field name="partner_opinion"/>
-                        <field name="business_director_option"/>
-                        <field name="policy_making_committee"/>
+                        <field name="investment_decision_process_information"/>
+                        <field name="relevant_legal_documents_and_materials"/>
+                        <field name="government_approval_materials"/>
+                        <field name="payment_process_information"/>
+                        <field name="business_change_data"/>
                     </group>
 
                 </form>
             </field>
         </record>
 
-
     </data>
+
 </odoo>

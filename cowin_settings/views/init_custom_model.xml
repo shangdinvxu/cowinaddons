@@ -29,7 +29,7 @@
         </record>
 
         <record id="init_custom_model_8" model="cowin_settings.custome_model_data">
-            <field name="model_name">cowin_project.conference_resolutions</field>
+            <field name="model_name">cowin_project.sub_conference_resolutions</field>
         </record>
 
         <record id="init_custom_model_9" model="cowin_settings.custome_model_data">

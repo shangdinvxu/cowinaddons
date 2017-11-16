@@ -1,0 +1,29 @@
+<odoo>
+
+    <data>
+
+
+        <!-- 投资合同-->
+
+
+           <!--投资合同的form视图-->
+        <record model="ir.ui.view" id="sub_project_invest_contract_form">
+            <field name="name">cowin_project.sub_invest_contract form</field>
+            <field name="model">cowin_project.sub_invest_contract</field>
+            <field name="arch" type="xml">
+                <form string="Fiscal year">
+                    <group>
+
+                        <field name="contract_no"/>
+                        <field name="title"/>
+                        <field name="main_contents"/>
+                    </group>
+
+                </form>
+            </field>
+        </record>
+
+
+
+    </data>
+</odoo>

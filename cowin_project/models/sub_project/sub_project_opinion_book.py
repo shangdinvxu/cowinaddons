@@ -16,7 +16,7 @@ class Cowin_project_subproject_opinion_book(models.Model):
 
     name = fields.Char(related='subproject_id.name', string=u"项目名称")
     project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
-    invest_manager = fields.Many2one(related='subproject_id.invest_manager', string=u'投资经理')
+    invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
 
 
     date_of_project = fields.Date(string=u'立项日期')
@@ -50,14 +50,18 @@ class Cowin_project_subproject_opinion_book(models.Model):
     def create(self, vals):
         tache = self._context['tache']
 
-        meta_sub_project_id = int(tache['meta_sub_project_id'])
+        sub_project_id = int(tache['sub_project_id'])
 
-        vals['meta_sub_project_id'] = meta_sub_project_id
+        # vals['meta_sub_project_id'] = meta_sub_project_id
 
         sub_tache_id = int(tache['sub_tache_id'])
 
         sub_tache = self.env['cowin_project.subproject_process_tache'].browse(sub_tache_id)
 
+
+
+
+        vals['subproject_id'] = sub_project_id
         res = super(Cowin_project_subproject_opinion_book, self).create(vals)
         sub_tache.write({
             'res_id': res.id,

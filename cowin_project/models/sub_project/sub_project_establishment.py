@@ -37,13 +37,10 @@ class Cowin_project_subproject(models.Model):
                         help="This field holds the image used as photo for the cowin_project, limited to 1024x1024px.")
 
     name = fields.Char(string=u"项目名称")
-
-
     project_number = fields.Char(string=u'项目编号')
-    project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')],
-                              string=u'项目来源', required=True)
+    project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')], string=u'项目来源', required=True)
     project_source_note = fields.Char(string=u'项目来源备注')
-    invest_manager = fields.Many2one('hr.employee', string=u'投资经理')
+    invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
 
 
     # ----------  投资基金
