@@ -228,6 +228,7 @@ class Cowin_project(models.Model):
                     # -------------->
 
                     # 2 ------->   共享的子工程实例  可能为空,不过odoo特性很良好
+                    # 运用odoo的特性可以非常好的使用空实体的问题
                     tache['sub_project'] = {}
                     tache['sub_project']['sub_project_id'] = meta_sub_project_entity.sub_project_id.id
                     tache['sub_project']['name'] = meta_sub_project_entity.sub_project_id.name
