@@ -9,7 +9,7 @@ class Cowin_project(models.Model):
 
     @api.model
     def _default_image(self):
-        image_path = get_module_resource('hr', 'static/src/img', 'default_image.png')
+        image_path = get_module_resource('web', 'static/src/img', 'placeholder.png')
         return tools.image_resize_image_big(open(image_path, 'rb').read().encode('base64'))
 
     # 关联到settings中,把该字段看成配置选项的操作
