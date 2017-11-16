@@ -1,0 +1,25 @@
+<odoo>
+    <data>
+
+        <!-- 轮次基金-->
+        <!--轮次基金的form视图-->
+
+        <record model="ir.ui.view" id="sub_project_round_financing_and_foundation_form">
+            <field name="name">cowin_project.round_financing_and_foundation form</field>
+            <field name="model">cowin_project.round_financing_and_foundation</field>
+            <field name="arch" type="xml">
+                <form string="Fiscal year">
+                    <group>
+
+                        <field name="the_amount_of_investment"/>
+                        <field name="foundation_id"/>
+                        <field name="ownership_interest"/>
+                        <field name="round_financing_id"/>
+                        <field name="the_amount_of_financing"/>
+                    </group>
+
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

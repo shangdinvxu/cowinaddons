@@ -41,6 +41,7 @@
         'views/sub_project/sub_project_project_entrusted_loan_application_form.xml',
         'views/sub_project/sub_project_payment_application_form.xml',
         'views/sub_project/sub_project_project_data_archiving.xml',
+        'views/dependencies_many2many/sub_project_round_financing_and_foundation.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

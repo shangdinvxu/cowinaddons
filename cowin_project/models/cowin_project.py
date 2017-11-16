@@ -230,10 +230,10 @@ class Cowin_project(models.Model):
                     # 2 ------->   共享的子工程实例  可能为空,不过odoo特性很良好
                     # 运用odoo的特性可以非常好的使用空实体的问题
                     tache['sub_project'] = {}
-                    tache['sub_project']['sub_project_id'] = meta_sub_project_entity.sub_project_id.id
-                    tache['sub_project']['name'] = meta_sub_project_entity.sub_project_id.name
-                    tache['sub_project']['project_number'] = meta_sub_project_entity.sub_project_id.project_number
-                    tache['sub_project']['invest_manager_id'] = meta_sub_project_entity.sub_project_id.invest_manager_id.id
+                    tache['sub_project']['sub_project_id'] = meta_sub_project_entity.sub_project_ids.id
+                    tache['sub_project']['name'] = meta_sub_project_entity.sub_project_ids.name
+                    tache['sub_project']['project_number'] = meta_sub_project_entity.sub_project_ids.project_number
+                    tache['sub_project']['invest_manager_id'] = meta_sub_project_entity.sub_project_ids.invest_manager_id.id
 
 
 
@@ -242,7 +242,7 @@ class Cowin_project(models.Model):
                     # tache['examine_and_verify'] = tache.examine_and_verify
                     tache['view_or_launch'] = sub_tache.view_or_launch
                     tache['meta_sub_project_id'] = meta_sub_project_entity.id
-                    tache['sub_project_id'] = meta_sub_project_entity.sub_project_id.id
+                    tache['sub_project_id'] = meta_sub_project_entity.sub_project_ids.id
                     # 当前子工程 只从的得到的主配置和子配置的内存实例去做数据的改变, 并不影响数据库中is_unlocked的值
 
                     # 由于原始环节可能对应多个自环节实体,  原因在于:  有多个元子工程  每个子工程对应一组子环节实体
@@ -254,7 +254,17 @@ class Cowin_project(models.Model):
                     if parent_entity.model_id.model_name == self._name:
                         tache['is_unlocked'] = parent_entity.is_unlocked
                     else:
-                        parent_status_entity = parent_entity.tache_status_id
+
+                        # 考虑到主环节可以对应多个子环节(如果没有在元子工程的识别情况下)
+                        parent_status_entitys = parent_entity.tache_status_id
+
+                        parent_status_entity = None
+                        for status_entity in parent_status_entitys:
+                            if status_entity.meta_sub_project_id.id == meta_sub_project_entity.id:
+                                parent_status_entity = status_entity
+                                break
+
+
                         tache['is_unlocked'] = parent_status_entity.is_unlocked
 
                     break

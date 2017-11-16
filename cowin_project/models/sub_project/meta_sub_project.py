@@ -24,7 +24,7 @@ class Meat_sub_project(models.Model):
 
 
     # 理论上只会有一个实例
-    sub_project_id = fields.One2many('cowin_project.cowin_subproject', 'meta_sub_project_id', string=u'子工程实例')
+    sub_project_ids = fields.One2many('cowin_project.cowin_subproject', 'meta_sub_project_id', string=u'子工程实例')
 
 
     sub_tache_ids = fields.One2many('cowin_project.subproject_process_tache', 'meta_sub_project_id', string=u'子环节实例')
@@ -68,10 +68,19 @@ class Meat_sub_project(models.Model):
 
     def get_target_financing_and_foundation(self):
 
-        for r in self.get_round_financing_and_foundation():
-            # 看来在odoo之中, 关于外键的引用是运用了假实例的布局
-            if not r.sub_invest_decision_committee_res_id:
-                return r
+        # 两种情况  1  工程刚开开始什么都没有的情况下
+
+        #          2   由一个子工程创建出来的情况
+
+
+        # for r in self.get_round_financing_and_foundation():
+        #     # 看来在odoo之中, 关于外键的引用是运用了假实例的布局
+        #     if not r.sub_invest_decision_committee_res_id:
+        #         return r
+        #
+
+        # 这种情况下是最为正确的抉择!!!
+        return self.round_financing_and_Foundation_ids[0]
 
 
 
