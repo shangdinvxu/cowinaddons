@@ -337,6 +337,7 @@ class Cowin_project(models.Model):
                     round_financing_dict['foundation_names'].append({
                         'foundation_id': round_financing_and_foundation_entity.foundation_id.id,
                         'foundation_name': round_financing_and_foundation_entity.foundation_id.name,
+                        'meta_sub_project_id': meta_sub_pro.id,
                     })
                     # break 最里面的一层循环
                     found = True
@@ -352,6 +353,7 @@ class Cowin_project(models.Model):
                     'foundation_names': [{
                         'foundation_id': round_financing_and_foundation_entity.foundation_id.id,
                         'foundation_name': round_financing_and_foundation_entity.foundation_id.name,
+                        'meta_sub_project_id': meta_sub_pro.id,
                     }],
                 })
 
