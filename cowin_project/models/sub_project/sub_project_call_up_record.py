@@ -21,7 +21,10 @@ class Cowin_project_subproject_call_up_record(models.Model):
 
     visit_date = fields.Date(string=u'拜访日期')
 
-    customer_type = fields.Many2one('', string=u'客户类型')
+    customer_type = fields.Selection([(1, u'团队'), (2, u'客户'), (3, u'竞争对手'), (4, u'供应链'), (5, u'行业顾问')],
+                                     string=u'客户类型', default=1)
+
+    # customer_type = fields.Many2one('', string=u'客户类型')
 
     customer_name = fields.Char(string=u'姓名')
     customer_position = fields.Char(string=u'职位')
