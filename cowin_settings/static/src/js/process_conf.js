@@ -31,7 +31,8 @@ odoo.define('cowin_settings.process_conf', function (require) {
                 type: 'ir.actions.client',
                 name: 'process',
                 tag: 'process_conf_detail',
-                id: active_detail_id,
+                active_id: active_detail_id,
+                params:{'active_id': active_detail_id}
             };
             this.do_action(action);
         },

@@ -275,7 +275,8 @@ class Cowin_project(models.Model):
 
 
     # 获得每个project的详细信息
-    def _get_info(self, meta_project_id=None):
+    def _get_info(self, **kwargs):
+        meta_project_id = kwargs.get("meta_project_id")
 
         return {'id': self.id,
                 'name': self.name,
@@ -367,8 +368,8 @@ class Cowin_project(models.Model):
 
 
     # 通过rpc调用,把详细的信息传递到前端以便于显示操作
-    def rpc_get_info(self, meta_project_id=None):
-        return self._get_info(meta_project_id)
+    def rpc_get_info(self, **kwargs):
+        return self._get_info(**kwargs)
 
 
     # 查看或者发起

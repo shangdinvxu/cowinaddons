@@ -15,6 +15,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
     var ControlPanelMixin = require('web.ControlPanelMixin');
     var SearchView = require('web.SearchView');
     var data = require('web.data');
+    var pyeval = require('web.pyeval');
     var _t = core._t;
 
 
@@ -22,7 +23,29 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
         template: '',
         events:{
             'click .initiate':'initiate_func',
-            'click .view_tache':'view_tache_func'
+            'click .view_tache':'view_tache_func',
+            'click .process_data_rounds .fund': 'fund_func'
+        },
+        fund_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var sub_id = $(target).attr('data-sub-id');
+            var self =this;
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_get_info", [parseInt(self.id)],{meta_project_id:sub_id})
+                    .then(function (result) {
+                        console.log(result);
+                        //获取每个环节的model_name存入数组
+                        // result.process.forEach(function (value) {
+                        //     value.tache_ids.forEach(function (model) {
+                        //         self.model_arr.push(model.model_name);
+                        //         self.tache_arr.push((model))
+                        //     });
+                        // });
+                        //
+                        // self.id = parseInt(result.id);
+                        // self.$el.append(QWeb.render('project_process_detail_tmp', {result: result}))
+                    })
         },
         //查看按钮的点击事件
         view_tache_func:function (e) {
@@ -99,9 +122,15 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             self.do_action(action)
         },
         init: function (parent, action) {
+            this._super(parent);
             this._super.apply(this, arguments);
-            this.id = action.id;
+            if(action.active_id){
+                this.id = action.active_id;
+            }else {
+                this.id = action.params.active_id;
+            }
             var self = this;
+            console.log(action)
             //存储每个环节的model_name
             self.model_arr = [];
             //存储环节
@@ -110,7 +139,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
         start: function () {
             var self = this;
             return new Model("cowin_project.cowin_project")
-                    .call("rpc_get_info", [self.id])
+                    .call("rpc_get_info", [parseInt(self.id)],{})
                     .then(function (result) {
                         console.log(result);
                         //获取每个环节的model_name存入数组

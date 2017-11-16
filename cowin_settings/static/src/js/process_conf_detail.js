@@ -228,8 +228,14 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             $(".create_new_group").show();
         },
         init: function (parent, action) {
+            this._super(parent);
             this._super.apply(this, arguments);
-            this.id = parseInt(action.id);
+            if(action.active_id){
+                this.id = parseInt(action.active_id);
+            }else {
+                this.id = parseInt(action.params.active_id);
+            }
+
             var self = this;
         },
         start: function () {

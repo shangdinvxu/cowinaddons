@@ -25,7 +25,9 @@ KanbanRecord.include({
                 type: 'ir.actions.client',
                 name: 'process',
                 tag: 'process_kanban_to_detail',
-                id: this.record.id.raw_value,
+                // id: this.record.id.raw_value,
+                active_id:this.record.id.raw_value,
+                params:{'active_id':this.record.id.raw_value,action:'process_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
             }
             this.do_action(action);
         }
