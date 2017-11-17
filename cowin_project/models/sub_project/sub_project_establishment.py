@@ -3,7 +3,7 @@
 from odoo import models, fields, api
 from odoo.modules.module import get_module_resource
 from odoo import tools
-
+from odoo.exceptions import UserError
 
 # 项目立项  构建小项目
 
@@ -87,6 +87,12 @@ class Cowin_project_subproject(models.Model):
         tache = self._context['tache']
 
         meta_sub_project_id = int(tache['meta_sub_project_id'])
+
+        # 校验meta_sub_project所对应的子工程只能有一份实体
+        meta_sub_project = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+        if len(meta_sub_project.sub_project_ids) > 1:
+            raise UserError(u'每个元子工程只能有一份实体!!!')
+
 
         vals['meta_sub_project_id'] = meta_sub_project_id
 
