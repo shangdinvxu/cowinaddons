@@ -98,4 +98,32 @@
             </t>
         </t>
     </t>
+
+    <t t-name="process_info_left_tmpl">
+        <div>项目流程</div>
+        <!--<t t-set="active_flag" t-value="1"/>-->
+        <t t-foreach="result.investment_funds" t-as="item">
+            <div class="process_rounds_wrap">
+                <strong><t t-esc="item.round_financing_name"/></strong>
+                <ul>
+                    <t t-foreach="item.foundation_names" t-as="obj">
+                        <t t-if="active_flag== obj.meta_sub_project_id">
+                            <li t-att-data-sub-id="obj.meta_sub_project_id" class="active_fund fund">
+                                <t t-if="obj.foundation_name==''">
+                                    暂无基金
+                                </t>
+                                <t t-else="">
+                                    <t t-esc="obj.foundation_name"/> <span class="fa fa-chevron-right"></span>
+                                </t>
+                            </li>
+                            <t t-set="active_flag" t-value="0"/>
+                        </t>
+                        <t t-else="">
+                            <li class="fund" t-att-data-sub-id="obj.meta_sub_project_id"><t t-esc="obj.foundation_name"/> </li>
+                        </t>
+                    </t>
+                </ul>
+            </div>
+        </t>
+    </t>
 </templates>

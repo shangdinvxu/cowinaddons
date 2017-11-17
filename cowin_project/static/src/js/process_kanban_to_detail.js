@@ -149,7 +149,9 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                                                 });
                                             });
                                             self.id = parseInt(result.id);
-                                            $('.process_data_main_wrap').append(QWeb.render('process_info_right_tmpl', {result: result}))
+                                            $('.process_data_main_wrap').append(QWeb.render('process_info_right_tmpl', {result: result}));
+                                            $('.process_data_rounds').html('');
+                                            $('.process_data_rounds').append(QWeb.render('process_info_left_tmpl', {result: result,active_flag:sub_id}));
                                         })
                                 })
                             }
