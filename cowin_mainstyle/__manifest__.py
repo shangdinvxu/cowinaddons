@@ -24,11 +24,12 @@
 
     # always loaded
     'data': [
-        'security/data.xml',
+        # 'security/data.xml',
         'views/views.xml',
         'views/templates.xml',
         'views/webclient_templates.xml',
-        'views/website_templates.xml'
+        'views/website_templates.xml',
+        'views/data.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

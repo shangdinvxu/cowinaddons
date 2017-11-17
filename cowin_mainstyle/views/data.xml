@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<data noupdate="1">
+<data >
        <record id="cowin_settings.menu_settings" model="ir.ui.menu">
          <field name="name">系统配置</field>
          <field name="button_icon">fa fa-cog</field>
