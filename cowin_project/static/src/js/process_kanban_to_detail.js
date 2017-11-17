@@ -26,6 +26,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .view_tache':'view_tache_func',
             'click .process_data_rounds .fund': 'fund_func'
         },
+        //基金切换
         fund_func:function (e) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
@@ -35,7 +36,6 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             $(target).append("<span class='fa fa-chevron-right'></span>");
             var sub_id = $(target).attr('data-sub-id');
             var self =this;
-            self.model_arr = [];
             self.tache_arr = [];
             return new Model("cowin_project.cowin_project")
                     .call("rpc_get_info", [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
@@ -45,7 +45,6 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                         // 获取每个环节的model_name存入数组
                         result.process.forEach(function (value) {
                             value.tache_ids.forEach(function (model) {
-                                self.model_arr.push(model.model_name);
                                 self.tache_arr.push((model))
                             });
                         });
@@ -83,7 +82,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                 view_type: 'form',
                 view_mode: 'form',
                 views: [[false, 'form']],
-                res_model: self.model_arr[parseInt(tache_index)],
+                res_model: self.tache_arr[parseInt(tache_index)].model_name,
                 res_id: self.tache_arr[tache_index].res_id,
                 name: self.tache_arr[tache_index].name,
                 type: 'ir.actions.act_window',
@@ -107,7 +106,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                 view_type: 'form',
                 view_mode: 'form',
                 views: [[false, 'form']],
-                res_model: self.model_arr[parseInt(tache_index)],
+                res_model: self.tache_arr[parseInt(tache_index)].model_name,
                 context: {
                     'tache': self.tache_arr[tache_index],
                     'default_foundation_id':self.tache_arr[tache_index].round_financing_and_foundation.foundation_id,
@@ -125,7 +124,40 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                 name: self.tache_arr[tache_index].name,
                 target:'new'
             }
-            self.do_action(action)
+            self.do_action(action);
+            
+            // ajax监听事件 用以刷新页面
+            var sub_id = $('.active_fund').attr('data-sub-id');
+            var refresh_page = null;
+            refresh_page = function (self,model) {
+                $(document).ajaxComplete(function (event, xhr, settings) {
+                    if (settings.data){
+                        var data = JSON.parse(settings.data);
+                        if (data.params.model == model) {
+                            if (data.params.method == 'create'){
+                                $('.close').click(function () {
+                                    return new Model("cowin_project.cowin_project")
+                                        .call("rpc_get_info", [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
+                                        .then(function (result) {
+                                            console.log(result);
+                                            $('.process_data_main_wrap').html('');
+                                            // 获取每个环节的model_name存入数组
+                                            self.tache_arr = [];
+                                            result.process.forEach(function (value) {
+                                                value.tache_ids.forEach(function (model) {
+                                                    self.tache_arr.push((model))
+                                                });
+                                            });
+                                            self.id = parseInt(result.id);
+                                            $('.process_data_main_wrap').append(QWeb.render('process_info_right_tmpl', {result: result}))
+                                        })
+                                })
+                            }
+                        }
+                    }
+                })
+            }
+            refresh_page(self,self.tache_arr[tache_index].model_name);
         },
         init: function (parent, action) {
             this._super(parent);
@@ -136,9 +168,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                 this.id = action.params.active_id;
             }
             var self = this;
-            console.log(action)
-            //存储每个环节的model_name
-            self.model_arr = [];
+            console.log(action);
             //存储环节
             self.tache_arr = [];
         },
@@ -151,8 +181,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                         //获取每个环节的model_name存入数组
                         result.process.forEach(function (value) {
                             value.tache_ids.forEach(function (model) {
-                                self.model_arr.push(model.model_name);
-                                self.tache_arr.push((model))
+                                self.tache_arr.push(model)
                             });
                         });
 
