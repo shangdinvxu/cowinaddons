@@ -31,7 +31,7 @@ class Cowin_project_subproject_project_data_archiving(models.Model):
 
     the_amount_of_investment = fields.Float(
         related='subproject_id.the_amount_of_investment', string=u'本次投资金额')
-    ownership_interest = fields.Float(
+    ownership_interest = fields.Integer(
         related='subproject_id.ownership_interest', string=u'股份比例')
     # ---------------
 

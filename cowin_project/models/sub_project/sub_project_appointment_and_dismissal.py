@@ -17,14 +17,14 @@ class Cowin_project_subproject_appointment_and_dismissal(models.Model):
 
     #----- 任免对象
     trustee = fields.Many2one('hr.employee', string=u'董事')
-    appointment_time_begin_trustee = fields.Date()
-    appointment_time_end_trustee = fields.Date()
+    appointment_time_begin_trustee = fields.Date(string=u'开始日期')
+    appointment_time_end_trustee = fields.Date(string=u'结束日期')
 
     Tenure_trustee = fields.Float(string=u'任职年限')
 
     supervisor = fields.Many2one('hr.employee', string=u'监事')
-    appointment_time_begin_supervisor = fields.Date()
-    appointment_time_endr_supervisor = fields.Date()
+    appointment_time_begin_supervisor = fields.Date(string=u'开始日期')
+    appointment_time_endr_supervisor = fields.Date(string=u'结束日期')
 
     Tenure_supervisor = fields.Float(string=u'任职年限')
 

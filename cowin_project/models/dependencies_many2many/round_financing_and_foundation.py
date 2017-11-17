@@ -34,7 +34,7 @@ class Round_financing_and_Foundation(models.Model):
     '''
         轮次基金
     '''
-    name = fields.Char(string=u'轮次基金')
+    name = fields.Char(string=u'轮次基金名称')
     # sub_project_id = fields.Many2one('cowin_project.cowin_sub_project', string=u'子工程')
     meta_sub_project_id = fields.Many2one('cowin_project.meat_sub_project', string=u'元子工程实例',
                                           ondelete="cascade")
@@ -51,7 +51,7 @@ class Round_financing_and_Foundation(models.Model):
 
     the_amount_of_investment = fields.Float(string=u'本次投资金额')
     foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金')
-    ownership_interest = fields.Float(string=u'股份比例')
+    ownership_interest = fields.Integer(string=u'股份比例')
     round_financing_id = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
     the_amount_of_financing = fields.Float(string=u'本次融资额')
 

@@ -11,6 +11,7 @@
                 <form string="Fiscal year">
                     <group>
 
+                        <field name="name"/>
                         <field name="the_amount_of_investment"/>
                         <field name="foundation_id"/>
                         <field name="ownership_interest"/>
