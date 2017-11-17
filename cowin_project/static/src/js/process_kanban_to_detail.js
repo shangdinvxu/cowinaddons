@@ -35,6 +35,8 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             $(target).append("<span class='fa fa-chevron-right'></span>");
             var sub_id = $(target).attr('data-sub-id');
             var self =this;
+            self.model_arr = [];
+            self.tache_arr = [];
             return new Model("cowin_project.cowin_project")
                     .call("rpc_get_info", [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
                     .then(function (result) {
