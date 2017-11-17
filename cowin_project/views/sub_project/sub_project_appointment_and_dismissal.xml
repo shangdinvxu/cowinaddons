@@ -11,20 +11,46 @@
             <field name="arch" type="xml">
                 <form string="Fiscal year">
                     <group>
-
                         <field name="name" string="名称"/>
                         <field name="project_number"/>
                         <field name="invest_manager_id"/>
+                    </group>
+
+                    <group>
                         <field name="trustee"/>
                         <field name="appointment_time_begin_trustee"/>
                         <field name="appointment_time_end_trustee"/>
                         <field name="Tenure_trustee"/>
+                    </group>
+
+                    <group>
                         <field name="supervisor"/>
                         <field name="appointment_time_begin_supervisor"/>
                         <field name="appointment_time_endr_supervisor"/>
                         <field name="Tenure_supervisor"/>
-                        <field name="managing_partner"/>
                     </group>
+
+                    <notebook string="任免对象">
+
+                        <page string="">
+                            <group>
+                                <field name="trustee"/>
+                                <field name="appointment_time_begin_trustee"/>
+                                <field name="appointment_time_end_trustee"/>
+                                <field name="Tenure_trustee"/>
+                            </group>
+                        </page>
+
+                        <page string="">
+                            <group>
+                                <field name="supervisor"/>
+                                <field name="appointment_time_begin_supervisor"/>
+                                <field name="appointment_time_endr_supervisor"/>
+                                <field name="Tenure_supervisor"/>
+                            </group>
+                        </page>
+                        <field name="managing_partner"/>
+                    </notebook>
 
                 </form>
             </field>
