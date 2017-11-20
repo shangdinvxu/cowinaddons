@@ -67,7 +67,7 @@
                                 <td class="operate_wrap">
                                     <span class="edit_tache">编辑</span>
                                     <!--<span>移动到</span>-->
-                                    <!--<span class="tache_delete">删除</span>-->
+                                    <span class="tache_delete">删除</span>
                                 </td>
                             </tr>
                         </t>
@@ -131,6 +131,14 @@
                     环节编辑
                 </div>
                 <div class="create_input_wrap">当前环节: <input class="current_tache" type="text"/></div>
+                <div class="edit_tache_input_wrap">所属分组:
+                    <select class="form-control">
+                        <t t-foreach="result.stage_ids" t-as="item">
+                            <option t-att-data-id="item.id"><t t-esc="item.name"/></option>
+                        </t>
+                    </select>
+                </div>
+
                 <div class="condition_wrap">解锁条件:
                     <select class="form-control">
                         <option data-id="">无条件</option>

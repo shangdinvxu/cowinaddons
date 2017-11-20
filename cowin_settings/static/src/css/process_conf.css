@@ -88,7 +88,7 @@
     display: inline-block;
     width: 50%;
 }
-.close_this_container .create_wrap .create_input_wrap{
+.close_this_container .create_wrap .create_input_wrap,.edit_tache_input_wrap{
     margin-top: 15px;
     margin-bottom: 15px;
 }
