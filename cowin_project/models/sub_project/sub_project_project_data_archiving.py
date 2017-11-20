@@ -16,8 +16,7 @@ class Cowin_project_subproject_project_data_archiving(models.Model):
     project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
     invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
 
-    # engagement_partner = fields.Char(string=u'项目合伙人')
-    engagement_partner = fields.Many2one('res.partner', string=u'项目合伙人')
+    engagement_partner_id = fields.Many2one('hr.employee', string=u'项目合伙人')
 
     # ----------  投资基金
     round_financing_id = fields.Many2one('cowin_common.round_financing',

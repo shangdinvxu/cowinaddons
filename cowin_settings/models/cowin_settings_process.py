@@ -63,6 +63,8 @@ class Cowin_settings_process(models.Model):
                 tmp_tache['once_or_more'] = tache.once_or_more
                 tmp_tache['model_name'] = tache.model_id.model_name
                 tmp_tache['stage_id'] = tache.stage_id.id
+                # 理论上只会由一条记录产生,所以使用这类的做法
+                tmp_tache['approval_flow_settings_id'] = tache.approval_flow_settings_ids.id
                 # tmp_tache['approval_flow_settings_id'] = tache.approval_flow_settings.id
 
                 tmp_stage['tache_ids'].append(tmp_tache)
@@ -241,9 +243,9 @@ class Cowin_settings_process(models.Model):
                  for tache in stage.tache_ids
                  ]
 
-
-    def get_approval_flow_settings(self):
-        taches = self.get_all_taches()
+    #
+    # def get_approval_flow_settings(self):
+    #     taches = self.get_all_taches()
 
 
 
@@ -266,3 +268,5 @@ class Cowin_settings_process(models.Model):
         res = approval_flow_settings.get_all_approval_flow_setting_nodes()
 
         return res
+
+

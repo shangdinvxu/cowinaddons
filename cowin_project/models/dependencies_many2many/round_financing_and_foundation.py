@@ -56,6 +56,10 @@ class Round_financing_and_Foundation(models.Model):
     the_amount_of_financing = fields.Float(string=u'本次融资额')
 
 
+    _sql_constraints = [
+      ('number_uniq', 'unique(foundation_id, round_financing_id)', u'基金轮次不能相同!'),
+    ]
+
 
 
 

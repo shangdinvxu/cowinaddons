@@ -16,7 +16,7 @@
                         <field name="name" string="名称"/>
                         <field name="project_number"/>
                         <field name="invest_manager_id"/>
-                        <field name="engagement_partner"/>
+                        <field name="engagement_partner_id"/>
                         <!--投资基金-->
                         <field name="foundation_id"/>
                         <field name="the_amount_of_investment"/>
