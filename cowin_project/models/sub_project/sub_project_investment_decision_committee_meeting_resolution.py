@@ -89,3 +89,34 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
 
 
 
+    @api.multi
+    def write(self, vals):
+
+        # 获取之前得到的基金轮次
+        prev = set(self.round_financing_and_Foundation_ids)
+
+        result = super(Cowin_project_subproject_investment_decision_committee_meeting_resolution, self).write(vals)
+
+        # 获取之后得到的基金轮次
+        after = set(self.round_financing_and_Foundation_ids)
+
+
+        diffs = after - prev
+
+
+        # 接下来这条数据的作用在于对轮次基金实体中的meta_sub_project_id做关联对应
+        for round_financing_and_Foundation in diffs:
+            # 创建元子工程
+            meta_sub_project = self.env['cowin_project.meat_sub_project'].create({
+                'project_id': self.subproject_id.meta_sub_project_id.project_id.id,
+            })
+
+
+            round_financing_and_Foundation.write({
+                'meta_sub_project_id': meta_sub_project.id,
+            })
+
+        return result
+
+
+

@@ -26,7 +26,11 @@
                         <field name="the_amount_of_financing"/>
 
                         <!---->
-                        <field name="round_financing_and_Foundation_ids"/>
+                        <field name="round_financing_and_Foundation_ids">
+                            <tree string="轮次基金名称"  delete="false">
+                                <field name="name"/>
+                            </tree>
+                        </field>
 
                         <field name="trustee"/>
                         <field name="supervisor"/>
