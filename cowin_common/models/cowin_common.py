@@ -36,7 +36,8 @@ class Cowin_settings_approval_role(models.Model):
 
     name = fields.Char(string=u'角色名')
 
-
+    # node_ids = fields.Many2many('approval_flow_project_node_approval_operation_role_rel', 'node_id', 'role_id',
+    #                                         string=u'')
 
 
 

@@ -94,6 +94,14 @@ class Cowin_project(models.Model):
                 break
 
 
+        # 1 添加审批流配置信息
+        for tache in process.get_all_tache_entities():
+            approval_flow_settings_entity = tache.approval_flow_settings_ids
+
+
+
+
+
 
         # 2-1 默认创建 元子工程实例
 

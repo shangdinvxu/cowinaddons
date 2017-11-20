@@ -29,7 +29,7 @@ class Cowin_project_process_tache(models.Model):
     # 这种情况只适用于主project的使用,子project只适用于环节的下一级表
     res_id = fields.Integer(string=u'该环节对应该实例另一个字段model_id中的一个实例')
     # 这种情况只适用于主project的使用,子project只适用于环节的下一级表
-    approval_flow_settings = fields.One2many('cowin_project.approval_flow_settings', 'tache_id', string=u'审批流程')
+    approval_flow_settings_ids = fields.One2many('cowin_project.approval_flow_settings', 'tache_id', string=u'审批流程')
 
 
     @api.model
@@ -90,13 +90,45 @@ class Cowin_project_process_tache(models.Model):
     def create_tache_info(self, tache_info, stage_id):
 
         model_name = self.env['cowin_settings.custome_model_data'].search([('model_name', '=', tache_info['model_name'])])
-        self.create({
+
+
+        tache_entity = self.create({
             'name': tache_info['name'],
             'description': tache_info['description'],
             'state': tache_info['state'],
             'once_or_more': tache_info['once_or_more'],
             'model_id': model_name.id,
             'stage_id': stage_id,
-            # 'view_or_launch': tache_info['view_or_launch'],
             # 'approval_flow_settings_id': tache_info['approval_flow_settings_id'],
         })
+
+
+        # 构建审批流
+
+        approval_flow_settings_entity = tache_entity.approval_flow_settings_ids
+
+        approval_flow_settings_id = int(tache_info['approval_flow_settings_id'])
+
+        meta_approval_flow_settings_entity = self.env['cowin_settings.approval_flow_settings'].browse(approval_flow_settings_id)
+
+        meta_approval_flow_settings_node_entities = meta_approval_flow_settings_entity.approval_flow_setting_node_ids
+
+        for meta_node in meta_approval_flow_settings_node_entities:
+            target_node = self.env['cowin_project.approval_flow_setting_node'].create({
+                'name': meta_node.name,
+                'active_withdrawal': meta_node.active_withdrawal,
+                'approval_flow_settings_id': approval_flow_settings_entity.id,
+            })
+
+            # 把之前需要元配置中审批节点实体中的Many2Many所在的实体,全部都复制在主工程中的构建策略之中
+            cowin_project_node_approval_operation_role_rel = self.env['cowin_project_node_approval_operation_role_rel']
+
+            for hr_employee in meta_node.operation_role_ids:
+                cowin_project_node_approval_operation_role_rel.create({
+                    'cowin_project_approval_flow_settings_id': target_node.id,
+                    'hr_employee_id': hr_employee.id,
+                })
+
+
+
+

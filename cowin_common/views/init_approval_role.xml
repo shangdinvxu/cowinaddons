@@ -1,0 +1,42 @@
+<odoo>
+    <data>
+
+        <!--初始化虚拟角色-->
+        <record id="init_approval_flow_operation_role_1" model="cowin_common.approval_role">
+            <field name="name">创建人</field>
+        </record>
+        <record id="init_approval_flow_operation_role_2" model="cowin_common.approval_role">
+            <field name="name">投资经理</field>
+        </record>
+        <record id="init_approval_flow_operation_role_3" model="cowin_common.approval_role">
+            <field name="name">业务总监</field>
+        </record>
+        <record id="init_approval_flow_operation_role_4" model="cowin_common.approval_role">
+            <field name="name">项目合伙人</field>
+        </record>
+        <record id="init_approval_flow_operation_role_5" model="cowin_common.approval_role">
+            <field name="name">投资决策委员会</field>
+        </record>
+        <record id="init_approval_flow_operation_role_6" model="cowin_common.approval_role">
+            <field name="name">风控总监</field>
+        </record>
+        <record id="init_approval_flow_operation_role_7" model="cowin_common.approval_role">
+            <field name="name">管理合伙人</field>
+        </record>
+        <record id="init_approval_flow_operation_role_8" model="cowin_common.approval_role">
+            <field name="name">复核人</field>
+        </record>
+        <record id="init_approval_flow_operation_role_9" model="cowin_common.approval_role">
+            <field name="name">财务专员</field>
+        </record>
+        <record id="init_approval_flow_operation_role_10" model="cowin_common.approval_role">
+            <field name="name">董事/监事</field>
+        </record>
+        <record id="init_approval_flow_operation_role_11" model="cowin_common.approval_role">
+            <field name="name">投资决策委员会主席</field>
+        </record>
+
+
+
+    </data>
+</odoo>

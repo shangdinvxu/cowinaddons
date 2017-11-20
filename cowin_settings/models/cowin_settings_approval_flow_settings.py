@@ -67,8 +67,9 @@ class Cowin_approval_flow_setting_node(models.Model):
 
     approval_flow_settings_id = fields.Many2one('cowin_settings.approval_flow_settings', string=u'审批流', ondelete="cascade")
 
-    operation_role_ids = fields.Many2many('cowin_common.approval_role',
-                                            'approval_flow_settings_node_approval_operation_role', string=u'操作角色')
+
+    operation_role_ids = fields.Many2many('cowin_common.approval_role', 'cowin_settings_node_approval_operation_role_rel',
+                                          string=u'操作角色')
     active_withdrawal = fields.Boolean(string=u'主动撤回')
 
     _sql_constraints = [
