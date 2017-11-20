@@ -4,7 +4,7 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 
 
-class Cowin_settings_process_tache(models.Model):
+class Cowin_project_process_tache(models.Model):
     _name = 'cowin_project.process_tache'
 
     name = fields.Char(string=u'环节')
@@ -34,23 +34,15 @@ class Cowin_settings_process_tache(models.Model):
 
     @api.model
     def create(self, vals):
-        # entity = self.env['cowin_settings.custome_model_data'].search([('model_name', '=', 'cowin_project.cowin_project')])
-        # if not entity:
-        #     entity = entity.create({
-        #         'name': 'cowin_project.cowin_project',
-        #         'model_name': 'cowin_project.cowin_project'
-        #     })
 
-        res = super(Cowin_settings_process_tache, self).create(vals)
-        # begin 添加审批流
-        # res.write({'approval_flow_settings': res.get_approval_flow_settings()})
+        res = super(Cowin_project_process_tache, self).create(vals)
 
-        # --end
+        # 创建的过程中开始创建审批流实体
+        approval_flow_settings = self.env['cowin_project.approval_flow_settings'].create({
+            'tache_id': res.id,
+        })
 
-
-        # res.model_name = entity
         return res
-
 
     def _check_parent_id(self, ids=[]):
 

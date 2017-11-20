@@ -8,7 +8,7 @@ class Cowin_settings_approval_flow_settings(models.Model):
 
     name = fields.Char(string=u'审批流')
 
-    operational_role = fields.Many2many('hr.employee', string=u'操作角色')
+    operational_role_ids = fields.Many2many('hr.employee', string=u'操作角色')
 
     active_withdrawal = fields.Boolean(string=u'主动撤回', default=True)
 
@@ -65,9 +65,9 @@ class Cowin_approval_flow_setting_node(models.Model):
 
     name = fields.Char(string=u'审批节点')
 
-    approval_flow_settings_id = fields.Many2one('cowin_project.approval_flow_settings', string=u'审批流', ondelete="cascade")
+    approval_flow_settings_id = fields.Many2one('cowin_settings.approval_flow_settings', string=u'审批流', ondelete="cascade")
 
-    operation_role_ids = fields.Many2many('cowin_settings.approval_role',
+    operation_role_ids = fields.Many2many('cowin_common.approval_role',
                                             'approval_flow_settings_node_approval_operation_role', string=u'操作角色')
     active_withdrawal = fields.Boolean(string=u'主动撤回')
 
