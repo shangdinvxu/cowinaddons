@@ -11,7 +11,7 @@
                         <group>
                             <group>
                                 <field name="name" string="名称"/>
-                                <field name="image" widget="image"/>
+                                <field name="image" widget="image" class="oe_avatar" options="{'size': [90, 90]}"/>
                                 <field name="project_number"/>
                                 <field name="project_source"/>
                                 <field name="project_source_note"/>

@@ -23,7 +23,7 @@
                         <t t-set="active_flag" t-value="1"/>
                         <t t-foreach="result.investment_funds" t-as="item">
                             <div class="process_rounds_wrap">
-                                <strong><t t-esc="item.round_financing_name"/></strong>
+                                <strong><t t-esc="item.round_financing_name ? item.round_financing_name:''"/></strong>
                                 <ul>
                                     <t t-foreach="item.foundation_names" t-as="obj">
                                         <t t-if="active_flag==1">
@@ -104,7 +104,7 @@
         <!--<t t-set="active_flag" t-value="1"/>-->
         <t t-foreach="result.investment_funds" t-as="item">
             <div class="process_rounds_wrap">
-                <strong><t t-esc="item.round_financing_name"/></strong>
+                <strong><t t-esc="item.round_financing_name ? item.round_financing_name:''"/></strong>
                 <ul>
                     <t t-foreach="item.foundation_names" t-as="obj">
                         <t t-if="active_flag== obj.meta_sub_project_id">
