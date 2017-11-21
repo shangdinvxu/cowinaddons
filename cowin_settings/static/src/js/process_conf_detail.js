@@ -32,7 +32,19 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             'dragover tr':'prevent_default',
             'dragstart tr': 'move_start',
             'drop tr':'move_func',
-            'click .cancel_sort':'cancel_sort'
+            'click .cancel_sort':'cancel_sort',
+            'click .approval_flow':'show_approval_flow_wrap'
+        },
+        //显示审批流
+        show_approval_flow_wrap:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var tache_id = $(target).parents('.process_detail_group_detail_line').attr('data-tache-id');
+            return new Model("cowin_settings.process")
+                .call("rpc_approval_flow_setting_info",[],{tache_id:tache_id})
+                .then(function (result) {
+                    console.log(result)
+                })
         },
         //取消排序
         cancel_sort:function () {

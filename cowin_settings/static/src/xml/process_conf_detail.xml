@@ -68,6 +68,7 @@
                                     <span class="edit_tache">编辑</span>
                                     <!--<span>移动到</span>-->
                                     <span class="tache_delete">删除</span>
+                                    <span class="approval_flow">审批流</span>
                                 </td>
                             </tr>
                         </t>
@@ -156,6 +157,17 @@
                 <div class="create_texts">提示：解锁条件是指当该条件对应的事项完成后，此环节才可使用。例如：当项目登记完成后，才可发起立项申请，那么可设置立项申请的解锁条件为项目登记</div>
                 <button class=" btn btn-primary confirm_unlock_condition" style="margin-left:112px">确定</button>
                 <button class="btn btn-default alia_cancel">取消</button>
+            </div>
+        </div>
+    </t>
+
+
+    <!--审批流-->
+    <t t-name="approval_flow">
+        <div class="unlock_condition close_this_container">
+            <div class="modal-backdrop  in"></div>
+            <div class="approval_flow_wrap">
+
             </div>
         </div>
     </t>
