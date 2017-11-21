@@ -34,8 +34,8 @@ class Cowin_settings_approval_flow_settings(models.Model):
             tmp['accept'] = node.accept
             tmp['reject'] = node.reject
             tmp['put_off'] = node.put_off
-            tmp['operator_roles'] = [operator_role.name for operator_role in node.operation_role_ids]
-            tmp['all_operator_roles'] = [operator_role.name for operator_role in operator_roles]
+            tmp['operator_roles'] = [{'operator_role_id': operator_role.id, 'name': operator_role.name} for operator_role in node.operation_role_ids]
+            tmp['all_operator_roles'] = [{'operator_role_id': operator_role.id, 'name': operator_role.name} for operator_role in operator_roles]
 
             res.append(tmp)
 
