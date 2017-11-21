@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-
+from odoo.exceptions import UserError
 
 class Cowin_settings_approval_flow_settings(models.Model):
     _name = 'cowin_settings.approval_flow_settings'
@@ -14,7 +14,7 @@ class Cowin_settings_approval_flow_settings(models.Model):
 
     tache_id = fields.Many2one('cowin_settings.process_tache', string=u'依赖环节', ondelete="cascade")
 
-    approval_flow_setting_node_ids = fields.One2many('cowin_settings.approval_flow_setting_node',
+    approval_flow_settings_node_ids = fields.One2many('cowin_settings.approval_flow_setting_node',
                                                                     'approval_flow_settings_id', u'审批节点')
 
     _sql_constraints = [
@@ -26,7 +26,7 @@ class Cowin_settings_approval_flow_settings(models.Model):
         operator_roles = self.env['cowin_common.approval_role'].search([])
 
         res = []
-        for node in self.approval_flow_setting_nodes:
+        for node in self.approval_flow_settings_node_ids:
             tmp = {}
             tmp['approval_flow_setting_node_id'] = node.id
             tmp['name'] = node.name
@@ -34,7 +34,8 @@ class Cowin_settings_approval_flow_settings(models.Model):
             tmp['accept'] = node.accept
             tmp['reject'] = node.reject
             tmp['put_off'] = node.put_off
-            tmp['operator_roles'] = operator_roles
+            tmp['operator_roles'] = [operator_role.id for operator_role in node.operation_role_ids]
+            tmp['all_operator_roles'] = [operator_role.id for operator_role in operator_roles]
 
             res.append(tmp)
 
@@ -98,6 +99,26 @@ class Cowin_approval_flow_setting_node(models.Model):
 
 
 
-    def rpc_add_role(self):
-        pass
+    @api.model
+    def create(self, vals):
+        # 把特殊情况屏蔽过去
+        res = super(Cowin_approval_flow_setting_node, self).create(vals)
+
+        if vals['name'] != u'提交':
+            if len(res.operation_role_ids) > 1:
+                raise UserError(u'除了提交节点外,其他节点都只能有一个操作角色!!!')
+
+        return res
+
+
+    @api.multi
+    def write(self, vals):
+
+        res = super(Cowin_approval_flow_setting_node, self).write(vals)
+        if vals['name'] != u'提交':
+            if len(res.operation_role_ids) > 1:
+                raise UserError(u'除了提交节点外,其他节点都只能有一个操作角色!!!')
+
+        return res
+
 

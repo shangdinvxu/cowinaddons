@@ -89,16 +89,7 @@ class Cowin_settings_process_tache(models.Model):
 
         # 理论上只会有一条实体
         approval_flow_settings = self.approval_flow_settings_ids
-        nodes = []
-        for node in approval_flow_settings.approval_flow_setting_node_ids:
-            res = {
-                'approval_flow_setting_node_id': node.id,
-                'name': node.name,
-                'active_withdrawal': node.active_withdrawal,
-                'operation_role_ids': [operation_role.id for operation_role in node.operation_role_ids],
-            }
-
-            nodes.append(res)
+        nodes = approval_flow_settings.get_all_approval_flow_setting_nodes()
 
         return {
             'approval_flow_settings_id': approval_flow_settings.id,
