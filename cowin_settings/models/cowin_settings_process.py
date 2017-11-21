@@ -243,19 +243,20 @@ class Cowin_settings_process(models.Model):
                  for tache in stage.tache_ids
                  ]
 
-    #
-    # def get_approval_flow_settings(self):
-    #     taches = self.get_all_taches()
 
+
+    def _get_approval_flow_settings_info(self, tache_id):
+
+        for tache in self.get_all_tache_entities():
+            if tache.id == tache_id:
+                return tache.get_approval_flow_settings_info()
 
 
 
     # 开始做审批流设置
-    def rpc_approval_flow_setting(self, **kwargs):
-
-
-
-        return self.get_info()
+    def rpc_approval_flow_setting_info(self, **kwargs):
+        tache_id = int(kwargs.get('tache_id'))
+        return self._get_approval_flow_settings_info(tache_id)
 
 
 
@@ -268,5 +269,7 @@ class Cowin_settings_process(models.Model):
         res = approval_flow_settings.get_all_approval_flow_setting_nodes()
 
         return res
+
+
 
 

@@ -89,3 +89,6 @@ class Cowin_approval_flow_setting_node(models.Model):
 
 
 
+    def rpc_add_role(self):
+        pass
+
