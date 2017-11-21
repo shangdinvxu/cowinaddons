@@ -92,6 +92,8 @@ class Cowin_project_process_tache(models.Model):
         model_name = self.env['cowin_settings.custome_model_data'].search([('model_name', '=', tache_info['model_name'])])
 
 
+
+        # 弄人情况下在环节中已经创建好审批流实体
         tache_entity = self.create({
             'name': tache_info['name'],
             'description': tache_info['description'],
@@ -120,13 +122,13 @@ class Cowin_project_process_tache(models.Model):
                 'approval_flow_settings_id': approval_flow_settings_entity.id,
             })
 
-            # 把之前需要元配置中审批节点实体中的Many2Many所在的实体,全部都复制在主工程中的构建策略之中
+            # 把之前需要元配置中审批节点实体中的Many2Many所在的权限角色实体,全部都复制在主工程中的权限决策实体中
             cowin_project_node_approval_operation_role_rel = self.env['cowin_project_node_approval_operation_role_rel']
 
-            for hr_employee in meta_node.operation_role_ids:
+            for operation_role in meta_node.operation_role_ids:
                 cowin_project_node_approval_operation_role_rel.create({
-                    'cowin_project_approval_flow_settings_id': target_node.id,
-                    'hr_employee_id': hr_employee.id,
+                    'approval_flow_setting_node_id': target_node.id,
+                    'operation_role_id': operation_role.id,
                 })
 
 

@@ -55,6 +55,19 @@ class Cowin_project_approval_flow_settings(models.Model):
         return res
 
 
+
+
+class Cowin_project_approval_role_inherit(models.Model):
+
+    # _name = 'cowin_settings.approval_role'
+
+    _inherit = 'cowin_common.approval_role'
+
+    approval_flow_setting_node_ids = fields.Many2many('cowin_project.approval_flow_setting_node', 'cowin_project_node_approval_operation_role_rel',
+                            'operation_role_id' , 'approval_flow_setting_node_id', string=u'操作角色')
+
+
+
 class Cowin_project_approval_flow_setting_node(models.Model):
     _name = 'cowin_project.approval_flow_setting_node'
 
@@ -64,7 +77,7 @@ class Cowin_project_approval_flow_setting_node(models.Model):
                                                 ondelete="cascade")
 
     operation_role_ids = fields.Many2many('cowin_common.approval_role', 'cowin_project_node_approval_operation_role_rel',
-                                          string=u'操作角色')
+                                          'approval_flow_setting_node_id', 'operation_role_id', string=u'操作角色')
 
     active_withdrawal = fields.Boolean(string=u'主动撤回')
 

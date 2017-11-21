@@ -25,7 +25,7 @@ class Cowin_round_financing(models.Model):
 
 
 
-class Cowin_settings_approval_role(models.Model):
+class Cowin_common_approval_role(models.Model):
 
     _name = 'cowin_common.approval_role'
 
