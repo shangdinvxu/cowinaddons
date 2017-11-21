@@ -23,12 +23,18 @@ class Cowin_settings_approval_flow_settings(models.Model):
 
 
     def get_all_approval_flow_setting_nodes(self):
+        operator_roles = self.env['cowin_common.approval_role'].search([])
+
         res = []
         for node in self.approval_flow_setting_nodes:
             tmp = {}
             tmp['approval_flow_setting_node_id'] = node.id
             tmp['name'] = node.name
             tmp['approval_flow_settings_id'] = node.approval_flow_settings_id.id
+            tmp['accept'] = node.accept
+            tmp['reject'] = node.reject
+            tmp['put_off'] = node.put_off
+            tmp['operator_roles'] = operator_roles
 
             res.append(tmp)
 
@@ -81,7 +87,10 @@ class Cowin_approval_flow_setting_node(models.Model):
 
     operation_role_ids = fields.Many2many('cowin_common.approval_role', 'cowin_settings_node_approval_operation_role_rel',
                                           'approval_flow_setting_node_id', 'operation_role_id', string=u'操作角色')
-    active_withdrawal = fields.Boolean(string=u'主动撤回')
+
+    accept = fields.Boolean(string=u'同意', default=True)
+    reject = fields.Boolean(string=u'不同意', default=True)
+    put_off = fields.Boolean(string=u'暂缓', default=False)
 
     _sql_constraints = [
         ('name_key', 'UNIQUE (approval_flow_settings_id, name)', u'审批节点名称不能相同!!!'),
