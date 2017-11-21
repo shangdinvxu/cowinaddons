@@ -56,7 +56,8 @@ class Cowin_project_process(models.Model):
                 tmp_tache['stage_id'] = tache.stage_id.id
                 tmp_tache['res_id'] = tache.res_id
                 tmp_tache['view_or_launch'] = tache.view_or_launch
-                tmp_tache['approval_flow_settings_id'] = tache.approval_flow_settings.id
+                # 默认情况下只有一个实体
+                tmp_tache['approval_flow_settings_id'] = tache.approval_flow_settings_ids.id
 
                 tmp_stage['tache_ids'].append(tmp_tache)
 
