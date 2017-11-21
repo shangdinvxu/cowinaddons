@@ -40,10 +40,13 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
             var tache_id = $(target).parents('.process_detail_group_detail_line').attr('data-tache-id');
+            var self = this;
             return new Model("cowin_settings.process")
                 .call("rpc_approval_flow_setting_info",[self.id],{tache_id:tache_id})
                 .then(function (result) {
-                    console.log(result)
+                    console.log(result);
+                    $('.approval_flow_container').remove();
+                    self.$el.append(QWeb.render('approval_flow',{result: result}));
                 })
         },
         //取消排序
@@ -52,7 +55,6 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             return new Model("cowin_settings.process")
                     .call("get_info", [this.id])
                     .then(function (result) {
-                        console.log(self.$el)
                         self.$el.html('');
                         self.$el.append(QWeb.render('process_conf_detail_tmp', {result: result}));
                     })
