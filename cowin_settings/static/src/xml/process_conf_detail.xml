@@ -164,7 +164,7 @@
 
     <!--审批流-->
     <t t-name="approval_flow">
-        <div class="unlock_condition close_this_container">
+        <div class="approval_flow_container close_this_container">
             <div class="modal-backdrop  in"></div>
             <div class="approval_flow_wrap">
 
