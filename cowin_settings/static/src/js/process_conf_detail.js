@@ -41,7 +41,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             var target = e.target || e.srcElement;
             var tache_id = $(target).parents('.process_detail_group_detail_line').attr('data-tache-id');
             return new Model("cowin_settings.process")
-                .call("rpc_approval_flow_setting_info",[],{tache_id:tache_id})
+                .call("rpc_approval_flow_setting_info",[self.id],{tache_id:tache_id})
                 .then(function (result) {
                     console.log(result)
                 })
