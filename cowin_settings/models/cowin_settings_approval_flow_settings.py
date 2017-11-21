@@ -52,14 +52,17 @@ class Cowin_settings_approval_flow_settings(models.Model):
         '''
         res = super(Cowin_settings_approval_flow_settings, self).create(vals)
 
-        self.env['cowin_settings.approval_flow_setting_node'].create({
+
+
+        parent = self.env['cowin_settings.approval_flow_setting_node'].create({
             'approval_flow_settings_id': res.id,
-            'name': u'提交',
+            'name': u'审批结束',
         })
 
         self.env['cowin_settings.approval_flow_setting_node'].create({
             'approval_flow_settings_id': res.id,
-            'name': u'审批结束',
+            'name': u'提交',
+            'parent_id': parent.id,
         })
 
         return res
@@ -85,6 +88,8 @@ class Cowin_approval_flow_setting_node(models.Model):
 
     approval_flow_settings_id = fields.Many2one('cowin_settings.approval_flow_settings', string=u'审批流', ondelete="cascade")
 
+    parent_id = fields.Many2one('cowin_settings.approval_flow_setting_node', string=u'依赖的父node')
+
 
     operation_role_ids = fields.Many2many('cowin_common.approval_role', 'cowin_settings_node_approval_operation_role_rel',
                                           'approval_flow_setting_node_id', 'operation_role_id', string=u'操作角色')
@@ -102,11 +107,37 @@ class Cowin_approval_flow_setting_node(models.Model):
     @api.model
     def create(self, vals):
         # 把特殊情况屏蔽过去
+
         res = super(Cowin_approval_flow_setting_node, self).create(vals)
 
         if vals['name'] != u'提交':
             if len(res.operation_role_ids) > 1:
                 raise UserError(u'除了提交节点外,其他节点都只能有一个操作角色!!!')
+
+
+
+        # 拿出节点数据开始进行依赖引用操作
+        nodes = self.env[self._name].search([])
+        begin_node = None
+        for node in nodes:
+            if node.name == u'提交':
+                begin_node = node
+                break
+
+        current_node = begin_node
+        while current_node.parent_id.name != u'审批结束':
+            current_node = current_node.parent_id
+
+        end_node = current_node.parent_id
+
+        res.write({
+            'parent_id': end_node.id,
+        })
+
+
+        current_node.write({
+            'parent_id': res.id,
+        })
 
         return res
 
@@ -120,5 +151,8 @@ class Cowin_approval_flow_setting_node(models.Model):
                 raise UserError(u'除了提交节点外,其他节点都只能有一个操作角色!!!')
 
         return res
+
+
+
 
 
