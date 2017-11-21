@@ -18,7 +18,7 @@ class Cowin_project_subproject_conference_resolutions(models.Model):
 
     voting_committee = fields.Date(string=u'投决会日期')
 
-    members_of_voting_committee = fields.Many2many('hr.employee', string=u'投决会委员')
+    members_of_voting_committee_ids = fields.Many2many('hr.employee', string=u'投决会委员')
 
     voting_opinion = fields.Text(string=u'表决意见')
 
