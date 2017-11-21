@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+import itertools
 
 class Cowin_settings_approval_flow_settings(models.Model):
     _name = 'cowin_settings.approval_flow_settings'
@@ -25,8 +26,11 @@ class Cowin_settings_approval_flow_settings(models.Model):
     def get_all_approval_flow_setting_nodes(self):
         operator_roles = self.env['cowin_common.approval_role'].search([])
 
+        approval_flow_settings_node_ids = self.env['cowin_settings.approval_flow_setting_node'].search(
+            [('approval_flow_settings_id', '=', self.id)], order='order')
+
         res = []
-        for node in self.approval_flow_settings_node_ids:
+        for node in approval_flow_settings_node_ids:
             tmp = {}
             tmp['approval_flow_setting_node_id'] = node.id
             tmp['name'] = node.name
@@ -34,11 +38,18 @@ class Cowin_settings_approval_flow_settings(models.Model):
             tmp['accept'] = node.accept
             tmp['reject'] = node.reject
             tmp['put_off'] = node.put_off
+            tmp['order'] = node.order
             tmp['parent_id'] = node.parent_id.id
             tmp['operator_roles'] = [{'operator_role_id': operator_role.id, 'name': operator_role.name} for operator_role in node.operation_role_ids]
             tmp['all_operator_roles'] = [{'operator_role_id': operator_role.id, 'name': operator_role.name} for operator_role in operator_roles]
 
             res.append(tmp)
+
+
+        # 根据依赖进行排序规则
+
+
+
 
         return res
 
@@ -95,6 +106,8 @@ class Cowin_approval_flow_setting_node(models.Model):
     operation_role_ids = fields.Many2many('cowin_common.approval_role', 'cowin_settings_node_approval_operation_role_rel',
                                           'approval_flow_setting_node_id', 'operation_role_id', string=u'操作角色')
 
+    order = fields.Integer(string=u'对于前端来说需要排序的字段')
+
     accept = fields.Boolean(string=u'同意', default=True)
     reject = fields.Boolean(string=u'不同意', default=True)
     put_off = fields.Boolean(string=u'暂缓', default=False)
@@ -139,6 +152,17 @@ class Cowin_approval_flow_setting_node(models.Model):
         current_node.write({
             'parent_id': res.id,
         })
+
+
+        # 计数生成器
+        counter = itertools.count(1, 1)
+
+        current_node = begin_node
+
+        while not current_node.parent_id:
+            current_node.write({
+                'order_id': counter.next(),
+            })
 
         return res
 
