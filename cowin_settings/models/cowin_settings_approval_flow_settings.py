@@ -42,7 +42,7 @@ class Cowin_settings_approval_flow_settings(models.Model):
             tmp['parent_id'] = node.parent_id.id
             tmp['operation_role_ids'] = [{'operator_role_id': operator_role.id, 'name': operator_role.name}
                                          for operator_role in node.operation_role_ids]
-            tmp['all_operator_roles'] = [{'operator_role_id': operator_role.id, 'name': operator_role.name}
+            tmp['all_operator_roles_ids'] = [{'operator_role_id': operator_role.id, 'name': operator_role.name}
                                          for operator_role in operator_roles]
 
             res.append(tmp)
@@ -53,16 +53,35 @@ class Cowin_settings_approval_flow_settings(models.Model):
     def rpc_save_all_info(self, **kwargs):
         approval_flow_setting_nodes = kwargs.get('approval_flow_setting_nodes')
 
-        create_nodes = [node for node in approval_flow_setting_nodes if node.id == -1]
+        create_nodes = [node for node in approval_flow_setting_nodes if node.approval_flow_setting_node_id == -1]
 
-        remaings_node_ids = set(node.id for node in approval_flow_setting_nodes if node.id != -1)
-        origin_node_ids = set(node.id  for node in self.approval_flow_settings_node_ids)
+        remaings_node_ids = set(node.approval_flow_setting_node_id for node in approval_flow_setting_nodes
+                                            if node.approval_flow_setting_node_id != -1)
+
+        origin_node_ids = set(node.approval_flow_setting_node_id  for node in self.approval_flow_settings_node_ids)
 
         unlink_node_ids = origin_node_ids - remaings_node_ids
 
+        # 删除节点
         for id in unlink_node_ids:
             node = self.env['cowin_settings.approval_flow_setting_node'].browse(id)
             node.unlink()
+
+
+        # 编辑节点
+        remaings_nodes = [node for node in approval_flow_setting_nodes if node.approval_flow_setting_node_id != -1]
+        for node_info in remaings_nodes:
+            node = self.env['cowin_settings.approval_flow_setting_node'].browse(node_info['approval_flow_setting_node_id'])
+
+            node.write({
+                'name': node_info['name'],
+                'accept': node_info['accept'],
+                'reject': node_info['reject'],
+                'reject': node_info['reject'],
+                'operation_role_ids': node_info['operation_role_ids'],
+            })
+
+
 
 
         for node in create_nodes:
