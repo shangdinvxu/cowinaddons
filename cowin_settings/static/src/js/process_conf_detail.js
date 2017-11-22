@@ -48,7 +48,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                 // console.log($(this).find('.node_name').val());
                 var s = {};
                 s.approval_flow_settings_id = self.approval_flow_settings_id;
-                s.node_name = $(this).find('.node_name').val();
+                s.name = $(this).find('.node_name').val();
                 if($(this).attr('data-setting-node-id')){
                     s.approval_flow_setting_node_id = parseInt($(this).attr('data-setting-node-id'));
                 }else {
@@ -56,6 +56,8 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                 }
                 if($(this).find('.approval_suspend').length>0){
                     s.put_off = $(this).find('.approval_suspend').is(':checked')
+                }else {
+                    s.put_off = false;
                 }
                 s.reject = true;
                 s.accept = true;
