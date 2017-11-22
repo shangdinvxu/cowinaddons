@@ -196,7 +196,12 @@
                             <div class="node_operate_wrap" t-att-data-setting-node-id="item.approval_flow_setting_node_id">
                                 <div>
                                     <span>节点名称：</span>
-                                    <input class="node_name" type="text" t-att-value="item.name"/>
+                                    <t t-if="item.name=='提交'">
+                                        <span class="node_name">提交</span>
+                                    </t>
+                                    <t t-else="">
+                                        <input class="node_name" type="text" t-att-value="item.name"/>
+                                    </t>
                                 </div>
                                 <t t-if="item.name=='提交'">
                                     <div style="margin-top:5px">
