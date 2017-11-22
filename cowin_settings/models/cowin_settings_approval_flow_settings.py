@@ -114,12 +114,14 @@ class Cowin_settings_approval_flow_settings(models.Model):
         parent = self.env['cowin_settings.approval_flow_setting_node'].create({
             'approval_flow_settings_id': res.id,
             'name': u'审批结束',
+            'order': 2,
         })
 
         self.env['cowin_settings.approval_flow_setting_node'].create({
             'approval_flow_settings_id': res.id,
             'name': u'提交',
             'parent_id': parent.id,
+            'order': 1,
         })
 
         return res
@@ -169,6 +171,10 @@ class Cowin_approval_flow_setting_node(models.Model):
 
         res = super(Cowin_approval_flow_setting_node, self).create(vals)
 
+        if vals['name'] == u'提交' or vals['name'] == u'审批结束':
+            return res
+
+
         if vals['name'] != u'提交':
             if len(res.operation_role_ids) > 1:
                 raise UserError(u'除了提交节点外,其他节点都只能有一个操作角色!!!')
@@ -183,31 +189,35 @@ class Cowin_approval_flow_setting_node(models.Model):
                 begin_node = node
                 break
 
-        current_node = begin_node
-        while current_node.parent_id.name != u'审批结束':
-            current_node = current_node.parent_id
-
-        end_node = current_node.parent_id
-
-        res.write({
-            'parent_id': end_node.id,
-        })
-
-
-        current_node.write({
-            'parent_id': res.id,
-        })
-
-
-        # 计数生成器
-        counter = itertools.count(1, 1)
 
         current_node = begin_node
 
-        while not current_node.parent_id:
-            current_node.write({
-                'order_id': counter.next(),
+        if current_node:
+
+            while current_node.parent_id.name != u'审批结束':
+                current_node = current_node.parent_id
+
+            end_node = current_node.parent_id
+
+            res.write({
+                'parent_id': end_node.id,
             })
+
+
+            current_node.write({
+                'parent_id': res.id,
+            })
+
+
+            # 计数生成器
+            counter = itertools.count(1, 1)
+
+            current_node = begin_node
+
+            while not current_node.parent_id:
+                current_node.write({
+                    'order_id': counter.next(),
+                })
 
         return res
 
