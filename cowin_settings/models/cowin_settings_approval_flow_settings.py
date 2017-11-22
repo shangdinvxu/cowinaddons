@@ -77,7 +77,7 @@ class Cowin_settings_approval_flow_settings(models.Model):
                 'name': node_info['name'],
                 'accept': node_info['accept'],
                 'reject': node_info['reject'],
-                'reject': node_info['reject'],
+                'put_off': node_info['put_off'],
                 'operation_role_ids': node_info['operation_role_ids'],
             })
 
@@ -91,6 +91,7 @@ class Cowin_settings_approval_flow_settings(models.Model):
                 'approval_flow_settings_id': self.id,
                 'accept': node['accept'],
                 'reject': node['reject'],
+                'put_off': node['put_off'],
                 'operation_role_ids': node['operation_role_ids'],
             })
 
