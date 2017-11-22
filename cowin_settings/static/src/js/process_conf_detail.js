@@ -75,7 +75,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             console.log(approval_data);
 
             return new Model("cowin_settings.approval_flow_settings")
-                .call("rpc_save_all_info",[self.id],approval_data)
+                .call("rpc_save_all_info",[self.approval_id],approval_data)
                 .then(function (result) {
                     console.log(result);
 
@@ -119,6 +119,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                     self.approval_flow_settings_id = result.approval_flow_settings_id;
                     $('.approval_flow_container').remove();
 
+                    self.approval_id = result.approval_flow_settings_id;
                     self.select_roles = result.approval_flow_setting_node_ids[0].all_operator_roles_ids;   //存储所有角色
                     self.approval_over = result.approval_flow_setting_node_ids[result.approval_flow_setting_node_ids.length-1];   //存储审批结束的节点
 
@@ -129,7 +130,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
         cancel_sort:function () {
             var self = this;
             return new Model("cowin_settings.process")
-                    .call("get_info", [this.id])
+                    .call("get_info", [self.id])
                     .then(function (result) {
                         self.$el.html('');
                         self.$el.append(QWeb.render('process_conf_detail_tmp', {result: result}));
