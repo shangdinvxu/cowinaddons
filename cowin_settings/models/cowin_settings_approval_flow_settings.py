@@ -58,7 +58,7 @@ class Cowin_settings_approval_flow_settings(models.Model):
         remaings_node_ids = set(node['approval_flow_setting_node_id'] for node in approval_flow_setting_nodes
                                             if node['approval_flow_setting_node_id'] != -1)
 
-        origin_node_ids = set(node.approval_flow_setting_node_id  for node in self.approval_flow_settings_node_ids)
+        origin_node_ids = set(node.id for node in self.approval_flow_settings_node_ids)
 
         unlink_node_ids = origin_node_ids - remaings_node_ids
 
