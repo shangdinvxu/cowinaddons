@@ -53,10 +53,10 @@ class Cowin_settings_approval_flow_settings(models.Model):
     def rpc_save_all_info(self, **kwargs):
         approval_flow_setting_nodes = kwargs.get('approval_flow_setting_nodes')
 
-        create_nodes = [node for node in approval_flow_setting_nodes if node.approval_flow_setting_node_id == -1]
+        create_nodes = [node for node in approval_flow_setting_nodes if node['approval_flow_setting_node_id'] == -1]
 
-        remaings_node_ids = set(node.approval_flow_setting_node_id for node in approval_flow_setting_nodes
-                                            if node.approval_flow_setting_node_id != -1)
+        remaings_node_ids = set(node['approval_flow_setting_node_id'] for node in approval_flow_setting_nodes
+                                            if node['approval_flow_setting_node_id'] != -1)
 
         origin_node_ids = set(node.approval_flow_setting_node_id  for node in self.approval_flow_settings_node_ids)
 
@@ -69,7 +69,7 @@ class Cowin_settings_approval_flow_settings(models.Model):
 
 
         # 编辑节点
-        remaings_nodes = [node for node in approval_flow_setting_nodes if node.approval_flow_setting_node_id != -1]
+        remaings_nodes = [node for node in approval_flow_setting_nodes if node['approval_flow_setting_node_id'] != -1]
         for node_info in remaings_nodes:
             node = self.env['cowin_settings.approval_flow_setting_node'].browse(node_info['approval_flow_setting_node_id'])
 
