@@ -140,3 +140,122 @@
 #conf_detail_container .button_wrap>.cancel_sort{
     display: none;
 }
+
+.close_this_container .approval_flow_wrap{
+    position: absolute;
+    left:0;
+    right:0;
+    margin: 0 auto;
+    top: 5%;
+    width: 800px;
+    z-index: 1040;
+    background-color: white;
+    padding: 20px 0px;
+}
+.approval_flow_container .approval_flow_wrap p{
+    text-align: center;
+    color: #2f2f2f;
+    border-bottom: 1px solid #d7d7d7;
+    padding-bottom: 15px;
+    font-size: 16px;
+    font-weight: 700;
+}
+.approval_flow_container .approval_flow_wrap .add_approval_node_wrap{
+    padding: 20px;
+    color: #2991d0;
+    margin-bottom: 15px;
+}
+.approval_flow_wrap .add_approval_node_wrap .add_approval_node{
+    float: right;
+    margin-top: -7px;
+    cursor: pointer;
+}
+.approval_flow_container .approval_flow_wrap .approval_main_left,.approval_flow_container .approval_flow_wrap .approval_main_right{
+    display: inline-block;
+}
+.approval_main_left{
+    width: 250px;
+}
+.approval_setting_node_wrap{
+    height: 115px;
+    position: relative;
+}
+.approval_setting_node{
+    background: #199ed7;
+    border-radius: 22px;
+    padding: 10px;
+    width: 130px;
+    color: white;
+    text-align: center;
+    margin-left: 40px;
+}
+.approval_line_left{
+    width: 80px;
+    height: 1px;
+    position: absolute;
+    border-bottom: 1px dashed #cacaca;
+    top: 18px;
+    right: 0px;
+}
+.approval_main_left>span{
+    color: #a4a4a4;
+    position: absolute;
+    left: 50px;
+    top: 80px;
+}
+.approval_line_bottom{
+    width: 1px;
+    height: 68px;
+    border-right: 1px solid #2991d0;
+    position: absolute;
+    left: 105px;
+}
+.approcal_tri{
+     width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 10px solid #2991d0;
+    position: absolute;
+    bottom: 0;
+    left: 101px;
+}
+.approval_main_right{
+    vertical-align: top;
+}
+.node_operate_wrap{
+    padding: 5px;
+    border: 1px solid #d7d7d7;
+    margin-top: -20px;
+    margin-bottom: 35px;
+    width: 500px;
+    position: relative;
+}
+.approval_main_right .node_operate_wrap .node_name{
+    display: inline-block;
+    width: 300px;
+}
+.approval_wrap_footer{
+    border-top: 1px solid #d8d8d8;
+    padding-top: 15px;
+    text-align: center;
+}
+.approval_wrap_footer>span{
+    display: inline-block;
+    padding: 8px 25px;
+    cursor: pointer;
+}
+.approval_wrap_footer>.approval_save{
+    background: #199ed7;
+    color: white;
+}
+.approval_wrap_footer>.approval_cancel{
+    border: 1px solid #7bb5cd;
+    color: #7bb5cd;
+    padding: 7px 25px;
+}
+.node_operate_wrap>.close{
+    position: absolute;
+    top:3px;
+    right: 5px;
+}

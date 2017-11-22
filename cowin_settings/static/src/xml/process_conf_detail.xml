@@ -163,13 +163,134 @@
 
 
     <!--审批流-->
-    <t t-name="approval_flow">
+    <t t-name="approval_flow_tmpl">
         <div class="approval_flow_container close_this_container">
             <div class="modal-backdrop  in"></div>
             <div class="approval_flow_wrap">
+                <p>审批流设置</p>
+                <div class="add_approval_node_wrap">
+                    <div class="add_approval_node">
+                        <span class="fa fa-plus"></span>
+                        审批节点
+                    </div>
+                </div>
+                <div class="approval_main_left">
+                    <span>审批流预览</span>
+                    <t t-foreach="result.approval_flow_setting_node_ids" t-as="item">
+                        <div class="approval_setting_node_wrap" t-att-data-left-setting-node-id="item.approval_flow_setting_node_id">
+                            <div class="approval_setting_node">
+                                <t t-esc="item.name"/>
+                            </div>
+                            <t t-if="item.name!='审批结束'">
+                                <div class="approval_line_left"></div>
+                                <div class="approval_line_bottom"></div>
+                                <div class="approcal_tri"></div>
+                            </t>
+                        </div>
+                    </t>
+                </div>
+                <div class="approval_main_right">
+                    <t t-foreach="result.approval_flow_setting_node_ids" t-as="item">
+                        <!--审批结束右边不需要节点配置，提交的节点配置操作角色是多选的，也没有审批选项部分-->
+                        <t t-if="item.name!='审批结束'">
+                            <div class="node_operate_wrap" t-att-data-setting-node-id="item.approval_flow_setting_node_id">
+                                <div>
+                                    <span>节点名称：</span>
+                                    <input class="node_name" type="text" t-att-value="item.name"/>
+                                </div>
+                                <t t-if="item.name=='提交'">
+                                    <div style="margin-top:5px">
+                                        <span>操作角色：</span>
+                                        <select id="id_select" class="selectpicker bla bla bli" multiple="true">
+                                            <t t-foreach="item.all_operator_roles_ids" t-as="obj">
+                                                <option t-att-data-role-id="obj.operator_role_id"><t t-esc="obj.name"/></option>
+                                            </t>
+                                        </select>
+                                        <script>
+                                            $('.selectpicker').selectpicker({
+                                                'selectedText': 'cat'
+                                            });
+                                        </script>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div style="margin-top:5px">
+                                        <span>操作角色：</span>
+                                        <select id="id_select" class="selectpicker bla bla bli">
+                                            <t t-foreach="item.all_operator_roles_ids" t-as="obj">
+                                                <t t-if="item.operation_role_ids[0] and item.operation_role_ids[0]=='obj.name'">
+                                                    <option t-att-data-role-id="obj.operator_role_id" selected="true"><t t-esc="obj.name"/></option>
+                                                </t>
+                                                <t t-else="">
+                                                    <option t-att-data-role-id="obj.operator_role_id"><t t-esc="obj.name"/></option>
+                                                </t>
+                                            </t>
+                                        </select>
+                                        <script>
+                                            $('.selectpicker').selectpicker({
+                                                'selectedText': 'cat'
+                                            });
+                                        </script>
+                                    </div>
+                                    <div>
+                                        <span>审批选项：</span>
+                                        <input type="checkbox" disabled="disabled" checked="checked"/>同意
+                                        <input type="checkbox" disabled="disabled" checked="checked" style="margin-left:15px"/>不同意
+                                        <input type="checkbox" style="margin-left:15px" class="approval_suspend"/>暂缓
+                                    </div>
+                                    <div class="delete_node close"><span class="fa fa-close"></span></div>
+                                </t>
+                            </div>
+                        </t>
+                    </t>
+                </div>
 
+                <div class="approval_wrap_footer">
+                    <span class="approval_save">保存</span>
+                    <span class="approval_cancel">取消</span>
+                </div>
             </div>
         </div>
     </t>
 
+    <!--添加节点时右边的视图-->
+    <t t-name="add_approval_node_right">
+        <div class="node_operate_wrap">
+            <div>
+                <span>节点名称：</span>
+                <input class="node_name" type="text"/>
+            </div>
+            <div style="margin-top:5px">
+                <span>操作角色：</span>
+                <select id="id_select" class="selectpicker bla bla bli">
+                    <t t-foreach="result" t-as="obj">
+                        <option t-att-data-role-id="obj.operator_role_id"><t t-esc="obj.name"/></option>
+                    </t>
+                </select>
+                <script>
+                    $('.selectpicker').selectpicker({
+                        'selectedText': 'cat'
+                    });
+                </script>
+            </div>
+            <div>
+                <span>审批选项：</span>
+                <input type="checkbox" disabled="disabled" checked="checked"/>同意
+                <input type="checkbox" disabled="disabled" checked="checked" style="margin-left:15px"/>不同意
+                <input type="checkbox" style="margin-left:15px" class="approval_suspend"/>暂缓
+            </div>
+            <div class="delete_node close"><span class="fa fa-close"></span></div>
+        </div>
+    </t>
+    <!--添加节点时左边的视图-->
+    <t t-name="add_approval_node_left">
+        <div class="approval_setting_node_wrap">
+            <div class="approval_setting_node">
+                新增节点
+            </div>
+            <div class="approval_line_left"></div>
+            <div class="approval_line_bottom"></div>
+            <div class="approcal_tri"></div>
+        </div>
+    </t>
 </templates>

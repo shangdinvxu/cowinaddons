@@ -4,7 +4,9 @@
           <xpath expr="." position="inside">
               <script type="text/javascript" src="/cowin_settings/static/src/js/process_conf.js"/>
               <script type="text/javascript" src="/cowin_settings/static/src/js/process_conf_detail.js"/>
+              <script type="text/javascript" src="/cowin_settings/static/src/js/bootstrap-select.min.js"/>
               <link rel="stylesheet" href="/cowin_settings/static/src/css/process_conf.css"/>
+              <link rel="stylesheet" href="/cowin_settings/static/src/css/bootstrap-select.min.css"/>
           </xpath>
       </template>
 

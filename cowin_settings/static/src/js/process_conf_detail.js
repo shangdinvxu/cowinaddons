@@ -33,7 +33,78 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             'dragstart tr': 'move_start',
             'drop tr':'move_func',
             'click .cancel_sort':'cancel_sort',
-            'click .approval_flow':'show_approval_flow_wrap'
+            'click .approval_flow':'show_approval_flow_wrap',
+            'click .approval_cancel':'close_approval_flow_wrap',
+            'click .delete_node':'delete_node_func',
+            'click .add_approval_node':'add_approval_node_func',
+            'click .approval_save':'approval_save_func'
+        },
+        //保存审批流设置
+        approval_save_func:function () {
+            var self = this;
+            var approval_data = {};
+            var node_data = [];
+            $('.node_operate_wrap').each(function (i) {
+                // console.log($(this).find('.node_name').val());
+                var s = {};
+                s.approval_flow_settings_id = self.approval_flow_settings_id;
+                s.node_name = $(this).find('.node_name').val();
+                if($(this).attr('data-setting-node-id')){
+                    s.approval_flow_setting_node_id = parseInt($(this).attr('data-setting-node-id'));
+                }else {
+                    s.approval_flow_setting_node_id = -1;   //值为-1表示次此节点是新增的，要传给后台写进数据库
+                }
+                if($(this).find('.approval_suspend').length>0){
+                    s.put_off = $(this).find('.approval_suspend').is(':checked')
+                }
+                s.reject = true;
+                s.accept = true;
+                s.operation_role_ids = [];
+                $(this).find('.selected').each(function (j) {
+                    var role_name =$(this).text()
+                    $.each(self.select_roles,function (x,value) {
+                        if(role_name==value.name){
+                            s.operation_role_ids.push(value.operator_role_id);
+                        }
+                    })
+                });
+                node_data.push(s);
+            });
+            node_data.push(self.approval_over);
+            approval_data.approval_flow_setting_nodes = node_data
+            console.log(approval_data);
+
+            return new Model("cowin_settings.approval_flow_settings")
+                .call("rpc_save_all_info",[self.id],approval_data)
+                .then(function (result) {
+                    console.log(result);
+
+                })
+        },
+        //添加审批节点
+        add_approval_node_func:function () {
+            var self = this;
+            $('.approval_main_right').append(QWeb.render('add_approval_node_right',{result:self.select_roles}));
+            $(QWeb.render('add_approval_node_left')).insertBefore($('.approval_setting_node_wrap:last'));
+        },
+        //删除审批节点
+        delete_node_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            var setting_node_id = $(target).parents('.node_operate_wrap').attr('data-setting-node-id');
+            Dialog.confirm(this, _t("确定删除这条审批节点吗?"), {
+                confirm_callback: function() {
+                    var index = $(target).parents('.node_operate_wrap').index()
+                    $(target).parents('.node_operate_wrap').remove();
+                    $(".approval_setting_node_wrap:eq("+index+")").remove();
+
+                },
+            });
+        },
+        //关闭审批流页面
+        close_approval_flow_wrap:function () {
+            $('.approval_flow_container').remove();
         },
         //显示审批流
         show_approval_flow_wrap:function (e) {
@@ -45,8 +116,13 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                 .call("rpc_approval_flow_setting_info",[self.id],{tache_id:tache_id})
                 .then(function (result) {
                     console.log(result);
+                    self.approval_flow_settings_id = result.approval_flow_settings_id;
                     $('.approval_flow_container').remove();
-                    self.$el.append(QWeb.render('approval_flow',{result: result}));
+
+                    self.select_roles = result.approval_flow_setting_node_ids[0].all_operator_roles_ids;   //存储所有角色
+                    self.approval_over = result.approval_flow_setting_node_ids[result.approval_flow_setting_node_ids.length-1];   //存储审批结束的节点
+
+                    self.$el.append(QWeb.render('approval_flow_tmpl',{result: result}));
                 })
         },
         //取消排序
