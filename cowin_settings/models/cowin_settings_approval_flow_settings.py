@@ -226,8 +226,8 @@ class Cowin_approval_flow_setting_node(models.Model):
     def write(self, vals):
 
         res = super(Cowin_approval_flow_setting_node, self).write(vals)
-        if vals['name'] != u'提交':
-            if len(res.operation_role_ids) > 1:
+        if vals.get('name') and vals['name'] != u'提交':
+            if len(self.operation_role_ids) > 1:
                 raise UserError(u'除了提交节点外,其他节点都只能有一个操作角色!!!')
 
         return res
