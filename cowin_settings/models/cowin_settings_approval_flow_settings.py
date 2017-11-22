@@ -40,18 +40,43 @@ class Cowin_settings_approval_flow_settings(models.Model):
             tmp['put_off'] = node.put_off
             tmp['order'] = node.order
             tmp['parent_id'] = node.parent_id.id
-            tmp['operator_roles'] = [{'operator_role_id': operator_role.id, 'name': operator_role.name} for operator_role in node.operation_role_ids]
-            tmp['all_operator_roles'] = [{'operator_role_id': operator_role.id, 'name': operator_role.name} for operator_role in operator_roles]
+            tmp['operation_role_ids'] = [{'operator_role_id': operator_role.id, 'name': operator_role.name}
+                                         for operator_role in node.operation_role_ids]
+            tmp['all_operator_roles'] = [{'operator_role_id': operator_role.id, 'name': operator_role.name}
+                                         for operator_role in operator_roles]
 
             res.append(tmp)
-
-
-        # 根据依赖进行排序规则
-
-
-
-
         return res
+
+
+
+    def rpc_save_all_info(self, **kwargs):
+        approval_flow_setting_nodes = kwargs.get('approval_flow_setting_nodes')
+
+        create_nodes = [node for node in approval_flow_setting_nodes if node.id == -1]
+
+        remaings_node_ids = set(node.id for node in approval_flow_setting_nodes if node.id != -1)
+        origin_node_ids = set(node.id  for node in self.approval_flow_settings_node_ids)
+
+        unlink_node_ids = origin_node_ids - remaings_node_ids
+
+        for id in unlink_node_ids:
+            node = self.env['cowin_settings.approval_flow_setting_node'].browse(id)
+            node.unlink()
+
+
+        for node in create_nodes:
+            # create a new node!!!
+            self.env['cowin_settings.approval_flow_setting_node'].create({
+                'name': node['name'],
+                'approval_flow_settings_id': self.id,
+                'accept': node['accept'],
+                'reject': node['reject'],
+                'operation_role_ids': node['operation_role_ids'],
+            })
+
+
+
 
 
     @api.model
@@ -176,6 +201,36 @@ class Cowin_approval_flow_setting_node(models.Model):
                 raise UserError(u'除了提交节点外,其他节点都只能有一个操作角色!!!')
 
         return res
+
+
+    @api.multi
+    def unlink(self):
+
+
+        # 拿出节点数据开始进行依赖引用操作
+        nodes = self.env[self._name].search([])
+
+        begin_node = None
+        for node in nodes:
+            if node.name == u'提交':
+                begin_node = node
+                break
+
+
+        current_node = begin_node
+        while current_node.parent_id != self:
+            current_node = current_node.parent_id
+
+
+        current_node.write({
+            'parent_id': self.parent_id.id,
+        })
+
+
+
+
+        return super(Cowin_approval_flow_setting_node, self).unlink()
+
 
 
 
