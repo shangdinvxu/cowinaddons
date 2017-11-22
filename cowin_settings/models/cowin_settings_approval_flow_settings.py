@@ -214,10 +214,12 @@ class Cowin_approval_flow_setting_node(models.Model):
 
             current_node = begin_node
 
-            while not current_node.parent_id:
+            while current_node:
                 current_node.write({
-                    'order_id': counter.next(),
+                    'order': counter.next(),
                 })
+
+                current_node = current_node.parent_id
 
         return res
 
