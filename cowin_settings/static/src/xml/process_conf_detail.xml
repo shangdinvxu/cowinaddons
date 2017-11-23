@@ -197,7 +197,7 @@
                                 <div>
                                     <span>节点名称：</span>
                                     <t t-if="item.name=='提交'">
-                                        <span class="node_name">提交</span>
+                                         <input class="node_name" readonly="true"  unselectable="on" type="text" t-att-value="item.name"/>
                                     </t>
                                     <t t-else="">
                                         <input class="node_name" type="text" t-att-value="item.name"/>
