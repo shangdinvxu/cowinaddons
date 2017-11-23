@@ -44,11 +44,16 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             var self = this;
             var approval_data = {};
             var node_data = [];
+            var submit = true;
             $('.node_operate_wrap').each(function (i) {
                 // console.log($(this).find('.node_name').val());
                 var s = {};
                 s.approval_flow_settings_id = self.approval_flow_settings_id;
                 s.name = $(this).find('.node_name').val();
+                if(s.name==''){
+                    Dialog.alert(this, _t("请输入节点名称"))
+                    submit = false;
+                }
                 if($(this).attr('data-setting-node-id')){
                     s.approval_flow_setting_node_id = parseInt($(this).attr('data-setting-node-id'));
                 }else {
@@ -73,14 +78,18 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                 node_data.push(s);
             });
             node_data.push(self.approval_over);
-            approval_data.approval_flow_setting_nodes = node_data
+            approval_data.approval_flow_setting_nodes = node_data;
             console.log(approval_data);
 
+            if(!submit){
+                return;
+            }
             return new Model("cowin_settings.approval_flow_settings")
                 .call("rpc_save_all_info",[self.approval_id],approval_data)
                 .then(function (result) {
-                    console.log(result);
-
+                    if(result.result == 'success'){
+                        $('.approval_flow_container').remove();
+                    }
                 })
         },
         //添加审批节点
