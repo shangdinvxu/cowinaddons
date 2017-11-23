@@ -98,6 +98,11 @@ class Cowin_settings_approval_flow_settings(models.Model):
 
 
 
+        return {'result': 'success'}
+
+
+
+
 
     @api.model
     def create(self, vals):
