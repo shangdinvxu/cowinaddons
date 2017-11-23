@@ -72,28 +72,31 @@ class Cowin_settings_approval_flow_settings(models.Model):
         remaings_nodes = [node for node in approval_flow_setting_nodes if node['approval_flow_setting_node_id'] != -1]
         for node_info in remaings_nodes:
             node = self.env['cowin_settings.approval_flow_setting_node'].browse(node_info['approval_flow_setting_node_id'])
-
+            role_ids = node_info['operation_role_ids']
             node.write({
                 'name': node_info['name'],
                 'accept': node_info['accept'],
                 'reject': node_info['reject'],
                 'put_off': node_info['put_off'],
-                'operation_role_ids': node_info['operation_role_ids'],
+                'operation_role_ids': [(6, 0, role_ids)],
             })
 
 
 
-
+        #  创建节点
         for node in create_nodes:
             # create a new node!!!
+            role_ids = node['operation_role_ids']
             self.env['cowin_settings.approval_flow_setting_node'].create({
                 'name': node['name'],
                 'approval_flow_settings_id': self.id,
                 'accept': node['accept'],
                 'reject': node['reject'],
                 'put_off': node['put_off'],
-                'operation_role_ids': node['operation_role_ids'],
+                'operation_role_ids': [(6, 0, role_ids)],
             })
+
+
 
 
 
@@ -185,6 +188,19 @@ class Cowin_approval_flow_setting_node(models.Model):
                 raise UserError(u'除了提交节点外,其他节点都只能有一个操作角色!!!')
 
 
+        # 在关联表中创建数据,因为这类是一种M2M的数据模型
+        # for role_id in vals['operation_role_ids']:
+        #     self.env['cowin_settings_node_approval_operation_role_rel'].create({
+        #         'approval_flow_setting_node_id': res.id,
+        #         # 'operation_role_id': role_id,
+        #     })
+
+        role_ids = vals['operation_role_ids']
+
+        self.write({
+            'operation_role_ids': [(6, 0, role_ids)]
+        })
+
 
         # 拿出审批流节点数据开始进行依赖引用操作
         nodes = self.env[self._name].search([('approval_flow_settings_id', '=', res.approval_flow_settings_id.id)])
@@ -235,6 +251,7 @@ class Cowin_approval_flow_setting_node(models.Model):
     def write(self, vals):
 
         res = super(Cowin_approval_flow_setting_node, self).write(vals)
+
         if vals.get('name') and vals['name'] != u'提交':
             if len(self.operation_role_ids) > 1:
                 raise UserError(u'除了提交节点外,其他节点都只能有一个操作角色!!!')
@@ -244,7 +261,6 @@ class Cowin_approval_flow_setting_node(models.Model):
 
     @api.multi
     def unlink(self):
-
 
         # 拿出节点数据开始进行依赖引用操作
         nodes = self.env[self._name].search([('approval_flow_settings_id', '=', self.approval_flow_settings_id.id)])
@@ -264,8 +280,6 @@ class Cowin_approval_flow_setting_node(models.Model):
         current_node.write({
             'parent_id': self.parent_id.id,
         })
-
-
 
 
         return super(Cowin_approval_flow_setting_node, self).unlink()
