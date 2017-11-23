@@ -181,9 +181,11 @@ class Cowin_approval_flow_setting_node(models.Model):
 
 
 
-        # 拿出节点数据开始进行依赖引用操作
-        nodes = self.env[self._name].search([])
+        # 拿出审批流节点数据开始进行依赖引用操作
+        nodes = self.env[self._name].search([('approval_flow_settings_id', '=', res.approval_flow_settings_id.id)])
         begin_node = None
+
+        # 需要找到初始化提交的节点
         for node in nodes:
             if node.name == u'提交':
                 begin_node = node
