@@ -242,7 +242,7 @@ class Cowin_approval_flow_setting_node(models.Model):
 
 
         # 拿出节点数据开始进行依赖引用操作
-        nodes = self.env[self._name].search([])
+        nodes = self.env[self._name].search([('approval_flow_settings_id', '=', self.approval_flow_settings_id.id)])
 
         begin_node = None
         for node in nodes:
