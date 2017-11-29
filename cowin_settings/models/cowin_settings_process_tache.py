@@ -26,7 +26,7 @@ class Cowin_settings_process_tache(models.Model):
     approval_flow_settings_ids = fields.One2many('cowin_settings.approval_flow_settings', 'tache_id', string=u'审批流程')
 
     _sql_constraints = [
-        ('login_key', 'UNIQUE (name)', u'环节配置名不能相同!!!')
+        ('name_key', 'UNIQUE (name)', u'环节配置名不能相同!!!')
     ]
 
 
@@ -39,8 +39,8 @@ class Cowin_settings_process_tache(models.Model):
             'tache_id': res.id,
         })
 
-
         return res
+
 
 
     def _check_parent_id(self, ids=[]):

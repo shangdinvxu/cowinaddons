@@ -68,8 +68,10 @@ class Cowin_project(models.Model):
             meta_setting_entity = self.env['cowin_settings.process'].search([('category', '=', 'init_preinvestment')])
 
             # 每次创建的实例 都要从数据
-            process = self.env['cowin_project.process'].create_process_info(meta_setting_entity.copy_custom(),
-                                                                            meta_setting_entity.id)
+            # process = self.env['cowin_project.process'].create_process_info(meta_setting_entity.copy_custom(),
+            #                                                                 meta_setting_entity.id)
+
+            process = self.process_id.create_process_info(meta_setting_entity.copy_custom())
 
             vals['process_id'] = process.id
 
@@ -94,30 +96,18 @@ class Cowin_project(models.Model):
                 break
 
 
-        # 1 添加审批流配置信息
-        for tache in process.get_all_tache_entities():
-            approval_flow_settings_entity = tache.approval_flow_settings_ids
 
+        # 1-1 默认创建 元子工程实例
 
-
-
-
-
-        # 2-1 默认创建 元子工程实例
-
-        meta_sub_project = self.env['cowin_project.meat_sub_project'].create({
-            'project_id': project.id,
-        })
-
-        # 2-2 默认创建该元子工程实例一个基金轮次实例
-        r_f_a_f = self.env['cowin_project.round_financing_and_foundation'].create({
-            'meta_sub_project_id': meta_sub_project.id,
-            'sub_invest_decision_committee_res_id': 0,
-        })
-
-        # # 2-3 默认构建一条轮次基金实体
-        # meta_sub_project.write({
-        #     'round_financing_and_Foundation': r_f_a_f.id,
+        # meta_sub_project = self.env['cowin_project.meat_sub_project'].create({
+        #     'project_id': project.id,
+        # })
+        #
+        # # 1-2 默认创建该元子工程实例一个基金轮次实例
+        # self.env['cowin_project.round_financing_and_foundation'].create({
+        #     'meta_sub_project_id': meta_sub_project.id,
+        #     # 很显然,这种情况下是只能是为空的,因为是第一次的操作!!!
+        #     'sub_invest_decision_committee_res_id': None,
         # })
 
         return project

@@ -37,10 +37,6 @@ class Cowin_project_process_tache(models.Model):
 
         res = super(Cowin_project_process_tache, self).create(vals)
 
-        # 创建的过程中开始创建审批流实体
-        approval_flow_settings = self.env['cowin_project.approval_flow_settings'].create({
-            'tache_id': res.id,
-        })
 
         return res
 
@@ -77,60 +73,39 @@ class Cowin_project_process_tache(models.Model):
 
 
     def get_approval_flow_settings(self):
-        res = None
-        if not self.approval_flow_settings:
-            res = self.env['cowin_project.approval_flow_settings'].create({'name': u'审批流'})
-            res.tache_id = self
+        # 理论上只会由一条就记录
+        return self.approval_flow_settings_ids
 
-        else:
-            res = self.approval_flow_settings
-        return res
+    # # 内部调用的方法
+    # # 创建审批流实体
+    # def _create_approval_flow_settings_entity(self):
+    #     # 创建的过程中开始创建审批流实体,这部的操作构建在普通的方法之中
+    #     approval_flow_settings = self.env['cowin_project.approval_flow_settings'].create({
+    #         'tache_id': self.id,
+    #     })
+
 
 
     def create_tache_info(self, tache_info, stage_id):
 
-        model_name = self.env['cowin_settings.custome_model_data'].search([('model_name', '=', tache_info['model_name'])])
+        # 在新创建环节的情况下mode_id也是空的
+        model_entity = self.model_id.search([('model_name', '=', tache_info['model_name'])])
 
 
 
-        # 弄人情况下在环节中已经创建好审批流实体
+        # 通过外部调用创建工程环节实体
         tache_entity = self.create({
             'name': tache_info['name'],
             'description': tache_info['description'],
             'state': tache_info['state'],
             'once_or_more': tache_info['once_or_more'],
-            'model_id': model_name.id,
+            'model_id': model_entity.id,
             'stage_id': stage_id,
-            # 'approval_flow_settings_id': tache_info['approval_flow_settings_id'],
         })
 
+        approval_flow_settings_info = tache_info['approval_flow_settings_info']
 
-        # 构建审批流
-
-        approval_flow_settings_entity = tache_entity.approval_flow_settings_ids
-
-        approval_flow_settings_id = int(tache_info['approval_flow_settings_id'])
-
-        meta_approval_flow_settings_entity = self.env['cowin_settings.approval_flow_settings'].browse(approval_flow_settings_id)
-
-        meta_approval_flow_settings_node_entities = meta_approval_flow_settings_entity.approval_flow_setting_node_ids
-
-        for meta_node in meta_approval_flow_settings_node_entities:
-            target_node = self.env['cowin_project.approval_flow_setting_node'].create({
-                'name': meta_node.name,
-                'active_withdrawal': meta_node.active_withdrawal,
-                'approval_flow_settings_id': approval_flow_settings_entity.id,
-            })
-
-            # 把之前需要元配置中审批节点实体中的Many2Many所在的权限角色实体,全部都复制在主工程中的权限决策实体中
-            cowin_project_node_approval_operation_role_rel = self.env['cowin_project_node_approval_operation_role_rel']
-
-            for operation_role in meta_node.operation_role_ids:
-                cowin_project_node_approval_operation_role_rel.create({
-                    'approval_flow_setting_node_id': target_node.id,
-                    'operation_role_id': operation_role.id,
-                })
-
-
-
+        for approval_flow_setting_info in approval_flow_settings_info:
+            tache_entity.approval_flow_settings_ids.create_approval_flow_settings_entity(
+                approval_flow_setting_info, tache_entity.id)
 

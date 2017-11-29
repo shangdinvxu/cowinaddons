@@ -25,6 +25,7 @@ class Cowin_round_financing(models.Model):
 
 
 
+# 审批角色
 class Cowin_common_approval_role(models.Model):
 
     _name = 'cowin_common.approval_role'
@@ -36,11 +37,15 @@ class Cowin_common_approval_role(models.Model):
 
     name = fields.Char(string=u'角色名')
 
-    # node_ids = fields.Many2many('approval_flow_project_node_approval_operation_role_rel', 'node_id', 'role_id',
-    #                                         string=u'')
-
-
+    # user_ids = fields.Many2many('res.users', string=u'用户')
 
     _sql_constraints = [
         ('name_key', 'UNIQUE (name)', u'审批角色名称不能相同!!!'),
     ]
+
+
+
+class A(models.Model):
+    _name = 'aa.aa'
+
+    name = fields.Char()

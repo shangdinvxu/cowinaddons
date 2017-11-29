@@ -20,16 +20,6 @@ class Cowin_settings_process_stage(models.Model):
 
 
 
-
-    # @api.model
-    # def create(self, vals):
-    #     if not vals.get('show_order'):
-    #         vals['show_order'] = self.env['ir.sequence'].next_by_code('cowin_settings.order')
-    #
-    #     return super(Cowin_settings_process_stage, self).create(vals)
-
-
-
         # 前端指定的顺序来显示
 
     def substitution_stage_by_show_order(self, target_stage):
@@ -51,5 +41,8 @@ class Cowin_settings_process_stage(models.Model):
 
             for tache in stage['tache_ids']:
                 # taches_res.append(self.env['cowin_project.process_tache'].create_tache_info(tache, new_stage.id))
-                self.env['cowin_project.process_tache'].create_tache_info(tache, new_stage.id)
+                # self.env['cowin_project.process_tache'].create_tache_info(tache, new_stage.id)
+
+                # 默认情况下,tache_ids也是只有一份数据
+                new_stage.tache_ids.create_tache_info(tache, new_stage.id)
 

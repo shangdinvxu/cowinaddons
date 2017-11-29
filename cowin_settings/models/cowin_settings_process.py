@@ -3,6 +3,7 @@
 from odoo import models, fields, api
 import json
 from odoo.exceptions import UserError
+import uuid
 
 
 class Cowin_settings_process(models.Model):
@@ -19,16 +20,13 @@ class Cowin_settings_process(models.Model):
     category = fields.Char(string=u'流程配置分类')
 
     _sql_constraints = [
-        ('login_key', 'UNIQUE (name)', u'流程配置名不能相同!!!')
+        ('name_key', 'UNIQUE (name)', u'流程配置名不能相同!!!')
     ]
 
     # 对当前的节点以及子孙节点进行拷贝,手动获取数据信息
+    # 慎重考虑,考虑到以后的简便性,不适用字典的方式
     def copy_custom(self):
         return self.get_info()
-
-
-
-
 
 
     # 该实例方法用于获取一条数据信息
@@ -39,6 +37,8 @@ class Cowin_settings_process(models.Model):
         # asc_by_show_orders = sorted(self.stage_ids, key=lambda stage: stage.show_order)
         asc_by_show_orders = self.env['cowin_settings.process_stage'].search([('process_id', '=', self.id)],
                                                                              order='show_order asc')
+
+        asc_by_show_orders = self.stage_ids.sorted('show_order')
 
         for stage in asc_by_show_orders:
             tmp_stage = {}
@@ -63,9 +63,27 @@ class Cowin_settings_process(models.Model):
                 tmp_tache['once_or_more'] = tache.once_or_more
                 tmp_tache['model_name'] = tache.model_id.model_name
                 tmp_tache['stage_id'] = tache.stage_id.id
-                # 理论上只会由一条记录产生,所以使用这类的做法
-                tmp_tache['approval_flow_settings_id'] = tache.approval_flow_settings_ids.id
-                # tmp_tache['approval_flow_settings_id'] = tache.approval_flow_settings.id
+                tmp_tache['approval_flow_settings_info'] = []
+                for approval_flow_settings_entity in tache.approval_flow_settings_ids:
+                    tmp = {}
+                    tmp['approval_flow_settings_id'] = approval_flow_settings_entity.id
+                    tmp['name'] = approval_flow_settings_entity.name
+                    tmp['tache_id'] = approval_flow_settings_entity.tache_id
+                    tmp['approval_flow_nodes_info'] = []
+                    for approval_flow_node_entity in approval_flow_settings_entity.approval_flow_settings_node_ids:
+                        t = {}
+                        t['approval_flow_settings_node_id'] = approval_flow_node_entity.id
+                        t['approval_flow_settings_id'] = approval_flow_node_entity.approval_flow_settings_id
+                        t['parent_id'] = approval_flow_node_entity.parent_id
+                        t['operation_role_id'] = approval_flow_node_entity.operation_role_id
+                        t['order'] = approval_flow_node_entity.order
+                        t['accept'] = approval_flow_node_entity.accept
+                        t['reject'] = approval_flow_node_entity.reject
+                        t['put_off'] = approval_flow_node_entity.put_off
+
+                        tmp['approval_flow_nodes_info'].append(t)
+
+                    tmp_tache['approval_flow_settings_info'].append(tmp)
 
                 tmp_stage['tache_ids'].append(tmp_tache)
 

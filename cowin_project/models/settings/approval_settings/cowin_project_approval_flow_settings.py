@@ -8,10 +8,6 @@ class Cowin_project_approval_flow_settings(models.Model):
 
     name = fields.Char(string=u'审批流名称')
 
-    # operational_role = fields.Many2many('hr.employee', string=u'操作角色')
-
-    # active_withdrawal = fields.Boolean(string=u'主动撤回', default=True)
-
     tache_id = fields.Many2one('cowin_project.process_tache', string=u'依赖环节')
 
     approval_flow_setting_node_ids = fields.One2many('cowin_project.approval_flow_setting_node', 'approval_flow_settings_id', u'审批节点')
@@ -35,36 +31,53 @@ class Cowin_project_approval_flow_settings(models.Model):
 
     @api.model
     def create(self, vals):
-        '''
-            目的在于,有默认的操作需要去实现操作的类型!!!
-        :param vals:
-        :return:
-        '''
         res = super(Cowin_project_approval_flow_settings, self).create(vals)
-        #
-        # self.env['cowin_project.approval_flow_setting_node'].create({
-        #     'approval_flow_settings_id': res.id,
-        #     'name': u'提交',
-        # })
-        #
-        # self.env['cowin_project.approval_flow_setting_node'].create({
-        #     'approval_flow_settings_id': res.id,
-        #     'name': u'审批结束',
-        # })
-
         return res
+
+
+    # 因为这里面内部的节点基本上是复制元审批节点的信息,所以不必要再次去产生默认的节点的信息
+    def create_approval_flow_settings_entity(self, approval_flow_nodes_info, tache_id):
+        res = self.create({
+            'tache_id': tache_id,
+        })
+
+        approval_flow_nodes_info = approval_flow_nodes_info['approval_flow_nodes_info']
+        node_entities = []
+        for node_info in approval_flow_nodes_info:
+            node = res.approval_flow_setting_node_ids.create({
+                'approval_flow_settings_id': res.id,
+                'name': node_info['operation_role_id'],
+                'order': node_info['order'],
+                'accept': node_info['accept'],
+                'reject': node_info['reject'],
+                'put_off': node_info['put_off'],
+            })
+
+            node_entities.append(node)
+
+
+        # 修复依赖的节点的关系
+
+        node_entities = sorted(node_entities, key=lambda node_entity: node_entity.order)
+
+        for i, node_entity in enumerate(node_entities[:-1]):
+            node_entity.write({
+                'parent_id': node_entities[i+1].id,
+            })
+
+
 
 
 
 
 class Cowin_project_approval_role_inherit(models.Model):
 
-    # _name = 'cowin_settings.approval_role'
 
     _inherit = 'cowin_common.approval_role'
 
-    approval_flow_setting_node_ids = fields.Many2many('cowin_project.approval_flow_setting_node', 'cowin_project_node_approval_operation_role_rel',
-                            'operation_role_id' , 'approval_flow_setting_node_id', string=u'操作角色')
+
+    approval_flow_setting_node_ids = fields.One2many('cowin_project.approval_flow_setting_node','operation_role_id',
+                                                     string=u'审批节点')
 
 
 
@@ -76,8 +89,7 @@ class Cowin_project_approval_flow_setting_node(models.Model):
     approval_flow_settings_id = fields.Many2one('cowin_project.approval_flow_settings', string=u'审批流',
                                                 ondelete="cascade")
 
-    operation_role_ids = fields.Many2many('cowin_common.approval_role', 'cowin_project_node_approval_operation_role_rel',
-                                          'approval_flow_setting_node_id', 'operation_role_id', string=u'操作角色')
+    operation_role_id = fields.Many2one('cowin_common.approval_role', string=u'操作角色')
 
     active_withdrawal = fields.Boolean(string=u'主动撤回')
 
