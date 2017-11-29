@@ -66,12 +66,11 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                 }
                 s.reject = true;
                 s.accept = true;
-                s.operation_role_ids = [];
                 $(this).find('.selected').each(function (j) {
                     var role_name =$(this).text()
                     $.each(self.select_roles,function (x,value) {
                         if(role_name==value.name){
-                            s.operation_role_ids.push(value.operator_role_id);
+                            s.operation_role_id = value.operator_role_id;
                         }
                     })
                 });
