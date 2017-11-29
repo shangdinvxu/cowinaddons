@@ -206,14 +206,14 @@
                                 <t t-if="item.name=='提交'">
                                     <div style="margin-top:5px">
                                         <span>操作角色：</span>
-                                        <select id="id_select" class="selectpicker bla bla bli" multiple="true">
-                                            <t t-foreach="item.all_operator_roles_ids" t-as="obj">
-                                                <t t-foreach="operation_role_ids" t-as="role">
-                                                    <t t-if="role.name==obj.name">
-                                                        <option selected="true"><t t-esc="obj.name"/></option>
-                                                    </t>
+                                        <select id="id_select" class="selectpicker bla bla bli">
+                                            <t t-foreach="item.all_operator_role_ids" t-as="obj">
+                                                <t t-if="operation_role_id==obj.operator_role_id">
+                                                    <option selected="true"><t t-esc="obj.name"/></option>
                                                 </t>
-                                                <option><t t-esc="obj.name"/></option>
+                                                <t t-else="">
+                                                    <option><t t-esc="obj.name"/></option>
+                                                </t>
                                             </t>
                                         </select>
                                         <script>
@@ -227,13 +227,13 @@
                                     <div style="margin-top:5px">
                                         <span>操作角色：</span>
                                         <select id="id_select" class="selectpicker bla bla bli">
-                                            <t t-foreach="item.all_operator_roles_ids" t-as="obj">
-                                                <t t-foreach="operation_role_ids" t-as="role">
-                                                    <t t-if="role.name==obj.name">
-                                                        <option selected="true"><t t-esc="obj.name"/></option>
-                                                    </t>
+                                             <t t-foreach="item.all_operator_role_ids" t-as="obj">
+                                                <t t-if="operation_role_id==obj.operator_role_id">
+                                                    <option selected="true"><t t-esc="obj.name"/></option>
                                                 </t>
-                                                <option><t t-esc="obj.name"/></option>
+                                                <t t-else="">
+                                                    <option><t t-esc="obj.name"/></option>
+                                                </t>
                                             </t>
                                         </select>
                                         <script>

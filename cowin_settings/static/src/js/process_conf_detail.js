@@ -79,13 +79,14 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             });
             node_data.push(self.approval_over);
             approval_data.approval_flow_setting_nodes = node_data;
+            approval_data.tache_id = self.approval_opearate_tache_id;
             console.log(approval_data);
 
             if(!submit){
                 return;
             }
-            return new Model("cowin_settings.approval_flow_settings")
-                .call("rpc_save_all_info",[self.approval_id],approval_data)
+            return new Model("cowin_settings.process")
+                .call("rpc_save_approval_flow_setting_info",[self.approval_id],approval_data)
                 .then(function (result) {
                     if(result.result == 'success'){
                         $('.approval_flow_container').remove();
@@ -123,15 +124,16 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             var target = e.target || e.srcElement;
             var tache_id = $(target).parents('.process_detail_group_detail_line').attr('data-tache-id');
             var self = this;
+            self.approval_opearate_tache_id = tache_id;
             return new Model("cowin_settings.process")
-                .call("rpc_approval_flow_setting_info",[self.id],{tache_id:tache_id})
+                .call("rpc_get_approval_flow_setting_info",[self.id],{tache_id:tache_id})
                 .then(function (result) {
                     console.log(result);
                     self.approval_flow_settings_id = result.approval_flow_settings_id;
                     $('.approval_flow_container').remove();
 
                     self.approval_id = result.approval_flow_settings_id;
-                    self.select_roles = result.approval_flow_setting_node_ids[0].all_operator_roles_ids;   //存储所有角色
+                    self.select_roles = result.approval_flow_setting_node_ids[0].all_operator_role_ids;   //存储所有角色
                     self.approval_over = result.approval_flow_setting_node_ids[result.approval_flow_setting_node_ids.length-1];   //存储审批结束的节点
 
                     self.$el.append(QWeb.render('approval_flow_tmpl',{result: result}));
