@@ -86,7 +86,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                 return;
             }
             return new Model("cowin_settings.process")
-                .call("rpc_save_approval_flow_setting_info",[self.approval_id],approval_data)
+                .call("rpc_save_approval_flow_setting_info",[self.id],approval_data)
                 .then(function (result) {
                     if(result.result == 'success'){
                         $('.approval_flow_container').remove();
