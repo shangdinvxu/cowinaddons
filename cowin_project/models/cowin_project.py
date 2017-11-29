@@ -101,16 +101,16 @@ class Cowin_project(models.Model):
 
         # 1-1 默认创建 元子工程实例
 
-        # meta_sub_project = self.env['cowin_project.meat_sub_project'].create({
-        #     'project_id': project.id,
-        # })
-        #
-        # # 1-2 默认创建该元子工程实例一个基金轮次实例
-        # self.env['cowin_project.round_financing_and_foundation'].create({
-        #     'meta_sub_project_id': meta_sub_project.id,
-        #     # 很显然,这种情况下是只能是为空的,因为是第一次的操作!!!
-        #     'sub_invest_decision_committee_res_id': None,
-        # })
+        meta_sub_project = self.env['cowin_project.meat_sub_project'].create({
+            'project_id': project.id,
+        })
+
+        # 1-2 默认创建该元子工程实例一个基金轮次实例
+        self.env['cowin_project.round_financing_and_foundation'].create({
+            'meta_sub_project_id': meta_sub_project.id,
+            # 很显然,这种情况下是只能是为空的,因为是第一次的操作!!!
+            'sub_invest_decision_committee_res_id': None,
+        })
 
         return project
 

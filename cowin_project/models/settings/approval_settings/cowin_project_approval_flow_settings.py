@@ -8,7 +8,7 @@ class Cowin_project_approval_flow_settings(models.Model):
 
     name = fields.Char(string=u'审批流名称')
 
-    tache_id = fields.Many2one('cowin_project.process_tache', string=u'依赖环节')
+    tache_id = fields.Many2one('cowin_project.process_tache', string=u'依赖环节', ondelete="cascade")
 
     approval_flow_setting_node_ids = fields.One2many('cowin_project.approval_flow_setting_node', 'approval_flow_settings_id', u'审批节点')
 
@@ -60,7 +60,8 @@ class Cowin_project_approval_flow_settings(models.Model):
         # 修复依赖的节点的关系
 
         node_entities = sorted(node_entities, key=lambda node_entity: node_entity.order)
-
+        #
+        # node_entities = node_entities.sorted('order')
         for i, node_entity in enumerate(node_entities[:-1]):
             node_entity.write({
                 'parent_id': node_entities[i+1].id,
@@ -90,9 +91,15 @@ class Cowin_project_approval_flow_setting_node(models.Model):
     approval_flow_settings_id = fields.Many2one('cowin_project.approval_flow_settings', string=u'审批流',
                                                 ondelete="cascade")
 
+    parent_id = fields.Many2one('cowin_project.approval_flow_setting_node', string=u'依赖的父node')
+
     operation_role_id = fields.Many2one('cowin_common.approval_role', string=u'操作角色')
 
-    active_withdrawal = fields.Boolean(string=u'主动撤回')
+    order = fields.Integer(string=u'对于前端来说需要排序的字段')
+
+    accept = fields.Boolean(string=u'同意', default=True)
+    reject = fields.Boolean(string=u'不同意', default=True)
+    put_off = fields.Boolean(string=u'暂缓', default=False)
 
     _sql_constraints = [
         ('name_key', 'UNIQUE (approval_flow_settings_id, name)', u'审批节点名称不能相同!!!'),

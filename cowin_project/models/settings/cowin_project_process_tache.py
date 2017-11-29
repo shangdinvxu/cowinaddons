@@ -89,7 +89,8 @@ class Cowin_project_process_tache(models.Model):
     def create_tache_info(self, tache_info, stage_id):
 
         # 在新创建环节的情况下mode_id也是空的
-        model_entity = self.model_id.search([('model_name', '=', tache_info['model_name'])])
+        that = self if len(self) <= 1 else self[1]
+        model_name_entity = that.model_id.search([('model_name', '=', tache_info['model_name'])])
 
 
 
@@ -99,7 +100,7 @@ class Cowin_project_process_tache(models.Model):
             'description': tache_info['description'],
             'state': tache_info['state'],
             'once_or_more': tache_info['once_or_more'],
-            'model_id': model_entity.id,
+            'model_id': model_name_entity.id,
             'stage_id': stage_id,
         })
 
