@@ -22,7 +22,7 @@ class Cowin_settings_approval_flow_settings(models.Model):
 
 
     # 前端获取的审批流与审批节点的数据
-    def rpc_get_all_approval_flow_setting_nodes(self):
+    def get_all_approval_flow_setting_nodes(self):
         operator_roles = self.env['cowin_common.approval_role'].search([])
 
 
@@ -52,7 +52,7 @@ class Cowin_settings_approval_flow_settings(models.Model):
 
 
     # 前端返回数据,可能有添加节点,也可能是删除节点,但也可能是修改节点中内容的信息
-    def rpc_save_all_info(self, **kwargs):
+    def save_all_approval_flow_setting_nodes(self, **kwargs):
         approval_flow_setting_nodes_info = kwargs.get('approval_flow_setting_nodes')
 
         create_nodes = [node for node in approval_flow_setting_nodes_info if node['approval_flow_setting_node_id'] == -1]

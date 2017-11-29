@@ -262,31 +262,47 @@ class Cowin_settings_process(models.Model):
                  ]
 
 
+    #
+    # def _get_approval_flow_settings_info(self, tache_id):
+    #
+    #     for tache in self.get_all_tache_entities():
+    #         if tache.id == tache_id:
+    #             return tache.get_approval_flow_settings_info()
 
-    def _get_approval_flow_settings_info(self, tache_id):
+
+
+    # 数据的转发都是通过元配置的来触发!!!
+
+    # 开始做审批流设置
+    def rpc_get_approval_flow_setting_info(self, **kwargs):
+        tache_id = int(kwargs.get('tache_id'))
+        # return self._get_approval_flow_settings_info(tache_id)
 
         for tache in self.get_all_tache_entities():
             if tache.id == tache_id:
                 return tache.get_approval_flow_settings_info()
 
 
-
-    # 开始做审批流设置
-    def rpc_approval_flow_setting_info(self, **kwargs):
+    def rpc_save_approval_flow_setting_info(self, **kwargs):
         tache_id = int(kwargs.get('tache_id'))
-        return self._get_approval_flow_settings_info(tache_id)
+        # 添加,删除,修改的节点
+        approval_flow_setting_nodes_info = kwargs.get('approval_flow_setting_nodes')
+        for tache in self.get_all_tache_entities():
+            if tache.id == tache_id:
+                return tache.save_approval_flow_settings_info(approval_flow_setting_nodes_info)
 
-
-
-    def rpc_edit_approva_flow_settings(self, **kwargs):
-        approval_flow_settings_id = int(kwargs.get('approval_flow_settings_id'))
-
-        # 获得该审批流实体
-        approval_flow_settings = self.env['cowin_settings.approval_flow_settings'].browse(approval_flow_settings_id)
-
-        res = approval_flow_settings.get_all_approval_flow_setting_nodes()
-
-        return res
+    #
+    # def rpc_edit_approva_flow_settings(self, **kwargs):
+    #     approval_flow_settings_id = int(kwargs.get('approval_flow_settings_id'))
+    #
+    #     tache_id = int(kwargs.get('tache_id'))
+    #
+    #     # 获得该审批流实体
+    #     approval_flow_settings = self.env['cowin_settings.approval_flow_settings'].browse(approval_flow_settings_id)
+    #
+    #     res = approval_flow_settings.get_all_approval_flow_setting_nodes()
+    #
+    #     return res
 
 
 

@@ -73,16 +73,16 @@ class Cowin_settings_process_tache(models.Model):
         return self._check_parent_id(ids)
 
 
-
-    def get_approval_flow_settings(self):
-        res = None
-        if not self.approval_flow_settings:
-            res = self.env['cowin_settings.approval_flow_settings'].create({'name': u'审批流'})
-            res.tache_id = self
-
-        else:
-            res = self.approval_flow_settings
-        return res
+    #
+    # def get_approval_flow_settings(self):
+    #     res = None
+    #     if not self.approval_flow_settings:
+    #         res = self.env['cowin_settings.approval_flow_settings'].create({'name': u'审批流'})
+    #         res.tache_id = self
+    #
+    #     else:
+    #         res = self.approval_flow_settings
+    #     return res
 
 
     def get_approval_flow_settings_info(self):
@@ -96,3 +96,9 @@ class Cowin_settings_process_tache(models.Model):
             'approval_flow_setting_node_ids': nodes,
         }
 
+
+    def save_approval_flow_settings_info(self, approval_flow_setting_nodes_info):
+        # 理论上只会有一条实体
+        approval_flow_settings = self.approval_flow_settings_ids
+        approval_flow_settings.save_all_approval_flow_setting_nodes(approval_flow_setting_nodes_info)
+        return {'status': 'sucess'}
