@@ -73,6 +73,7 @@ class Cowin_settings_process(models.Model):
                     for approval_flow_node_entity in approval_flow_settings_entity.approval_flow_settings_node_ids:
                         t = {}
                         t['approval_flow_settings_node_id'] = approval_flow_node_entity.id
+                        t['name'] = approval_flow_node_entity.name
                         t['approval_flow_settings_id'] = approval_flow_node_entity.approval_flow_settings_id.id
                         t['parent_id'] = approval_flow_node_entity.parent_id.id
                         t['operation_role_id'] = approval_flow_node_entity.operation_role_id.id
@@ -262,15 +263,6 @@ class Cowin_settings_process(models.Model):
                  ]
 
 
-    #
-    # def _get_approval_flow_settings_info(self, tache_id):
-    #
-    #     for tache in self.get_all_tache_entities():
-    #         if tache.id == tache_id:
-    #             return tache.get_approval_flow_settings_info()
-
-
-
     # 数据的转发都是通过元配置的来触发!!!
 
     # 开始做审批流设置
@@ -289,21 +281,8 @@ class Cowin_settings_process(models.Model):
         approval_flow_setting_nodes_info = kwargs.get('approval_flow_setting_nodes')
         for tache in self.get_all_tache_entities():
             if tache.id == tache_id:
-                return tache.save_approval_flow_settings_info(approval_flow_setting_nodes_info)
-
-    #
-    # def rpc_edit_approva_flow_settings(self, **kwargs):
-    #     approval_flow_settings_id = int(kwargs.get('approval_flow_settings_id'))
-    #
-    #     tache_id = int(kwargs.get('tache_id'))
-    #
-    #     # 获得该审批流实体
-    #     approval_flow_settings = self.env['cowin_settings.approval_flow_settings'].browse(approval_flow_settings_id)
-    #
-    #     res = approval_flow_settings.get_all_approval_flow_setting_nodes()
-    #
-    #     return res
-
+                tache.save_approval_flow_settings_info(approval_flow_setting_nodes_info)
+                return {'result': 'success'}
 
 
 

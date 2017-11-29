@@ -71,6 +71,8 @@ class Cowin_project(models.Model):
             # process = self.env['cowin_project.process'].create_process_info(meta_setting_entity.copy_custom(),
             #                                                                 meta_setting_entity.id)
 
+
+            # 注意,这个self只是代表着一个空的project实体,方便以后的使用!!!
             process = self.process_id.create_process_info(meta_setting_entity.copy_custom())
 
             vals['process_id'] = process.id

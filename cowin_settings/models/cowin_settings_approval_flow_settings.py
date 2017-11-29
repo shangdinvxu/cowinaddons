@@ -52,8 +52,8 @@ class Cowin_settings_approval_flow_settings(models.Model):
 
 
     # 前端返回数据,可能有添加节点,也可能是删除节点,但也可能是修改节点中内容的信息
-    def save_all_approval_flow_setting_nodes(self, **kwargs):
-        approval_flow_setting_nodes_info = kwargs.get('approval_flow_setting_nodes')
+    def save_all_approval_flow_setting_nodes(self, approval_flow_setting_nodes_info):
+        # approval_flow_setting_nodes_info = kwargs.get('approval_flow_setting_nodes')
 
         create_nodes = [node for node in approval_flow_setting_nodes_info if node['approval_flow_setting_node_id'] == -1]
 
@@ -187,7 +187,7 @@ class Cowin_approval_flow_setting_node(models.Model):
     # 前端显示,需要考虑到审批节点依赖的问题!!!
     def _fix_dependency_at_create(self):
 
-        # 必须考虑到其他节点不能包含 '提交' , '审批结束' 节点
+        # 必须考虑到其他节点不能包含 '提交' , '审批结束' 这两个节点
         if self.name == u'提交' or self.name == u'审批结束':
             return
 

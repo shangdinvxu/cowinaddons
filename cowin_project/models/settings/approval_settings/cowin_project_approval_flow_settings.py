@@ -46,11 +46,12 @@ class Cowin_project_approval_flow_settings(models.Model):
         for node_info in approval_flow_nodes_info:
             node = res.approval_flow_setting_node_ids.create({
                 'approval_flow_settings_id': res.id,
-                'name': node_info['operation_role_id'],
+                'name': node_info['name'],
                 'order': node_info['order'],
                 'accept': node_info['accept'],
                 'reject': node_info['reject'],
                 'put_off': node_info['put_off'],
+                'operation_role_id': node_info['operation_role_id'],
             })
 
             node_entities.append(node)

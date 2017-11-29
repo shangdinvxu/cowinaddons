@@ -101,4 +101,4 @@ class Cowin_settings_process_tache(models.Model):
         # 理论上只会有一条实体
         approval_flow_settings = self.approval_flow_settings_ids
         approval_flow_settings.save_all_approval_flow_setting_nodes(approval_flow_setting_nodes_info)
-        return {'status': 'sucess'}
+        # return {'status': 'sucess'}
