@@ -22,13 +22,14 @@ class Cowin_settings_approval_flow_settings(models.Model):
 
 
     # 前端获取的审批流与审批节点的数据
-    def get_all_approval_flow_setting_nodes(self):
+    def rpc_get_all_approval_flow_setting_nodes(self):
         operator_roles = self.env['cowin_common.approval_role'].search([])
 
 
         # 由于前台需要排序,所以这个地方使用了排序的策略
-        approval_flow_settings_node_ids = self.env['cowin_settings.approval_flow_setting_node'].search(
-            [('approval_flow_settings_id', '=', self.id)], order='order')
+        # approval_flow_settings_node_ids = self.env['cowin_settings.approval_flow_setting_node'].search(
+        #     [('approval_flow_settings_id', '=', self.id)], order='order')
+        approval_flow_settings_node_ids = self.approval_flow_settings_node_ids.sorted('order')
 
         res = []
         for node in approval_flow_settings_node_ids:
@@ -41,10 +42,7 @@ class Cowin_settings_approval_flow_settings(models.Model):
             tmp['put_off'] = node.put_off
             tmp['order'] = node.order
             tmp['parent_id'] = node.parent_id.id
-            # tmp['operation_role_ids'] = [{'operator_role_id': operator_role.id, 'name': operator_role.name}
-            #                              for operator_role in node.operation_role_ids]
-            #
-            tmp['operation_role_id'] = node.operation_role_id
+            tmp['operation_role_id'] = node.operation_role_id.id
             tmp['all_operator_role_ids'] = [{'operator_role_id': operator_role.id, 'name': operator_role.name}
                                          for operator_role in operator_roles]
 
@@ -141,15 +139,15 @@ class Cowin_settings_approval_flow_settings(models.Model):
         return res
 
 
-# #
-# class Cowin_settings_approval_role_inherit(models.Model):
 #
-#     _inherit = 'cowin_common.approval_role'
-# #
-# #
-#     #
-#     approval_flow_setting_node_ids = fields.One2many('cowin_settings.approval_flow_setting_node',
-#                                                    'operation_role_id'  , string=u'审批节点')
+class Cowin_settings_approval_role_inherit(models.Model):
+
+    _inherit = 'cowin_common.approval_role'
+#
+#
+    #
+    approval_flow_setting_node_ids = fields.One2many('cowin_settings.approval_flow_setting_node',
+                                                   'operation_role_id'  , string=u'审批节点')
 
 
 
@@ -164,7 +162,7 @@ class Cowin_approval_flow_setting_node(models.Model):
     parent_id = fields.Many2one('cowin_settings.approval_flow_setting_node', string=u'依赖的父node')
 
 
-    # operation_role_id = fields.Many2one('cowin_common.approval_role', string=u'操作角色')
+    operation_role_id = fields.Many2one('cowin_common.approval_role', string=u'操作角色')
 
     order = fields.Integer(string=u'对于前端来说需要排序的字段')
 
