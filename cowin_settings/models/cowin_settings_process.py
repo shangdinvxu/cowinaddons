@@ -68,14 +68,14 @@ class Cowin_settings_process(models.Model):
                     tmp = {}
                     tmp['approval_flow_settings_id'] = approval_flow_settings_entity.id
                     tmp['name'] = approval_flow_settings_entity.name
-                    tmp['tache_id'] = approval_flow_settings_entity.tache_id
+                    tmp['tache_id'] = approval_flow_settings_entity.tache_id.id
                     tmp['approval_flow_nodes_info'] = []
                     for approval_flow_node_entity in approval_flow_settings_entity.approval_flow_settings_node_ids:
                         t = {}
                         t['approval_flow_settings_node_id'] = approval_flow_node_entity.id
-                        t['approval_flow_settings_id'] = approval_flow_node_entity.approval_flow_settings_id
-                        t['parent_id'] = approval_flow_node_entity.parent_id
-                        t['operation_role_id'] = approval_flow_node_entity.operation_role_id
+                        t['approval_flow_settings_id'] = approval_flow_node_entity.approval_flow_settings_id.id
+                        t['parent_id'] = approval_flow_node_entity.parent_id.id
+                        # t['operation_role_id'] = approval_flow_node_entity.operation_role_id
                         t['order'] = approval_flow_node_entity.order
                         t['accept'] = approval_flow_node_entity.accept
                         t['reject'] = approval_flow_node_entity.reject
