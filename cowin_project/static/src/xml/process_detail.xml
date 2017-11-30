@@ -73,12 +73,7 @@
                     <t t-set="tache_index" t-value="tache_index + 1"/>
                     <span><t t-esc="obj.name"/> </span>
                     <span>【
-                        <t t-if="obj.examine_and_verify">
-                            <t t-esc="obj.examine_and_verify"/>
-                        </t>
-                        <t t-else="">
-                            暂无
-                        </t>
+                        <t t-esc="obj.approval_status.status_name"/>
                         】
                     </span>
                     <div class="button_wrap">
