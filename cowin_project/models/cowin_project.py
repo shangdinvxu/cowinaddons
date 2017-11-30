@@ -194,14 +194,23 @@ class Cowin_project(models.Model):
             meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
 
 
+
+
+
         # 3 元子工程信息中存在的字环节与原始环节进行合并配置
 
         sub_tache_entities = meta_sub_project_entity.get_sub_taches()
-
-
-
         tache_infos = [tache_info for stage in process_info['stage_ids']
                   for tache_info in stage['tache_ids']]
+
+
+        # 处理主工程有关的主环节信息
+        for tache_info in tache_infos:
+
+            if self.process_id.get_all_tache_entities()[0].browse(tache_info['id']).model_id.model_name == self._name:
+                tache_info['approval_status'] = {}
+                tache_info['approval_status']['status_id'] = -1
+                tache_info['approval_status']['status_name'] = u''
 
 
 
