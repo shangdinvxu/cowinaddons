@@ -84,28 +84,36 @@ class Cowin_project_subproject(models.Model):
     @api.model
     def create(self, vals):
 
-        tache = self._context['tache']
+        tache_info = self._context['tache']
 
-        meta_sub_project_id = int(tache['meta_sub_project_id'])
+        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
 
         # 校验meta_sub_project所对应的子工程只能有一份实体
-        meta_sub_project = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
-        if len(meta_sub_project.sub_project_ids) > 1:
+        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+        if len(meta_sub_project_entity.sub_project_ids) > 1:
             raise UserError(u'每个元子工程只能有一份实体!!!')
 
 
         vals['meta_sub_project_id'] = meta_sub_project_id
 
-        sub_tache_id = int(tache['sub_tache_id'])
+        sub_tache_id = int(tache_info['sub_tache_id'])
 
-        sub_tache = self.env['cowin_project.subproject_process_tache'].browse(sub_tache_id)
+        target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
 
         sub_project = super(Cowin_project_subproject, self).create(vals)
-        sub_tache.write({
+        target_sub_tache_entity.write({
             'res_id': sub_project.id,
-            'is_unlocked': True,
             'view_or_launch': True,
         })
+
+
+        # # 触发下一个依赖子环节处于解锁状态
+        # for current_sub_tache_entity in meta_sub_project_entity.sub_tache_ids:
+        #     if current_sub_tache_entity.parent_id == target_sub_tache_entity:
+        #         current_sub_tache_entity.write({
+        #             'is_unlocked': True,
+        #         })
+
 
         return sub_project
 

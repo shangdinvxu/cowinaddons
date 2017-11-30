@@ -162,7 +162,7 @@ class Cowin_approval_flow_setting_node(models.Model):
     parent_id = fields.Many2one('cowin_settings.approval_flow_setting_node', string=u'依赖的父node')
 
 
-    operation_role_id = fields.Many2one('cowin_common.approval_role', string=u'操作角色')
+    operation_role_id = fields.Many2one('cowin_common.approval_role', string=u'操作角色', ondelete="restrict")
 
     order = fields.Integer(string=u'对于前端来说需要排序的字段')
 
@@ -178,6 +178,9 @@ class Cowin_approval_flow_setting_node(models.Model):
 
     @api.model
     def create(self, vals):
+        # 默认情况下,给给每个审批节点添加一个默认的审批角色
+        operation_role_entity = self.operation_role_id.search([])[0]
+        vals['operation_role_id'] = operation_role_entity.id
         res = super(Cowin_approval_flow_setting_node, self).create(vals)
         res._fix_dependency_at_create()
         return res
@@ -235,7 +238,7 @@ class Cowin_approval_flow_setting_node(models.Model):
                 current_node = current_node.parent_id
 
     # 前端显示,需要考虑到审批节点依赖的问题!!!
-    def __fix_dependency_at_unlink(self):
+    def _fix_dependency_at_unlink(self):
 
         # 必须考虑到其他节点不能包含 '提交' , '审批结束' 节点
         if self.name == u'提交' or self.name == u'审批结束':
@@ -267,7 +270,7 @@ class Cowin_approval_flow_setting_node(models.Model):
 
     @api.multi
     def unlink(self):
-        self.__fix_dependency_at_unlink()
+        self._fix_dependency_at_unlink()
         return super(Cowin_approval_flow_setting_node, self).unlink()
 
 

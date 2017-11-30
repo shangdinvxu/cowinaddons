@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 class Cowin_project_subproject_application_form_for_project_investment(models.Model):
     '''
         项目出资申请表
@@ -35,36 +36,35 @@ class Cowin_project_subproject_application_form_for_project_investment(models.Mo
 
     list_of_examination_and_approval_documents = fields.Many2many('ir.attachment', string=u'审批文件清单')
 
-
-
-
-
-
-
-
-
     @api.model
     def create(self, vals):
-        tache = self._context['tache']
 
-        sub_project_id = int(tache['sub_project_id'])
+        tache_info = self._context['tache']
 
-        # vals['meta_sub_project_id'] = meta_sub_project_id
+        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
 
-        sub_tache_id = int(tache['sub_tache_id'])
+        # 校验meta_sub_project所对应的子工程只能有一份实体
+        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+        if len(meta_sub_project_entity.sub_project_ids) > 1:
+            raise UserError(u'每个元子工程只能有一份实体!!!')
 
-        sub_tache = self.env['cowin_project.subproject_process_tache'].browse(sub_tache_id)
+        vals['meta_sub_project_id'] = meta_sub_project_id
 
+        sub_tache_id = int(tache_info['sub_tache_id'])
 
+        target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
 
-
-        vals['subproject_id'] = sub_project_id
-        res = super(Cowin_project_subproject_application_form_for_project_investment, self).create(vals)
-        sub_tache.write({
-            'res_id': res.id,
-            'is_unlocked': True,
+        sub_project = super(Cowin_project_subproject_application_form_for_project_investment, self).create(vals)
+        target_sub_tache_entity.write({
+            'res_id': sub_project.id,
             'view_or_launch': True,
         })
+        #
+        # # 触发下一个依赖子环节处于解锁状态
+        # for current_sub_tache_entity in meta_sub_project_entity.sub_tache_ids:
+        #     if current_sub_tache_entity.parent_id == target_sub_tache_entity:
+        #         current_sub_tache_entity.write({
+        #             'is_unlocked': True,
+        #         })
 
-
-        return res
+        return sub_project

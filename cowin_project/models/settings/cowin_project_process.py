@@ -48,12 +48,16 @@ class Cowin_project_process(models.Model):
                 tmp_tache['name'] = tache.name
                 tmp_tache['parent_id'] = tache.parent_id.name
                 # parent_id 就是解锁条件
-                # tmp_tache['is_unlocked'] = tache.parent_id.is_unlocked
+                tmp_tache['is_unlocked'] = tache.is_unlocked
                 # 需要考虑到环节的父节点可能没有
-                tmp_tache['is_unlocked'] = True if not tache.parent_id.id else tache.parent_id.is_unlocked
+                # tmp_tache['is_unlocked'] = True if not tache.parent_id else tache.parent_id.is_unlocked
+                tmp_tache['is_unlocked'] = tache.is_unlocked
                 tmp_tache['description'] = tache.description
                 tmp_tache['state'] = tache.state
                 tmp_tache['once_or_more'] = tache.once_or_more
+                tmp_tache['view_or_launch'] = tache.view_or_launch
+                tmp_tache['res_id'] = tache.res_id
+
                 # tmp_tache['res_id'] = tache.res_id
                 tmp_tache['model_name'] = tache.model_id.model_name
                 tmp_tache['stage_id'] = tache.stage_id.id
@@ -74,6 +78,7 @@ class Cowin_project_process(models.Model):
                         t['accept'] = approval_flow_node_entity.accept
                         t['reject'] = approval_flow_node_entity.reject
                         t['put_off'] = approval_flow_node_entity.put_off
+                        t['name'] = approval_flow_node_entity.name
 
                         tmp['approval_flow_nodes_info'].append(t)
 

@@ -10,7 +10,13 @@ class Cowin_project_approval_flow_settings(models.Model):
 
     tache_id = fields.Many2one('cowin_project.process_tache', string=u'依赖环节', ondelete="cascade")
 
+    # 子审批流实体
+
+    sub_approval_flow_settings_ids  = fields.One2many('cowin_project.sub_approval_flow_settings', 'approval_flow_settings_id', string=u'子审批流')
     approval_flow_setting_node_ids = fields.One2many('cowin_project.approval_flow_setting_node', 'approval_flow_settings_id', u'审批节点')
+
+    status = fields.Selection([(1, u'暂无'), (2, u'审核中'), (3, u'暂缓'), (4, u'同意'), (5, u'拒绝')],
+                              string=u'审核状态', default=1)
 
     _sql_constraints = [
         ('login_key', 'UNIQUE (name)', u'审批配置名称不能相同!!!')
@@ -93,13 +99,14 @@ class Cowin_project_approval_flow_setting_node(models.Model):
 
     parent_id = fields.Many2one('cowin_project.approval_flow_setting_node', string=u'依赖的父node')
 
-    operation_role_id = fields.Many2one('cowin_common.approval_role', string=u'操作角色')
+    operation_role_id = fields.Many2one('cowin_common.approval_role', string=u'操作角色', ondelete="restrict")
 
     order = fields.Integer(string=u'对于前端来说需要排序的字段')
 
     accept = fields.Boolean(string=u'同意', default=True)
     reject = fields.Boolean(string=u'不同意', default=True)
     put_off = fields.Boolean(string=u'暂缓', default=False)
+
 
     _sql_constraints = [
         ('name_key', 'UNIQUE (approval_flow_settings_id, name)', u'审批节点名称不能相同!!!'),

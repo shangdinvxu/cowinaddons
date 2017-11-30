@@ -45,48 +45,36 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
     amount_of_entrusted_loan = fields.Float(string=u'委托贷款金额')
     chairman_of_investment_decision_committee = fields.Many2one('hr.employee', string=u'投资决策委员会主席')
 
-
-
     @api.model
     def create(self, vals):
-        tache = self._context['tache']
+        tache_info = self._context['tache']
 
-        sub_project_id = int(tache['sub_project_id'])
+        # sub_project_id = int(tache_info['sub_project_id'])
 
-        # vals['meta_sub_project_id'] = meta_sub_project_id
+        sub_tache_id = int(tache_info['sub_tache_id'])
+        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
 
-        sub_tache_id = int(tache['sub_tache_id'])
+        sub_project_id = meta_sub_project_entity.sub_project_ids.id
 
-        sub_tache = self.env['cowin_project.subproject_process_tache'].browse(sub_tache_id)
+        target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
 
         vals['subproject_id'] = sub_project_id
         res = super(Cowin_project_subproject_investment_decision_committee_meeting_resolution, self).create(vals)
-
-        sub_tache.write({
+        target_sub_tache_entity.write({
             'res_id': res.id,
-            'is_unlocked': True,
+            # 'is_unlocked': True,
             'view_or_launch': True,
         })
 
-
-
-        # 接下来这条数据的作用在于对轮次基金实体中的meta_sub_project_id做关联对应
-        for round_financing_and_Foundation in res.round_financing_and_Foundation_ids:
-            # 创建元子工程
-            meta_sub_project = self.env['cowin_project.meat_sub_project'].create({
-                'project_id': res.subproject_id.meta_sub_project_id.project_id.id,
-            })
-
-
-            round_financing_and_Foundation.write({
-                'meta_sub_project_id': meta_sub_project.id,
-            })
-
+        # 触发下一个依赖子环节处于解锁状态
+        # for current_sub_tache_entity in meta_sub_project_entity.sub_tache_ids:
+        #     if current_sub_tache_entity.parent_id == target_sub_tache_entity:
+        #         current_sub_tache_entity.write({
+        #             'is_unlocked': True,
+        #         })
 
         return res
-
-
-
 
 
     @api.multi
