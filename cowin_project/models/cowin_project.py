@@ -541,9 +541,9 @@ class Cowin_project(models.Model):
     def rpc_get_approval_flow_info(self, **kwargs):
         tache_info = kwargs.get('tache')
         meta_sub_project_id = tache_info['meta_sub_project_id']
-        sub_tache_id = tache_info['sub_tache_id']
+        sub_approval_flow_settings_id = tache_info['sub_approval_flow_settings_id']
         meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
-        sub_approval_flow_settings_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(sub_tache_id)
+        sub_approval_flow_settings_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(sub_approval_flow_settings_id)
 
         return sub_approval_flow_settings_entity.get_all_sub_aproval_flow_settings_records()
 
@@ -556,9 +556,9 @@ class Cowin_project(models.Model):
     def rpc_save_approval_flow_info(self, **kwargs):
         tache_info = kwargs.get('tache')
         meta_sub_project_id = tache_info['meta_sub_project_id']
-        sub_tache_id = tache_info['sub_tache_id']
+        sub_approval_flow_settings_id = tache_info['sub_approval_flow_settings_id']
         meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
-        sub_approval_flow_settings_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(sub_tache_id)
+        sub_approval_flow_settings_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(sub_approval_flow_settings_id)
 
 
         approval_flow_settings_record_info = kwargs.get('approval_flow_settings_record')
