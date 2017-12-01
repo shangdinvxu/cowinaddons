@@ -211,6 +211,7 @@ class Cowin_project(models.Model):
                 tache_info['approval_status'] = {}
                 tache_info['approval_status']['status_id'] = -1
                 tache_info['approval_status']['status_name'] = u''
+                tache_info['approval_status']['approval_view_or_launch'] = None
 
 
 
