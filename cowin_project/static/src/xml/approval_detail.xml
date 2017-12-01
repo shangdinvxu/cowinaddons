@@ -69,7 +69,7 @@
                 <span><t t-esc="item.name"/> </span>
             </div>
             <t t-foreach="item.tache_ids" t-as="obj">
-                <div class="process_data_item_line detail_line" t-att-data-sub-project-id="obj.meta_sub_project_id" t-att-data-sub-tache-id="obj.sub_tache_id" t-att-data-tache-id="obj.id" t-att-tache-index="tache_index">
+                <div class="process_data_item_line detail_line" t-att-data-sub-project-id="obj.meta_sub_project_id" t-att-data-sub-approval-id="obj.approval_status.sub_approval_flow_settings_id" t-att-data-tache-id="obj.id" t-att-tache-index="tache_index">
                     <t t-set="tache_index" t-value="tache_index + 1"/>
                     <span><t t-esc="obj.name"/> </span>
                     <span>【
@@ -118,5 +118,42 @@
                 </ul>
             </div>
         </t>
+    </t>
+
+    <!--审批页面-->
+    <t t-name="approval_page">
+        <p class="approval_head">
+            环节名称：投资决策申请
+        </p>
+        <div class="approval_body">
+
+        </div>
+
+        <p class="approval_head">审批记录</p>
+        <div class="approval_page_record">
+            <div class="approval_record_head">
+                <span>审批人</span>
+                <span>审批角色</span>
+                <span>审批结果</span>
+                <span>审批意见</span>
+                <span>审批时间</span>
+            </div>
+            <div class="approval_record_body">
+                <span>王潇</span>
+                <span>行政主管</span>
+                <span>同意</span>
+                <span>xxxxxxxx</span>
+                <span>xxxxxxx</span>
+            </div>
+        </div>
+
+        <p class="approval_head">审批意见</p>
+        <div class="approval_page_opinion_wrap">
+            <textarea></textarea>
+        </div>
+        <div class="approval_page_btns_wrap">
+            <span class="approval_yes">同意</span>
+            <span class="approval_no">不同意</span>
+        </div>
     </t>
 </templates>

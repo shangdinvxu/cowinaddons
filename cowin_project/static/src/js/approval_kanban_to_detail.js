@@ -32,19 +32,20 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
             var meta_sub_project_id = $(target).parents('.process_data_item_line').attr('data-sub-project-id');
-            var sub_tache_id = $(target).parents('.process_data_item_line').attr('data-sub-tache-id');
+            var sub_approval_flow_settings_id = $(target).parents('.process_data_item_line').attr('data-sub-approval-id');
             var data = {
                 "tache":{
                     "meta_sub_project_id":parseInt(meta_sub_project_id),
-                    "sub_tache_id":parseInt(sub_tache_id)
+                    "sub_approval_flow_settings_id":parseInt(sub_approval_flow_settings_id)
                 }
             };
 
             return new Model("cowin_project.cowin_project")
                     .call("rpc_get_approval_flow_info", [parseInt(self.id)],data)
                     .then(function (result) {
+                        $('#process_data').html('')
                         console.log(result);
-
+                        $('#process_data').append(QWeb.render('approval_page', {result: result}))
                     })
 
         },

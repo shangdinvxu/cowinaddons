@@ -234,10 +234,68 @@
 }
 
 
-
-
-
-
-
-
-
+.approval_head{
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 77px;
+    margin-top: 40px;
+}
+#process_data .approval_page_record{
+    padding-left: 77px;
+    min-width: 1200px;
+}
+.approval_page_record .approval_record_head{
+    background-color: rgba(238, 240, 240, 1);
+    padding: 8px;
+    font-size: 13px;
+    font-weight: 700;
+}
+.approval_page_record .approval_record_body{
+    padding: 8px;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(238, 240, 240, 1);
+}
+.approval_page_record>div{
+    overflow: hidden;
+}
+.approval_page_record>div>span{
+    display: inline-block;
+}
+.approval_page_record>div>span:nth-child(1){
+    width: 60px;
+}
+.approval_page_record>div>span:nth-child(2),.approval_page_record>div>span:nth-child(3),.approval_page_record>div>span:nth-child(4){
+    width: 60px;
+    margin-left: 40px;
+}
+.approval_page_record>div>span:nth-child(4){
+    width: 380px;
+}
+.approval_page_record>div>span:nth-child(5){
+    margin-left: 20px;
+}
+.approval_page_opinion_wrap{
+    padding: 0 77px;
+}
+.approval_page_btns_wrap{
+    margin-top: 40px;
+    text-align: center;
+    border-top: 1px solid rgba(238, 240, 240, 1);
+    padding-top: 30px;
+}
+.approval_yes{
+    background-color: rgba(25, 158, 216, 1);
+    color: white;
+    display: inline-block;
+    width: 118px;
+    height: 35px;
+    line-height: 35px;
+}
+.approval_no{
+    background-color: rgba(255, 102, 51, 1);
+    color: white;
+    display: inline-block;
+    width: 118px;
+    height: 35px;
+    line-height: 35px;
+}
