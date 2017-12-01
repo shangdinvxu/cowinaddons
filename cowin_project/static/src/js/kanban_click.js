@@ -21,15 +21,26 @@ KanbanRecord.include({
         if (this.model === 'project.project') {
             this.$('.o_project_kanban_boxes a').first().click();
         }else if(this.model === 'cowin_project.cowin_project'){
-            var action = {
-                type: 'ir.actions.client',
-                name: 'process',
-                tag: 'process_kanban_to_detail',
-                // id: this.record.id.raw_value,
-                active_id:this.record.id.raw_value,
-                params:{'active_id':this.record.id.raw_value,action:'process_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
+            if(this.$el.eq(0).hasClass('project_process_kanban')){
+                var action = {
+                    type: 'ir.actions.client',
+                    name: 'process',
+                    tag: 'process_kanban_to_detail',
+                    // id: this.record.id.raw_value,
+                    active_id:this.record.id.raw_value,
+                    params:{'active_id':this.record.id.raw_value,action:'process_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
+                }
+                this.do_action(action);
+            }else if(this.$el.eq(0).hasClass('project_approval_kanban')){
+                var action = {
+                    type: 'ir.actions.client',
+                    name: 'approval',
+                    tag: 'approval_kanban_to_detail',
+                    active_id:this.record.id.raw_value,
+                    params:{'active_id':this.record.id.raw_value,action:'approval_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
+                }
+                this.do_action(action);
             }
-            this.do_action(action);
         }
         else {
             this._super.apply(this, arguments);

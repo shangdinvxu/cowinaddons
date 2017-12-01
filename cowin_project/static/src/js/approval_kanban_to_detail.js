@@ -1,7 +1,7 @@
 /**
- * Created by 123 on 2017/10/30.
+ * Created by 123 on 2017/12/1.
  */
-odoo.define('cowin_project.process_kanban_to_detail', function (require) {
+odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
     "use strict";
 
     var core = require('web.core');
@@ -19,7 +19,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
     var _t = core._t;
 
 
-    var ProcessKanbanToDetail = Widget.extend({
+    var ApprovalKanbanToDetail = Widget.extend({
         template: '',
         events:{
             'click .initiate':'initiate_func',
@@ -94,7 +94,6 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             // ajax监听事件 用以刷新页面
             var sub_id = $('.active_fund').attr('data-sub-id');
             var refresh_page = null;
-
             refresh_page = function (self,model) {
                 $(document).ajaxComplete(function (event, xhr, settings) {
                     if (settings.data){
@@ -161,7 +160,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                 target:'new'
             }
             self.do_action(action);
-            
+
             // ajax监听事件 用以刷新页面
             var sub_id = $('.active_fund').attr('data-sub-id');
             var refresh_page = null;
@@ -224,11 +223,11 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                         });
 
                         self.id = parseInt(result.id);
-                        self.$el.append(QWeb.render('project_process_detail_tmp', {result: result}))
+                        self.$el.append(QWeb.render('project_approval_detail_tmp', {result: result}))
                     })
         }
     });
-    core.action_registry.add('process_kanban_to_detail', ProcessKanbanToDetail);
+    core.action_registry.add('approval_kanban_to_detail', ApprovalKanbanToDetail);
 
     return ProcessKanbanToDetail;
 });

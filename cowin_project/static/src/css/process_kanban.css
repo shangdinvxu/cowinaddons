@@ -1,16 +1,16 @@
-.o_web_client .o_main .o_view_manager_content .project_process_kanban{
+.o_web_client .o_main .o_view_manager_content .cowin_project_kanban{
     box-shadow: none;
     margin-left: 30px;
     padding: 18px;
     flex: none;
     background-color: rgba(242, 242, 242, 1);
 }
-.o_web_client .o_main .o_view_manager_content .project_process_kanban .kanban_top{
+.o_web_client .o_main .o_view_manager_content .cowin_project_kanban .kanban_top{
     overflow: hidden;
     padding-bottom: 10px;
     border-bottom: 1px solid rgba(161,161,161,.3);
 }
-.o_web_client .o_main .o_view_manager_content .project_process_kanban .project_name{
+.o_web_client .o_main .o_view_manager_content .cowin_project_kanban .project_name{
     font-weight: 700;
     color: #515151;
     float: left;
@@ -22,30 +22,30 @@
     -webkit-box-orient:vertical;
     -webkit-line-clamp:3;
 }
-.o_web_client .o_main .o_view_manager_content .project_process_kanban .project_top_right{
+.o_web_client .o_main .o_view_manager_content .cowin_project_kanban .project_top_right{
     float: right;
     width: 312px;
     color: #A1A1A1;
 }
-.o_web_client .o_main .o_view_manager_content .project_process_kanban .project_top_right span{
+.o_web_client .o_main .o_view_manager_content .cowin_project_kanban .project_top_right span{
     margin-left: 10px;
 }
-.o_web_client .o_main .o_view_manager_content .project_process_kanban .kanban_main>div{
+.o_web_client .o_main .o_view_manager_content .cowin_project_kanban .kanban_main>div{
     color: #797979;
     margin-top: 8px;
 }
-.o_web_client .o_main .o_view_manager_content .project_process_kanban .kanban_main{
+.o_web_client .o_main .o_view_manager_content .cowin_project_kanban .kanban_main{
     position: relative;
     display: inline-block;
 }
-.o_web_client .o_main .o_view_manager_content .project_process_kanban .kanban_main .kanban_project_state{
+.o_web_client .o_main .o_view_manager_content .cowin_project_kanban .kanban_main .kanban_project_state{
     color: #00B0DD;
     position: absolute;
     top: 0;
     right: 0;
     margin-top: 0;
 }
-.o_web_client .o_main .o_view_manager_content .project_process_kanban .kanban_main .kanban_project_product{
+.o_web_client .o_main .o_view_manager_content .cowin_project_kanban .kanban_main .kanban_project_product{
     width: 400px;
     height: 50px;
     display: -webkit-box;
@@ -53,13 +53,13 @@
     -webkit-line-clamp: 3;
     overflow:hidden;
 }
-.o_web_client .o_main .o_view_manager_content .project_process_kanban .kanban_project_logo{
+.o_web_client .o_main .o_view_manager_content .cowin_project_kanban .kanban_project_logo{
     display: inline-block;
     vertical-align: top;
     margin-top: 40px;
     margin-right: 12px;
     width: 60px;
 }
-.o_web_client .o_main .o_view_manager_content .project_process_kanban .kanban_project_logo img{
+.o_web_client .o_main .o_view_manager_content .cowin_project_kanban .kanban_project_logo img{
     width: 100%;
 }
