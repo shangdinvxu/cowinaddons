@@ -3,6 +3,7 @@ from odoo import models, fields, api
 from odoo.modules.module import get_module_resource
 from odoo import tools
 import copy
+from odoo import SUPERUSER_ID
 
 class Cowin_project(models.Model):
     _name = 'cowin_project.cowin_project'
@@ -52,6 +53,36 @@ class Cowin_project(models.Model):
 
 
     attachment_note = fields.Char(string=u'附件说明')
+
+    @api.model
+    def _iscurrentUser_and_Admin(self):
+        '''
+
+        :return:
+        '''
+
+        # 检测当前的用户是否是管理员
+        if self.env.user.id == SUPERUSER_ID:
+            return True
+
+
+        # 每个主工程所有的元子工程信息
+        for meta_sub_pro_entity in self.meta_sub_project_ids:
+
+            # 每个元子工程的子审批流信息
+            for sub_approval_flow_entity in meta_sub_pro_entity.sub_approval_flow_settings_ids:
+
+                # 每个子审批流所对应的当前的操作角色
+                current_role_entity = sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
+                # 当前用户所关联的操作角色
+                all_role_entities = self.env.user.employee_ids.approval_role_ids
+
+                if current_role_entity in all_role_entities:
+                    return True
+
+        return False
+
+    iscurrentUser_and_Admin = fields.Boolean(string=u'当前的用户是否有权限审批', default=_iscurrentUser_and_Admin)
 
 
 

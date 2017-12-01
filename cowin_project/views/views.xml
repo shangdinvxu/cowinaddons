@@ -43,6 +43,8 @@
                     <field name="industry"/>
                     <field name="production"/>
                     <field name="stage"/>
+
+
                     <templates>
                     <t t-name="kanban-box">
                         <div class="project_process_kanban oe_kanban_global_click">
@@ -154,6 +156,9 @@
             <field name="res_model">cowin_project.cowin_project</field>
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form</field>
+            <!--<field name="iscurrentUser_and_Admin" domain="[('iscurrentUser_and_Admin','=','False')]"/>-->
+            <field name="domain">[('iscurrentUser_and_Admin','=',True)]</field>
+
         </record>
 
         <!-- Top menu item -->
