@@ -61,28 +61,28 @@ class Cowin_project_process(models.Model):
                 # tmp_tache['res_id'] = tache.res_id
                 tmp_tache['model_name'] = tache.model_id.model_name
                 tmp_tache['stage_id'] = tache.stage_id.id
-                tmp_tache['approval_flow_settings_info'] = []
-                for approval_flow_settings_entity in tache.approval_flow_settings_ids:
-                    tmp = {}
-                    tmp['approval_flow_settings_id'] = approval_flow_settings_entity.id
-                    tmp['name'] = approval_flow_settings_entity.name
-                    tmp['tache_id'] = approval_flow_settings_entity.tache_id.id
-                    tmp['approval_flow_nodes_info'] = []
-                    for approval_flow_node_entity in approval_flow_settings_entity.approval_flow_setting_node_ids:
-                        t = {}
-                        t['approval_flow_settings_node_id'] = approval_flow_node_entity.id
-                        t['approval_flow_settings_id'] = approval_flow_node_entity.approval_flow_settings_id.id
-                        t['parent_id'] = approval_flow_node_entity.parent_id.id
-                        t['operation_role_id'] = approval_flow_node_entity.operation_role_id.id
-                        t['order'] = approval_flow_node_entity.order
-                        t['accept'] = approval_flow_node_entity.accept
-                        t['reject'] = approval_flow_node_entity.reject
-                        t['put_off'] = approval_flow_node_entity.put_off
-                        t['name'] = approval_flow_node_entity.name
-
-                        tmp['approval_flow_nodes_info'].append(t)
-
-                    tmp_tache['approval_flow_settings_info'].append(tmp)
+                # tmp_tache['approval_flow_settings_info'] = []
+                # for approval_flow_settings_entity in tache.approval_flow_settings_ids:
+                #     tmp = {}
+                #     tmp['approval_flow_settings_id'] = approval_flow_settings_entity.id
+                #     tmp['name'] = approval_flow_settings_entity.name
+                #     tmp['tache_id'] = approval_flow_settings_entity.tache_id.id
+                #     tmp['approval_flow_nodes_info'] = []
+                #     for approval_flow_node_entity in approval_flow_settings_entity.approval_flow_setting_node_ids:
+                #         t = {}
+                #         t['approval_flow_settings_node_id'] = approval_flow_node_entity.id
+                #         t['approval_flow_settings_id'] = approval_flow_node_entity.approval_flow_settings_id.id
+                #         t['parent_id'] = approval_flow_node_entity.parent_id.id
+                #         t['operation_role_id'] = approval_flow_node_entity.operation_role_id.id
+                #         t['order'] = approval_flow_node_entity.order
+                #         t['accept'] = approval_flow_node_entity.accept
+                #         t['reject'] = approval_flow_node_entity.reject
+                #         t['put_off'] = approval_flow_node_entity.put_off
+                #         t['name'] = approval_flow_node_entity.name
+                #
+                #         tmp['approval_flow_nodes_info'].append(t)
+                #
+                #     tmp_tache['approval_flow_settings_info'].append(tmp)
 
                 tmp_stage['tache_ids'].append(tmp_tache)
 

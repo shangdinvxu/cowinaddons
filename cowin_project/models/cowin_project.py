@@ -234,6 +234,9 @@ class Cowin_project(models.Model):
                     tache_info['approval_status']['status_id'] = target_sub_approval_flow_entity.status
                     status = target_sub_approval_flow_entity.status
                     info = ''
+
+                    # True 代表着审核状态
+                    approval_view_or_launch = None
                     if status == 1:
                         # 未开始审核
                         info = u'暂无'
@@ -241,11 +244,29 @@ class Cowin_project(models.Model):
                         # 审核中...
                         # 找出当前的审核人
 
-                        name = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id.name
-                        info = u'待%s审核' % name
+
                         # 考虑到可能改子环节还没有开始发起,所以也是直接回到 '暂无状态'
                         if not sub_tache_entity.view_or_launch:
                             info = u'暂无'
+                        else:
+                            # 当前的虚拟角色名
+                            name = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id.name
+
+                            current_approval_flow_id = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
+
+                            # 当前用户所属的员工所属的角色
+
+                            current_user_approval_flow_ids = self.env.user.employee_ids.approval_role_ids
+
+                            info = u'待%s审核' % name
+
+                            # 接下来要考虑当前用户是否属于某一个虚拟角色
+                            if current_approval_flow_id in current_user_approval_flow_ids:
+                                # 很显然当前用户可以审批
+                                approval_view_or_launch = True
+                            else:
+                                # 很显然不需要去审批,因为没有这个
+                                approval_view_or_launch = False
 
                     elif status == 3:
                         # 暂缓
@@ -253,13 +274,16 @@ class Cowin_project(models.Model):
                     elif status == 4:
                         # 同意
                         info = u'同意'
+                        approval_view_or_launch = False
                     elif status == 5:
                         # 拒绝
                         info = u'拒绝'
+                        approval_view_or_launch = False
                     else:
                         pass
 
                     tache_info['approval_status']['status_name'] = info
+                    tache_info['approval_status']['approval_view_or_launch'] = approval_view_or_launch
 
 
                     #  1  <--------------- 需要传递的上下文信息,共享的基金轮次实体
