@@ -243,6 +243,7 @@ class Cowin_project(models.Model):
                 tache_info['approval_status']['status_id'] = -1
                 tache_info['approval_status']['status_name'] = u''
                 tache_info['approval_status']['approval_view_or_launch'] = None
+                tache_info['approval_status']['sub_approval_flow_settings_id'] = -1
 
 
 
@@ -251,6 +252,12 @@ class Cowin_project(models.Model):
             for tache_info in tache_infos:
                 if tache_info['id'] == sub_tache_entity.tache_id.id:
                     tache_info['sub_tache_id'] = sub_tache_entity.id
+
+                    # sub_approval_flow_entities_for_meta_pro = meta_sub_project_entity.sub_approval_flow_settings_ids
+                    # sub_approval_flow_entities_for_taches = sub_tache_entity.tache_id.approval_flow_settings_ids.sub_approval_flow_settings_ids
+                    #
+
+                    # tache_info['sub_approval_flow_settings_id'] = sub_approval_flow_entities_for_meta_pro & sub_approval_flow_entities_for_taches
                     tache_info['res_id'] = sub_tache_entity.res_id
 
                     tache_info['is_unlocked'] = sub_tache_entity.is_unlocked
@@ -258,12 +265,14 @@ class Cowin_project(models.Model):
                     tache_info['meta_sub_project_id'] = meta_sub_project_entity.id
                     tache_info['sub_project_id'] = meta_sub_project_entity.sub_project_ids.id
 
+
                     # 当前的子审批流实体
                     target_sub_approval_flow_entity = sub_tache_entity.tache_id.approval_flow_settings_ids.sub_approval_flow_settings_ids & \
                                                       meta_sub_project_entity.sub_approval_flow_settings_ids
 
                     tache_info['approval_status'] = {}
                     tache_info['approval_status']['status_id'] = target_sub_approval_flow_entity.status
+                    tache_info['approval_status']['sub_approval_flow_settings_id'] = target_sub_approval_flow_entity.id
                     status = target_sub_approval_flow_entity.status
                     info = ''
 
@@ -516,6 +525,8 @@ class Cowin_project(models.Model):
 
 
 
+    # 派生继承之后的方法
+
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
 
@@ -527,3 +538,17 @@ class Cowin_project(models.Model):
             })
 
         return super(Cowin_project, self).search_read(domain, fields, offset, limit, order)
+
+
+
+    # 构建审批流,
+
+    # 获取子审批流信息
+    def rpc_get_approval_flow_info(self, **kwargs):
+        pass
+
+
+
+    # 保存子审批流信息
+    def rpc_save_approval_flow_info(self, **kwargs):
+        pass
