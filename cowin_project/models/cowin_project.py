@@ -293,7 +293,7 @@ class Cowin_project(models.Model):
                             # 当前的虚拟角色名
                             name = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id.name
 
-                            current_approval_flow_id = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
+                            current_approval_flow_entity = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
 
                             # 当前用户所属的员工所属的角色
 
@@ -302,12 +302,16 @@ class Cowin_project(models.Model):
                             info = u'待%s审核' % name
 
                             # 接下来要考虑当前用户是否属于某一个虚拟角色
-                            if current_approval_flow_id in current_user_approval_flow_ids:
+                            if current_approval_flow_entity in current_user_approval_flow_ids:
                                 # 很显然当前用户可以审批
                                 approval_view_or_launch = True
                             else:
                                 # 很显然不需要去审批,因为没有这个
                                 approval_view_or_launch = False
+
+
+                            if self.env.user.id == SUPERUSER_ID:
+                                approval_view_or_launch = True
 
                     elif status == 3:
                         # 暂缓
@@ -515,16 +519,6 @@ class Cowin_project(models.Model):
             sub_project_id = int(kwargs.get('sub_project_id'))
 
 
-
-
-
-
-
-
-
-
-
-
     # 派生继承之后的方法
 
     @api.model
@@ -543,9 +537,18 @@ class Cowin_project(models.Model):
 
     # 构建审批流,
 
-    # 获取子审批流信息
+    # 获取子审批流记录信息
     def rpc_get_approval_flow_info(self, **kwargs):
-        pass
+        tache_info = kwargs.get('tache')
+        meta_sub_project_id = tache_info['meta_sub_project_id']
+        sub_tache_id = tache_info['sub_tache_id']
+        meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
+        sub_tache_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(sub_tache_id)
+
+        return sub_tache_entity.get_all_sub_aproval_flow_settings_records()
+
+
+
 
 
 

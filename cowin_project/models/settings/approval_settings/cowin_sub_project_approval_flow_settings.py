@@ -27,6 +27,20 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
 
 
+    sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
+                                                                'sub_approval_settings_id', string=u'审批记录')
 
 
+
+
+
+
+    def get_all_sub_aproval_flow_settings_records(self):
+
+        res = []
+        for entity in self.sub_pro_approval_flow_settings_record_ids:
+            res.append(entity.get_info())
+
+
+        return res
 
