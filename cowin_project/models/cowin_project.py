@@ -543,9 +543,9 @@ class Cowin_project(models.Model):
         meta_sub_project_id = tache_info['meta_sub_project_id']
         sub_tache_id = tache_info['sub_tache_id']
         meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
-        sub_tache_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(sub_tache_id)
+        sub_approval_flow_settings_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(sub_tache_id)
 
-        return sub_tache_entity.get_all_sub_aproval_flow_settings_records()
+        return sub_approval_flow_settings_entity.get_all_sub_aproval_flow_settings_records()
 
 
 
@@ -554,4 +554,26 @@ class Cowin_project(models.Model):
 
     # 保存子审批流信息
     def rpc_save_approval_flow_info(self, **kwargs):
-        pass
+        tache_info = kwargs.get('tache')
+        meta_sub_project_id = tache_info['meta_sub_project_id']
+        sub_tache_id = tache_info['sub_tache_id']
+        meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
+        sub_approval_flow_settings_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(sub_tache_id)
+
+
+        approval_flow_settings_record_info = kwargs.get('approval_flow_settings_record')
+
+        # 理论上只会有一个员工  审批人
+        approval_flow_settings_record_info['approval_person_id'] = self.env.user.employee_ids.id
+
+        # 审批角色
+        approval_flow_settings_record_info['approval_role_id'] = sub_approval_flow_settings_entity.current_approval_flow_node_id.id
+
+
+
+        # 更新审批节点
+        sub_approval_flow_settings_entity.update_status_and_approval_node()
+
+
+        sub_approval_flow_settings_entity.save_approval_flow_info(approval_flow_settings_record_info)
+
