@@ -54,7 +54,7 @@ class Cowin_project(models.Model):
 
     attachment_note = fields.Char(string=u'附件说明')
 
-    @api.model
+    # @api.model
     def _iscurrentUser_and_Admin(self):
         '''
 
@@ -516,5 +516,14 @@ class Cowin_project(models.Model):
 
 
 
+    @api.model
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
 
+        # 在这个地方做拦截,拦截action在后台取数据,以及要绑定到的当前的用户是否为当前审批节点需要的用户!!!
+        all_projects = self.search([])
+        for pro_entity in all_projects:
+            pro_entity.write({
+                'iscurrentUser_and_Admin': True if self._iscurrentUser_and_Admin() else False
+            })
 
+        return super(Cowin_project, self).search_read(domain, fields, offset, limit, order)

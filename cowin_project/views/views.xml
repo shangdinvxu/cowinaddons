@@ -157,6 +157,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form</field>
             <!--<field name="iscurrentUser_and_Admin" domain="[('iscurrentUser_and_Admin','=','False')]"/>-->
+            <!-- 过滤出当前用户所需要的所关联的所有的项目 超级管理员除外  -->
             <field name="domain">[('iscurrentUser_and_Admin','=',True)]</field>
 
         </record>
