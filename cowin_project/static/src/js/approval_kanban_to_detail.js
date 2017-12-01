@@ -24,7 +24,29 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
         events:{
             'click .initiate':'initiate_func',
             'click .view_tache':'view_tache_func',
-            'click .process_data_rounds .fund': 'fund_func'
+            'click .process_data_rounds .fund': 'fund_func',
+            'click .view_approval':'to_approval_func'
+        },
+        //到审核页面
+        to_approval_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var meta_sub_project_id = $(target).parents('.process_data_item_line').attr('data-sub-project-id');
+            var sub_tache_id = $(target).parents('.process_data_item_line').attr('data-sub-tache-id');
+            var data = {
+                "tache":{
+                    "meta_sub_project_id":parseInt(meta_sub_project_id),
+                    "sub_tache_id":parseInt(sub_tache_id)
+                }
+            };
+
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_get_approval_flow_info", [parseInt(self.id)],data)
+                    .then(function (result) {
+                        console.log(result);
+
+                    })
+
         },
         //基金切换
         fund_func:function (e) {
