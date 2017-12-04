@@ -31,21 +31,22 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                                                                 'sub_approval_settings_id', string=u'审批记录')
 
 
-    def update_status_and_approval_node(self):
-        self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
+    # def update_status_and_approval_node(self):
+    #     self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
+    #
+    #     if not self.current_approval_flow_node_id.parent_id:
+    #         '''
+    #             当前审批已完结
+    #
+    #         '''
+    #
+    #         self.status = 4
+    #
+    #         # 触发下一个子环节开启
 
-        if not self.current_approval_flow_node_id.parent_id:
-            '''
-                当前审批已完结
-                
-            '''
 
-            self.status = 4
-
-            # 触发下一个子环节开启
-
-
-
+    def is_success(self):
+        return self.status == 4
 
 
     def get_all_sub_aproval_flow_settings_records(self):
@@ -60,11 +61,13 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
 
     def save_approval_flow_info(self, approval_flow_settings_record_info):
+
+        # 状态设定的更改,位置的顺序很重要,和下一句!!!
+        self.status = 4 if approval_flow_settings_record_info['approval_result'] else 5
+
+
         approval_flow_settings_record_info['approval_result'] = u'同意' if approval_flow_settings_record_info[
             'approval_result'] else u'不同意'
-
-        self.status = 4 if approval_flow_settings_record_info[
-            'approval_result'] else 5
 
         self.write({
             'sub_pro_approval_flow_settings_record_ids': [(0, 0, approval_flow_settings_record_info)]

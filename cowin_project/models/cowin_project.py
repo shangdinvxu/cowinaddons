@@ -575,10 +575,12 @@ class Cowin_project(models.Model):
 
         # sub_approval_flow_settings_entity.update_status_and_approval_node()
 
+        sub_approval_flow_settings_entity.save_approval_flow_info(approval_flow_settings_record_info)
+
         # 触发下一个子环节
         current_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(tache_info['sub_tache_id'])
 
-        if sub_approval_flow_settings_entity.status == 4:
+        if sub_approval_flow_settings_entity.is_success():
             for sub_tache_entity in meta_sub_project_entity.sub_tache_ids:
                 if sub_tache_entity.parent_id == current_sub_tache_entity:
                     sub_tache_entity.write({
@@ -600,7 +602,7 @@ class Cowin_project(models.Model):
 
 
 
-        sub_approval_flow_settings_entity.save_approval_flow_info(approval_flow_settings_record_info)
+        # sub_approval_flow_settings_entity.save_approval_flow_info(approval_flow_settings_record_info)
 
 
         return self._get_info(meta_project_id=meta_sub_project_id)
