@@ -577,3 +577,6 @@ class Cowin_project(models.Model):
 
         sub_approval_flow_settings_entity.save_approval_flow_info(approval_flow_settings_record_info)
 
+
+        return self._get_info(meta_project_id=meta_sub_project_id)
+
