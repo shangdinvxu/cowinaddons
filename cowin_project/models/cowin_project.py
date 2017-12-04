@@ -571,8 +571,22 @@ class Cowin_project(models.Model):
 
         approval_flow_settings_record_info['approval_result'] = u'同意' if approval_flow_settings_record_info['approval_result'] else u'不同意'
 
-        # 更新审批节点
+        # 更新审批节点 拿到当前的子环节
+
         sub_approval_flow_settings_entity.update_status_and_approval_node()
+
+        # 触发下一个子环节
+        current_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(tache_info['sub_tache_id'])
+
+        if sub_approval_flow_settings_entity.status == 4:
+            for sub_tache_entity in meta_sub_project_entity.sub_tache_ids:
+                if sub_tache_entity.parent_id == current_sub_tache_entity:
+                    sub_tache_entity.write({
+                        'is_unlocked': True
+                    })
+                    break
+
+
 
 
         sub_approval_flow_settings_entity.save_approval_flow_info(approval_flow_settings_record_info)
