@@ -569,7 +569,7 @@ class Cowin_project(models.Model):
         # 审批角色
         approval_flow_settings_record_info['approval_role_id'] = sub_approval_flow_settings_entity.current_approval_flow_node_id.id
 
-
+        approval_flow_settings_record_info['approval_result'] = u'同意' if approval_flow_settings_record_info['approval_result'] else u'不同意'
 
         # 更新审批节点
         sub_approval_flow_settings_entity.update_status_and_approval_node()
