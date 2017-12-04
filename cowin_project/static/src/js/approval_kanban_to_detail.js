@@ -27,10 +27,17 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
         events:{
             'click .process_data_rounds .fund': 'fund_func',
             'click .view_approval':'to_approval_func',
-            'click .approval_yes':'approval_yes_func'
+            'click .approval_btn':'approval_btn_func'
         },
-        //审核同意
-        approval_yes_func:function () {
+        //审核同意、不同意
+        approval_btn_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            if($(target).hasClass('approval_yes')){
+                var approval_result = true;
+            }else {
+                var approval_result = false;
+            }
             var opinion = $('.approval_opinion').val();
             var self = this;
             var data = {
@@ -39,7 +46,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
                     "sub_approval_flow_settings_id":parseInt(sub_approval_flow_settings_id)
                 },
                 'approval_flow_settings_record':{
-                    'approval_result': true,
+                    'approval_result': approval_result,
                     'approval_opinion': opinion,
                 }
             };

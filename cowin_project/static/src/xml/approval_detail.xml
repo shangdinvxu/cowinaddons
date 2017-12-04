@@ -161,8 +161,8 @@
             <textarea class="approval_opinion"></textarea>
         </div>
         <div class="approval_page_btns_wrap">
-            <span class="approval_yes">同意</span>
-            <span class="approval_no">不同意</span>
+            <span class="approval_yes approval_btn">同意</span>
+            <span class="approval_no approval_btn">不同意</span>
         </div>
     </t>
 </templates>
