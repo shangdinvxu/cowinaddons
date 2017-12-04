@@ -301,3 +301,15 @@
     line-height: 35px;
     cursor: pointer;
 }
+.approval_body{
+    padding-left: 77px;
+}
+.approval_body div{
+    background-color: rgba(25, 158, 216, 1);
+    text-align: center;
+    width: 118px;
+    height: 35px;
+    color: white;
+    line-height: 35px;
+    cursor: pointer;
+}
