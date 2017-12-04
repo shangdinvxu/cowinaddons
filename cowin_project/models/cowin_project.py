@@ -582,8 +582,19 @@ class Cowin_project(models.Model):
             for sub_tache_entity in meta_sub_project_entity.sub_tache_ids:
                 if sub_tache_entity.parent_id == current_sub_tache_entity:
                     sub_tache_entity.write({
-                        'is_unlocked': True
+                        'is_unlocked': True,
+                        # 'status': 2,
                     })
+
+
+                    # 在触发下一个子环节过程中,还需要触发下一个子环节所对应的状态信息
+                    sub_approval_flow_settings_entity_next = sub_tache_entity.tache_id.approval_flow_settings_ids.sub_approval_flow_settings_ids \
+                                & meta_sub_project_entity.sub_approval_flow_settings_ids
+
+                    sub_approval_flow_settings_entity_next.write({
+                        'status': 2,
+                    })
+
                     break
 
 
