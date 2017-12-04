@@ -25,8 +25,6 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
     var ApprovalKanbanToDetail = Widget.extend({
         template: '',
         events:{
-            'click .initiate':'initiate_func',
-            'click .view_tache':'view_tache_func',
             'click .process_data_rounds .fund': 'fund_func',
             'click .view_approval':'to_approval_func',
             'click .approval_yes':'approval_yes_func'
@@ -34,6 +32,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
         //审核同意
         approval_yes_func:function () {
             var opinion = $('.approval_opinion').val();
+            var self = this;
             var data = {
                 "tache":{
                     "meta_sub_project_id":parseInt(meta_sub_project_id),
@@ -44,17 +43,19 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
                     'approval_opinion': opinion,
                 }
             };
-            console.log(data)
             return new Model("cowin_project.cowin_project")
                     .call("rpc_save_approval_flow_info", [parseInt(self.id)],data)
                     .then(function (result) {
                         console.log(result);
+                        $('#process_data').html('');
+                        $('#process_data').append(QWeb.render('process_info', {result: result}))
                     })
         },
         //到审核页面
         to_approval_func:function (e) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
+            var self = this;
             meta_sub_project_id = $(target).parents('.process_data_item_line').attr('data-sub-project-id');
             sub_approval_flow_settings_id = $(target).parents('.process_data_item_line').attr('data-sub-approval-id');
             var data = {
@@ -99,150 +100,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
                         $('.process_data_main_wrap').append(QWeb.render('process_info_right_tmpl', {result: result}))
                     })
         },
-        //查看按钮的点击事件
-        view_tache_func:function (e) {
-            var e = e || window.event;
-            var target = e.target || e.srcElement;
-            var tache_index = $(target).parents('.process_data_item_line').attr('tache-index');
-            var tache_id = parseInt($(target).parents('.process_data_item_line').attr('data-tache-id'));
-            var self = this;
-            var context ={
-                    'tache': self.tache_arr[tache_index],
-                };
-            if(self.tache_arr[tache_index].round_financing_and_foundation){
-                context = {
-                    'tache': self.tache_arr[tache_index],
-                    'default_foundation_id': self.tache_arr[tache_index].round_financing_and_foundation.foundation_id,
-                    'default_ownership_interest':self.tache_arr[tache_index].round_financing_and_foundation.ownership_interest,
-                    'default_round_financing_and_foundation_id':self.tache_arr[tache_index].round_financing_and_foundation.round_financing_and_foundation_id,
-                    'default_round_financing_id':self.tache_arr[tache_index].round_financing_and_foundation.round_financing_id,
-                    'default_the_amount_of_financing': self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_financing,
-                    'default_the_amount_of_investment':self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_investment,
-                    'default_invest_manager_id':self.tache_arr[tache_index].sub_project.invest_manager_id,
-                    'default_name':self.tache_arr[tache_index].sub_project.name,
-                    'default_project_number':self.tache_arr[tache_index].sub_project.project_number,
-                    'default_sub_project_id':self.tache_arr[tache_index].sub_project.sub_project_id,
-                }
-            }
 
-            var action = {
-                view_type: 'form',
-                view_mode: 'form',
-                views: [[false, 'form']],
-                res_model: self.tache_arr[parseInt(tache_index)].model_name,
-                res_id: self.tache_arr[tache_index].res_id,
-                name: self.tache_arr[tache_index].name,
-                type: 'ir.actions.act_window',
-                context: context,
-                target:'new'
-            }
-            self.do_action(action)
-
-            // ajax监听事件 用以刷新页面
-            var sub_id = $('.active_fund').attr('data-sub-id');
-            var refresh_page = null;
-            refresh_page = function (self,model) {
-                $(document).ajaxComplete(function (event, xhr, settings) {
-                    if (settings.data){
-                        var data = JSON.parse(settings.data);
-                        if (data.params.model == model) {
-                            if (data.params.method == 'write'){
-                                $('.close').click(function () {
-                                    return new Model("cowin_project.cowin_project")
-                                        .call("rpc_get_info", [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
-                                        .then(function (result) {
-                                            console.log(result);
-                                            $('.process_data_main_wrap').html('');
-                                            // 获取每个环节的model_name存入数组
-                                            self.tache_arr = [];
-                                            result.process.forEach(function (value) {
-                                                value.tache_ids.forEach(function (model) {
-                                                    self.tache_arr.push((model))
-                                                });
-                                            });
-                                            self.id = parseInt(result.id);
-                                            $('.process_data_main_wrap').append(QWeb.render('process_info_right_tmpl', {result: result}));
-                                            $('.process_data_rounds').html('');
-                                            $('.process_data_rounds').append(QWeb.render('process_info_left_tmpl', {result: result,active_flag:sub_id}));
-                                        })
-                                })
-                            }
-                        }
-                    }
-                })
-            }
-            refresh_page(self,self.tache_arr[tache_index].model_name);
-
-        },
-        //发起按钮的点击事件
-        initiate_func:function (e) {
-            var e = e || window.event;
-            var target = e.target || e.srcElement;
-            var tache_index = $(target).parents('.process_data_item_line').attr('tache-index');
-            var tache_id = parseInt($(target).parents('.process_data_item_line').attr('data-tache-id'));
-            var self = this;
-            self.tache_arr[tache_index].project_id = self.id;
-            self.tache_arr[tache_index].tache_id = tache_id;
-
-            var action = {
-                view_type: 'form',
-                view_mode: 'form',
-                views: [[false, 'form']],
-                res_model: self.tache_arr[parseInt(tache_index)].model_name,
-                context: {
-                    'tache': self.tache_arr[tache_index],
-                    'default_foundation_id':self.tache_arr[tache_index].round_financing_and_foundation.foundation_id,
-                    'default_ownership_interest':self.tache_arr[tache_index].round_financing_and_foundation.ownership_interest,
-                    'default_round_financing_and_foundation_id':self.tache_arr[tache_index].round_financing_and_foundation.round_financing_and_foundation_id,
-                    'default_round_financing_id':self.tache_arr[tache_index].round_financing_and_foundation.round_financing_id,
-                    'default_the_amount_of_financing': self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_financing,
-                    'default_the_amount_of_investment':self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_investment,
-                    'default_invest_manager_id':self.tache_arr[tache_index].sub_project.invest_manager_id,
-                    'default_name':self.tache_arr[tache_index].sub_project.name,
-                    'default_project_number':self.tache_arr[tache_index].sub_project.project_number,
-                    'default_sub_project_id':self.tache_arr[tache_index].sub_project.sub_project_id,
-                },
-                type: 'ir.actions.act_window',
-                name: self.tache_arr[tache_index].name,
-                target:'new'
-            }
-            self.do_action(action);
-
-            // ajax监听事件 用以刷新页面
-            var sub_id = $('.active_fund').attr('data-sub-id');
-            var refresh_page = null;
-            refresh_page = function (self,model) {
-                $(document).ajaxComplete(function (event, xhr, settings) {
-                    if (settings.data){
-                        var data = JSON.parse(settings.data);
-                        if (data.params.model == model) {
-                            if (data.params.method == 'create'){
-                                $('.close').click(function () {
-                                    return new Model("cowin_project.cowin_project")
-                                        .call("rpc_get_info", [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
-                                        .then(function (result) {
-                                            console.log(result);
-                                            $('.process_data_main_wrap').html('');
-                                            // 获取每个环节的model_name存入数组
-                                            self.tache_arr = [];
-                                            result.process.forEach(function (value) {
-                                                value.tache_ids.forEach(function (model) {
-                                                    self.tache_arr.push((model))
-                                                });
-                                            });
-                                            self.id = parseInt(result.id);
-                                            $('.process_data_main_wrap').append(QWeb.render('process_info_right_tmpl', {result: result}));
-                                            $('.process_data_rounds').html('');
-                                            $('.process_data_rounds').append(QWeb.render('process_info_left_tmpl', {result: result,active_flag:sub_id}));
-                                        })
-                                })
-                            }
-                        }
-                    }
-                })
-            }
-            refresh_page(self,self.tache_arr[tache_index].model_name);
-        },
         init: function (parent, action) {
             this._super(parent);
             this._super.apply(this, arguments);

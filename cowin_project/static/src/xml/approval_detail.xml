@@ -18,38 +18,9 @@
 
                 </div>
                 <div class="tab-pane fade in active" id="process_data">
-                    <div class="process_data_rounds">
-                        <div>项目流程</div>
-                        <t t-set="active_flag" t-value="1"/>
-                        <t t-foreach="result.investment_funds" t-as="item">
-                            <div class="process_rounds_wrap">
-                                <strong><t t-esc="item.round_financing_name ? item.round_financing_name:''"/></strong>
-                                <ul>
-                                    <t t-foreach="item.foundation_names" t-as="obj">
-                                        <t t-if="active_flag==1">
-                                            <li t-att-data-sub-id="obj.meta_sub_project_id" class="active_fund fund">
-                                                <t t-if="obj.foundation_name==''">
-                                                    暂无基金
-                                                </t>
-                                                <t t-else="">
-                                                    <t t-esc="obj.foundation_name"/> <span class="fa fa-chevron-right"></span>
-                                                </t>
-                                            </li>
-                                            <t t-set="active_flag" t-value="0"/>
-                                        </t>
-                                        <t t-else="">
-                                            <li class="fund" t-att-data-sub-id="obj.meta_sub_project_id"><t t-esc="obj.foundation_name"/> </li>
-                                        </t>
-                                    </t>
-                                </ul>
-                            </div>
-                        </t>
-                    </div>
-                    <div class="process_data_main_wrap">
-                        <t t-call="approval_info_right_tmpl">
-                            <t t-set="result" t-value="result"></t>
-                        </t>
-                    </div>
+                    <t t-call="process_info">
+                        <t t-set="result" t-value="result"></t>
+                    </t>
                 </div>
                 <div class="tab-pane fade" id="process_contact">
 
@@ -61,6 +32,44 @@
         </div>
     </t>
 
+
+    <!--流程资料tab内容-->
+    <t t-name="process_info">
+        <div class="process_data_rounds">
+            <div>项目流程</div>
+            <t t-set="active_flag" t-value="1"/>
+            <t t-foreach="result.investment_funds" t-as="item">
+                <div class="process_rounds_wrap">
+                    <strong><t t-esc="item.round_financing_name ? item.round_financing_name:''"/></strong>
+                    <ul>
+                        <t t-foreach="item.foundation_names" t-as="obj">
+                            <t t-if="active_flag==1">
+                                <li t-att-data-sub-id="obj.meta_sub_project_id" class="active_fund fund">
+                                    <t t-if="obj.foundation_name==''">
+                                        暂无基金
+                                    </t>
+                                    <t t-else="">
+                                        <t t-esc="obj.foundation_name"/> <span class="fa fa-chevron-right"></span>
+                                    </t>
+                                </li>
+                                <t t-set="active_flag" t-value="0"/>
+                            </t>
+                            <t t-else="">
+                                <li class="fund" t-att-data-sub-id="obj.meta_sub_project_id"><t t-esc="obj.foundation_name"/> </li>
+                            </t>
+                        </t>
+                    </ul>
+                </div>
+            </t>
+        </div>
+        <div class="process_data_main_wrap">
+            <t t-call="approval_info_right_tmpl">
+                <t t-set="result" t-value="result"></t>
+            </t>
+        </div>
+    </t>
+
+    <!--流程资料右边内容-->
     <t t-name="approval_info_right_tmpl">
         <t t-set="tache_index" t-value="0"/>
         <t t-foreach="result.process" t-as="item">

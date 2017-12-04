@@ -290,6 +290,7 @@
     width: 118px;
     height: 35px;
     line-height: 35px;
+    cursor: pointer;
 }
 .approval_no{
     background-color: rgba(255, 102, 51, 1);
@@ -298,4 +299,5 @@
     width: 118px;
     height: 35px;
     line-height: 35px;
+    cursor: pointer;
 }
