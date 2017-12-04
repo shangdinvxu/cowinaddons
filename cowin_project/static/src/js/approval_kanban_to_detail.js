@@ -40,8 +40,8 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
                     "sub_approval_flow_settings_id":parseInt(sub_approval_flow_settings_id)
                 },
                 'approval_flow_settings_record':{
-                    'approval_result': opinion,
-                    'approval_opinion': true,
+                    'approval_result': true,
+                    'approval_opinion': opinion,
                 }
             };
             console.log(data)
