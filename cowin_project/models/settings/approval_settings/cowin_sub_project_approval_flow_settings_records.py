@@ -36,6 +36,7 @@ class Cowin_sub_project_approval_flow_settings_records(models.Model):
         res['approval_role_name'] = self.approval_role_id.name
         res['approval_result'] = self.approval_result
         res['approval_opinion'] = self.approval_opinion
+        res['create_date'] = self.create_date
 
         return res
 

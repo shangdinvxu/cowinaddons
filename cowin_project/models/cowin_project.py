@@ -569,11 +569,11 @@ class Cowin_project(models.Model):
         # 审批角色
         approval_flow_settings_record_info['approval_role_id'] = sub_approval_flow_settings_entity.current_approval_flow_node_id.operation_role_id.id
 
-        approval_flow_settings_record_info['approval_result'] = u'同意' if approval_flow_settings_record_info['approval_result'] else u'不同意'
+        # approval_flow_settings_record_info['approval_result'] = u'同意' if approval_flow_settings_record_info['approval_result'] else u'不同意'
 
         # 更新审批节点 拿到当前的子环节
 
-        sub_approval_flow_settings_entity.update_status_and_approval_node()
+        # sub_approval_flow_settings_entity.update_status_and_approval_node()
 
         # 触发下一个子环节
         current_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(tache_info['sub_tache_id'])
@@ -587,7 +587,7 @@ class Cowin_project(models.Model):
                     })
 
 
-                    # 在触发下一个子环节过程中,还需要触发下一个子环节所对应的状态信息
+                    # 在触发下一个子环节过程中,还需要触发下一个子环节所对应的子审批节点信息
                     sub_approval_flow_settings_entity_next = sub_tache_entity.tache_id.approval_flow_settings_ids.sub_approval_flow_settings_ids \
                                 & meta_sub_project_entity.sub_approval_flow_settings_ids
 

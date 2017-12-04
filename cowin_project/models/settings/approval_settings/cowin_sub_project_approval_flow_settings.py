@@ -60,6 +60,12 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
 
     def save_approval_flow_info(self, approval_flow_settings_record_info):
+        approval_flow_settings_record_info['approval_result'] = u'同意' if approval_flow_settings_record_info[
+            'approval_result'] else u'不同意'
+
+        self.status = 4 if approval_flow_settings_record_info[
+            'approval_result'] else 5
+
         self.write({
             'sub_pro_approval_flow_settings_record_ids': [(0, 0, approval_flow_settings_record_info)]
         })
