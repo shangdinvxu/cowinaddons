@@ -149,7 +149,7 @@
 
         <p class="approval_head">审批意见</p>
         <div class="approval_page_opinion_wrap">
-            <textarea></textarea>
+            <textarea class="approval_opinion"></textarea>
         </div>
         <div class="approval_page_btns_wrap">
             <span class="approval_yes">同意</span>

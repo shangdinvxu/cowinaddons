@@ -18,6 +18,9 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
     var pyeval = require('web.pyeval');
     var _t = core._t;
 
+    var meta_sub_project_id;
+    var sub_approval_flow_settings_id;
+
 
     var ApprovalKanbanToDetail = Widget.extend({
         template: '',
@@ -25,14 +28,35 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
             'click .initiate':'initiate_func',
             'click .view_tache':'view_tache_func',
             'click .process_data_rounds .fund': 'fund_func',
-            'click .view_approval':'to_approval_func'
+            'click .view_approval':'to_approval_func',
+            'click .approval_yes':'approval_yes_func'
+        },
+        //审核同意
+        approval_yes_func:function () {
+            var opinion = $('.approval_opinion').val();
+            var data = {
+                "tache":{
+                    "meta_sub_project_id":parseInt(meta_sub_project_id),
+                    "sub_approval_flow_settings_id":parseInt(sub_approval_flow_settings_id)
+                },
+                'approval_flow_settings_record':{
+                    'approval_result': opinion,
+                    'approval_opinion': true,
+                }
+            };
+            console.log(data)
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_save_approval_flow_info", [parseInt(self.id)],data)
+                    .then(function (result) {
+                        console.log(result);
+                    })
         },
         //到审核页面
         to_approval_func:function (e) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
-            var meta_sub_project_id = $(target).parents('.process_data_item_line').attr('data-sub-project-id');
-            var sub_approval_flow_settings_id = $(target).parents('.process_data_item_line').attr('data-sub-approval-id');
+            meta_sub_project_id = $(target).parents('.process_data_item_line').attr('data-sub-project-id');
+            sub_approval_flow_settings_id = $(target).parents('.process_data_item_line').attr('data-sub-approval-id');
             var data = {
                 "tache":{
                     "meta_sub_project_id":parseInt(meta_sub_project_id),
