@@ -78,7 +78,7 @@
                 <span><t t-esc="item.name"/> </span>
             </div>
             <t t-foreach="item.tache_ids" t-as="obj">
-                <div class="process_data_item_line detail_line" t-att-data-sub-project-id="obj.meta_sub_project_id" t-att-data-sub-approval-id="obj.approval_status.sub_approval_flow_settings_id" t-att-data-tache-id="obj.id" t-att-tache-index="tache_index">
+                <div class="process_data_item_line detail_line" t-att-data-sub-tache-id="obj.sub_tache_id" t-att-data-sub-project-id="obj.meta_sub_project_id" t-att-data-sub-approval-id="obj.approval_status.sub_approval_flow_settings_id" t-att-data-tache-id="obj.id" t-att-tache-index="tache_index">
                     <t t-set="tache_index" t-value="tache_index + 1"/>
                     <span><t t-esc="obj.name"/> </span>
                     <span>【

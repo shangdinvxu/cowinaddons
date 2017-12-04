@@ -20,6 +20,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
 
     var meta_sub_project_id;
     var sub_approval_flow_settings_id;
+    var sub_tache_id;
 
 
     var ApprovalKanbanToDetail = Widget.extend({
@@ -43,7 +44,8 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
             var data = {
                 "tache":{
                     "meta_sub_project_id":parseInt(meta_sub_project_id),
-                    "sub_approval_flow_settings_id":parseInt(sub_approval_flow_settings_id)
+                    "sub_approval_flow_settings_id":parseInt(sub_approval_flow_settings_id),
+                    'sub_tache_id': parseInt(sub_tache_id),
                 },
                 'approval_flow_settings_record':{
                     'approval_result': approval_result,
@@ -65,6 +67,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
             var self = this;
             meta_sub_project_id = $(target).parents('.process_data_item_line').attr('data-sub-project-id');
             sub_approval_flow_settings_id = $(target).parents('.process_data_item_line').attr('data-sub-approval-id');
+            sub_tache_id = $(target).parents('.process_data_item_line').attr('data-sub-tache-id');
             var data = {
                 "tache":{
                     "meta_sub_project_id":parseInt(meta_sub_project_id),
