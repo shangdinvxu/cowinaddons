@@ -70,7 +70,8 @@ class Meat_sub_project(models.Model):
                 # 理论上主环节中只有一份主审批流实体
                 'approval_flow_settings_id': tache_entity.approval_flow_settings_ids.id,
                 # 默认就指向第一个位置!!!
-                'current_approval_flow_node_id': tache_entity.approval_flow_settings_ids.approval_flow_setting_node_ids[0].id,
+                'current_approval_flow_node_id': tache_entity.approval_flow_settings_ids.
+                        approval_flow_setting_node_ids.sorted('order')[0].id,
             })
 
 

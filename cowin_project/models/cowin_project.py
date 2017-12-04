@@ -567,7 +567,7 @@ class Cowin_project(models.Model):
         approval_flow_settings_record_info['approval_person_id'] = self.env.user.employee_ids.id
 
         # 审批角色
-        approval_flow_settings_record_info['approval_role_id'] = sub_approval_flow_settings_entity.current_approval_flow_node_id.id
+        approval_flow_settings_record_info['approval_role_id'] = sub_approval_flow_settings_entity.current_approval_flow_node_id.operation_role_id.id
 
         approval_flow_settings_record_info['approval_result'] = u'同意' if approval_flow_settings_record_info['approval_result'] else u'不同意'
 
