@@ -130,4 +130,85 @@
             </div>
         </t>
     </t>
+
+
+    <!--项目管理团队页面-->
+    <t t-name="project_manage_team_tmp">
+        <t t-foreach="result.meta_sub_project_infos" t-as="item">
+            <div class="process_data_item_line header_line" t-att-meta_sub_pro_id="item.meta_sub_pro_id">
+                <span class="fa fa-user"></span>
+                <span><t t-esc="item.foundation_for_rund_financing_info"/> </span>
+                <t t-if="result.is_admin==true">
+                    <span class="copy_this_setting">复制已有配置</span>
+                </t>
+            </div>
+            <div class="detail_lines_wrap" t-att-meta_sub_pro_id="item.meta_sub_pro_id">
+                <t t-foreach="item.approval_role_infos" t-as="obj">
+                    <div class="process_data_item_line detail_line" t-att-approval_role_id="obj.approval_role_id">
+                        <span class="team_role"><t t-esc="obj.approval_role_name"/></span>
+                        <div class="team_role_names_wrap">
+                            <!--<t t-foreach="obj.employee_infos" t-as="names">-->
+                                <!--<span><t t-esc="names."/> </span>-->
+                            <!--</t>-->
+
+                            <t t-call="names_tmpl">
+                                <t t-set="result" t-value="obj.employee_infos"></t>
+                                <t t-set="is_admin" t-value="result.is_admin"></t>
+                            </t>
+
+                            <t t-if="result.is_admin==true">
+                                <span class="add_new_role">新增</span>
+                            </t>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+
+        <t t-if="result.is_admin==true">
+            <div class="btns_wrap">
+                <div class="confirm_project_team_setting">保存</div>
+                <div class="cancel_project_team_setting">取消</div>
+            </div>
+        </t>
+
+
+        <!--新增选择人员-->
+        <div class="add_new_wrap">
+            <div class="modal-backdrop  in"></div>
+            <div class="add_new_content">
+                <div class="add_new_head">
+                    请选择员工
+                    <span class="fa fa-close"></span>
+                </div>
+                <div class="add_new_body">
+                    <select class="selectpicker bla bla bli" multiple="true" data-live-search="true">
+                        <t t-foreach="result.employee_infos" t-as="item">
+                            <option t-att-data-id="item.employee_id"><t t-esc="item.name"/></option>
+                        </t>
+                    </select>
+                    <script>
+                        $('.selectpicker').selectpicker({
+                            'selectedText': 'cat'
+                        });
+                    </script>
+                </div>
+                <div class="add_new_foot">
+                    <span class="confirm_sel">确定</span>
+                    <span class="cancel_sel">取消</span>
+                </div>
+            </div>
+        </div>
+    </t>
+    <!--内部-->
+    <t t-name="names_tmpl">
+        <t t-foreach="result" t-as="item">
+            <span class="member_name" t-att-employee_id="item.employee_id">
+                <t t-esc="item.name"/>
+                <t t-if="is_admin">
+                    <span class="fa fa-close"></span>
+                </t>
+            </span>
+        </t>
+    </t>
 </templates>
