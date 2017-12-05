@@ -38,13 +38,25 @@
     width: 70%;
     margin-left: 50px;
 }
-#process_tab_content .process_data_rounds{
+#process_tab_content .process_data_left_wrap{
     float: left;
+    overflow: hidden;
+    padding: 3px;
+}
+.manage_team_btn{
+    color: #00B0DD;
+    cursor: pointer;
+}
+.manage_team_btn span{
+    float: right;
+    margin-top: 3px;
+}
+#process_tab_content .process_data_rounds{
     width: 180px;
     padding: 10px;
     background-color: rgba(242, 242, 242, 1);
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.349019607843137);
-    margin-top: 15px;
+    margin-top: 20px;
     margin-left: 15px;
 }
 #process_tab_content .process_data_rounds>div:nth-child(1){

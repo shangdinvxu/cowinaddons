@@ -24,7 +24,15 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
         events:{
             'click .initiate':'initiate_func',
             'click .view_tache':'view_tache_func',
-            'click .process_data_rounds .fund': 'fund_func'
+            'click .process_data_rounds .fund': 'fund_func',
+            'click .manage_team_btn':'manage_team_fun'
+        },
+        manage_team_fun:function () {
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_get_permission_configuration", [[]])
+                    .then(function (result) {
+                        console.log(result);
+                    })
         },
         //基金切换
         fund_func:function (e) {
