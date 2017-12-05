@@ -647,10 +647,9 @@ class Cowin_project(models.Model):
                 tmp2 = {}
                 tmp2['approval_role_id'] = approval_role_entity.id
                 tmp2['approval_role_name'] = approval_role_entity.name
-                tmp2['employee_infos'] = []
-                tmp2['employee_infos'].append([{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
+                tmp2['employee_infos'] =[{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
                                                   for approval_employee_rel in approval_role_entity.employee_ids if approval_employee_rel.employee_id.id
-                                               ])
+                                               ]
 
                 tmp['approval_role_infos'].append(tmp2)
 

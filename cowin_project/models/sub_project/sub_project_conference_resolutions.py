@@ -22,7 +22,7 @@ class Cowin_project_subproject_conference_resolutions(models.Model):
 
     voting_opinion = fields.Text(string=u'表决意见')
 
-    voter = fields.Char(string=u'表决人')
+    voter = fields.Many2one('hr.employee', string=u'表决人')
 
     @api.model
     def create(self, vals):
