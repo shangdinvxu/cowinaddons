@@ -635,7 +635,7 @@ class Cowin_project(models.Model):
 
             tmp['approval_role_infos'] = []
 
-            # 是已虚拟角色的角度来看地问题!!!
+            # 是以虚拟角色的角度来看地问题!!!
             # approval_role_ids = [appro_role_entity_rel.approval_role_id for appro_role_entity_rel in meta_sub_pro_entity.approval_role_and_employee_ids]
 
             approval_role_repr = meta_sub_pro_entity.approval_role_and_employee_ids[0] if meta_sub_pro_entity.approval_role_and_employee_ids else meta_sub_pro_entity.approval_role_and_employee_ids
@@ -650,8 +650,12 @@ class Cowin_project(models.Model):
                 tmp2['approval_role_id'] = approval_role_entity.id
                 tmp2['approval_role_name'] = approval_role_entity.name
 
-                tmp2['employee_infos'] =[{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
-                                          for approval_employee_rel in approval_role_entity.employee_ids if approval_employee_rel.employee_id.id]
+                # tmp2['employee_infos'] =[{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
+                #                           for approval_employee_rel in approval_role_entity.employee_ids if approval_employee_rel.employee_id.id]
+
+                tmp2['employee_infos'] = [{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
+                    for approval_employee_rel in meta_sub_pro_entity.approval_role_and_employee_ids if approval_employee_rel.approval_role_id == approval_role_entity]
+
 
                 tmp['approval_role_infos'].append(tmp2)
 
@@ -708,6 +712,32 @@ class Cowin_project(models.Model):
             })
 
 
+
+
+
+    def rpc_copy_permission_configuration(self, **kwargs):
+
+        current_meta_sub_pro_id = kwargs['current_meta_sub_pro_id']
+        copy_meta_sub_pro_id = kwargs['copy_meta_sub_pro_id']
+
+
+        # current_meta_sub_pro_entity = self.meta_sub_project_ids.browse(current_meta_sub_pro_id)
+        copy_meta_sub_pro_entity = self.meta_sub_project_ids.browse(copy_meta_sub_pro_id)
+
+        copy_rel_entities = copy_meta_sub_pro_entity.approval_role_and_employee_ids
+
+        for c_rel_entity in copy_rel_entities:
+            c_rel_entity.create({
+                'meta_sub_project_id': current_meta_sub_pro_id,
+                'approval_role_id':c_rel_entity.approval_role_id.id,
+                'employee_id': c_rel_entity.employee_id.id,
+            })
+
+
+
+
+
+        return self.rpc_get_permission_configuration()
 
 
 
