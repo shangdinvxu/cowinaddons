@@ -33,7 +33,7 @@ class Meat_sub_project(models.Model):
                                                      string=u'子流程配置实例')
 
 
-
+    approval_role_and_employee_ids = fields.One2many('cowin_project.meta_sub_appro_role_hr_em', 'meta_sub_project_id', string=u'虚拟角色与员工的关系')
 
 
 
@@ -127,7 +127,15 @@ class Meat_sub_project(models.Model):
 
 
 
+        # 开启权限配置
+        approval_role_ids = self.env[''].search([])
 
+        # 默认情况下,没有员工的引用,目的在于方便处理
+        for app_role_entity in approval_role_ids:
+           self.approval_role_and_employee_ids.create({
+               'meta_sub_project_id': self.id,
+               'approval_role_id': app_role_entity.id,
+           })
 
 
         return meta_sub_project

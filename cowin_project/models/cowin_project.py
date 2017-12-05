@@ -295,14 +295,22 @@ class Cowin_project(models.Model):
 
                             current_approval_flow_entity = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
 
-                            # 当前用户所属的员工所属的角色
+                            # 当前虚拟角色所属的员工
+                            employee_ids = current_approval_flow_entity.employee_ids
 
-                            current_user_approval_flow_ids = self.env.user.employee_ids.approval_role_ids
+                            # 需要考虑到是不同的元子工程来配置角色,获得到时虚拟角色和员工之间的M 2 M之间的关系
+                            approval_role_and_employee_ids = meta_sub_project_entity.approval_role_and_employee_ids
+
+                            # 当前员工所对应的角色
+                            approval_role_ids = self.env.user.employee_ids.approval_role_ids
+
+                            # current_user_approval_flow_ids = self.env.user.employee_ids.approval_role_ids
 
                             info = u'待%s审核' % name
 
                             # 接下来要考虑当前用户是否属于某一个虚拟角色
-                            if current_approval_flow_entity in current_user_approval_flow_ids:
+                            # if current_approval_flow_entity in current_user_approval_flow_ids:
+                            if approval_role_and_employee_ids & employee_ids & approval_role_ids:
                                 # 很显然当前用户可以审批
                                 approval_view_or_launch = True
                             else:
@@ -606,4 +614,103 @@ class Cowin_project(models.Model):
 
 
         return self._get_info(meta_project_id=meta_sub_project_id)
+
+
+
+
+
+    def rpc_get_permission_configuration(self):
+        res = []
+
+        for meta_sub_pro_entity in self.meta_sub_project_ids:
+            tmp = {}
+            tmp['meta_sub_pro_id'] = meta_sub_pro_entity.id
+            tmp['foundation_for_rund_financing_info'] = meta_sub_pro_entity.round_financing_and_Foundation_ids[0].round_financing_id.name + '-' + \
+                                meta_sub_pro_entity.round_financing_and_Foundation_ids[0].foundation_id.name
+            tmp['approval_role_infos'] = []
+
+            # 是已虚拟角色的角度来看地问题!!!
+            approval_role_ids = [appro_role_entity_rel.approval_role_id for appro_role_entity_rel in meta_sub_pro_entity.approval_role_and_employee_ids]
+            # employee_ids = [approval_role_id.employee_ids for approval_role_id in approval_role_ids]
+
+            for approval_role_entity in approval_role_ids:
+                tmp2 = {}
+                tmp2['approval_role_id'] = approval_role_entity.id
+                tmp2['approval_role_name'] = approval_role_entity.name
+                tmp2['employee_infos'] = []
+                tmp2['employee_infos'].append({'employee_id': employee_id.id, 'name': employee_id.name}
+                                                        for employee_id in approval_role_entity.employee_ids)
+
+                tmp['approval_role_infos'].append(tmp2)
+
+            res.append(tmp)
+
+
+        return {'meta_sub_project_infos': res}
+
+
+
+    def rpc_save_permission_configuration(self, **kwargs):
+        meta_sub_project_infos = kwargs.get('meta_sub_project_infos')
+
+        for meta_sub_project_entity in self.meta_sub_project_ids:
+
+            for meta_sub_project_info in meta_sub_project_infos:
+                if meta_sub_project_info['meta_sub_pro_id'] == meta_sub_project_entity.id:
+                    self._save_permission_configuration(meta_sub_project_entity, meta_sub_project_info)
+                    break
+
+
+
+
+
+
+
+
+
+
+
+    def _save_permission_configuration(self, meta_sub_project_entity, meta_sub_project_info):
+
+        approval_role_ids = [appro_role_entity_rel.approval_role_id for appro_role_entity_rel in
+                             meta_sub_project_entity.approval_role_and_employee_ids]
+        # employee_ids = [approval_role_id.employee_ids for approval_role_id in approval_role_ids]
+
+        for approval_role_entity in approval_role_ids:
+
+            for approval_role_info in meta_sub_project_info['approval_role_infos']:
+                if approval_role_info['approval_role_id'] == approval_role_entity.id:
+                    current_rel_entities = meta_sub_project_entity.approval_role_and_employee_ids & approval_role_entity.employee_ids
+
+
+                    current_employee_ids = set(rel.employee_id.id for rel in current_rel_entities)
+                    target_employee_ids = set(employee_info['employee_id'] for employee_info in
+                                           approval_role_info['employee_infos'])
+
+
+                    # 1 先删除
+
+                    toremove = current_employee_ids - target_employee_ids
+                    current_employee_ids.browse(toremove).unlink()
+
+
+                    # 2 后添加
+
+                    toadd_ids = target_employee_ids - current_employee_ids
+                    for toadd_id in toadd_ids:
+
+                        current_employee_ids.create({
+                            'meta_sub_project_id': meta_sub_project_entity.id,
+                            'approval_role_id': approval_role_entity.id,
+                            'employee_id': toadd_id,
+                        })
+
+
+
+
+                    break
+
+
+
+
 

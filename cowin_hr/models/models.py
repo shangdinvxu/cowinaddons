@@ -29,7 +29,21 @@ class Res_users_inherit(models.Model):
 class Cowin_common_approval_role_inherit(models.Model):
     _inherit = 'cowin_common.approval_role'
 
-    employee_ids = fields.Many2many('hr.employee', string=u'员工')
+    # meta_sub_project_id = fields.Many2one('cowin_project.meat_sub_project', string=u'元子工程')
+    # employee_ids = fields.Many2many('hr.employee', string=u'员工')
+
+    employee_ids = fields.One2many('cowin_project.meta_sub_appro_role_hr_em', 'approval_role_id', string=u'员工')
+
+
+#
+class Cowin_meta_sub_and_approval_role_and_hr_employee(models.Model):
+    _name = 'cowin_project.meta_sub_appro_role_hr_em'
+    '''
+        这个类进行了一次派生的操作
+    '''
+    # meta_sub_project_id = fields.Many2one('cowin_project.meat_sub_project', string=u'元子工程' , ondelete="cascade")
+    approval_role_id = fields.Many2one('cowin_common.approval_role', string=u'操作角色')
+    employee_id = fields.Many2one('hr.employee', string=u'用户')
 
 
 
@@ -53,7 +67,8 @@ class Cowin_hr(models.Model):
     # 员工与登录角色的关系 理论上 One-2-One关系
     user_id = fields.Many2one('res.users', string=u'登陆用户')
     #
-    approval_role_ids = fields.Many2many('cowin_common.approval_role', string=u'审批角色')
+    # approval_role_ids = fields.Many2many('cowin_common.approval_role', string=u'审批角色')
+    approval_role_ids = fields.Many2many('cowin_project.meta_sub_appro_role_hr_em', 'employee_id', string=u'审批角色')
 
 
     _sql_constraints = [
