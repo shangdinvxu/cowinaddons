@@ -19,7 +19,7 @@
                 </div>
                 <div class="tab-pane fade in active" id="process_data">
                     <div class="process_data_left_wrap">
-                        <div class="process_data_rounds">
+                        <div class="process_data_rounds process_funds_rounds">
                             <div>项目流程</div>
                             <t t-set="active_flag" t-value="1"/>
                             <t t-foreach="result.investment_funds" t-as="item">

@@ -28,8 +28,9 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .manage_team_btn':'manage_team_fun'
         },
         manage_team_fun:function () {
+            var self = this;
             return new Model("cowin_project.cowin_project")
-                    .call("rpc_get_permission_configuration", [[]])
+                    .call("rpc_get_permission_configuration", [[self.id]])
                     .then(function (result) {
                         console.log(result);
                     })
@@ -124,8 +125,6 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                                             });
                                             self.id = parseInt(result.id);
                                             $('.process_data_main_wrap').append(QWeb.render('process_info_right_tmpl', {result: result}));
-                                            $('.process_data_rounds').html('');
-                                            $('.process_data_rounds').append(QWeb.render('process_info_left_tmpl', {result: result,active_flag:sub_id}));
                                         })
                                 })
                             }
@@ -194,8 +193,8 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                                             });
                                             self.id = parseInt(result.id);
                                             $('.process_data_main_wrap').append(QWeb.render('process_info_right_tmpl', {result: result}));
-                                            $('.process_data_rounds').html('');
-                                            $('.process_data_rounds').append(QWeb.render('process_info_left_tmpl', {result: result,active_flag:sub_id}));
+                                            $('.process_funds_rounds').html('');
+                                            $('.process_funds_rounds').append(QWeb.render('process_info_left_tmpl', {result: result,active_flag:sub_id}));
                                         })
                                 })
                             }
