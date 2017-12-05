@@ -44,8 +44,11 @@
     padding: 3px;
 }
 .manage_team_btn{
-    color: #00B0DD;
+    color: #949494;
     cursor: pointer;
+}
+.manage_team_btn_active{
+    color: #00B0DD;
 }
 .manage_team_btn span{
     float: right;
@@ -93,7 +96,7 @@
 
 
 #process_tab_content .process_data_main_wrap .process_data_item_line{
-    padding: 10px 0;
+    padding: 8px 0;
     border-bottom: 1px solid rgba(134,134,134,.3);
     overflow: hidden;
 }
@@ -103,6 +106,8 @@
 }
 #process_tab_content .process_data_main_wrap .header_line .fa{
     margin-right: 4px;
+    font-size: 18px;
+    opacity: .8;
 }
 #process_tab_content .process_data_main_wrap .detail_line{
     padding-left: 20px;
@@ -323,5 +328,100 @@
     height: 35px;
     color: white;
     line-height: 35px;
+    cursor: pointer;
+}
+#process_tab_content .process_data_main_wrap .header_line .copy_this_setting{
+    cursor: pointer;
+    margin-left: 15px;
+    color: rgba(25, 158, 216, 1);
+    font-weight: 500;
+}
+#process_tab_content #process_data .process_data_main_wrap .detail_line .team_role{
+    position: static;
+    font-weight: 500;
+}
+#process_tab_content #process_data .process_data_main_wrap .detail_line .team_role_names_wrap{
+    margin-left: 200px;
+}
+#process_data .process_data_main_wrap .detail_line .team_role_names_wrap .add_new_role{
+     color: rgba(25, 158, 216, 1);
+     cursor: pointer;
+     font-weight: 500;
+}
+
+.add_new_content{
+    position: absolute;
+    left:0;
+    right:0;
+    margin:0 auto;
+    top:5%;
+    width: 500px;
+    z-index: 1040;
+    background-color: white;
+    padding: 20px;
+    color: #868686;
+}
+.add_new_wrap{
+    display: none;
+}
+.add_new_head .fa{
+    float: right;
+}
+.add_new_body{
+    margin-top: 20px;
+}
+.add_new_content .add_new_body .btn-group{
+    width: 100%!important;
+}
+.add_new_foot{
+    padding-top: 15px;
+    text-align: center;
+}
+.add_new_foot>span{
+    display: inline-block;
+    padding: 8px 25px;
+    cursor: pointer;
+}
+.add_new_foot>.confirm_sel{
+    background-color: #199ed7;
+    color: white;
+}
+.add_new_foot>.cancel_sel{
+    border:1px solid #7bb5cd;
+    color: #7bb5cd;
+    padding: 7px 25px;
+}
+#process_tab_content #process_data .team_role_names_wrap>span{
+    position: static;
+    margin-left: 15px;
+}
+.team_role_names_wrap .member_name{
+    display: inline-block;
+    background-color: rgba(242, 242, 242, 1);
+    padding: 3px 10px;
+    text-align: center;
+    font-weight: 500!important;
+}
+.team_role_names_wrap .member_name .fa-close{
+    position: static!important;
+    float: none!important;
+    cursor: pointer;
+}
+.process_data_main_wrap .btns_wrap{
+    text-align: center;
+    margin-top: 50px;
+}
+.process_data_main_wrap .btns_wrap .confirm_project_team_setting{
+    display: inline-block;
+    background-color: rgba(25, 158, 216, 1);
+    color: white;
+    padding: 10px 25px;
+    cursor: pointer;
+}
+.process_data_main_wrap .btns_wrap .cancel_project_team_setting{
+    display: inline-block;
+    background-color: rgba(255, 102, 51, 1);
+    color: white;
+    padding: 10px 25px;
     cursor: pointer;
 }

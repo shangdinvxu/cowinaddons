@@ -25,14 +25,81 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .initiate':'initiate_func',
             'click .view_tache':'view_tache_func',
             'click .process_data_rounds .fund': 'fund_func',
-            'click .manage_team_btn':'manage_team_fun'
+            'click .manage_team_btn':'manage_team_fun',
+            'click .add_new_role':'show_add_new_sels',
+            'click .cancel_sel':'hide_add_new_sels',
+            'click .confirm_sel':'confirm_add_new_sels',
+            'click .confirm_project_team_setting':'confirm_project_team_setting_func'
         },
+        //保存项目管理团队设置
+        confirm_project_team_setting_func:function () {
+            var self = this;
+
+            $('.detail_lines_wrap').each(function (i) {
+                $(this).find('.detail_line').each(function (j) {
+                    $(this).find('.member_name').each(function () {
+                        self.meta_sub_project_infos[i].approval_role_infos[j].employee_infos.push({'employee_id':parseInt($(this).attr('employee_id'))});
+                    })
+                })
+            })
+            console.log(self.meta_sub_project_infos);
+
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_save_permission_configuration", [[self.id]],{meta_sub_project_infos:self.meta_sub_project_infos})
+                    .then(function (result) {
+                        console.log(result);
+
+                    })
+        },
+        //确定员工选择
+        confirm_add_new_sels:function () {
+            var self = this;
+            var sel = [];
+            var render_names = []
+            $('.selectpicker option:selected').each(function () {
+                sel.push(parseInt($(this).attr('data-id')));
+            })
+            console.log(sel);
+            var add_sel_node = $(".detail_lines_wrap[meta_sub_pro_id="+ self.add_meta_sub_pro_id +"] .detail_line[approval_role_id="+ self.add_approval_role_id +"] .team_role_names_wrap");
+            $.each(sel,function (x,n) {
+                $.each(self.employee_infos,function (y,v) {
+                    if(n == v.employee_id){
+                        render_names.push(v)
+                    }
+                })
+            })
+            $(add_sel_node).prepend(QWeb.render('names_tmpl', {result: render_names,is_admin:self.is_admin}));
+            self.hide_add_new_sels();
+        },
+        //显示选择框
+        show_add_new_sels:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            self.add_approval_role_id = $(target).parents('.detail_line').attr('approval_role_id');
+            self.add_meta_sub_pro_id = $(target).parents('.detail_lines_wrap').attr('meta_sub_pro_id');
+            $('.add_new_wrap').show();
+        },
+        //关闭选择框
+        hide_add_new_sels:function () {
+             $('.add_new_wrap').hide();
+        },
+
+        //项目管理团队
         manage_team_fun:function () {
             var self = this;
+            $('.active_fund').html($('.active_fund').text());
+            $('.active_fund').removeClass('active_fund');
+            $('.manage_team_btn').addClass('manage_team_btn_active');
             return new Model("cowin_project.cowin_project")
                     .call("rpc_get_permission_configuration", [[self.id]])
                     .then(function (result) {
                         console.log(result);
+                        self.employee_infos = result.employee_infos;
+                        self.is_admin = result.is_admin;
+                        self.meta_sub_project_infos = result.meta_sub_project_infos;
+                        $('.process_data_main_wrap').html('');
+                        $('.process_data_main_wrap').append(QWeb.render('project_manage_team_tmp', {result: result}))
                     })
         },
         //基金切换
@@ -41,6 +108,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             var target = e.target || e.srcElement;
             $('.active_fund').html($('.active_fund').text());
             $('.active_fund').removeClass('active_fund');
+            $('.manage_team_btn').removeClass('manage_team_btn_active')
             $(target).addClass('active_fund');
             $(target).append("<span class='fa fa-chevron-right'></span>");
             var sub_id = $(target).attr('data-sub-id');
@@ -204,6 +272,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             }
             refresh_page(self,self.tache_arr[tache_index].model_name);
         },
+
         init: function (parent, action) {
             this._super(parent);
             this._super.apply(this, arguments);
