@@ -29,14 +29,20 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .add_new_role':'show_add_new_sels',
             'click .cancel_sel':'hide_add_new_sels',
             'click .confirm_sel':'confirm_add_new_sels',
-            'click .confirm_project_team_setting':'confirm_project_team_setting_func'
+            'click .confirm_project_team_setting':'confirm_project_team_setting_func',
+            'click .member_name .fa':'del_member_func'
+        },
+        del_member_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            $(target).parents('.member_name').remove()
         },
         //保存项目管理团队设置
         confirm_project_team_setting_func:function () {
             var self = this;
-
             $('.detail_lines_wrap').each(function (i) {
                 $(this).find('.detail_line').each(function (j) {
+                    self.meta_sub_project_infos[i].approval_role_infos[j].employee_infos = [];
                     $(this).find('.member_name').each(function () {
                         self.meta_sub_project_infos[i].approval_role_infos[j].employee_infos.push({'employee_id':parseInt($(this).attr('employee_id'))});
                     })
@@ -70,6 +76,13 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             })
             $(add_sel_node).prepend(QWeb.render('names_tmpl', {result: render_names,is_admin:self.is_admin}));
             self.hide_add_new_sels();
+
+            // return new Model("cowin_project.cowin_project")
+            //         .call("rpc_copy_permission_configuration", [[self.id]], {'current_meta_sub_pro_id':26,'copy_meta_sub_pro_id':28})
+            //         .then(function (result) {
+            //             console.log(result);
+            //         })
+
         },
         //显示选择框
         show_add_new_sels:function (e) {
@@ -98,6 +111,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                         self.employee_infos = result.employee_infos;
                         self.is_admin = result.is_admin;
                         self.meta_sub_project_infos = result.meta_sub_project_infos;
+
                         $('.process_data_main_wrap').html('');
                         $('.process_data_main_wrap').append(QWeb.render('project_manage_team_tmp', {result: result}))
                     })
@@ -285,9 +299,13 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             // console.log(action);
             //存储环节
             self.tache_arr = [];
+
+            //项目管理团队是否完善
+            self.perfect = true;
         },
         start: function () {
             var self = this;
+
             return new Model("cowin_project.cowin_project")
                     .call("rpc_get_info", [parseInt(self.id)],{})
                     .then(function (result) {
@@ -298,9 +316,23 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                                 self.tache_arr.push(model)
                             });
                         });
-
                         self.id = parseInt(result.id);
-                        self.$el.append(QWeb.render('project_process_detail_tmp', {result: result}))
+
+                        //项目管理团队 未完善
+                        return new Model("cowin_project.cowin_project")
+                            .call("rpc_get_permission_configuration", [[self.id]])
+                            .then(function (re) {
+                                $.each(re.meta_sub_project_infos,function (i,value) {
+                                    $.each(value.approval_role_infos,function (j,v) {
+                                        if(v.employee_infos.length==0){
+                                            self.perfect = false;
+                                            return false;
+                                        }
+                                    })
+                                })
+                                self.$el.append(QWeb.render('project_process_detail_tmp', {result: result,perfect:self.perfect}))
+                            })
+
                     })
         }
     });

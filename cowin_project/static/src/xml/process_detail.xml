@@ -49,7 +49,12 @@
                         <div class="process_data_rounds">
                             <div>其他</div>
                             <ul style="padding-left:18px">
-                                <li class="manage_team_btn">项目管理团队<span class="fa fa-chevron-right"></span></li>
+                                <li class="manage_team_btn">项目管理团队
+                                    <t t-if="perfect==false">
+                                        <span class="no_perfect">未完善</span>
+                                    </t>
+                                    <span class="fa fa-chevron-right"></span>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -147,13 +152,10 @@
                     <div class="process_data_item_line detail_line" t-att-approval_role_id="obj.approval_role_id">
                         <span class="team_role"><t t-esc="obj.approval_role_name"/></span>
                         <div class="team_role_names_wrap">
-                            <!--<t t-foreach="obj.employee_infos" t-as="names">-->
-                                <!--<span><t t-esc="names."/> </span>-->
-                            <!--</t>-->
 
                             <t t-call="names_tmpl">
-                                <t t-set="result" t-value="obj.employee_infos"></t>
                                 <t t-set="is_admin" t-value="result.is_admin"></t>
+                                <t t-set="result" t-value="obj.employee_infos"></t>
                             </t>
 
                             <t t-if="result.is_admin==true">
@@ -205,7 +207,7 @@
         <t t-foreach="result" t-as="item">
             <span class="member_name" t-att-employee_id="item.employee_id">
                 <t t-esc="item.name"/>
-                <t t-if="is_admin">
+                <t t-if="is_admin==true">
                     <span class="fa fa-close"></span>
                 </t>
             </span>
