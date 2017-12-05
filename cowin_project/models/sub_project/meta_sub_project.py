@@ -127,15 +127,15 @@ class Meat_sub_project(models.Model):
 
 
 
-        # 开启权限配置
-        approval_role_ids = self.env['cowin_common.approval_role'].search([])
-
-        # 默认情况下,没有员工的引用,目的在于方便处理
-        for app_role_entity in approval_role_ids:
-           self.approval_role_and_employee_ids.create({
-               'meta_sub_project_id': self.id,
-               'approval_role_id': app_role_entity.id,
-           })
+        # # 开启权限配置
+        # approval_role_ids = meta_sub_project.env['cowin_common.approval_role'].search([])
+        #
+        # # 默认情况下,没有员工的引用,目的在于方便处理
+        # for app_role_entity in approval_role_ids:
+        #     meta_sub_project.approval_role_and_employee_ids.create({
+        #        'meta_sub_project_id': meta_sub_project.id,
+        #        'approval_role_id': app_role_entity.id,
+        #    })
 
 
         return meta_sub_project

@@ -638,9 +638,11 @@ class Cowin_project(models.Model):
             # 是已虚拟角色的角度来看地问题!!!
             # approval_role_ids = [appro_role_entity_rel.approval_role_id for appro_role_entity_rel in meta_sub_pro_entity.approval_role_and_employee_ids]
 
-            approval_role_ids = meta_sub_pro_entity.approval_role_and_employee_ids.approval_role_id.search([])
+            approval_role_repr = meta_sub_pro_entity.approval_role_and_employee_ids[0] if meta_sub_pro_entity.approval_role_and_employee_ids else meta_sub_pro_entity.approval_role_and_employee_ids
+            approval_role_ids = approval_role_repr.approval_role_id.search([])
 
-            employee_ids = meta_sub_pro_entity.approval_role_and_employee_ids.employee_id.search([])
+            employee_repr = meta_sub_pro_entity.approval_role_and_employee_ids[0] if meta_sub_pro_entity.approval_role_and_employee_ids else meta_sub_pro_entity.approval_role_and_employee_ids
+            employee_ids = employee_repr.employee_id.search([])
             # employee_ids = [approval_role_id.employee_ids for approval_role_id in approval_role_ids]
 
             for approval_role_entity in approval_role_ids:
@@ -649,9 +651,7 @@ class Cowin_project(models.Model):
                 tmp2['approval_role_name'] = approval_role_entity.name
 
                 tmp2['employee_infos'] =[{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
-
-                                                  for approval_employee_rel in approval_role_entity.employee_ids if approval_employee_rel.employee_id.id
-                                               ]
+                                          for approval_employee_rel in approval_role_entity.employee_ids if approval_employee_rel.employee_id.id]
 
                 tmp['approval_role_infos'].append(tmp2)
 
@@ -680,43 +680,33 @@ class Cowin_project(models.Model):
 
     def _save_permission_configuration(self, meta_sub_project_entity, meta_sub_project_info):
 
-        approval_role_ids = [appro_role_entity_rel.approval_role_id for appro_role_entity_rel in
-                             meta_sub_project_entity.approval_role_and_employee_ids]
-        # employee_ids = [approval_role_id.employee_ids for approval_role_id in approval_role_ids]
-
-        for approval_role_entity in approval_role_ids:
-
-            for approval_role_info in meta_sub_project_info['approval_role_infos']:
-                if approval_role_info['approval_role_id'] == approval_role_entity.id:
-                    current_rel_entities = meta_sub_project_entity.approval_role_and_employee_ids & approval_role_entity.employee_ids
 
 
-                    current_employee_ids = set(rel.employee_id.id for rel in current_rel_entities)
-                    target_employee_ids = set(employee_info['employee_id'] for employee_info in
-                                           approval_role_info['employee_infos'])
+        current_rel_entities = meta_sub_project_entity.approval_role_and_employee_ids
 
+        current_rel_info_ids = set((rel.approval_role_id.id, rel.employee_id.id) for rel in current_rel_entities)
+        target_rel_info_ids = set((approval_role_info['approval_role_id'], employee_info['employee_id'])
+                                     for approval_role_info in meta_sub_project_info['approval_role_infos']
+                                     for employee_info in approval_role_info['employee_infos'])
 
-                    # 1 先删除
+        todoremove_ids = current_rel_info_ids - target_rel_info_ids
+        todoadd_ids = target_rel_info_ids - current_rel_info_ids
 
-                    toremove = current_employee_ids - target_employee_ids
-                    current_employee_ids.browse(toremove).unlink()
+        for tuple_id in todoremove_ids:
 
-
-                    # 2 后添加
-
-                    toadd_ids = target_employee_ids - current_employee_ids
-                    for toadd_id in toadd_ids:
-
-                        current_employee_ids.create({
-                            'meta_sub_project_id': meta_sub_project_entity.id,
-                            'approval_role_id': approval_role_entity.id,
-                            'employee_id': toadd_id,
-                        })
-
-
-
-
+            for rel_entity in current_rel_entities:
+                if rel_entity.approval_role_id.id == tuple_id[0] and rel_entity.employee_id.id == tuple_id[1]:
+                    rel_entity.unlink()
                     break
+
+
+        for tuple_id in todoadd_ids:
+            current_rel_entities.create({
+                'meta_sub_project_id': meta_sub_project_entity.id,
+                'approval_role_id': tuple_id[0],
+                'employee_id': tuple_id[1],
+            })
+
 
 
 
