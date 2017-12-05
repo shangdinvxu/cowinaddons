@@ -4,7 +4,6 @@ from odoo.modules.module import get_module_resource
 from odoo import tools
 import copy
 from odoo import SUPERUSER_ID
-
 class Cowin_project(models.Model):
     _name = 'cowin_project.cowin_project'
 
@@ -618,19 +617,28 @@ class Cowin_project(models.Model):
 
 
 
-
+    # 获取权限配置数据
     def rpc_get_permission_configuration(self):
         res = []
 
         for meta_sub_pro_entity in self.meta_sub_project_ids:
             tmp = {}
             tmp['meta_sub_pro_id'] = meta_sub_pro_entity.id
-            tmp['foundation_for_rund_financing_info'] = meta_sub_pro_entity.round_financing_and_Foundation_ids[0].round_financing_id.name + '-' + \
-                                meta_sub_pro_entity.round_financing_and_Foundation_ids[0].foundation_id.name
+
+            name1 = meta_sub_pro_entity.round_financing_and_Foundation_ids[0].round_financing_id.name
+            name1 = name1 if name1 else u'暂无轮次'
+
+            name2 = meta_sub_pro_entity.round_financing_and_Foundation_ids[0].foundation_id.name
+            name2 = name2 if name2 else u'暂无基金'
+
+            tmp['foundation_for_rund_financing_info'] = name1 + '-' + name2
+
             tmp['approval_role_infos'] = []
 
             # 是已虚拟角色的角度来看地问题!!!
-            approval_role_ids = [appro_role_entity_rel.approval_role_id for appro_role_entity_rel in meta_sub_pro_entity.approval_role_and_employee_ids]
+            # approval_role_ids = [appro_role_entity_rel.approval_role_id for appro_role_entity_rel in meta_sub_pro_entity.approval_role_and_employee_ids]
+
+            approval_role_ids = meta_sub_pro_entity.approval_role_and_employee_ids.approval_role_id.search([])
             # employee_ids = [approval_role_id.employee_ids for approval_role_id in approval_role_ids]
 
             for approval_role_entity in approval_role_ids:
@@ -638,18 +646,22 @@ class Cowin_project(models.Model):
                 tmp2['approval_role_id'] = approval_role_entity.id
                 tmp2['approval_role_name'] = approval_role_entity.name
                 tmp2['employee_infos'] = []
-                tmp2['employee_infos'].append({'employee_id': employee_id.id, 'name': employee_id.name}
-                                                        for employee_id in approval_role_entity.employee_ids)
+                tmp2['employee_infos'].append([{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
+                                                        for approval_employee_rel in approval_role_entity.employee_ids if approval_employee_rel.employee_id.id
+                                               ])
 
                 tmp['approval_role_infos'].append(tmp2)
 
             res.append(tmp)
 
 
-        return {'meta_sub_project_infos': res}
+        return {
+            'meta_sub_project_infos': res,
+            'is_admin': self.env.user.id == SUPERUSER_ID
+        }
 
 
-
+    # 保存权限配置数据
     def rpc_save_permission_configuration(self, **kwargs):
         meta_sub_project_infos = kwargs.get('meta_sub_project_infos')
 
