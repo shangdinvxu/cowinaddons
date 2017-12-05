@@ -128,7 +128,7 @@ class Meat_sub_project(models.Model):
 
 
         # 开启权限配置
-        approval_role_ids = self.env[''].search([])
+        approval_role_ids = self.env['cowin_common.approval_role'].search([])
 
         # 默认情况下,没有员工的引用,目的在于方便处理
         for app_role_entity in approval_role_ids:
