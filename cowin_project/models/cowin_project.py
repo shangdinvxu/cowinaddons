@@ -639,6 +639,8 @@ class Cowin_project(models.Model):
             # approval_role_ids = [appro_role_entity_rel.approval_role_id for appro_role_entity_rel in meta_sub_pro_entity.approval_role_and_employee_ids]
 
             approval_role_ids = meta_sub_pro_entity.approval_role_and_employee_ids.approval_role_id.search([])
+
+            employee_ids = meta_sub_pro_entity.approval_role_and_employee_ids.employee_id.search([])
             # employee_ids = [approval_role_id.employee_ids for approval_role_id in approval_role_ids]
 
             for approval_role_entity in approval_role_ids:
@@ -647,7 +649,7 @@ class Cowin_project(models.Model):
                 tmp2['approval_role_name'] = approval_role_entity.name
                 tmp2['employee_infos'] = []
                 tmp2['employee_infos'].append([{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
-                                                        for approval_employee_rel in approval_role_entity.employee_ids if approval_employee_rel.employee_id.id
+                                                  for approval_employee_rel in approval_role_entity.employee_ids if approval_employee_rel.employee_id.id
                                                ])
 
                 tmp['approval_role_infos'].append(tmp2)
@@ -657,7 +659,8 @@ class Cowin_project(models.Model):
 
         return {
             'meta_sub_project_infos': res,
-            'is_admin': self.env.user.id == SUPERUSER_ID
+            'is_admin': self.env.user.id == SUPERUSER_ID,
+            'employee_infos': [{'employee_id': employee_entity.id, 'name': employee_entity.name_related} for employee_entity in employee_ids]
         }
 
 
@@ -671,14 +674,6 @@ class Cowin_project(models.Model):
                 if meta_sub_project_info['meta_sub_pro_id'] == meta_sub_project_entity.id:
                     self._save_permission_configuration(meta_sub_project_entity, meta_sub_project_info)
                     break
-
-
-
-
-
-
-
-
 
 
 
