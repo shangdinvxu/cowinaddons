@@ -414,6 +414,7 @@ class Cowin_project(models.Model):
                 'attachment_note': self.attachment_note,
                 'investment_funds': self.get_investment_funds(),
                 'process': self.process_settings2(meta_project_id),
+                'permission_configuration': self.rpc_get_permission_configuration(),
                 }
 
 
