@@ -171,7 +171,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
                             });
                         });
                         self.id = parseInt(result.id);
-                        $('.process_data_main_wrap').append(QWeb.render('process_info_right_tmpl', {result: result}))
+                        $('.process_data_main_wrap').append(QWeb.render('approval_info_right_tmpl', {result: result}))
                     })
         },
 
