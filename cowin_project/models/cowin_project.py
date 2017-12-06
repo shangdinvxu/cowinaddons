@@ -662,6 +662,10 @@ class Cowin_project(models.Model):
             res.append(tmp)
 
 
+
+
+
+
         return {
             'meta_sub_project_infos': res,
             'is_admin': self.env.user.id == SUPERUSER_ID,
@@ -711,6 +715,32 @@ class Cowin_project(models.Model):
                 'employee_id': tuple_id[1],
             })
 
+
+    # 复制已有的配置,所有的主工程下面的子工程
+
+    def rpc_copy_all_permission_configuration(self):
+        project_entities = self.search([])
+        res = []
+        for project_entity in project_entities:
+            for meta_pro_entity in project_entity.meta_sub_project_ids:
+                round_financing_and_Foundation_entity = meta_pro_entity.round_financing_and_Foundation_ids[0]
+                round_financing_name = round_financing_and_Foundation_entity.round_financing_id.name if round_financing_and_Foundation_entity.round_financing_id \
+                    else u'暂无轮次'
+
+                foundation_name = round_financing_and_Foundation_entity.foundation_id.name if round_financing_and_Foundation_entity.foundation_id \
+                    else u'暂无基金'
+
+                sub_project_entity = meta_pro_entity.sub_project_ids[0]
+
+                sub_project_name = sub_project_entity.name if sub_project_entity else u'暂无子工程'
+                res.append({
+                    'meta_sub_project_id': meta_pro_entity.id,
+                    'sub_project_name': sub_project_name,
+                    'round_financing_name': round_financing_name,
+                    'foundation_name': foundation_name,
+                })
+
+        return res
 
 
 
