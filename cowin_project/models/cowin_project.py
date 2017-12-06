@@ -730,7 +730,7 @@ class Cowin_project(models.Model):
                 foundation_name = round_financing_and_Foundation_entity.foundation_id.name if round_financing_and_Foundation_entity.foundation_id \
                     else u'暂无基金'
 
-                sub_project_entity = meta_pro_entity.sub_project_ids[0]
+                sub_project_entity = meta_pro_entity.sub_project_ids
 
                 sub_project_name = sub_project_entity.name if sub_project_entity else u'暂无子工程'
                 res.append({

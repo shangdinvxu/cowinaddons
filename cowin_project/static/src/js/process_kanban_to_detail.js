@@ -30,8 +30,40 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .cancel_sel':'hide_add_new_sels',
             'click .confirm_sel':'confirm_add_new_sels',
             'click .confirm_project_team_setting':'confirm_project_team_setting_func',
-            'click .member_name .fa':'del_member_func'
+            'click .member_name .fa':'del_member_func',
+            'click .copy_this_setting':'get_all_settings',
+            'click .confirm_copy':'confirm_copy_func'
         },
+        //确定复制配置
+        confirm_copy_func:function () {
+            var self = this;
+            $('.copy_sel option:selected').each(function () {
+                self.copy_meta_sub_pro_id = parseInt($(this).attr('data-id'));
+            })
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_copy_permission_configuration",[[self.id]],{current_meta_sub_pro_id:self.current_meta_sub_pro_id,copy_meta_sub_pro_id:self.copy_meta_sub_pro_id})
+                    .then(function (result) {
+                        console.log(result);
+                        $('.process_data_main_wrap').html('');
+                        $('.process_data_main_wrap').append(QWeb.render('project_manage_team_tmp', {result: result}))
+                    })
+        },
+        //复制已有模板
+        get_all_settings:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            self.current_meta_sub_pro_id = parseInt($(target).parents('.header_line').attr('meta_sub_pro_id'));
+            var self = this;
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_copy_all_permission_configuration",[[self.id]])
+                    .then(function (result) {
+                        console.log(result);
+                        $('.process_data_main_wrap').append(QWeb.render('copy_settings_tmpl', {result: result}));
+                        $('.copy_settings_tmpl .add_new_content').show()
+                    })
+        },
+        //删除
         del_member_func:function (e) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
@@ -77,12 +109,6 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             $(add_sel_node).prepend(QWeb.render('names_tmpl', {result: render_names,is_admin:self.is_admin}));
             self.hide_add_new_sels();
 
-            // return new Model("cowin_project.cowin_project")
-            //         .call("rpc_copy_permission_configuration", [[self.id]], {'current_meta_sub_pro_id':26,'copy_meta_sub_pro_id':28})
-            //         .then(function (result) {
-            //             console.log(result);
-            //         })
-
         },
         //显示选择框
         show_add_new_sels:function (e) {
@@ -96,6 +122,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
         //关闭选择框
         hide_add_new_sels:function () {
              $('.add_new_wrap').hide();
+             $('.copy_wrap').hide();
         },
 
         //项目管理团队

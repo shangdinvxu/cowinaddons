@@ -438,3 +438,7 @@
     padding: 2px 5px;
     background-color: red;
 }
+.confirm_copy{
+    background-color: #199ed7;
+    color: white;
+}

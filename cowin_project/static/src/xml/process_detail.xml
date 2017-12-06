@@ -181,7 +181,7 @@
             <div class="add_new_content">
                 <div class="add_new_head">
                     请选择员工
-                    <span class="fa fa-close"></span>
+                    <!--<span class="fa fa-close"></span>-->
                 </div>
                 <div class="add_new_body">
                     <select class="selectpicker bla bla bli" multiple="true" data-live-search="true">
@@ -212,5 +212,37 @@
                 </t>
             </span>
         </t>
+    </t>
+
+    <t t-name="copy_settings_tmpl">
+        <div class="copy_wrap">
+            <div class="modal-backdrop  in"></div>
+            <div class="add_new_content">
+                <div class="add_new_head">
+                    请选择要复制的项目管理团队
+                    <!--<span class="fa fa-close"></span>-->
+                </div>
+                <div class="add_new_body">
+                    <select class="selectpicker bla bla bli copy_sel" data-live-search="true">
+                        <t t-foreach="result" t-as="item">
+                            <option t-att-data-id="item.meta_sub_project_id">
+                                <span><t t-esc="item.sub_project_name"/> </span>
+                                <span><t t-esc="item.round_financing_name"/> </span>
+                                <span><t t-esc="item.foundation_name"/> </span>
+                            </option>
+                        </t>
+                    </select>
+                    <script>
+                        $('.selectpicker').selectpicker({
+                            'selectedText': 'cat'
+                        });
+                    </script>
+                </div>
+                <div class="add_new_foot">
+                    <span class="confirm_copy">确定</span>
+                    <span class="cancel_sel">取消</span>
+                </div>
+            </div>
+        </div>
     </t>
 </templates>
