@@ -59,7 +59,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     .call("rpc_copy_all_permission_configuration",[[self.id]])
                     .then(function (result) {
                         console.log(result);
-                        $('.process_data_main_wrap').append(QWeb.render('copy_settings_tmpl', {result: result}));
+                        $('.process_data_main_wrap').append(QWeb.render('copy_settings_tmpl', {result: result,current:self.current_meta_sub_pro_id}));
                         $('.copy_settings_tmpl .add_new_content').show()
                     })
         },
@@ -86,6 +86,15 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     .call("rpc_save_permission_configuration", [[self.id]],{meta_sub_project_infos:self.meta_sub_project_infos})
                     .then(function (result) {
                         console.log(result);
+                        if(result.default_is_full){
+                            if($('.no_perfect').length>0){
+                                $('.no_perfect').remove()
+                            }
+                        }else {
+                            if($('.no_perfect').length==0){
+                                $("<span class='no_perfect'>未完善</span>").insertBefore($('.manage_team_btn .fa'));
+                            }
+                        }
 
                     })
         },
@@ -97,7 +106,6 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             $('.selectpicker option:selected').each(function () {
                 sel.push(parseInt($(this).attr('data-id')));
             })
-            console.log(sel);
             var add_sel_node = $(".detail_lines_wrap[meta_sub_pro_id="+ self.add_meta_sub_pro_id +"] .detail_line[approval_role_id="+ self.add_approval_role_id +"] .team_role_names_wrap");
             $.each(sel,function (x,n) {
                 $.each(self.employee_infos,function (y,v) {
@@ -345,20 +353,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                         });
                         self.id = parseInt(result.id);
 
-                        //项目管理团队 未完善
-                        return new Model("cowin_project.cowin_project")
-                            .call("rpc_get_permission_configuration", [[self.id]])
-                            .then(function (re) {
-                                $.each(re.meta_sub_project_infos,function (i,value) {
-                                    $.each(value.approval_role_infos,function (j,v) {
-                                        if(v.employee_infos.length==0){
-                                            self.perfect = false;
-                                            return false;
-                                        }
-                                    })
-                                })
-                                self.$el.append(QWeb.render('project_process_detail_tmp', {result: result,perfect:self.perfect}))
-                            })
+                        self.$el.append(QWeb.render('project_process_detail_tmp', {result: result}))
 
                     })
         }

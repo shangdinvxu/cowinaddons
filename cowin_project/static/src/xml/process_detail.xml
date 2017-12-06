@@ -50,7 +50,7 @@
                             <div>其他</div>
                             <ul style="padding-left:18px">
                                 <li class="manage_team_btn">项目管理团队
-                                    <t t-if="perfect==false">
+                                    <t t-if="result.permission_configuration.default_is_full == false">
                                         <span class="no_perfect">未完善</span>
                                     </t>
                                     <span class="fa fa-chevron-right"></span>
@@ -225,11 +225,14 @@
                 <div class="add_new_body">
                     <select class="selectpicker bla bla bli copy_sel" data-live-search="true">
                         <t t-foreach="result" t-as="item">
-                            <option t-att-data-id="item.meta_sub_project_id">
-                                <span><t t-esc="item.sub_project_name"/> </span>
-                                <span><t t-esc="item.round_financing_name"/> </span>
-                                <span><t t-esc="item.foundation_name"/> </span>
-                            </option>
+                            <t t-if="item.meta_sub_project_id != current">
+                                <option t-att-data-id="item.meta_sub_project_id">
+                                    <span><t t-esc="item.sub_project_name"/> </span>
+                                    <span><t t-esc="item.round_financing_name"/> </span>
+                                    <span><t t-esc="item.foundation_name"/> </span>
+                                </option>
+                            </t>
+
                         </t>
                     </select>
                     <script>
