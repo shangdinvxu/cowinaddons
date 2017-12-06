@@ -347,6 +347,7 @@
      color: rgba(25, 158, 216, 1);
      cursor: pointer;
      font-weight: 500;
+    margin-top: 4px;
 }
 
 .add_new_content{
@@ -424,4 +425,16 @@
     color: white;
     padding: 10px 25px;
     cursor: pointer;
+}
+#process_data .detail_lines_wrap .team_role{
+    margin-top: 4px!important;
+}
+.no_perfect{
+    float: none!important;
+    color: white!important;
+    border-radius: 12px;
+    display: inline-block;
+    margin-top: 0px!important;
+    padding: 2px 5px;
+    background-color: red;
 }
