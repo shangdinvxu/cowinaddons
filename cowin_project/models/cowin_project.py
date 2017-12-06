@@ -645,6 +645,8 @@ class Cowin_project(models.Model):
             employee_ids = employee_repr.employee_id.search([])
             # employee_ids = [approval_role_id.employee_ids for approval_role_id in approval_role_ids]
 
+            default_is_full = True
+
             for approval_role_entity in approval_role_ids:
                 tmp2 = {}
                 tmp2['approval_role_id'] = approval_role_entity.id
@@ -657,7 +659,13 @@ class Cowin_project(models.Model):
                     for approval_employee_rel in meta_sub_pro_entity.approval_role_and_employee_ids if approval_employee_rel.approval_role_id == approval_role_entity]
 
 
+                if not tmp2['employee_infos']:
+                    default_is_full = False
+
+
                 tmp['approval_role_infos'].append(tmp2)
+
+            tmp['default_is_full'] = default_is_full
 
             res.append(tmp)
 
