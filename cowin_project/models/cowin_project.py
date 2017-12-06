@@ -684,6 +684,8 @@ class Cowin_project(models.Model):
                     self._save_permission_configuration(meta_sub_project_entity, meta_sub_project_info)
                     break
 
+        return self.rpc_get_permission_configuration()
+
 
 
     def _save_permission_configuration(self, meta_sub_project_entity, meta_sub_project_info):
