@@ -620,6 +620,7 @@ class Cowin_project(models.Model):
     # 获取权限配置数据
     def rpc_get_permission_configuration(self):
         res = []
+        default_is_full = True
 
         for meta_sub_pro_entity in self.meta_sub_project_ids:
             tmp = {}
@@ -667,6 +668,8 @@ class Cowin_project(models.Model):
 
             tmp['default_is_full'] = default_is_full
 
+            default_is_full &= tmp['default_is_full']
+
             res.append(tmp)
 
 
@@ -676,6 +679,7 @@ class Cowin_project(models.Model):
 
         return {
             'meta_sub_project_infos': res,
+            'default_is_full': default_is_full,
             'is_admin': self.env.user.id == SUPERUSER_ID,
             'employee_infos': [{'employee_id': employee_entity.id, 'name': employee_entity.name_related} for employee_entity in employee_ids]
         }
