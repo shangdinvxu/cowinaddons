@@ -32,7 +32,23 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .confirm_project_team_setting':'confirm_project_team_setting_func',
             'click .member_name .fa':'del_member_func',
             'click .copy_this_setting':'get_all_settings',
-            'click .confirm_copy':'confirm_copy_func'
+            'click .confirm_copy':'confirm_copy_func',
+            'click .button_wrap .add_new_tache':'add_new_tache_func'
+        },
+        add_new_tache_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            var tache_index = $(target).parents('.detail_line').attr('tache-index');
+            Dialog.confirm(this, _t("确定增加这条环节?"), {
+                confirm_callback: function() {
+                    return new Model("cowin_project.cowin_project")
+                        .call("new_sub_tache",[[self.id]],{'sub_tache_id':self.tache_arr[parseInt(tache_index)],'meta_sub_project_id':self.tache_arr[parseInt(tache_index)].meta_sub_project_id})
+                        .then(function (result) {
+                            console.log(result);
+                        })
+                },
+            });
         },
         //确定复制配置
         confirm_copy_func:function () {
