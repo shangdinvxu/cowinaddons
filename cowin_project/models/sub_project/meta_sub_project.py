@@ -122,21 +122,18 @@ class Meat_sub_project(models.Model):
 
 
 
+        # 要写入依赖的顺序 order , 目前只能在这个地方进行数据的写入
+        meta_sub_project.sub_tache_ids.set_depency_order_by_sub_tache()
 
 
 
-
-
-        # # 开启权限配置
-        # approval_role_ids = meta_sub_project.env['cowin_common.approval_role'].search([])
-        #
-        # # 默认情况下,没有员工的引用,目的在于方便处理
-        # for app_role_entity in approval_role_ids:
-        #     meta_sub_project.approval_role_and_employee_ids.create({
-        #        'meta_sub_project_id': meta_sub_project.id,
-        #        'approval_role_id': app_role_entity.id,
-        #    })
-
+        # 子环节与子审批流之间构建一对一的联系 依赖, 方便后面的数据做处理
+        for sub_tache_entity in meta_sub_project.sub_tache_ids:
+            for sub_approval_entity in meta_sub_project.sub_approval_flow_settings_ids:
+                if sub_tache_entity.tache_id == sub_approval_entity.approval_flow_settings_id.tache_id:
+                    sub_approval_entity.write({
+                        'sub_project_tache_id': sub_tache_entity.id,
+                    })
 
         return meta_sub_project
 
@@ -169,4 +166,4 @@ class Meat_sub_project(models.Model):
     # # 得到所有的子环节信息
     def get_sub_taches(self):
 
-        return self.sub_tache_ids
+        return self.sub_tache_ids.sorted('order')

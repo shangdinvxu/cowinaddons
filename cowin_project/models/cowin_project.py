@@ -2,8 +2,10 @@
 from odoo import models, fields, api
 from odoo.modules.module import get_module_resource
 from odoo import tools
-import copy
+from odoo.exceptions import UserError
 from odoo import SUPERUSER_ID
+
+
 class Cowin_project(models.Model):
     _name = 'cowin_project.cowin_project'
 
@@ -233,6 +235,8 @@ class Cowin_project(models.Model):
         tache_infos = [tache_info for stage in process_info['stage_ids']
                   for tache_info in stage['tache_ids']]
 
+        # 处理由于前端界面 新增操作而产生的新的子环节的数据
+
 
         # 处理主工程有关的主环节信息
         for tache_info in tache_infos:
@@ -245,25 +249,49 @@ class Cowin_project(models.Model):
                 tache_info['approval_status']['sub_approval_flow_settings_id'] = -1
 
 
-
         # 处理元子工程对应的子环节的信息
-        for sub_tache_entity in sub_tache_entities:
-            for tache_info in tache_infos:
-                if tache_info['id'] == sub_tache_entity.tache_id.id:
+        # 1, 装配阶段信息
+
+        stages = []
+        for stage in process_info['stage_ids']:
+            res = True
+            for tache_info in stage['tache_ids']:
+                if tache_info['model_name'] == self._name:
+                    res = False
+
+            if res:
+                stages.append(stage)
+
+
+        for stage in stages:
+            # 从新渲染装配
+            stage['tache_ids'] = []
+
+            for sub_tache_entity in sub_tache_entities:
+                if sub_tache_entity.tache_id.stage_id.id == stage['id']:
+                    tache_info = {}
+                    tache_info['id'] = sub_tache_entity.tache_id.id
                     tache_info['sub_tache_id'] = sub_tache_entity.id
 
-                    # sub_approval_flow_entities_for_meta_pro = meta_sub_project_entity.sub_approval_flow_settings_ids
-                    # sub_approval_flow_entities_for_taches = sub_tache_entity.tache_id.approval_flow_settings_ids.sub_approval_flow_settings_ids
-                    #
-
-                    # tache_info['sub_approval_flow_settings_id'] = sub_approval_flow_entities_for_meta_pro & sub_approval_flow_entities_for_taches
+                    tache_info['name'] = sub_tache_entity.tache_id.name
+                    tache_info['parent_id'] = sub_tache_entity.parent_id.name
+                    # parent_id 就是解锁条件
+                    tache_info['is_unlocked'] = sub_tache_entity.is_unlocked
+                    # 需要考虑到环节的父节点可能没有
+                    # tmp_tache['is_unlocked'] = True if not tache.parent_id else tache.parent_id.is_unlocked
+                    # tmp_tache['is_unlocked'] = tache.is_unlocked
+                    tache_info['description'] = sub_tache_entity.tache_id.description
+                    tache_info['state'] = sub_tache_entity.tache_id.state
+                    tache_info['once_or_more'] = sub_tache_entity.tache_id.once_or_more
+                    tache_info['view_or_launch'] = sub_tache_entity.view_or_launch
                     tache_info['res_id'] = sub_tache_entity.res_id
 
-                    tache_info['is_unlocked'] = sub_tache_entity.is_unlocked
-                    tache_info['view_or_launch'] = sub_tache_entity.view_or_launch
+                    # tmp_tache['res_id'] = tache.res_id
+                    tache_info['model_name'] = sub_tache_entity.tache_id.model_id.model_name
+                    tache_info['stage_id'] = sub_tache_entity.tache_id.stage_id.id
+
                     tache_info['meta_sub_project_id'] = meta_sub_project_entity.id
                     tache_info['sub_project_id'] = meta_sub_project_entity.sub_project_ids.id
-
 
                     # 当前的子审批流实体
                     target_sub_approval_flow_entity = sub_tache_entity.tache_id.approval_flow_settings_ids.sub_approval_flow_settings_ids & \
@@ -316,7 +344,6 @@ class Cowin_project(models.Model):
                                 # 很显然不需要去审批,因为没有这个
                                 approval_view_or_launch = False
 
-
                             if self.env.user.id == SUPERUSER_ID:
                                 approval_view_or_launch = True
 
@@ -337,20 +364,20 @@ class Cowin_project(models.Model):
                     tache_info['approval_status']['status_name'] = info
                     tache_info['approval_status']['approval_view_or_launch'] = approval_view_or_launch
 
-
                     #  1  <--------------- 需要传递的上下文信息,共享的基金轮次实体
                     tache_info['round_financing_and_foundation'] = {}
 
-                    tache_info['round_financing_and_foundation']['round_financing_and_foundation_id'] = meta_sub_project_entity.\
-                                                         round_financing_and_Foundation_ids[0].id
+                    tache_info['round_financing_and_foundation']['round_financing_and_foundation_id'] = \
+                    meta_sub_project_entity. \
+                        round_financing_and_Foundation_ids[0].id
 
-                    tache_info['round_financing_and_foundation']['foundation_id'] = meta_sub_project_entity.\
-                                                         round_financing_and_Foundation_ids[0].foundation_id.id
+                    tache_info['round_financing_and_foundation']['foundation_id'] = meta_sub_project_entity. \
+                        round_financing_and_Foundation_ids[0].foundation_id.id
 
                     tache_info['round_financing_and_foundation']['round_financing_id'] = meta_sub_project_entity. \
                         round_financing_and_Foundation_ids[0].round_financing_id.id
 
-                    tache_info['round_financing_and_foundation']['the_amount_of_investment'] =  meta_sub_project_entity. \
+                    tache_info['round_financing_and_foundation']['the_amount_of_investment'] = meta_sub_project_entity. \
                         round_financing_and_Foundation_ids[0].the_amount_of_investment
 
                     tache_info['round_financing_and_foundation']['ownership_interest'] = meta_sub_project_entity. \
@@ -367,20 +394,151 @@ class Cowin_project(models.Model):
                     tache_info['sub_project']['sub_project_id'] = meta_sub_project_entity.sub_project_ids.id
                     tache_info['sub_project']['name'] = meta_sub_project_entity.sub_project_ids.name
                     tache_info['sub_project']['project_number'] = meta_sub_project_entity.sub_project_ids.project_number
-                    tache_info['sub_project']['invest_manager_id'] = meta_sub_project_entity.sub_project_ids.invest_manager_id.id
+                    tache_info['sub_project'][
+                        'invest_manager_id'] = meta_sub_project_entity.sub_project_ids.invest_manager_id.id
 
 
 
+                    stage['tache_ids'].append(tache_info)
+
+        return process_info['stage_ids']
 
 
-                    break
+        # 处理元子工程对应的子环节的信息
+        # for sub_tache_entity in sub_tache_entities:
+        #     for tache_info in tache_infos:
+        #         if tache_info['id'] == sub_tache_entity.tache_id.id:
+        #             tache_info['sub_tache_id'] = sub_tache_entity.id
+        #
+        #             # sub_approval_flow_entities_for_meta_pro = meta_sub_project_entity.sub_approval_flow_settings_ids
+        #             # sub_approval_flow_entities_for_taches = sub_tache_entity.tache_id.approval_flow_settings_ids.sub_approval_flow_settings_ids
+        #             #
+        #
+        #             # tache_info['sub_approval_flow_settings_id'] = sub_approval_flow_entities_for_meta_pro & sub_approval_flow_entities_for_taches
+        #             tache_info['res_id'] = sub_tache_entity.res_id
+        #
+        #             tache_info['is_unlocked'] = sub_tache_entity.is_unlocked
+        #             tache_info['view_or_launch'] = sub_tache_entity.view_or_launch
+        #             tache_info['meta_sub_project_id'] = meta_sub_project_entity.id
+        #             tache_info['sub_project_id'] = meta_sub_project_entity.sub_project_ids.id
+        #
+        #
+        #             # 当前的子审批流实体
+        #             target_sub_approval_flow_entity = sub_tache_entity.tache_id.approval_flow_settings_ids.sub_approval_flow_settings_ids & \
+        #                                               meta_sub_project_entity.sub_approval_flow_settings_ids
+        #
+        #             tache_info['approval_status'] = {}
+        #             tache_info['approval_status']['status_id'] = target_sub_approval_flow_entity.status
+        #             tache_info['approval_status']['sub_approval_flow_settings_id'] = target_sub_approval_flow_entity.id
+        #             status = target_sub_approval_flow_entity.status
+        #             info = ''
+        #
+        #             # True 代表着审核状态
+        #             approval_view_or_launch = None
+        #             if status == 1:
+        #                 # 未开始审核
+        #                 info = u'暂无'
+        #             elif status == 2:
+        #                 # 审核中...
+        #                 # 找出当前的审核人
+        #
+        #
+        #                 # 考虑到可能改子环节还没有开始发起,所以也是直接回到 '暂无状态'
+        #                 if not sub_tache_entity.view_or_launch:
+        #                     info = u'暂无'
+        #                 else:
+        #                     # 当前的虚拟角色名
+        #                     name = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id.name
+        #
+        #                     current_approval_flow_entity = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
+        #
+        #                     # 当前虚拟角色所属的员工
+        #                     employee_ids = current_approval_flow_entity.employee_ids
+        #
+        #                     # 需要考虑到是不同的元子工程来配置角色,获得到时虚拟角色和员工之间的M 2 M之间的关系
+        #                     approval_role_and_employee_ids = meta_sub_project_entity.approval_role_and_employee_ids
+        #
+        #                     # 当前员工所对应的角色
+        #                     approval_role_ids = self.env.user.employee_ids.approval_role_ids
+        #
+        #                     # current_user_approval_flow_ids = self.env.user.employee_ids.approval_role_ids
+        #
+        #                     info = u'待%s审核' % name
+        #
+        #                     # 接下来要考虑当前用户是否属于某一个虚拟角色
+        #                     # if current_approval_flow_entity in current_user_approval_flow_ids:
+        #                     if approval_role_and_employee_ids & employee_ids & approval_role_ids:
+        #                         # 很显然当前用户可以审批
+        #                         approval_view_or_launch = True
+        #                     else:
+        #                         # 很显然不需要去审批,因为没有这个
+        #                         approval_view_or_launch = False
+        #
+        #
+        #                     if self.env.user.id == SUPERUSER_ID:
+        #                         approval_view_or_launch = True
+        #
+        #             elif status == 3:
+        #                 # 暂缓
+        #                 info = u'暂缓'
+        #             elif status == 4:
+        #                 # 同意
+        #                 info = u'同意'
+        #                 approval_view_or_launch = False
+        #             elif status == 5:
+        #                 # 拒绝
+        #                 info = u'拒绝'
+        #                 approval_view_or_launch = False
+        #             else:
+        #                 pass
+        #
+        #             tache_info['approval_status']['status_name'] = info
+        #             tache_info['approval_status']['approval_view_or_launch'] = approval_view_or_launch
+        #
+        #
+        #             #  1  <--------------- 需要传递的上下文信息,共享的基金轮次实体
+        #             tache_info['round_financing_and_foundation'] = {}
+        #
+        #             tache_info['round_financing_and_foundation']['round_financing_and_foundation_id'] = meta_sub_project_entity.\
+        #                                                  round_financing_and_Foundation_ids[0].id
+        #
+        #             tache_info['round_financing_and_foundation']['foundation_id'] = meta_sub_project_entity.\
+        #                                                  round_financing_and_Foundation_ids[0].foundation_id.id
+        #
+        #             tache_info['round_financing_and_foundation']['round_financing_id'] = meta_sub_project_entity. \
+        #                 round_financing_and_Foundation_ids[0].round_financing_id.id
+        #
+        #             tache_info['round_financing_and_foundation']['the_amount_of_investment'] =  meta_sub_project_entity. \
+        #                 round_financing_and_Foundation_ids[0].the_amount_of_investment
+        #
+        #             tache_info['round_financing_and_foundation']['ownership_interest'] = meta_sub_project_entity. \
+        #                 round_financing_and_Foundation_ids[0].ownership_interest
+        #
+        #             tache_info['round_financing_and_foundation']['the_amount_of_financing'] = meta_sub_project_entity. \
+        #                 round_financing_and_Foundation_ids[0].the_amount_of_financing
+        #
+        #             # -------------->
+        #
+        #             # 2 ------->   共享的子工程实例  可能为空,不过odoo特性很良好
+        #             # 运用odoo的特性可以非常好的使用空实体的问题
+        #             tache_info['sub_project'] = {}
+        #             tache_info['sub_project']['sub_project_id'] = meta_sub_project_entity.sub_project_ids.id
+        #             tache_info['sub_project']['name'] = meta_sub_project_entity.sub_project_ids.name
+        #             tache_info['sub_project']['project_number'] = meta_sub_project_entity.sub_project_ids.project_number
+        #             tache_info['sub_project']['invest_manager_id'] = meta_sub_project_entity.sub_project_ids.invest_manager_id.id
+        #
+        #
+        #
+        #
+        #
+        #             break
 
 
 
         # 这个角度来处理审批条件是否成立,
 
 
-        return process_info['stage_ids']
+        # return process_info['stage_ids']
 
 
 
@@ -484,51 +642,56 @@ class Cowin_project(models.Model):
         return self._get_info(**kwargs)
 
 
-    # 查看或者发起
-    def view_or_launch(self, **kwargs):
-        '''
-            总体分为两大类: 查看  发起
-            字典中的key view_or_launch
-                view_or_launch: True    查看
-                view_or_launch: False   发起
+    # 新增子环节
+    def new_sub_tache(self, **kwargs):
 
-            tache_id : 环节id
+        meta_sub_project_id = kwargs['meta_sub_project_id']
+        current_sub_tache_id = kwargs['sub_tache_id']
 
-        :param kwargs:
-        :return:
-        '''
+        meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
+        sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(current_sub_tache_id)
 
-        ''' 
-            参数1 : sub_project   轮次基金所在的子工程
-            参数2 : view_or_launch   发起或者查看
-            参数1 : sub_project   轮次基金所在的子工程
-        '''
+        for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
+            if sub_tache_e.parent_id == sub_tache_entity:
+                # 如果数据已经解锁的话,向前端报错,不能有这样的情况产生
+                if sub_tache_e.is_unlocked:
+                    raise UserError(u'依赖的环节已经接解锁!!!')
 
-        # 刚开始的情况下,没有子工程
-        # 理论上,只能有发起子工程 或者是查看主工程的事件操作
-        if not kwargs.get('sub_project_id'):
-            # 查看主工程
-            if kwargs.get('view_or_launch'):
-                return self._get_info()
-            # 发起子工程
-            else:
-                tache_id = int(kwargs.get('tache_id'))
-                tache_entity = self.process_id.get_tache_entity(tache_id)
-                model_name = tache_entity.model_id.name
-                # self.env[model_name]
+                name = sub_tache_entity.name.strip()
+
+                name = name + ' ' + '1' if name == name.split(' ')[0] else name.split(' ')[0] + ' ' + str(int(name.split(' ')[1]) + 1)
 
 
-            # 在这种情况下,就只有查看主project的操作
-            return self._get_info()
+                new_sub_tache_entity = sub_tache_e.create({
+                    'name': name,
+                    'meta_sub_project_id': sub_tache_entity.meta_sub_project_id.id,
+                    'tache_id': sub_tache_entity.tache_id.id,
+                    'parent_id': sub_tache_entity.id,
+                })
 
-        # 在有子工程的情况下,需要根据子工程,而且子工程的子配置信息
-        # 也可以获取到
-        else:
-            sub_project_id = int(kwargs.get('sub_project_id'))
+                sub_tache_e.write({
+                    'parent_id': new_sub_tache_entity.id,
+                })
+
+                # 每次都需要调用这个方法
+                meta_sub_project_entity.sub_tache_ids.set_depency_order_by_sub_tache()
 
 
-    # 派生继承之后的方法
+        return self._get_info()
 
+
+
+
+
+
+
+
+
+
+
+
+
+    # 派生继承之后的方法=
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
 

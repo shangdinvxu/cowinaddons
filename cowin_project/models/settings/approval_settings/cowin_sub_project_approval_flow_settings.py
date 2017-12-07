@@ -31,18 +31,10 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                                                                 'sub_approval_settings_id', string=u'审批记录')
 
 
-    # def update_status_and_approval_node(self):
-    #     self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
-    #
-    #     if not self.current_approval_flow_node_id.parent_id:
-    #         '''
-    #             当前审批已完结
-    #
-    #         '''
-    #
-    #         self.status = 4
-    #
-    #         # 触发下一个子环节开启
+
+
+    # 构建子环节和子审批实体一对一的关系
+    sub_project_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
 
     def is_success(self):

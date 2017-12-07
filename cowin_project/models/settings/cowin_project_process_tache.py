@@ -2,8 +2,7 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
-
-
+import itertools
 class Cowin_project_process_tache(models.Model):
     _name = 'cowin_project.process_tache'
 
@@ -31,11 +30,48 @@ class Cowin_project_process_tache(models.Model):
     # 这种情况只适用于主project的使用,子project只适用于环节的下一级表
     approval_flow_settings_ids = fields.One2many('cowin_project.approval_flow_settings', 'tache_id', string=u'审批流程')
 
+    order = fields.Integer()
+
 
     @api.model
     def create(self, vals):
 
         res = super(Cowin_project_process_tache, self).create(vals)
+
+        # this = res
+        #
+        # base_tache_entity = [tache_entity for tache_entity in this.stage_id.process_id.get_all_tache_entities()
+        #                      if tache_entity.model_id.model_name == this.stage_id.process_id.project_ids._name]
+        # # if not base_tache_entity:
+        # #     # 这里的逻辑在于主环节的第一个还没有创建!!!
+        # #     return res
+        #
+        # base_tache_entity = base_tache_entity[0]
+        #
+        # count = itertools.count(1)
+        #
+        # base_tache_entity.write({
+        #     'order': count.next(),
+        # })
+        #
+        # current_tache_entity = base_tache_entity
+        #
+        # a = set()
+        # while current_tache_entity:
+        #     if current_tache_entity in a:
+        #         break
+        #
+        #     for tache_entity in this.stage_id.process_id.get_all_tache_entities():
+        #         if tache_entity == current_tache_entity:
+        #             a.add(tache_entity)
+        #             # 考虑到最初的一种情况!!!
+        #             continue
+        #
+        #         if tache_entity.parent_id == current_tache_entity:
+        #             a.add(tache_entity)
+        #             tache_entity.write({'order': count.next()})
+        #             print u'方法调用了多少次!!!'
+        #             current_tache_entity = tache_entity
 
 
         return res
@@ -109,4 +145,44 @@ class Cowin_project_process_tache(models.Model):
         for approval_flow_setting_info in approval_flow_settings_info:
             tache_entity.approval_flow_settings_ids.create_approval_flow_settings_entity(
                 approval_flow_setting_info, tache_entity.id)
+
+
+
+    # 重新设定依赖写入的问题
+    def set_depency_order_by_sub_tache(self):
+
+        this = self[0] if len(self) > 1 else self
+
+        base_tache_entity = [tache_entity for tache_entity in this.stage_id.process_id.get_all_tache_entities()
+                             if tache_entity.model_id.model_name == this.stage_id.process_id.project_ids._name]
+        # if not base_tache_entity:
+        #     # 这里的逻辑在于主环节的第一个还没有创建!!!
+        #     return res
+
+        base_tache_entity = base_tache_entity[0]
+
+        count = itertools.count(1)
+
+        base_tache_entity.write({
+            'order': count.next(),
+        })
+
+        current_tache_entity = base_tache_entity
+
+        a = set()
+        while current_tache_entity:
+            if current_tache_entity in a:
+                break
+
+            for tache_entity in this.stage_id.process_id.get_all_tache_entities():
+                if tache_entity == current_tache_entity:
+                    a.add(tache_entity)
+                    # 考虑到最初的一种情况!!!
+                    continue
+
+                if tache_entity.parent_id == current_tache_entity:
+                    a.add(tache_entity)
+                    tache_entity.write({'order': count.next()})
+                    print u'方法调用了多少次!!!'
+                    current_tache_entity = tache_entity
 

@@ -22,6 +22,8 @@ class Cowin_project_process(models.Model):
 
     category = fields.Char(string=u'流程配置分类')
 
+    project_ids = fields.One2many('cowin_project.cowin_project', 'process_id', string=u'主工程信息')
+
 
 
     # 该实例方法用于获取一条数据信息
@@ -211,8 +213,8 @@ class Cowin_project_process(models.Model):
                                 'parent_id': target.id
                             })
 
-
-
+        # 对依环节进行排序操作!!!
+        taches_res[0].set_depency_order_by_sub_tache()
 
         return process
 
