@@ -221,10 +221,16 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
 
             var stage_id = $(".edit_tache_input_wrap select").find("option:selected").attr('data-id');
 
+            if($('.launch_more input').prop('checked')){
+                var more = true;
+            }else {
+                var more = false;
+            }
+
             var edit_tache_descs = $('.edit_tache_desc textarea').val();
             var tache_parent_id = $(".condition_wrap select").find("option:selected").attr('data-id');  //解锁条件
              new Model("cowin_settings.process")
-                    .call("rpc_edit_tache", [self.id], {stage_id:parseInt(stage_id),tache_parent_id:parseInt(tache_parent_id),tache_id:parseInt(self.unlock_tache_id),tache_name:edit_tache_name,description:edit_tache_descs})
+                    .call("rpc_edit_tache", [self.id], {once_or_more:more,stage_id:parseInt(stage_id),tache_parent_id:parseInt(tache_parent_id),tache_id:parseInt(self.unlock_tache_id),tache_name:edit_tache_name,description:edit_tache_descs})
                     .then(function (result) {
                         console.log(result);
                         $('.create_new_tache').hide();
@@ -232,11 +238,18 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                         self.$el.append(QWeb.render('process_conf_detail_tmp', {result: result}));
                     })
         },
+        //显示环节编辑框
         show_tache_parent:function (e) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
             var self = this;
             $('.unlock_condition').show();
+
+            if($(target).parents('tr').attr('more') == 'true'){
+                $('.launch_more input').attr('checked',true)
+            }else {
+                $('.launch_more input').attr('checked',false)
+            }
             $('.current_tache').val($(target).parents('.operate_wrap').prevAll('.tache_name').html());
             $('.condition_wrap option').each(function () {
                 $(this)[0].selected =  false

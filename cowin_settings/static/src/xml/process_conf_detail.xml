@@ -51,7 +51,7 @@
                         </tr>
                         <t t-foreach="item.tache_ids" t-as="obj">
                             <!--  data-tache-id是环节的id data-stage-id是分组的id -->
-                            <tr class="process_detail_group_detail_line" t-att-data-tache-id="obj.id" t-att-data-stage-id="obj.stage_id">
+                            <tr class="process_detail_group_detail_line" t-att-data-tache-id="obj.id" t-att-data-stage-id="obj.stage_id" t-att-more="obj.once_or_more">
                                 <td class="drag_show"><span></span></td>
                                 <td class="tache_name"><t t-esc="obj.name"/></td>
                                 <td class="tache_parent"><t t-esc="obj.parent_id"/></td>
@@ -149,6 +149,9 @@
                             </t>
                         </t>
                     </select>
+                </div>
+                <div class="launch_more">
+                    发起多次：<input type="checkbox"/>
                 </div>
                 <div class="edit_tache_desc">
                     环节说明：
