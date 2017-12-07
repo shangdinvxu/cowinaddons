@@ -175,6 +175,7 @@ class Cowin_settings_process(models.Model):
             raise UserError(u'编辑过程中 解锁条件之间冲突行成环状')
 
         tache_id = kwargs.get('tache_id')
+        once_or_more = kwargs.get('once_or_more')
         name = kwargs.get('tache_name')
         stage_id = kwargs.get('stage_id')
         tache_parent_id = int(kwargs.get('tache_parent_id')) if kwargs.get('tache_parent_id') else None
@@ -183,6 +184,7 @@ class Cowin_settings_process(models.Model):
 
         tache = self.env['cowin_settings.process_tache'].browse(int(tache_id))
         tache.write({'name': name,
+                     'once_or_more': once_or_more,
                      'parent_id': tache_parent_id,
                      'description': description,
                      'stage_id': stage_id
