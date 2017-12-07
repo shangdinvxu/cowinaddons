@@ -179,4 +179,4 @@ class Meat_sub_project(models.Model):
 
         # return self.sub_tache_ids.search([()])
 
-        return self.sub_tache_ids.search([('meta_sub_project_id', '=', self.id)], order='order asc,index asc')
+        return self.sub_tache_ids.search([('meta_sub_project_id', '=', self.id)], order='order,index')

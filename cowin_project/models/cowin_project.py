@@ -294,8 +294,11 @@ class Cowin_project(models.Model):
                     tache_info['sub_project_id'] = meta_sub_project_entity.sub_project_ids.id
 
                     # 当前的子审批流实体
-                    target_sub_approval_flow_entity = sub_tache_entity.tache_id.approval_flow_settings_ids.sub_approval_flow_settings_ids & \
-                                                      meta_sub_project_entity.sub_approval_flow_settings_ids
+                    # target_sub_approval_flow_entity = sub_tache_entity.tache_id.approval_flow_settings_ids.sub_approval_flow_settings_ids & \
+                    #                                   meta_sub_project_entity.sub_approval_flow_settings_ids
+
+                    # 理论上每个子环节都有自己一个子审批实体
+                    target_sub_approval_flow_entity = sub_tache_entity.sub_pro_approval_flow_settings_ids
 
                     tache_info['approval_status'] = {}
                     tache_info['approval_status']['status_id'] = target_sub_approval_flow_entity.status
@@ -667,6 +670,8 @@ class Cowin_project(models.Model):
                 if sub_tache_e.is_unlocked:
                     raise UserError(u'依赖的环节已经接解锁!!!')
                 index = brother_sub_tache_entities[-1].index + 1
+
+                # 新增子环节
                 new_sub_tache_entity = brother_sub_tache_entities.create({
                     'name': brother_sub_tache_entities[0].name + ' ' + str(index),
                     'meta_sub_project_id': sub_tache_entity.meta_sub_project_id.id,
@@ -678,6 +683,23 @@ class Cowin_project(models.Model):
                 sub_tache_e.write({
                     'parent_id': new_sub_tache_entity.id,
                 })
+
+                # 还需要新增子审批实体
+
+                new_sub_tache_entity.sub_pro_approval_flow_settings_ids.create({
+                    'sub_project_tache_id': new_sub_tache_entity.id,
+                    'meta_sub_project_id': meta_sub_project_entity.id,
+                    # 理论上主环节中只有一份主审批流实体
+                    'approval_flow_settings_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.id,
+                    # 默认就指向第一个位置!!!
+                    'current_approval_flow_node_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.
+                            approval_flow_setting_node_ids.sorted('order')[0].id,
+                })
+
+
+
+
+
 
                 # 每次都需要调用这个方法
                 meta_sub_project_entity.sub_tache_ids.set_depency_order_by_sub_tache()
@@ -791,7 +813,7 @@ class Cowin_project(models.Model):
         current_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(tache_info['sub_tache_id'])
 
         if sub_approval_flow_settings_entity.is_success():
-            for sub_tache_entity in meta_sub_project_entity.sub_tache_ids:
+            for sub_tache_entity in meta_sub_project_entity.get_sub_taches():
                 if sub_tache_entity.parent_id == current_sub_tache_entity:
                     sub_tache_entity.write({
                         'is_unlocked': True,
@@ -800,8 +822,10 @@ class Cowin_project(models.Model):
 
 
                     # 在触发下一个子环节过程中,还需要触发下一个子环节所对应的子审批节点信息
-                    sub_approval_flow_settings_entity_next = sub_tache_entity.tache_id.approval_flow_settings_ids.sub_approval_flow_settings_ids \
-                                & meta_sub_project_entity.sub_approval_flow_settings_ids
+                    # sub_approval_flow_settings_entity_next = sub_tache_entity.tache_id.approval_flow_settings_ids.sub_approval_flow_settings_ids \
+                    #             & meta_sub_project_entity.sub_approval_flow_settings_ids
+
+                    sub_approval_flow_settings_entity_next = sub_tache_entity.sub_pro_approval_flow_settings_ids
 
                     sub_approval_flow_settings_entity_next.write({
                         'status': 2,
