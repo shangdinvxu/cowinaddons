@@ -248,6 +248,8 @@ class Cowin_project(models.Model):
                 tache_info['approval_status']['approval_view_or_launch'] = None
                 tache_info['approval_status']['sub_approval_flow_settings_id'] = -1
 
+                break
+
 
         # 处理元子工程对应的子环节的信息
         # 1, 装配阶段信息
@@ -403,6 +405,9 @@ class Cowin_project(models.Model):
 
 
                     stage['tache_ids'].append(tache_info)
+
+                    break
+
 
         return process_info['stage_ids']
 

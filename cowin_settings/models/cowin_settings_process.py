@@ -174,6 +174,12 @@ class Cowin_settings_process(models.Model):
         except UserError, e:
             raise UserError(u'编辑过程中 解锁条件之间冲突行成环状')
 
+        # 注意,环节中的所属分组不能是项目设立,因为有子环节的概念!!! (在工程处理讨论中)
+
+
+
+
+
         tache_id = kwargs.get('tache_id')
         once_or_more = kwargs.get('once_or_more')
         name = kwargs.get('tache_name')
