@@ -46,6 +46,8 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                         .call("new_sub_tache",[[self.id]],{'sub_tache_id':self.tache_arr[parseInt(tache_index)].sub_tache_id,'meta_sub_project_id':self.tache_arr[parseInt(tache_index)].meta_sub_project_id})
                         .then(function (result) {
                             console.log(result);
+                            $('.process_data_main_wrap').html('');
+                            $('.process_data_main_wrap').append(QWeb.render('process_info_right_tmpl', {result: result}));
                         })
                 },
             });
