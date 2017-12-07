@@ -57,7 +57,7 @@ class Round_financing_and_Foundation(models.Model):
 
 
     _sql_constraints = [
-      ('number_uniq', 'unique(foundation_id, round_financing_id)', u'基金轮次不能相同!'),
+      ('number_uniq', 'unique(meta_sub_project_id, foundation_id, round_financing_id)', u'基金轮次不能相同!'),
     ]
 
 
