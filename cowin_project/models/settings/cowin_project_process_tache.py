@@ -9,7 +9,7 @@ class Cowin_project_process_tache(models.Model):
     name = fields.Char(string=u'环节')
     parent_id = fields.Many2one('cowin_project.process_tache', string=u'解锁条件')
 
-    tache_status_id = fields.One2many('cowin_project.subproject_process_tache', 'tache_id', '各个子工程的环节配置信息')
+    tache_status_ids = fields.One2many('cowin_project.subproject_process_tache', 'tache_id', '各个子工程的环节配置信息')
 
     description = fields.Char(string=u'说明')
     state = fields.Boolean(string=u'启用状态', default=True)

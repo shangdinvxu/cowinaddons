@@ -650,23 +650,29 @@ class Cowin_project(models.Model):
 
         meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
         sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(current_sub_tache_id)
+        current_tache_entity = sub_tache_entity.tache_id
 
+
+        # 获取当前子环节所有的兄弟环节
+        brother_sub_tache_entities = meta_sub_project_entity.sub_tache_ids & current_tache_entity.tache_status_ids
+
+        brother_sub_tache_entities = brother_sub_tache_entities.sorted('index')
+
+        is_last = True
         for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
-            if sub_tache_e.parent_id == sub_tache_entity:
+
+            if sub_tache_e.parent_id == brother_sub_tache_entities[-1]:
+                is_last = False
                 # 如果数据已经解锁的话,向前端报错,不能有这样的情况产生
                 if sub_tache_e.is_unlocked:
                     raise UserError(u'依赖的环节已经接解锁!!!')
-
-                name = sub_tache_entity.name.strip()
-
-                name = name + ' ' + '1' if name == name.split(' ')[0].strip() else name.split(' ')[0].strip() + ' ' + str(int(name.split(' ')[1]) + 1)
-
-
-                new_sub_tache_entity = sub_tache_e.create({
-                    'name': name,
+                index = brother_sub_tache_entities[-1].index + 1
+                new_sub_tache_entity = brother_sub_tache_entities.create({
+                    'name': brother_sub_tache_entities[0].name + ' ' + str(index),
                     'meta_sub_project_id': sub_tache_entity.meta_sub_project_id.id,
                     'tache_id': sub_tache_entity.tache_id.id,
-                    'parent_id': sub_tache_entity.id,
+                    'parent_id': brother_sub_tache_entities[-1].id,
+                    'index': index,
                 })
 
                 sub_tache_e.write({
@@ -676,6 +682,39 @@ class Cowin_project(models.Model):
                 # 每次都需要调用这个方法
                 meta_sub_project_entity.sub_tache_ids.set_depency_order_by_sub_tache()
 
+                break
+
+
+        if is_last:
+            index = brother_sub_tache_entities[-1].index + 1
+            brother_sub_tache_entities.create({
+                'name': brother_sub_tache_entities[-1].name + ' ' + str(index),
+                'meta_sub_project_id': sub_tache_entity.meta_sub_project_id.id,
+                'tache_id': sub_tache_entity.tache_id.id,
+                'parent_id': sub_tache_entity.id,
+                'index': index,
+            })
+
+            meta_sub_project_entity.sub_tache_ids.set_depency_order_by_sub_tache()
+
+
+            # for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
+            #     if sub_tache_e == sub_tache_entity:
+            #         index = brother_sub_tache_entities[-1].index + 1
+            #         new_sub_tache_entity = brother_sub_tache_entities.create({
+            #             'name': brother_sub_tache_entities[-1].name + ' ' + str(index),
+            #             'meta_sub_project_id': sub_tache_entity.meta_sub_project_id.id,
+            #             'tache_id': sub_tache_e.tache_id.id,
+            #             'parent_id': sub_tache_e.id,
+            #             'index': index,
+            #         })
+
+                    # sub_tache_e.write({
+                    #     'parent_id': new_sub_tache_entity.id,
+                    # })
+
+                    # 每次都需要调用这个方法
+                    # meta_sub_project_entity.sub_tache_ids.set_depency_order_by_sub_tache()
 
         return self._get_info()
 

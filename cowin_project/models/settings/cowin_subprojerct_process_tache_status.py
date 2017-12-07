@@ -30,6 +30,8 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
     order = fields.Integer()
 
+    index = fields.Integer(string=u'多个自定义的环节', default=0)
+
 
     def get_tache(self):
         return self.tache_id

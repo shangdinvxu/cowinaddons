@@ -55,10 +55,7 @@ class Meat_sub_project(models.Model):
                 continue
 
             # 1 创建子环节实体, 并且对自环节实体进行环节依赖的设定
-            # self.env['cowin_project.subproject_process_tache'].create({
-
-
-            meta_sub_project.sub_tache_ids.create({
+            sub_tache_entity = meta_sub_project.sub_tache_ids.create({
                 'name': tache_entity.name,
                 'tache_id': tache_entity.id,
                 'meta_sub_project_id': meta_sub_project.id,
@@ -67,6 +64,7 @@ class Meat_sub_project(models.Model):
 
             # 2 创建子流程配置实体
             meta_sub_project.sub_approval_flow_settings_ids.create({
+                'sub_project_tache_id': sub_tache_entity.id,
                 'meta_sub_project_id': meta_sub_project.id,
                 # 理论上主环节中只有一份主审批流实体
                 'approval_flow_settings_id': tache_entity.approval_flow_settings_ids.id,
@@ -74,6 +72,14 @@ class Meat_sub_project(models.Model):
                 'current_approval_flow_node_id': tache_entity.approval_flow_settings_ids.
                         approval_flow_setting_node_ids.sorted('order')[0].id,
             })
+
+        # 子环节与子审批流之间构建一对一的联系 依赖, 方便后面的数据做处理
+        # for sub_tache_entity in meta_sub_project.sub_tache_ids:
+        #     for sub_approval_entity in meta_sub_project.sub_approval_flow_settings_ids:
+        #         if sub_tache_entity.tache_id == sub_approval_entity.approval_flow_settings_id.tache_id:
+        #             sub_approval_entity.write({
+        #                 'sub_project_tache_id': sub_tache_entity.id,
+        #             })
 
 
         # 要对子环节设定依赖
@@ -94,8 +100,10 @@ class Meat_sub_project(models.Model):
 
                 # 改变当前子环节所对应的子审批流的配置
 
-                target_sub_approval_flow_entity = sub_tache_entity.tache_id.approval_flow_settings_ids.sub_approval_flow_settings_ids & \
-                                                  meta_sub_project.sub_approval_flow_settings_ids
+                # target_sub_approval_flow_entity = sub_tache_entity.tache_id.approval_flow_settings_ids.sub_approval_flow_settings_ids & \
+                #                                   meta_sub_project.sub_approval_flow_settings_ids
+
+                target_sub_approval_flow_entity = sub_tache_entity.sub_pro_approval_flow_settings_ids
 
                 target_sub_approval_flow_entity.write({
                     'status': 2,
@@ -113,8 +121,8 @@ class Meat_sub_project(models.Model):
 
             # 获取主依赖环节实体中的所有的子环节实体,并且与元子工程实体做 交 的操作
 
-
-            target_sub_tache_entity = parent_tache_entity.tache_status_id & meta_sub_project.sub_tache_ids
+            # 由于在在初始化的的情况下,只会由一条子环节,所以,这里面就只会由一个target_sub_tache_entity这样的实体
+            target_sub_tache_entity = parent_tache_entity.tache_status_ids & meta_sub_project.sub_tache_ids
 
             # 写入依赖条件
             sub_tache_entity.write({
@@ -127,14 +135,14 @@ class Meat_sub_project(models.Model):
         meta_sub_project.sub_tache_ids.set_depency_order_by_sub_tache()
 
 
-
-        # 子环节与子审批流之间构建一对一的联系 依赖, 方便后面的数据做处理
-        for sub_tache_entity in meta_sub_project.sub_tache_ids:
-            for sub_approval_entity in meta_sub_project.sub_approval_flow_settings_ids:
-                if sub_tache_entity.tache_id == sub_approval_entity.approval_flow_settings_id.tache_id:
-                    sub_approval_entity.write({
-                        'sub_project_tache_id': sub_tache_entity.id,
-                    })
+        #
+        # # 子环节与子审批流之间构建一对一的联系 依赖, 方便后面的数据做处理
+        # for sub_tache_entity in meta_sub_project.sub_tache_ids:
+        #     for sub_approval_entity in meta_sub_project.sub_approval_flow_settings_ids:
+        #         if sub_tache_entity.tache_id == sub_approval_entity.approval_flow_settings_id.tache_id:
+        #             sub_approval_entity.write({
+        #                 'sub_project_tache_id': sub_tache_entity.id,
+        #             })
 
         return meta_sub_project
 
@@ -167,4 +175,8 @@ class Meat_sub_project(models.Model):
     # # 得到所有的子环节信息
     def get_sub_taches(self):
 
-        return self.sub_tache_ids.sorted('order')
+        # return self.sub_tache_ids.sorted('order')
+
+        # return self.sub_tache_ids.search([()])
+
+        return self.sub_tache_ids.search([('meta_sub_project_id', '=', self.id)], order='order asc,index asc')
