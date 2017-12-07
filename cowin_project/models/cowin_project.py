@@ -663,12 +663,21 @@ class Cowin_project(models.Model):
 
         is_last = True
         for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
+            if sub_tache_e.parent_id == sub_tache_entity:
+                # 如果数据已经解锁的话,向前端报错,不能有这样的情况产生
+                if sub_tache_e.is_unlocked:
+                    raise UserError(u'被依赖的环节已经接解锁!!!')
+                # index = brother_sub_tache_entities[-1].index + 1
+
+
+
+        for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
 
             if sub_tache_e.parent_id == brother_sub_tache_entities[-1]:
                 is_last = False
                 # 如果数据已经解锁的话,向前端报错,不能有这样的情况产生
-                if sub_tache_e.is_unlocked:
-                    raise UserError(u'依赖的环节已经接解锁!!!')
+                # if sub_tache_e.is_unlocked:
+                #     raise UserError(u'依赖的环节已经接解锁!!!')
                 index = brother_sub_tache_entities[-1].index + 1
 
                 # 新增子环节
