@@ -257,6 +257,12 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                     $(this)[0].selected = true
                 }
             });
+            $('.edit_tache_input_wrap option').each(function () {
+                $(this)[0].selected =  false
+                if($(this).attr('data-id') == $(target).parents('tr').attr('data-stage-id')){
+                    $(this)[0].selected = true
+                }
+            });
             $('.edit_tache_desc textarea').val($(target).parents('.operate_wrap').prevAll('.tache_description').html());
             self.unlock_tache_id = $(target).parents('tr').attr('data-tache-id')
         },
