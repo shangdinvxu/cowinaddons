@@ -273,8 +273,8 @@ class Cowin_project(models.Model):
                     tache_info['id'] = sub_tache_entity.tache_id.id
                     tache_info['sub_tache_id'] = sub_tache_entity.id
 
-                    tache_info['name'] = sub_tache_entity.tache_id.name
-                    tache_info['parent_id'] = sub_tache_entity.parent_id.name
+                    tache_info['name'] = sub_tache_entity.name
+                    tache_info['parent_id'] = sub_tache_entity.id
                     # parent_id 就是解锁条件
                     tache_info['is_unlocked'] = sub_tache_entity.is_unlocked
                     # 需要考虑到环节的父节点可能没有
@@ -659,7 +659,7 @@ class Cowin_project(models.Model):
 
                 name = sub_tache_entity.name.strip()
 
-                name = name + ' ' + '1' if name == name.split(' ')[0] else name.split(' ')[0] + ' ' + str(int(name.split(' ')[1]) + 1)
+                name = name + ' ' + '1' if name == name.split(' ')[0].strip() else name.split(' ')[0].strip() + ' ' + str(int(name.split(' ')[1]) + 1)
 
 
                 new_sub_tache_entity = sub_tache_e.create({

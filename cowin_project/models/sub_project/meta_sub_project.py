@@ -59,6 +59,7 @@ class Meat_sub_project(models.Model):
 
 
             meta_sub_project.sub_tache_ids.create({
+                'name': tache_entity.name,
                 'tache_id': tache_entity.id,
                 'meta_sub_project_id': meta_sub_project.id,
             })

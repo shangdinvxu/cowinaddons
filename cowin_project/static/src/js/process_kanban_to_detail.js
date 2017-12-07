@@ -43,7 +43,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             Dialog.confirm(this, _t("确定增加这条环节?"), {
                 confirm_callback: function() {
                     return new Model("cowin_project.cowin_project")
-                        .call("new_sub_tache",[[self.id]],{'sub_tache_id':self.tache_arr[parseInt(tache_index)],'meta_sub_project_id':self.tache_arr[parseInt(tache_index)].meta_sub_project_id})
+                        .call("new_sub_tache",[[self.id]],{'sub_tache_id':self.tache_arr[parseInt(tache_index)].sub_tache_id,'meta_sub_project_id':self.tache_arr[parseInt(tache_index)].meta_sub_project_id})
                         .then(function (result) {
                             console.log(result);
                         })
