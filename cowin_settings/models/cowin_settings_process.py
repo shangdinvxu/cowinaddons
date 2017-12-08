@@ -105,7 +105,7 @@ class Cowin_settings_process(models.Model):
     def get_infos(self):
         result = []
         objs = self.env['cowin_settings.process'].search([])
-        for item in objs:
+        for item in objs[:-1]:
             result.append({
                 'name': item.name,
                 'module': item.module,
@@ -186,15 +186,22 @@ class Cowin_settings_process(models.Model):
         stage_id = kwargs.get('stage_id')
         tache_parent_id = int(kwargs.get('tache_parent_id')) if kwargs.get('tache_parent_id') else None
 
+
         description = kwargs.get('description')
 
-        tache = self.env['cowin_settings.process_tache'].browse(int(tache_id))
-        tache.write({'name': name,
+        tache_entity = self.env['cowin_settings.process_tache'].browse(int(tache_id))
+        tache_entity.write({'name': name,
                      'once_or_more': once_or_more,
                      'parent_id': tache_parent_id,
                      'description': description,
                      'stage_id': stage_id
                      })
+
+        # if not tache_entity.parent_id:
+        #     raise UserError(u'所属分组不能够位于最顶级分组中!!!')
+        #
+        # if tache_entity.model_id.model_name == "cowin_project.cowin_subproject":
+        #     raise UserError(u'项目立项不能发起多次!!!')
 
         return self.get_info()
 

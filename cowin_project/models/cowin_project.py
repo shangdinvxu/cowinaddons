@@ -406,7 +406,7 @@ class Cowin_project(models.Model):
 
                     stage['tache_ids'].append(tache_info)
 
-                    break
+
 
 
         return process_info['stage_ids']
