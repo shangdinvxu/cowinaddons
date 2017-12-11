@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cowin_project_process,cowin_project.process,model_cowin_project_process,,1,1,1,1
+access_cowin_project_process_stage,cowin_project.process_stage,model_cowin_project_process_stage,,1,1,1,1
+access_cowin_project_process_tache,cowin_project.process_tache,model_cowin_project_process_tache,,1,1,1,1
+access_cowin_project_subproject_process_tache,cowin_project.subproject_process_tache,model_cowin_project_subproject_process_tache,,1,1,1,1

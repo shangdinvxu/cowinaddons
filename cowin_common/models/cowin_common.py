@@ -44,8 +44,3 @@ class Cowin_common_approval_role(models.Model):
     ]
 
 
-
-class A(models.Model):
-    _name = 'aa.aa'
-
-    name = fields.Char()

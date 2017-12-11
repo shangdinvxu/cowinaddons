@@ -24,7 +24,14 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+
+        'security/project_security.xml',
+        'security/ir.model.access.csv',
+        'security/dependencies_many2many/ir.model.access.csv',
+        'security/settings/ir.model.access.csv',
+        'security/settings/approval_settings/ir.model.access.csv',
+        'security/sub_project/ir.model.access.csv',
+        'security/sub_project/prev_investment_management/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
         'views/sub_project/sub_project_establishment.xml',

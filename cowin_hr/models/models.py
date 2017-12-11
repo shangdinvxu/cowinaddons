@@ -68,7 +68,7 @@ class Cowin_hr(models.Model):
     user_id = fields.Many2one('res.users', string=u'登陆用户')
     #
     # approval_role_ids = fields.Many2many('cowin_common.approval_role', string=u'审批角色')
-    approval_role_ids = fields.Many2many('cowin_project.meta_sub_appro_role_hr_em', 'employee_id', string=u'审批角色')
+    approval_role_ids = fields.One2many('cowin_project.meta_sub_appro_role_hr_em', 'employee_id', string=u'审批角色')
 
 
     _sql_constraints = [
@@ -112,8 +112,18 @@ class Cowin_hr(models.Model):
         user_entity = self.env['res.users'].create({
             'name': login_name,
             'login': login_name,
-            'email': login_name
+            'email': login_name,
+            # 'groups_id': [(4, self.env.ref('cowin_project.cowin_project_menu_group').id)],
+            'groups_id': [(4, self.env.ref('cowin_project.cowin_project_menu_group').id), (4, self.env.ref('hr.group_hr_user').id)],
         })
+
+        # user_entity.write({
+        #     'groups_id': [(4, self.env.ref('cowin_project.cowin_project_group').id),
+                          # (4, self.env.ref('cowin_settings.cowin_settings_process').id),
+                          # (4, self.env.ref('cowin_settings.cowin_settings_process_stage').id),
+                          # (4, self.env.ref('cowin_settings.cowin_settings_process_tache').id),
+                          # ],
+        # })
 
         # 设定初始的密码
         pass_wizard = self.env['change.password.wizard'].create({})

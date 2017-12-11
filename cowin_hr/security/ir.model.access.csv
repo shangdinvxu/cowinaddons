@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_cowin_hr_cowin_hr,cowin_hr.cowin_hr,model_cowin_hr_cowin_hr,,1,0,0,0
+access_cowin_project_meta_sub_appro_role_hr_em,cowin_project.meta_sub_appro_role_hr_em,model_cowin_project_meta_sub_appro_role_hr_em,,1,1,1,1

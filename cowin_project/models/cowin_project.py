@@ -76,10 +76,14 @@ class Cowin_project(models.Model):
                 # 每个子审批流所对应的当前的操作角色
                 current_role_entity = sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
                 # 当前用户所关联的操作角色
-                all_role_entities = self.env.user.employee_ids.approval_role_ids
+                all_role_rel_entities = self.env.user.employee_ids.approval_role_ids
 
-                if current_role_entity in all_role_entities:
-                    return True
+                # if current_role_entity in all_role_entities:
+                #     return True
+
+                for rel_entity in all_role_rel_entities:
+                    if current_role_entity == rel_entity.approval_role_id:
+                        return True
 
         return False
 
@@ -620,7 +624,7 @@ class Cowin_project(models.Model):
         all_projects = self.search([])
         for pro_entity in all_projects:
             pro_entity.write({
-                'iscurrentUser_and_Admin': True if self._iscurrentUser_and_Admin() else False
+                'iscurrentUser_and_Admin': True if pro_entity._iscurrentUser_and_Admin() else False
             })
 
         return super(Cowin_project, self).search_read(domain, fields, offset, limit, order)

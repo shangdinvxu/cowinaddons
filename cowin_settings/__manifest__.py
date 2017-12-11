@@ -24,7 +24,8 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/settings_security.xml',
+        'security/ir.model.access.csv',
         'views/menu_actions.xml',
         'views/sequences.xml',
         'views/cowin_setting_process.xml',
