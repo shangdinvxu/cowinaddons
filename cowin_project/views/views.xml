@@ -210,10 +210,6 @@
             <field name="res_model">cowin_project.cowin_project</field>
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form</field>
-            <!--<field name="iscurrentUser_and_Admin" domain="[('iscurrentUser_and_Admin','=','False')]"/>-->
-            <!-- 过滤出当前用户所需要的所关联的所有的项目 超级管理员除外  -->
-            <!--<field name="domain">[('iscurrentUser_and_Admin','=',True)]</field>-->
-            <!--<field name="domain">[('create_uid','=',uid)]</field>-->
         </record>
 
         <record model="ir.actions.act_window" id="action_project_approval">
@@ -222,9 +218,6 @@
             <field name="view_type">form</field>
             <field name="view_mode">kanban</field>
             <field name="view_id" ref="project_approval_view_kanban"/>
-            <!--<field name="iscurrentUser_and_Admin" domain="[('iscurrentUser_and_Admin','=','False')]"/>-->
-            <!--<field name="domain">[('iscurrentUser_and_Admin','=',True)]</field>-->
-            <!--<field name="domain">[('create_uid','=',uid)]</field>-->
         </record>
 
 
@@ -237,13 +230,6 @@
 
         <!-- Top menu item -->
         <menuitem name="项目" id="cowin_project.menu_root" groups="cowin_project_menu_group"/>
-        <!--<menuitem name="项目" id="cowin_project.menu_root"/>-->
-
-        <!--暂时把项目流程的视图放到项目审批内-->
-         <!--<record id="action_project_approval" model="ir.actions.client">-->
-            <!--<field name="name">project approval</field>-->
-            <!--<field name="tag">project_process</field>-->
-        <!--</record>-->
 
         <!-- menu categories -->
         <!--左侧菜单-->
@@ -264,12 +250,6 @@
 
         <menuitem name="投后审批" id="cowin_project.menu_23" parent="cowin_project.menu_2"
                   action="cowin_project.action_window"/>
-
-
-
-
-
-
 
     </data>
 </openerp>

@@ -716,11 +716,10 @@ class Cowin_project(models.Model):
 
             tmp['approval_role_infos'] = []
 
-            approval_role_repr = meta_sub_pro_entity.approval_role_and_employee_ids[0] if meta_sub_pro_entity.approval_role_and_employee_ids else meta_sub_pro_entity.approval_role_and_employee_ids
-            approval_role_ids = approval_role_repr.approval_role_id.search([])
+            approval_role_employee_rel_repr = meta_sub_pro_entity.approval_role_and_employee_ids[0] if meta_sub_pro_entity.approval_role_and_employee_ids else meta_sub_pro_entity.approval_role_and_employee_ids
+            approval_role_ids = approval_role_employee_rel_repr.approval_role_id.search([])
 
-            employee_repr = meta_sub_pro_entity.approval_role_and_employee_ids[0] if meta_sub_pro_entity.approval_role_and_employee_ids else meta_sub_pro_entity.approval_role_and_employee_ids
-            employee_ids = employee_repr.employee_id.search([])
+            employee_ids = approval_role_employee_rel_repr.employee_id.search([])
 
             default_is_full = True
 
@@ -741,13 +740,9 @@ class Cowin_project(models.Model):
 
             tmp['default_is_full'] = default_is_full
 
-            default_is_full &= tmp['default_is_full']
+            default_is_full = default_is_full and tmp['default_is_full']
 
             res.append(tmp)
-
-
-
-
 
 
         return {

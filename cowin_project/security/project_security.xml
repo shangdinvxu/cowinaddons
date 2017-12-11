@@ -2,13 +2,6 @@
 <odoo>
 <data>
 
-    <!--# 看来分类的作用,不需要在此使用-->
-    <!--<record id="cowin_project" model="ir.module.category">-->
-        <!--<field name="name">cowin_project</field>-->
-        <!--<field name="category_id" ref="base.module_category_accounting_and_finance"/>-->
-        <!--<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>-->
-    <!--</record>-->
-
 
     <record id="cowin_project_group" model="res.groups">
         <field name="name">cowin_project_group</field>
