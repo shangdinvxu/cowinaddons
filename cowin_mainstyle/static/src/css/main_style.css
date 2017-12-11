@@ -204,3 +204,13 @@ a.oe_menu_toggler { background-color: transparent !important; }
 .o_web_client > .o_main .o_main_content .o_content .o_view_manager_content{
     background-color: white!important;
 }
+
+.o_main_content .o_control_panel{
+    background-color: white!important;
+}
+.o_main_content .o_control_panel .breadcrumb{
+    background-color: white!important;
+}
+.body_login .o_database_list{
+    background-color: white!important;
+}

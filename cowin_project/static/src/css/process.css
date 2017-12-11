@@ -5,7 +5,7 @@
     background-color: white;
 }
 #project_process_container .project_header{
-    padding: 30px;
+    padding: 18px 30px;
     background-color: white;
 }
 #project_process_container #process_tab{
@@ -245,6 +245,10 @@
 .process_data_main_wrap .process_data_item_line .button_wrap{
     position: absolute;
     left: 400px;
+    color: #00B0DD;
+}
+.process_data_main_wrap .process_data_item_line .button_wrap>span>a{
+    color: #00B0DD!important;
 }
 #process_tab_content .process_data_main_wrap .process_data_item_line .button_wrap span{
     position: initial;
@@ -341,7 +345,7 @@
 }
 #process_tab_content #process_data .process_data_main_wrap .detail_line .team_role{
     position: static;
-    font-weight: 500;
+    /*font-weight: 500;*/
 }
 #process_tab_content #process_data .process_data_main_wrap .detail_line .team_role_names_wrap{
     margin-left: 200px;
@@ -444,4 +448,7 @@
 .confirm_copy{
     background-color: #199ed7;
     color: white;
+}
+.button_wrap .view_tache{
+    margin-right: 20px;
 }

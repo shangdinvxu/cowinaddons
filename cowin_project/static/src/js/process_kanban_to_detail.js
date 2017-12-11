@@ -143,6 +143,15 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             var self = this;
             self.add_approval_role_id = $(target).parents('.detail_line').attr('approval_role_id');
             self.add_meta_sub_pro_id = $(target).parents('.detail_lines_wrap').attr('meta_sub_pro_id');
+
+            $('.add_new_body option').each(function () {
+               $(this)[0].selected = false;
+            });
+            $('.add_new_body .dropdown-menu li').each(function () {
+                $(this).attr('class','');
+            });
+            $('.add_new_body .filter-option').html('');
+
             $('.add_new_wrap').show();
         },
         //关闭选择框
@@ -355,6 +364,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
 
             //项目管理团队是否完善
             self.perfect = true;
+            console.log(action)
         },
         start: function () {
             var self = this;
