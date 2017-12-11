@@ -40,10 +40,21 @@
             </tr>
           </thead>
           <tbody>
+            <t t-set="i" t-value="0"/>
             <t t-foreach="result" t-as="item">
                 <tr t-att-data-id="item.id" class="process_conf_click_to_detail">
                     <td><t t-esc="item.name"/></td>
-                    <td><t t-esc="item.module"/></td>
+                    <t t-if="i==0">
+                        <td>项目管理</td>
+                        <t t-set="i" t-value="i+1"/>
+                    </t>
+                    <t t-elif="i==1">
+                        <td>投后管理</td>
+                        <t t-set="i" t-value="i+1"/>
+                    </t>
+                    <t t-else="">
+                        <td></td>
+                    </t>
                     <td><t t-esc="item.description"/></td>
                 </tr>
             </t>

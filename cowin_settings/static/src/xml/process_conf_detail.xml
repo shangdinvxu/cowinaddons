@@ -54,7 +54,14 @@
                             <tr class="process_detail_group_detail_line" t-att-data-tache-id="obj.id" t-att-data-stage-id="obj.stage_id" t-att-more="obj.once_or_more">
                                 <td class="drag_show"><span></span></td>
                                 <td class="tache_name"><t t-esc="obj.name"/></td>
-                                <td class="tache_parent"><t t-esc="obj.parent_id"/></td>
+                                <td class="tache_parent">
+                                    <t t-if="obj.parent_id==false">
+                                        无条件
+                                    </t>
+                                    <t t-else="">
+                                        <t t-esc="obj.parent_id"/>
+                                    </t>
+                                </td>
                                 <td class="tache_description"><t t-esc="obj.description"/></td>
                                 <td>
                                     <t t-if="obj.state==true">

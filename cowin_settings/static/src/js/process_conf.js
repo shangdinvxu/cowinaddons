@@ -32,7 +32,7 @@ odoo.define('cowin_settings.process_conf', function (require) {
                 name: 'process',
                 tag: 'process_conf_detail',
                 active_id: active_detail_id,
-                params:{'active_id': active_detail_id}
+                params:{'active_id':active_detail_id,action:'process_conf_detail',_push_me:false,model:'cowin_settings.process'}
             };
             this.do_action(action);
         },
@@ -40,6 +40,7 @@ odoo.define('cowin_settings.process_conf', function (require) {
             this._super.apply(this, arguments);
             this.bom_id = action.bom_id;
             var self = this;
+            console.log(action)
         },
         start: function () {
             var self = this;
