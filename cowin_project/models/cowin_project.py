@@ -76,7 +76,7 @@ class Cowin_project(models.Model):
                 # 每个子审批流所对应的当前的操作角色
                 current_role_entity = sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
                 # 当前用户所关联的操作角色
-                all_role_rel_entities = self.env.user.employee_ids.approval_role_ids
+                all_role_rel_entities = self.env.user.employee_ids.sub_approval_settings_role_ids
 
                 # if current_role_entity in all_role_entities:
                 #     return True
@@ -329,16 +329,18 @@ class Cowin_project(models.Model):
                             # 当前的虚拟角色名
                             name = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id.name
 
-                            current_approval_flow_entity = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
+                            current_operation_role_entity = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
 
                             # 当前虚拟角色所属的员工
-                            employee_ids = current_approval_flow_entity.employee_ids
+                            sub_approval_settings_role_ids1 = current_operation_role_entity.sub_approval_settings_role_ids
 
                             # 需要考虑到是不同的元子工程来配置角色,获得到时虚拟角色和员工之间的M 2 M之间的关系
-                            approval_role_and_employee_ids = meta_sub_project_entity.approval_role_and_employee_ids
+                            approval_role_and_employee_ids = meta_sub_project_entity.sub_approval_settings_role_ids
 
                             # 当前员工所对应的角色
-                            approval_role_ids = self.env.user.employee_ids.approval_role_ids
+                            sub_approval_settings_role_ids2 = self.env.user.employee_ids.sub_approval_settings_role_ids
+                            # 当前用户所对应的员工
+                            # current_employee = self.env.user.employee_ids
 
                             # current_user_approval_flow_ids = self.env.user.employee_ids.approval_role_ids
 
@@ -346,7 +348,8 @@ class Cowin_project(models.Model):
 
                             # 接下来要考虑当前用户是否属于某一个虚拟角色
                             # if current_approval_flow_entity in current_user_approval_flow_ids:
-                            if approval_role_and_employee_ids & employee_ids & approval_role_ids:
+                            if approval_role_and_employee_ids & sub_approval_settings_role_ids1 & sub_approval_settings_role_ids2:
+                            # if current_employee in employee_ids:
                                 # 很显然当前用户可以审批
                                 approval_view_or_launch = True
                             else:
@@ -716,7 +719,7 @@ class Cowin_project(models.Model):
 
             tmp['approval_role_infos'] = []
 
-            approval_role_employee_rel_repr = meta_sub_pro_entity.approval_role_and_employee_ids[0] if meta_sub_pro_entity.approval_role_and_employee_ids else meta_sub_pro_entity.approval_role_and_employee_ids
+            approval_role_employee_rel_repr = meta_sub_pro_entity.sub_approval_settings_role_ids[0] if meta_sub_pro_entity.sub_approval_settings_role_ids else meta_sub_pro_entity.sub_approval_settings_role_ids
             approval_role_ids = approval_role_employee_rel_repr.approval_role_id.search([])
 
             employee_ids = approval_role_employee_rel_repr.employee_id.search([])
@@ -729,7 +732,7 @@ class Cowin_project(models.Model):
                 tmp2['approval_role_name'] = approval_role_entity.name
 
                 tmp2['employee_infos'] = [{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
-                    for approval_employee_rel in meta_sub_pro_entity.approval_role_and_employee_ids if approval_employee_rel.approval_role_id == approval_role_entity]
+                    for approval_employee_rel in meta_sub_pro_entity.sub_approval_settings_role_ids if approval_employee_rel.approval_role_id == approval_role_entity]
 
 
                 if not tmp2['employee_infos']:
@@ -772,7 +775,7 @@ class Cowin_project(models.Model):
 
 
 
-        current_rel_entities = meta_sub_project_entity.approval_role_and_employee_ids
+        current_rel_entities = meta_sub_project_entity.sub_approval_settings_role_ids
 
         current_rel_info_ids = set((rel.approval_role_id.id, rel.employee_id.id) for rel in current_rel_entities)
         target_rel_info_ids = set((approval_role_info['approval_role_id'], employee_info['employee_id'])
@@ -836,7 +839,7 @@ class Cowin_project(models.Model):
         # current_meta_sub_pro_entity = self.meta_sub_project_ids.browse(current_meta_sub_pro_id)
         copy_meta_sub_pro_entity = self.meta_sub_project_ids.browse(copy_meta_sub_pro_id)
 
-        copy_rel_entities = copy_meta_sub_pro_entity.approval_role_and_employee_ids
+        copy_rel_entities = copy_meta_sub_pro_entity.sub_approval_settings_role_ids
 
         for c_rel_entity in copy_rel_entities:
             c_rel_entity.create({

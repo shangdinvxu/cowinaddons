@@ -32,7 +32,7 @@ class Cowin_common_approval_role_inherit(models.Model):
     # meta_sub_project_id = fields.Many2one('cowin_project.meat_sub_project', string=u'元子工程')
     # employee_ids = fields.Many2many('hr.employee', string=u'员工')
 
-    employee_ids = fields.One2many('cowin_project.meta_sub_appro_role_hr_em', 'approval_role_id', string=u'员工')
+    sub_approval_settings_role_ids = fields.One2many('cowin_project.meta_sub_appro_role_hr_em', 'approval_role_id', string=u'员工')
 
 
 #
@@ -68,7 +68,7 @@ class Cowin_hr(models.Model):
     user_id = fields.Many2one('res.users', string=u'登陆用户')
     #
     # approval_role_ids = fields.Many2many('cowin_common.approval_role', string=u'审批角色')
-    approval_role_ids = fields.One2many('cowin_project.meta_sub_appro_role_hr_em', 'employee_id', string=u'审批角色')
+    sub_approval_settings_role_ids = fields.One2many('cowin_project.meta_sub_appro_role_hr_em', 'employee_id', string=u'审批角色')
 
 
     _sql_constraints = [
