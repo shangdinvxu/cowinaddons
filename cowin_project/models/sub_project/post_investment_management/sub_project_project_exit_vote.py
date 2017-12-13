@@ -13,6 +13,7 @@ class sub_project_project_exit_vote(models.Model):
 
     name = fields.Char(related='subproject_id.name', string=u"项目名称")
     project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
+    invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
 
     # ----------  投资基金
     round_financing_id = fields.Many2one('cowin_common.round_financing',
@@ -32,5 +33,6 @@ class sub_project_project_exit_vote(models.Model):
 
     conference_date = fields.Date(string=u'会议日期')
     investment_decision_committee = fields.Many2many('hr.employee', string=u'投资决策委员')
+    voting_result = fields.Boolean(string=u'表决结果')
     voting_opinion = fields.Text(string=u'表决意见')
     voter = fields.Char('hr.employee', string=u'表决人')

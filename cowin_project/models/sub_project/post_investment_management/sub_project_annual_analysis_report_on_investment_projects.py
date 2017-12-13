@@ -13,26 +13,25 @@ class sub_project_annual_analysis_report_on_investment_projects(models.Model):
     name = fields.Char(related='subproject_id.name', string=u"项目名称")
     project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
 
-    a = fields.Many2one('报告人', string=u'报告人')
+    reporter = fields.Many2one('hr.employee', string=u'报告人')
 
-    b = fields.Datetime(string=u'提交日期')
+    filing_date = fields.Date(string=u'提交日期')
 
     registered_address = fields.Char(string=u'注册地')
 
-    e = fields.Many2one('hr.employee', string=u'董事长')
+    chairman = fields.Many2one('hr.employee', string=u'董事长')
 
-    c = fields.Many2one('hr.employee', string=u'总经理')
+    general_manager = fields.Many2one('hr.employee', string=u'总经理')
 
-    c1 = fields.Text(string=u'产品')
+    product = fields.Text(string=u'产品')
 
-    c2 = fields.Many2one('', string=u'所属行业')
+    industry = fields.Many2one('cowin_common.cowin_industry', string=u'所属行业')
 
-    c3 = fields.Date(string=u'成立时间')
+    founding_time = fields.Date(string=u'成立时间')
 
+    investment_phase = fields.Char(string=u'投资阶段')
 
-    c4 = fields.Char(string=u'投资阶段')
-
-    c5 = fields.Char(string=u'当前阶段')
+    current_phase = fields.Char(string=u'当前阶段')
 
     # ----------  投资基金
     round_financing_id = fields.Many2one('cowin_common.round_financing',
@@ -51,14 +50,14 @@ class sub_project_annual_analysis_report_on_investment_projects(models.Model):
     # ---------------
 
 
-    e1 = fields.Float(string=u'总资产')
-    e2 = fields.Float(string=u'总负债')
+    total_assets = fields.Float(string=u'总资产')
+    gross_liabilities = fields.Float(string=u'总负债')
     trustee = fields.Many2one('hr.employee', string=u'董事')
 
-    e3 = fields.Char(string=u'券商')
+    securities_trader = fields.Char(string=u'券商')
 
-    e4 = fields.Text(string=u'IPO计划')
+    IPOplan = fields.Text(string=u'IPO计划')
 
-    e5 = fields.Text(string=u'公司现状')
+    company_status = fields.Text(string=u'公司现状')
 
-    e6 = fields.Text(string=u'行业现状')
+    industry_status = fields.Text(string=u'行业现状')

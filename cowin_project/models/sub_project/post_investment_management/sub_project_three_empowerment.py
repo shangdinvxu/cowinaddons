@@ -14,9 +14,9 @@ class sub_project_three_empowerment(models.Model):
 
     invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
 
-    d = fields.Text(string=u'议题', required=True)
+    topic_for_discussion = fields.Text(string=u'议题')
 
-    e = fields.Many2one('hr.employee', required=True, string=u'管理合伙人')
+    managing_partner = fields.Many2one('hr.employee', string=u'管理合伙人')
 
     # ----------  投资基金
     round_financing_id = fields.Many2one('cowin_common.round_financing',

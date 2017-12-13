@@ -13,10 +13,11 @@ class sub_project_general_vote(models.Model):
 
     name = fields.Char(related='subproject_id.name', string=u"项目名称")
     project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
+    invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
 
-    a = fields.Many2one('报告人', string=u'报告人')
-    b = fields.Datetime(string=u'召开日期')
-    d = fields.Text(string=u'表决事项说明', required=True)
+    reporter = fields.Many2one('hr.employee', string=u'报告人')
+    date_convening = fields.Datetime(string=u'召开日期')
+    instructions_voting = fields.Text(string=u'表决事项说明')
 
     # ----------  投资基金
     round_financing_id = fields.Many2one('cowin_common.round_financing',

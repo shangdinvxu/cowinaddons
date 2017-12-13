@@ -16,15 +16,15 @@ class sub_project_report_on_major_matters(models.Model):
     name = fields.Char(related='subproject_id.name', string=u"项目名称")
     project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
 
-    a = fields.Many2one('报告人', string=u'报告人')
+    reporter = fields.Many2one('hr.employee', string=u'报告人')
 
-    b = fields.Datetime(string=u'提交日期')
+    filing_date = fields.Datetime(string=u'提交日期')
 
-    c = fields.Char(string=u'事项关键词', required=True)
+    key_words = fields.Char(string=u'事项关键词')
 
-    d = fields.Text(string=u' 事项内容', required=True)
+    contents_of_matter = fields.Text(string=u' 事项内容')
 
-    e = fields.Text(string=u'重大影响', required=True)
+    enormous_impact = fields.Text(string=u'重大影响')
 
     # ----------  投资基金
     round_financing_id = fields.Many2one('cowin_common.round_financing',
