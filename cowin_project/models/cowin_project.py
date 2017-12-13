@@ -27,8 +27,8 @@ class Cowin_project(models.Model):
 
     name = fields.Char(string=u"项目名称", required=True)
 
-    project_number = fields.Char(string=u'项目编号',
-                                 defualt=lambda self: self.env['ir.sequence'].next_by_code('cowin_project.order'))
+    # project_number = fields.Char(string=u'项目编号',
+    #                              defualt=lambda self: self.env['ir.sequence'].next_by_code('cowin_project.order'))
     project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')],
                               string=u'项目来源', required=True)
     project_source_note = fields.Char(string=u'项目来源备注')
@@ -214,6 +214,8 @@ class Cowin_project(models.Model):
         process_info = self.process_id.get_info()
 
 
+
+
         # 2 获取指定的一个元子工程信息
         meta_sub_project_entity = None
         # 代表着第一次默认选择第一个来显示,当然,如果存在的情况下
@@ -230,6 +232,8 @@ class Cowin_project(models.Model):
             meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
 
 
+        sub_project_info = meta_sub_project_entity.sub_project_ids.copy_data()[0] if meta_sub_project_entity.sub_project_ids \
+                else {}
 
 
 
@@ -416,7 +420,7 @@ class Cowin_project(models.Model):
 
 
 
-        return process_info['stage_ids']
+        return (process_info['stage_ids'], sub_project_info)
 
 
 
@@ -429,43 +433,14 @@ class Cowin_project(models.Model):
         info = self.copy_data()[0]
         info['id'] = self.id
         info['investment_funds'] = self.get_investment_funds()
-        info['process'] = self.process_settings2(meta_project_id)
+
+        # 需要传递数据
+        info['process'], info['sub_project_info'] = self.process_settings2(meta_project_id)
         info['permission_configuration'] = self.rpc_get_permission_configuration()
 
         return info
 
-        # return {'id': self.id,
-        #         'name': self.name,
-        #         'process_id': self.process_id.id,
-        #         'image': self.image,
-        #         'project_number': self.project_number,
-        #         'project_source': self.project_source,
-        #         'project_source_note': self.project_source_note,
-        #         # 'invest_manager': self.invest_manager,
-        #         'round_financing': self.round_financing.name,
-        #         'round_money': self.round_money,
-        #         'project_company_profile': self.project_company_profile,
-        #         'project_appraisal': self.project_appraisal,
-        #         'project_note': self.project_note,
-        #         # 'industry': self.industry,
-        #         'stage': self.stage,
-        #         'production': self.production,
-        #         'registered_address': self.registered_address,
-        #         'peration_place': self.peration_place,
-        #         'founding_time': self.founding_time,
-        #         'contract_person': self.contract_person,
-        #         'contract_phone': self.contract_phone,
-        #         'contract_email': self.contract_email,
-        #         'attachment_note': self.attachment_note,
-        #         'investment_funds': self.get_investment_funds(),
-        #         'process': self.process_settings2(meta_project_id),
-        #         'permission_configuration': self.rpc_get_permission_configuration(),
-        #         }
 
-
-    #
-    # def get_all_investment_funds(self):
-    #     return [funds for funds in self.investment_funds]
 
     # 获得该项目中投资基金所在的投资轮次, 相当于子工程 sub_project
     def get_investment_funds(self):
