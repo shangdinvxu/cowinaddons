@@ -24,7 +24,7 @@ KanbanRecord.include({
             if(this.$el.eq(0).hasClass('project_process_kanban')){
                 var action = {
                     type: 'ir.actions.client',
-                    name: 'process',
+                    name: '项目流程',
                     tag: 'process_kanban_to_detail',
                     // id: this.record.id.raw_value,
                     active_id:this.record.id.raw_value,
@@ -34,7 +34,7 @@ KanbanRecord.include({
             }else if(this.$el.eq(0).hasClass('project_approval_kanban')){
                 var action = {
                     type: 'ir.actions.client',
-                    name: 'approval',
+                    name: '项目审批',
                     tag: 'approval_kanban_to_detail',
                     active_id:this.record.id.raw_value,
                     params:{'active_id':this.record.id.raw_value,action:'approval_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}

@@ -206,7 +206,7 @@
 
 
         <record model="ir.actions.act_window" id="action_project_process">
-            <field name="name">cowin_project_process window</field>
+            <field name="name">所有项目</field>
             <field name="res_model">cowin_project.cowin_project</field>
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form</field>
