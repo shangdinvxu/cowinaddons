@@ -426,33 +426,41 @@ class Cowin_project(models.Model):
         tmp = kwargs.get("meta_project_id")
         meta_project_id = 0 if not tmp else int(tmp)
 
-        return {'id': self.id,
-                'name': self.name,
-                'process_id': self.process_id.id,
-                'image': self.image,
-                'project_number': self.project_number,
-                'project_source': self.project_source,
-                'project_source_note': self.project_source_note,
-                # 'invest_manager': self.invest_manager,
-                'round_financing': self.round_financing.name,
-                'round_money': self.round_money,
-                'project_company_profile': self.project_company_profile,
-                'project_appraisal': self.project_appraisal,
-                'project_note': self.project_note,
-                # 'industry': self.industry,
-                'stage': self.stage,
-                'production': self.production,
-                'registered_address': self.registered_address,
-                'peration_place': self.peration_place,
-                'founding_time': self.founding_time,
-                'contract_person': self.contract_person,
-                'contract_phone': self.contract_phone,
-                'contract_email': self.contract_email,
-                'attachment_note': self.attachment_note,
-                'investment_funds': self.get_investment_funds(),
-                'process': self.process_settings2(meta_project_id),
-                'permission_configuration': self.rpc_get_permission_configuration(),
-                }
+        info = self.copy_data()[0]
+        info['id'] = self.id
+        info['investment_funds'] = self.get_investment_funds()
+        info['process'] = self.process_settings2(meta_project_id)
+        info['permission_configuration'] = self.rpc_get_permission_configuration()
+
+        return info
+
+        # return {'id': self.id,
+        #         'name': self.name,
+        #         'process_id': self.process_id.id,
+        #         'image': self.image,
+        #         'project_number': self.project_number,
+        #         'project_source': self.project_source,
+        #         'project_source_note': self.project_source_note,
+        #         # 'invest_manager': self.invest_manager,
+        #         'round_financing': self.round_financing.name,
+        #         'round_money': self.round_money,
+        #         'project_company_profile': self.project_company_profile,
+        #         'project_appraisal': self.project_appraisal,
+        #         'project_note': self.project_note,
+        #         # 'industry': self.industry,
+        #         'stage': self.stage,
+        #         'production': self.production,
+        #         'registered_address': self.registered_address,
+        #         'peration_place': self.peration_place,
+        #         'founding_time': self.founding_time,
+        #         'contract_person': self.contract_person,
+        #         'contract_phone': self.contract_phone,
+        #         'contract_email': self.contract_email,
+        #         'attachment_note': self.attachment_note,
+        #         'investment_funds': self.get_investment_funds(),
+        #         'process': self.process_settings2(meta_project_id),
+        #         'permission_configuration': self.rpc_get_permission_configuration(),
+        #         }
 
 
     #

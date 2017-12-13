@@ -34,7 +34,7 @@
         'views/templates.xml',
         'views/views.xml',
         'views/init_custom_model.xml',
-        'views/init_process.xml',
+        'views/init_prev_investment_management.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 依赖 ./init_custom_model.xml 文件   在本模块中不需要写模块的前缀-->
+
+<odoo>
+    <data>
+
+
+    </data>
+</odoo>

@@ -1,5 +1,7 @@
 <odoo>
     <data>
+
+        <!--投前-->
         <record id="init_custom_model_1" model="cowin_settings.custome_model_data">
             <field name="model_name">cowin_project.cowin_project</field>
         </record>
@@ -59,5 +61,14 @@
         <record id="init_custom_model_15" model="cowin_settings.custome_model_data">
             <field name="model_name">cowin_project.sub_project_data_archiving</field>
         </record>
+
+
+
+        <!--投后-->
+
+        <!--<record id="init_custom_model_16" model="cowin_settings.custome_model_data">-->
+            <!--<field name="model_name">cowin_project.sub_quarterly_analysis_report</field>-->
+        <!--</record>-->
+
     </data>
 </odoo>
