@@ -59,7 +59,10 @@
         'views/dependencies_many2many/sub_project_round_financing_and_foundation.xml',
 
         'report/setup_project.xml',
-        'report/common_report.xml'
+        'report/common_report.xml',
+        'report/register_information.xml',
+        'report/project_setup_opinion.xml',
+        'report/search_visit_record.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

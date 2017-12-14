@@ -1,0 +1,95 @@
+<odoo>
+    <template id="report_register_info">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-xs-offset-5">
+                                <h1 style="">信息登记</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div style="width:1px;height:100%;border-left:1px solid #F2F2F2;position:absolute;left:30%;top:0"></div>
+                                <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">项目名称：</span><span class="col-xs-8" t-field="o.name"></span>
+                                </div>
+                                <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">项目来源：</span><span class="col-xs-8" t-field="o.project_source"></span>
+                                </div>
+                                <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">项目来源备注：</span><span class="col-xs-8" t-field="o.project_source_note"></span>
+                                </div>
+                                <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">融资轮次：</span><span class="col-xs-8" t-field="o.round_financing"></span>
+                                </div>
+                                <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">本次融资额：</span><span class="col-xs-8" t-field="o.round_money"></span>
+                                </div>
+                                <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">项目公司概况：</span><span class="col-xs-8" t-field="o.project_company_profile"></span>
+                                </div>
+                                 <div style="overflow:hidden;margin-bottom:5px">
+                                    <span class="col-xs-4">项目评价：</span><span class="col-xs-8" t-field="o.project_appraisal"></span>
+                                </div>
+                                <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">备注：</span><span class="col-xs-8" t-field="o.project_note"></span>
+                                </div>
+                                <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">所属行业：</span><span class="col-xs-8" t-field="o.industry"></span>
+                                </div>
+                                <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">所属阶段：</span><span class="col-xs-8" t-field="o.stage"></span>
+                                </div>
+                                <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">产品：</span><span class="col-xs-8" t-field="o.production"></span>
+                                </div>
+                                 <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">产品：</span><span class="col-xs-8" t-field="o.production"></span>
+                                </div>
+                                 <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">注册地：</span><span class="col-xs-8" t-field="o.registered_address"></span>
+                                </div>
+                                 <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">运营地：</span><span class="col-xs-8" t-field="o.peration_place"></span>
+                                </div>
+                                 <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">成立时间：</span><span class="col-xs-8" t-field="o.founding_time"></span>
+                                </div>
+                                 <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">联系人：</span><span class="col-xs-8" t-field="o.contract_person"></span>
+                                </div>
+                                 <!--<div style="overflow:hidden">-->
+                                    <!--<span class="col-xs-4">联系电话：</span><span class="col-xs-8" t-field="o.contract_phone"></span>-->
+                                <!--</div>-->
+                                <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">Email：</span><span class="col-xs-8" t-field="o.contract_email"></span>
+                                </div>
+                                <!--<div style="overflow:hidden">-->
+                                    <!--<span class="col-xs-4">附件：</span><span class="col-xs-8" t-field="o.attachment_ids"></span>-->
+                                <!--</div>-->
+                                <div style="overflow:hidden;margin-bottom:8px">
+                                    <span class="col-xs-4">附件说明：</span><span class="col-xs-8" t-field="o.attachment_note"></span>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_cowin_project_register_info"
+        string="信息登记"
+        model="cowin_project.cowin_project"
+        report_type="qweb-pdf"
+        name="cowin_project.report_register_info"
+        file="cowin_project.report_register_info"
+    />
+</odoo>

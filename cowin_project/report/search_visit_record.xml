@@ -1,0 +1,75 @@
+<odoo>
+    <template id="report_search_visit_record">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-xs-offset-5">
+                                <h1 style="">尽调拜访记录</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div style="width:1px;height:100%;border-left:1px solid #F2F2F2;position:absolute;left:30%;top:0"></div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">名称：</span><span class="col-xs-8" t-field="o.name"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">项目编号：</span><span class="col-xs-8" t-field="o.project_number"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">拜访日期：</span><span class="col-xs-8" t-field="o.visit_date"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">客户类型：</span><span class="col-xs-8" t-field="o.customer_type"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">姓名：</span><span class="col-xs-8" t-field="o.customer_name"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">职位：</span><span class="col-xs-8" t-field="o.customer_position"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">联系方式：</span><span class="col-xs-8" t-field="o.customer_contract"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">Email：</span><span class="col-xs-8" t-field="o.customer_email"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">公司名称：</span><span class="col-xs-8" t-field="o.customer_company_name"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">与拟投资项目关系：</span><span class="col-xs-8" t-field="o.customer_relation_investment"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">对拟投资项目评价：</span><span class="col-xs-8" t-field="o.customer_relation_value"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">意见或建议：</span><span class="col-xs-8" t-field="o.customer_relation_opinion"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">其它推荐拜访对象：</span><span class="col-xs-8" t-field="o.recommended_visit_object"></span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_search_visit_record"
+        string="立项意见书"
+        model="cowin_project.sub_call_up_record"
+        report_type="qweb-pdf"
+        name="cowin_project.report_search_visit_record"
+        file="cowin_project.report_search_visit_record"
+    />
+</odoo>
