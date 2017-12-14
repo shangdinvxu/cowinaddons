@@ -6,11 +6,12 @@
                     <div class="page">
                         <div class="row">
                             <div class="col-xs-offset-5">
-                                <h2>项目立项</h2>
+                                <h1 style="">项目立项</h1>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-6">
+                                <div style="width:1px;height:100%;border-left:1px solid #F2F2F2;position:absolute;left:30%;top:0"></div>
                                 <div style="overflow:hidden">
                                     <span class="col-xs-4">名称：</span><span class="col-xs-8" t-field="o.name"></span>
                                 </div>
@@ -65,9 +66,9 @@
                                 <div style="overflow:hidden">
                                     <span class="col-xs-4">Email：</span><span class="col-xs-8" t-field="o.contract_email"></span>
                                 </div>
-                                <div style="overflow:hidden">
-                                    <span class="col-xs-4">附件：</span><span class="col-xs-8" t-field="o.attachment_ids"></span>
-                                </div>
+                                <!--<div style="overflow:hidden">-->
+                                    <!--<span class="col-xs-4">附件：</span><span class="col-xs-8" t-field="o.attachment_ids"></span>-->
+                                <!--</div>-->
                                 <div style="overflow:hidden">
                                     <span class="col-xs-4">附件说明：</span><span class="col-xs-8" t-field="o.attachment_note"></span>
                                 </div>
@@ -75,6 +76,7 @@
                             </div>
 
                             <div class="col-xs-6">
+                                <div style="width:1px;height:100%;border-left:1px solid #F2F2F2;position:absolute;left:30%;top:0"></div>
                                 <div style="overflow:hidden">
                                     <span class="col-xs-4">基金:</span><span class="col-xs-8" t-field="o.foundation_id"></span>
                                 </div>

@@ -58,7 +58,8 @@
 
         'views/dependencies_many2many/sub_project_round_financing_and_foundation.xml',
 
-        'report/setup_project.xml'
+        'report/setup_project.xml',
+        'report/common_report.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
