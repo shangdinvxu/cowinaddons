@@ -4,7 +4,138 @@
 
 <odoo>
     <data>
+        <!-- 2. 投后流程 -->
+        <record id="init_post_process_project_1" model="cowin_settings.process">
+            <field name="name">投后流程</field>
+            <field name="description">项目投后的流程配置</field>
+        </record>
 
+        <!-- 2.1 分析报告-->
+        <record id="init_post_process_stage_1" model="cowin_settings.process_stage">
+            <field name="name">分析报告</field>
+            <field name="process_id" eval="ref('init_post_process_project_1')"/>
+        </record>
+
+        <record id="init_post_process_stage_1_tache_1" model="cowin_settings.process_tache">
+            <field name="name">投资项目季度分析报告</field>
+            <field name="stage_id" eval="ref('init_post_process_stage_1')"/>
+            <field name="parent_id" eval="ref('init_process_stage_7_tache_1')"/>
+            <field name="description"></field>
+            <field name="model_id" eval="ref('init_custom_model_16')"/>
+        </record>
+
+        <record id="init_post_process_stage_1_tache_2" model="cowin_settings.process_tache">
+            <field name="name">投资项目年度分析报告</field>
+            <field name="stage_id" eval="ref('init_post_process_stage_1')"/>
+            <field name="parent_id" eval="ref('init_post_process_stage_1_tache_1')"/>
+            <field name="description"></field>
+            <field name="model_id" eval="ref('init_custom_model_17')"/>
+        </record>
+
+        <!-- 2.2 重大事项-->
+        <record id="init_post_process_stage_2" model="cowin_settings.process_stage">
+            <field name="name">重大事项</field>
+            <field name="process_id" eval="ref('init_post_process_project_1')"/>
+        </record>
+
+        <record id="init_post_process_stage_2_tache_1" model="cowin_settings.process_tache">
+            <field name="name">重大事项报告</field>
+            <field name="stage_id" eval="ref('init_post_process_stage_2')"/>
+            <field name="parent_id" eval="ref('init_post_process_stage_1_tache_2')"/>
+            <field name="description"></field>
+            <field name="model_id" eval="ref('init_custom_model_18')"/>
+        </record>
+
+        <record id="init_post_process_stage_2_tache_2" model="cowin_settings.process_tache">
+            <field name="name">重大事项表决</field>
+            <field name="stage_id" eval="ref('init_post_process_stage_2')"/>
+            <field name="parent_id" eval="ref('init_post_process_stage_2_tache_1')"/>
+            <field name="description"></field>
+            <field name="model_id" eval="ref('init_custom_model_19')"/>
+        </record>
+
+        <!-- 2.3 三会-->
+        <record id="init_post_process_stage_3" model="cowin_settings.process_stage">
+            <field name="name">三会</field>
+            <field name="process_id" eval="ref('init_post_process_project_1')"/>
+        </record>
+
+        <record id="init_post_process_stage_3_tache_1" model="cowin_settings.process_tache">
+            <field name="name">项目公司三会纪要</field>
+            <field name="stage_id" eval="ref('init_post_process_stage_3')"/>
+            <field name="parent_id" eval="ref('init_post_process_stage_2_tache_2')"/>
+            <field name="description"></field>
+            <field name="model_id" eval="ref('init_custom_model_20')"/>
+        </record>
+
+        <record id="init_post_process_stage_3_tache_2" model="cowin_settings.process_tache">
+            <field name="name">三会授权书</field>
+            <field name="stage_id" eval="ref('init_post_process_stage_3')"/>
+            <field name="parent_id" eval="ref('init_post_process_stage_3_tache_1')"/>
+            <field name="description"></field>
+            <field name="model_id" eval="ref('init_custom_model_21')"/>
+        </record>
+
+
+        <!-- 2.4 其他-->
+        <record id="init_post_process_stage_4" model="cowin_settings.process_stage">
+            <field name="name">其他</field>
+            <field name="process_id" eval="ref('init_post_process_project_1')"/>
+        </record>
+
+        <record id="init_post_process_stage_4_tache_1" model="cowin_settings.process_tache">
+            <field name="name">一般事项表决</field>
+            <field name="stage_id" eval="ref('init_post_process_stage_4')"/>
+            <field name="parent_id" eval="ref('init_post_process_stage_3_tache_2')"/>
+            <field name="description"></field>
+            <field name="model_id" eval="ref('init_custom_model_22')"/>
+        </record>
+
+        <record id="init_post_process_stage_4_tache_2" model="cowin_settings.process_tache">
+            <field name="name">董事/监事解聘书</field>
+            <field name="stage_id" eval="ref('init_post_process_stage_4')"/>
+            <field name="parent_id" eval="ref('init_post_process_stage_4_tache_1')"/>
+            <field name="description"></field>
+            <field name="model_id" eval="ref('init_custom_model_23')"/>
+        </record>
+
+        <!-- 2.5 退出-->
+        <record id="init_post_process_stage_5" model="cowin_settings.process_stage">
+            <field name="name">退出</field>
+            <field name="process_id" eval="ref('init_post_process_project_1')"/>
+        </record>
+
+        <record id="init_post_process_stage_5_tache_1" model="cowin_settings.process_tache">
+            <field name="name">投资退出申请书</field>
+            <field name="stage_id" eval="ref('init_post_process_stage_5')"/>
+            <field name="parent_id" eval="ref('init_post_process_stage_4_tache_2')"/>
+            <field name="description"></field>
+            <field name="model_id" eval="ref('init_custom_model_24')"/>
+        </record>
+
+        <record id="init_post_process_stage_5_tache_2" model="cowin_settings.process_tache">
+            <field name="name">项目退出会议纪要</field>
+            <field name="stage_id" eval="ref('init_post_process_stage_5')"/>
+            <field name="parent_id" eval="ref('init_post_process_stage_5_tache_1')"/>
+            <field name="description"></field>
+            <field name="model_id" eval="ref('init_custom_model_25')"/>
+        </record>
+
+        <record id="init_post_process_stage_5_tache_3" model="cowin_settings.process_tache">
+            <field name="name">项目退出会议表决票</field>
+            <field name="stage_id" eval="ref('init_post_process_stage_5')"/>
+            <field name="parent_id" eval="ref('init_post_process_stage_5_tache_2')"/>
+            <field name="description"></field>
+            <field name="model_id" eval="ref('init_custom_model_26')"/>
+        </record>
+
+        <record id="init_post_process_stage_5_tache_4" model="cowin_settings.process_tache">
+            <field name="name">项目退出决议</field>
+            <field name="stage_id" eval="ref('init_post_process_stage_5')"/>
+            <field name="parent_id" eval="ref('init_post_process_stage_5_tache_3')"/>
+            <field name="description"></field>
+            <field name="model_id" eval="ref('init_custom_model_27')"/>
+        </record>
 
     </data>
 </odoo>

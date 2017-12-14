@@ -63,12 +63,51 @@
         </record>
 
 
-
         <!--投后-->
+        <record id="init_custom_model_16" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_quarterly_analysis_report</field>
+        </record>
 
-        <!--<record id="init_custom_model_16" model="cowin_settings.custome_model_data">-->
-            <!--<field name="model_name">cowin_project.sub_quarterly_analysis_report</field>-->
-        <!--</record>-->
+        <record id="init_custom_model_17" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_annual_analysis_report_on_invest_pros</field>
+        </record>
 
+        <record id="init_custom_model_18" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_report_on_major_matters</field>
+        </record>
+
+        <record id="init_custom_model_19" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_vote_on_major_matters</field>
+        </record>
+
+        <record id="init_custom_model_20" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_sum_of_the_three_meeting</field>
+        </record>
+
+        <record id="init_custom_model_21" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_three_empowerment</field>
+        </record>
+
+        <record id="init_custom_model_22" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_general_vote</field>
+        </record>
+
+        <record id="init_custom_model_23" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_dismissal_of_directs_or_supers</field>
+        </record>
+
+        <record id="init_custom_model_24" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_app_for_investment_withdrawal</field>
+        </record>
+
+        <record id="init_custom_model_25" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_sum_of_the_pro_withdrawal_from_the_meeting</field>
+        </record>
+        <record id="init_custom_model_26" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_exit_vote</field>
+        </record>
+        <record id="init_custom_model_27" model="cowin_settings.custome_model_data">
+            <field name="model_name">cowin_project.sub_project_exit_resolution</field>
+        </record>
     </data>
 </odoo>

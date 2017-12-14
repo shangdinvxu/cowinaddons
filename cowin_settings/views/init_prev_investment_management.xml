@@ -183,11 +183,7 @@
         </record>
 
 
-        <!-- 2. 投后流程 -->
-        <record id="init_process_project_2" model="cowin_settings.process">
-            <field name="name">投后流程</field>
-            <field name="description">项目投后的流程配置</field>
-        </record>
+
 
         <!-- 3. 审批流程 -->
         <record id="init_process_project_review" model="cowin_settings.process">
