@@ -1,0 +1,59 @@
+<odoo>
+    <template id="report_conference_resolutions">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-xs-offset-5">
+                                <h1 style="">投委会会议表决票</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div style="width:1px;height:100%;border-left:1px solid #F2F2F2;position:absolute;left:30%;top:0"></div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">名称：</span><span class="col-xs-8" t-field="o.name"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">项目编号：</span><span class="col-xs-8" t-field="o.project_number"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">投决会日期：</span><span class="col-xs-8" t-field="o.voting_committee"></span>
+                                </div>
+                                 <div style="overflow:hidden">
+                                    <span class="col-xs-4">投决会委员：</span>
+                                    <span class="col-xs-8">
+                                        <t t-foreach="o.members_of_voting_committee_ids" t-as="item">
+                                            <span class="" t-field="item.name"></span>
+                                        </t>
+                                    </span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">表决意见：</span><span class="col-xs-8" t-field="o.voting_opinion"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">表决人：</span><span class="col-xs-8" t-field="o.voter"></span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_setup_project_opinion"
+        string="投委会会议表决票"
+        model="cowin_project.sub_conference_resolutions"
+        report_type="qweb-pdf"
+        name="cowin_project.report_conference_resolutions"
+        file="cowin_project.report_conference_resolutions"
+    />
+</odoo>

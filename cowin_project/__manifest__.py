@@ -63,7 +63,8 @@
         'report/register_information.xml',
         'report/project_setup_opinion.xml',
         'report/search_visit_record.xml',
-        'report/invest_decision.xml'
+        'report/invest_decision.xml',
+        'report/invest_decison_resolution.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
