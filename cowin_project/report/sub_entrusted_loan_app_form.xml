@@ -1,0 +1,90 @@
+<odoo>
+    <template id="report_sub_entrusted_loan_app_form">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-xs-offset-5">
+                                <h1 style="">项目委托贷款申请表</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div style="width:1px;height:100%;border-left:1px solid #F2F2F2;position:absolute;left:30%;top:0"></div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">名称：</span><span class="col-xs-8" t-field="o.name"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">项目编号：</span><span class="col-xs-8" t-field="o.project_number"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">申请日期：</span><span class="col-xs-8" t-field="o.date_of_application"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">基金：</span><span class="col-xs-8" t-field="o.foundation_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">本次投资金额：</span><span class="col-xs-8" t-field="o.the_amount_of_investment"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">股份比例：</span><span class="col-xs-8" t-field="o.ownership_interest"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">轮次：</span><span class="col-xs-8" t-field="o.round_financing_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">本次融资额：</span><span class="col-xs-8" t-field="o.the_amount_of_financing"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">审批文件清单：</span>
+                                   <span class="col-xs-8">
+                                        <t t-foreach="o.list_of_examination_and_approval_documents" t-as="item">
+                                            <span class="" t-field="item.name"></span>
+                                        </t>
+                                    </span>
+                                </div>
+
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">委托贷款申请时间：</span><span class="col-xs-8" t-field="o.time_of_application_for_entrusted_loan"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">委托贷款申请金额：</span><span class="col-xs-8" t-field="o.amount_of_application_for_entrusted_loan"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">申请原因：</span><span class="col-xs-8" t-field="o.reasons_for_application"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">委托贷款银行：</span><span class="col-xs-8" t-field="o.entrusted_loan_bank"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">借款利率：</span><span class="col-xs-8" t-field="o.lending_rate"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">借款期限：</span><span class="col-xs-8" t-field="o.life_of_loan"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">手续费：</span><span class="col-xs-8" t-field="o.transfer_charge"></span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_sub_entrusted_loan_app_form"
+        string="项目委托贷款申请表"
+        model="cowin_project.sub_entrusted_loan_app_form"
+        report_type="qweb-pdf"
+        name="cowin_project.report_sub_entrusted_loan_app_form"
+        file="cowin_project.report_sub_entrusted_loan_app_form"
+    />
+</odoo>

@@ -1,0 +1,101 @@
+<odoo>
+    <template id="report_sub_project_data_archiving">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-xs-offset-5">
+                                <h1 style="">项目资料归档</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div style="width:1px;height:100%;border-left:1px solid #F2F2F2;position:absolute;left:30%;top:0"></div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">名称：</span><span class="col-xs-8" t-field="o.name"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">项目编号：</span><span class="col-xs-8" t-field="o.project_number"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">项目合伙人：</span><span class="col-xs-8" t-field="o.engagement_partner_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">基金：</span><span class="col-xs-8" t-field="o.foundation_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">本次投资金额：</span><span class="col-xs-8" t-field="o.the_amount_of_investment"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">股份比例：</span><span class="col-xs-8" t-field="o.ownership_interest"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">轮次：</span><span class="col-xs-8" t-field="o.round_financing_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">本次融资额：</span><span class="col-xs-8" t-field="o.the_amount_of_financing"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">投资决策流程资料：</span>
+                                   <span class="col-xs-8">
+                                        <t t-foreach="o.investment_decision_process_information" t-as="item">
+                                            <span class="" t-field="item.name"></span>
+                                        </t>
+                                    </span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">相关法律文件资料：</span>
+                                   <span class="col-xs-8">
+                                        <t t-foreach="o.relevant_legal_documents_and_materials" t-as="item">
+                                            <span class="" t-field="item.name"></span>
+                                        </t>
+                                    </span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">政府审批资料：</span>
+                                   <span class="col-xs-8">
+                                        <t t-foreach="o.government_approval_materials" t-as="item">
+                                            <span class="" t-field="item.name"></span>
+                                        </t>
+                                    </span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">付款流程资料：</span>
+                                   <span class="col-xs-8">
+                                        <t t-foreach="o.payment_process_information" t-as="item">
+                                            <span class="" t-field="item.name"></span>
+                                        </t>
+                                    </span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">工商变更资料：</span>
+                                   <span class="col-xs-8">
+                                        <t t-foreach="o.business_change_data" t-as="item">
+                                            <span class="" t-field="item.name"></span>
+                                        </t>
+                                    </span>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_sub_project_data_archiving"
+        string="项目资料归档"
+        model="cowin_project.sub_project_data_archiving"
+        report_type="qweb-pdf"
+        name="cowin_project.report_sub_project_data_archiving"
+        file="cowin_project.report_sub_project_data_archiving"
+    />
+</odoo>

@@ -1,0 +1,66 @@
+<odoo>
+    <template id="report_sub_appointment_and_dismissal">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-xs-offset-5">
+                                <h1 style="">董事/监事任免书</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div style="width:1px;height:100%;border-left:1px solid #F2F2F2;position:absolute;left:30%;top:0"></div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">名称：</span><span class="col-xs-8" t-field="o.name"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">项目编号：</span><span class="col-xs-8" t-field="o.project_number"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">董事：</span><span class="col-xs-8" t-field="o.trustee"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">开始日期：</span><span class="col-xs-8" t-field="o.appointment_time_begin_trustee"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">结束日期：</span><span class="col-xs-8" t-field="o.appointment_time_end_trustee"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">任职年限：</span><span class="col-xs-8" t-field="o.Tenure_trustee"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">监事：</span><span class="col-xs-8" t-field="o.supervisor"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">开始日期：</span><span class="col-xs-8" t-field="o.appointment_time_begin_supervisor"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">结束日期：</span><span class="col-xs-8" t-field="o.appointment_time_endr_supervisor"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">任职年限：</span><span class="col-xs-8" t-field="o.Tenure_supervisor"></span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_sub_appointment_and_dismissal"
+        string="董事/监事任免书"
+        model="cowin_project.sub_appointment_and_dismissal"
+        report_type="qweb-pdf"
+        name="cowin_project.report_sub_appointment_and_dismissal"
+        file="cowin_project.report_sub_appointment_and_dismissal"
+    />
+</odoo>

@@ -64,7 +64,14 @@
         'report/project_setup_opinion.xml',
         'report/search_visit_record.xml',
         'report/invest_decision.xml',
-        'report/invest_decison_resolution.xml'
+        'report/invest_decison_resolution.xml',
+        'report/invest_decision_committee_res.xml',
+        'report/sub_appointment_and_dismissal.xml',
+        'report/sub_invest_contract.xml',
+        'report/sub_app_form_pro_investment.xml',
+        'report/sub_entrusted_loan_app_form.xml',
+        'report/sub_payment_app_form.xml',
+        'report/sub_project_data_archiving.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

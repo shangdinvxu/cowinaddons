@@ -1,0 +1,103 @@
+<odoo>
+    <template id="report_sub_payment_app_form">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-xs-offset-5">
+                                <h1 style="">付款申请表</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div style="width:1px;height:100%;border-left:1px solid #F2F2F2;position:absolute;left:30%;top:0"></div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">名称：</span><span class="col-xs-8" t-field="o.name"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">项目编号：</span><span class="col-xs-8" t-field="o.project_number"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">申请日期：</span><span class="col-xs-8" t-field="o.date_of_application"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">审批文件清单：</span>
+                                   <span class="col-xs-8">
+                                        <t t-foreach="o.list_of_examination_and_approval_documents" t-as="item">
+                                            <span class="" t-field="item.name"></span>
+                                        </t>
+                                    </span>
+                                </div>
+
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">货币单位：</span><span class="col-xs-8" t-field="o.monetary_unit"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">本期付款金额：</span><span class="col-xs-8" t-field="o.the_payment_amount"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">公司投资总额：</span><span class="col-xs-8" t-field="o.total_investment"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">付款期数：</span><span class="col-xs-8" t-field="o.number_of_periods"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">累计付款金额：</span><span class="col-xs-8" t-field="o.accumulated_payment_amount"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">未付金额：</span><span class="col-xs-8" t-field="o.payment_amount"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">收款人名称：</span><span class="col-xs-8" t-field="o.payee_name"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">收款账号：</span><span class="col-xs-8" t-field="o.account_number"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">开户银行：</span><span class="col-xs-8" t-field="o.bank_of_deposit"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">资金来源：</span><span class="col-xs-8" t-field="o.funds_provided"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">基金：</span><span class="col-xs-8" t-field="o.foundation_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">本次投资金额：</span><span class="col-xs-8" t-field="o.the_amount_of_investment"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">股份比例：</span><span class="col-xs-8" t-field="o.ownership_interest"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">轮次：</span><span class="col-xs-8" t-field="o.round_financing_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">本次融资额：</span><span class="col-xs-8" t-field="o.the_amount_of_financing"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">付款账号：</span><span class="col-xs-8" t-field="o.payment_account"></span>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_sub_payment_app_form"
+        string="付款申请表"
+        model="cowin_project.sub_payment_app_form"
+        report_type="qweb-pdf"
+        name="cowin_project.report_sub_payment_app_form"
+        file="cowin_project.report_sub_payment_app_form"
+    />
+</odoo>
