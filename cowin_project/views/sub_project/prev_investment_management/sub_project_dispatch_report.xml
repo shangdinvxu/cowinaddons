@@ -10,7 +10,7 @@
             <field name="arch" type="xml">
                 <form string="Fiscal year">
                     <group>
-                        <field name="dispatch_report"/>
+                        <field name="dispatch_report" widget="many2many_binary"/>
                         <field name="attachment_note"/>
                     </group>
 

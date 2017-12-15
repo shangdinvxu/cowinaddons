@@ -23,7 +23,7 @@
                         <field name="round_financing_id"/>
                         <field name="the_amount_of_financing"/>
                         <!---->
-                        <field name="list_of_examination_and_approval_documents"/>
+                        <field name="list_of_examination_and_approval_documents" widget="many2many_binary"/>
 
                     </group>
 

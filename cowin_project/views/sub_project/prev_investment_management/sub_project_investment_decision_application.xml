@@ -21,7 +21,7 @@
                         <field name="the_amount_of_financing"/>
                         <!---->
                         <field name="company_investment_role"/>
-                        <field name="decision_file_list"/>
+                        <field name="decision_file_list" widget="many2many_binary"/>
                         <field name="investment_decision_Committee_held_time"/>
 
                     </group>
