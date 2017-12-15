@@ -1,0 +1,76 @@
+<odoo>
+    <template id="report_invest_decision_committee_res">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-xs-offset-5">
+                                <h1 style="">投资决策委员会决议</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div style="width:1px;height:100%;border-left:1px solid #F2F2F2;position:absolute;left:30%;top:0"></div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">名称：</span><span class="col-xs-8" t-field="o.name"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">项目编号：</span><span class="col-xs-8" t-field="o.project_number"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">投决会日期：</span><span class="col-xs-8" t-field="o.voting_committee"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">投决会结果：</span>
+                                    <span class="col-xs-8" t-field="o.outcome_of_the_voting_committee"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">基金：</span><span class="col-xs-8" t-field="o.foundation_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">本次投资金额：</span><span class="col-xs-8" t-field="o.the_amount_of_investment"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">股份比例：</span><span class="col-xs-8" t-field="o.ownership_interest"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">轮次：</span><span class="col-xs-8" t-field="o.round_financing_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">本次融资额：</span><span class="col-xs-8" t-field="o.the_amount_of_financing"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">董事：</span><span class="col-xs-8" t-field="o.trustee"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">监事：</span><span class="col-xs-8" t-field="o.supervisor"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">委托贷款金额：</span><span class="col-xs-8" t-field="o.amount_of_entrusted_loan"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">投资决策委员会主席：</span><span class="col-xs-8" t-field="o.chairman_of_investment_decision_committee"></span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_invest_decision_committee_res"
+        string="投资决策委员会决议"
+        model="cowin_project.sub_invest_decision_committee_res"
+        report_type="qweb-pdf"
+        name="cowin_project.report_invest_decision_committee_res"
+        file="cowin_project.report_invest_decision_committee_res"
+    />
+</odoo>

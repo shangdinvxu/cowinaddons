@@ -1,0 +1,42 @@
+<odoo>
+    <template id="report_sub_invest_contract">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-xs-offset-5">
+                                <h1 style="">投资合同</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div style="width:1px;height:100%;border-left:1px solid #F2F2F2;position:absolute;left:30%;top:0"></div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">名称：</span><span class="col-xs-8" t-field="o.contract_no"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">标题：</span><span class="col-xs-8" t-field="o.title"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">主要内容：</span><span class="col-xs-8" t-field="o.main_contents"></span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_sub_invest_contract"
+        string="投资合同"
+        model="cowin_project.sub_invest_contract"
+        report_type="qweb-pdf"
+        name="cowin_project.report_sub_invest_contract"
+        file="cowin_project.report_sub_invest_contract"
+    />
+</odoo>
