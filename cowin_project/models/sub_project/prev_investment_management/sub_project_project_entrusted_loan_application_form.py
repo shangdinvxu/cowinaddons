@@ -54,7 +54,7 @@ class Cowin_project_subproject_project_entrusted_loan_application_form(models.Mo
         if len(meta_sub_project_entity.sub_project_ids) > 1:
             raise UserError(u'每个元子工程只能有一份实体!!!')
 
-        vals['meta_sub_project_id'] = meta_sub_project_id
+        vals['subproject_id'] = meta_sub_project_entity.sub_project_ids.id
 
         sub_tache_id = int(tache_info['sub_tache_id'])
 

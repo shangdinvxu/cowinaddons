@@ -48,15 +48,15 @@ class Cowin_project_subproject_application_form_for_project_investment(models.Mo
         if len(meta_sub_project_entity.sub_project_ids) > 1:
             raise UserError(u'每个元子工程只能有一份实体!!!')
 
-        vals['meta_sub_project_id'] = meta_sub_project_id
+        vals['subproject_id'] = meta_sub_project_entity.sub_project_ids.id
 
         sub_tache_id = int(tache_info['sub_tache_id'])
 
         target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
 
-        sub_project = super(Cowin_project_subproject_application_form_for_project_investment, self).create(vals)
+        res_entity = super(Cowin_project_subproject_application_form_for_project_investment, self).create(vals)
         target_sub_tache_entity.write({
-            'res_id': sub_project.id,
+            'res_id': res_entity.id,
             'view_or_launch': True,
         })
         #
@@ -67,4 +67,4 @@ class Cowin_project_subproject_application_form_for_project_investment(models.Mo
         #             'is_unlocked': True,
         #         })
 
-        return sub_project
+        return res_entity
