@@ -24,11 +24,11 @@
                         <field name="round_financing_id"/>
                         <field name="the_amount_of_financing"/>
                         <!---->
-                        <field name="investment_decision_process_information"/>
-                        <field name="relevant_legal_documents_and_materials"/>
-                        <field name="government_approval_materials"/>
-                        <field name="payment_process_information"/>
-                        <field name="business_change_data"/>
+                        <field name="investment_decision_process_information" widget="many2many_binary"/>
+                        <field name="relevant_legal_documents_and_materials" widget="many2many_binary"/>
+                        <field name="government_approval_materials" widget="many2many_binary"/>
+                        <field name="payment_process_information" widget="many2many_binary"/>
+                        <field name="business_change_data" widget="many2many_binary"/>
                     </group>
 
                 </form>

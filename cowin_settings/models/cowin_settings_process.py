@@ -105,7 +105,7 @@ class Cowin_settings_process(models.Model):
     def get_infos(self):
         result = []
         objs = self.env['cowin_settings.process'].search([])
-        for item in objs[:-1]:
+        for item in objs:
             result.append({
                 'name': item.name,
                 'module': item.module,

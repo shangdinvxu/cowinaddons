@@ -32,6 +32,7 @@
         'security/settings/approval_settings/ir.model.access.csv',
         'security/sub_project/ir.model.access.csv',
         'security/sub_project/prev_investment_management/ir.model.access.csv',
+        'security/sub_project/post_investment_management/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
 
@@ -53,6 +54,9 @@
 
 
         # post_investment_management
+        'views/sub_project/post_investment_management/sub_project_annual_analysis_report_on_investment_projects.xml',
+        'views/sub_project/post_investment_management/sub_project_application_for_investment_withdrawal.xml',
+
 
 
 

@@ -1,0 +1,49 @@
+<odoo>
+
+    <data>
+        <!-- 投资项目年度分析报告-->
+
+
+           <!--投资项目年度分析报告的form视图-->
+        <record model="ir.ui.view" id="sub_project_annual_analysis_report_on_investment_projects_form">
+            <field name="name">cowin_project.sub_annual_analysis_report_on_invest_pros form</field>
+            <field name="model">cowin_project.sub_annual_analysis_report_on_invest_pros</field>
+            <field name="arch" type="xml">
+                <form string="Fiscal year">
+                    <group>
+
+                        <field name="name" string="名称"/>
+                        <field name="project_number"/>
+                        <field name="reporter"/>
+                        <field name="filing_date"/>
+                        <field name="registered_address"/>
+                        <field name="chairman"/>
+                        <field name="general_manager"/>
+                        <field name="product"/>
+                        <field name="industry"/>
+                        <field name="founding_time"/>
+                        <field name="investment_phase"/>
+                        <field name="current_phase"/>
+                        <!--投资基金-->
+                        <field name="foundation_id"/>
+                        <field name="the_amount_of_investment"/>
+                        <field name="ownership_interest"/>
+                        <field name="round_financing_id"/>
+                        <field name="the_amount_of_financing"/>
+                        <!---->
+                        <field name="total_assets"/>
+                        <field name="gross_liabilities"/>
+                        <field name="trustee"/>
+                        <field name="securities_trader"/>
+                        <field name="IPOplan"/>
+                        <field name="company_status"/>
+                        <field name="industry_status"/>
+
+                    </group>
+
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

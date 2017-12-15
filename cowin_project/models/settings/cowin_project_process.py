@@ -12,6 +12,7 @@ class Cowin_project_process(models.Model):
 
     name = fields.Char(string=u'流程名称')
 
+    #
     meta_process_id = fields.Many2one('cowin_settings.process', string=u'元数据配置信息')
 
     stage_ids = fields.One2many('cowin_project.process_stage', 'process_id', string='Stage ids')
@@ -27,18 +28,20 @@ class Cowin_project_process(models.Model):
 
 
     # 该实例方法用于获取一条数据信息
-    def get_info(self):
+    def get_info(self, prev_or_post_investment=True):
         stages = []
 
         # 需要新的排序
         # asc_by_show_orders = sorted(self.stage_ids, key=lambda stage: stage.show_order)
-        asc_by_show_orders = self.env['cowin_project.process_stage'].search([('process_id', '=', self.id)],
-                                                                             order='show_order')
+        # asc_by_show_orders = self.env['cowin_project.process_stage'].search([('process_id', '=', self.id),
+        #               ('prev_or_post_investment', '=', prev_or_post_investment)], order='show_order')
 
+        asc_by_show_orders = self.stage_ids.filtered(lambda s: s.prev_or_post_investment == prev_or_post_investment).sorted('show_order')
         for stage in asc_by_show_orders:
             tmp_stage = {}
             tmp_stage['id'] = stage.id
             tmp_stage['name'] = stage.name
+            tmp_stage['prev_or_post_investment'] = stage.prev_or_post_investment
             tmp_stage['show_order'] = stage.show_order
             tmp_stage['process_id'] = stage.process_id.id
 
@@ -145,7 +148,7 @@ class Cowin_project_process(models.Model):
         return res
 
 
-    def create_process_info(self, meta_process_info):
+    def create_process_info(self, meta_process_info, project_name):
 
         '''
             以及创建配置节点, 阶段节点, 环节节点, 审批流
@@ -158,7 +161,8 @@ class Cowin_project_process(models.Model):
                        for stage in meta_process_info['stage_ids']
                        for tache in stage['tache_ids']]
 
-        name = meta_process_info['name']
+        # name = meta_process_info['name']
+        name = u'%s %s' % (u'流程配置', project_name)
         module = meta_process_info['module']
         description = meta_process_info['description']
         category = meta_process_info['category']
@@ -168,7 +172,7 @@ class Cowin_project_process(models.Model):
             'name': name,
             'module': module,
             'description': description,
-            'category': category,
+            # 'category': category,
             'meta_process_id': meta_process_info['id'],
         })
 

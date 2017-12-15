@@ -8,6 +8,7 @@
         <record id="init_post_process_project_1" model="cowin_settings.process">
             <field name="name">投后流程</field>
             <field name="description">项目投后的流程配置</field>
+            <field name="category">init_postinvestment</field>
         </record>
 
         <!-- 2.1 分析报告-->

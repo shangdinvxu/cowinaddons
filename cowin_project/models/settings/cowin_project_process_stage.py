@@ -17,6 +17,9 @@ class Cowin_settings_process_stage(models.Model):
 
     tache_ids = fields.One2many('cowin_project.process_tache', 'stage_id', string='Tache ids')
 
+    # False 代表投后  True 代表投前
+    prev_or_post_investment = fields.Boolean(string='投前?', default=True)
+
 
 
 
@@ -37,6 +40,7 @@ class Cowin_settings_process_stage(models.Model):
                 'name': stage['name'],
                 'show_order': int(stage['show_order']),
                 'process_id': process_id,
+                'prev_or_post_investment': stage['prev_or_post_investment'],
             })
 
             for tache in stage['tache_ids']:

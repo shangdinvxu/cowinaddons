@@ -33,7 +33,7 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
     founding_time = fields.Date(string=u'成立时间')
 
     investment_phase = fields.Char(string=u'投资阶段')
-    current_phase = fields.Selection([()], string=u'当前阶段')
+    current_phase = fields.Selection([(0, u'种子期'), (1, u'成长早期'), (2, u'成长期'), (3, u'成熟期')], string=u'当前阶段')
 
     # ----------  投资基金
     round_financing_id = fields.Many2one('cowin_common.round_financing',

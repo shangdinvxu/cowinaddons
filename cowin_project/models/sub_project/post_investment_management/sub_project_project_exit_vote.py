@@ -35,4 +35,4 @@ class sub_project_project_exit_vote(models.Model):
     investment_decision_committee = fields.Many2many('hr.employee', string=u'投资决策委员')
     voting_result = fields.Boolean(string=u'表决结果')
     voting_opinion = fields.Text(string=u'表决意见')
-    voter = fields.Char('hr.employee', string=u'表决人')
+    voter = fields.Many2one('hr.employee', string=u'表决人')

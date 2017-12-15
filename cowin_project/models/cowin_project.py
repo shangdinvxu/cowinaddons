@@ -25,12 +25,12 @@ class Cowin_project(models.Model):
     image = fields.Binary("LOGO", default=_default_image, attachment=True,
                           help="This field holds the image used as photo for the cowin_project, limited to 1024x1024px.")
 
-    name = fields.Char(string=u"项目名称", required=True)
+    name = fields.Char(string=u"项目名称")
 
     # project_number = fields.Char(string=u'项目编号',
     #                              defualt=lambda self: self.env['ir.sequence'].next_by_code('cowin_project.order'))
     project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')],
-                              string=u'项目来源', required=True)
+                              string=u'项目来源')
     project_source_note = fields.Char(string=u'项目来源备注')
     # invest_manager = fields.Many2one('hr.employee', string=u'投资经理')
 
@@ -97,19 +97,40 @@ class Cowin_project(models.Model):
 
         # 1, 创建工程配置实例
         process = None
-        if not vals.get('project_number'):
-            vals['project_number'] = self.env['ir.sequence'].next_by_code('cowin_project.order')
+        # if not vals.get('project_number'):
+        #     vals['project_number'] = self.env['ir.sequence'].next_by_code('cowin_project.order')
 
         if not vals.get('process_id'):
-            meta_setting_entity = self.env['cowin_settings.process'].search([('category', '=', 'init_preinvestment')])
+            meta_setting_entities = self.env['cowin_settings.process'].search(['|',
+                      ('category', '=', 'init_preinvestment'), ('category', '=', 'init_postinvestment')])
 
+            meta_settings_info = {}
+
+            prev_meta_settings_entity = self.env['cowin_settings.process'].search([('category', '=', 'init_previnvestment')])
+            post_meta_settings_entity = self.env['cowin_settings.process'].search([('category', '=', 'init_postinvestment')])
+
+            # odoo这些精炼的方法让笔者用起来感觉确实很方便, 默认情况下投前流程只能怪的阶段中 prev_or_post_investment 是为True
+            # post_meta_settings_entity.stage_ids.write({'prev_or_post_investment': False})
+
+
+            meta_settings_info = prev_meta_settings_entity.copy_custom()
+            for stage_info in meta_settings_info['stage_ids']:
+                stage_info['prev_or_post_investment'] = True
+
+            post_meta_stage_infos = post_meta_settings_entity.copy_custom()['stage_ids']
+
+            for stage_info in post_meta_stage_infos:
+                stage_info['prev_or_post_investment'] = False
+
+            meta_settings_info['stage_ids'].extend(post_meta_stage_infos)
             # 每次创建的实例 都要从数据
             # process = self.env['cowin_project.process'].create_process_info(meta_setting_entity.copy_custom(),
             #                                                                 meta_setting_entity.id)
 
 
+
             # 注意,这个self只是代表着一个空的project实体,方便以后的使用!!!
-            process = self.process_id.create_process_info(meta_setting_entity.copy_custom())
+            process = self.process_id.create_process_info(meta_settings_info, vals['name'])
 
             vals['process_id'] = process.id
 
@@ -203,7 +224,7 @@ class Cowin_project(models.Model):
 
 
     # 主工程配置的环节需要和子工程的配置的环节进行关联处理
-    def process_settings2(self, meta_sub_project_id):
+    def process_settings2(self, meta_sub_project_id, prev_or_post_investment=True):
         '''
 
         :param meta_sub_project_id: 子工程实例id
@@ -211,7 +232,7 @@ class Cowin_project(models.Model):
         '''
 
         # 1 获取原始的配置信息
-        process_info = self.process_id.get_info()
+        process_info = self.process_id.get_info(prev_or_post_investment)
 
 
 
@@ -240,8 +261,8 @@ class Cowin_project(models.Model):
         # 3 元子工程信息中存在的字环节与原始环节进行合并配置
 
         sub_tache_entities = meta_sub_project_entity.get_sub_taches()
-        tache_infos = [tache_info for stage in process_info['stage_ids']
-                  for tache_info in stage['tache_ids']]
+        tache_infos = [tache_info for stage_info in process_info['stage_ids']
+                  for tache_info in stage_info['tache_ids']]
 
         # 处理由于前端界面 新增操作而产生的新的子环节的数据
 
@@ -263,22 +284,23 @@ class Cowin_project(models.Model):
         # 1, 装配阶段信息
 
         stages = []
-        for stage in process_info['stage_ids']:
+        for stage_info in process_info['stage_ids']:
+
             res = True
-            for tache_info in stage['tache_ids']:
+            for tache_info in stage_info['tache_ids']:
                 if tache_info['model_name'] == self._name:
                     res = False
 
             if res:
-                stages.append(stage)
+                stages.append(stage_info)
 
 
-        for stage in stages:
+        for stage_info in stages:
             # 从新渲染装配
-            stage['tache_ids'] = []
+            stage_info['tache_ids'] = []
 
             for sub_tache_entity in sub_tache_entities:
-                if sub_tache_entity.tache_id.stage_id.id == stage['id']:
+                if sub_tache_entity.tache_id.stage_id.id == stage_info['id']:
                     tache_info = {}
                     tache_info['id'] = sub_tache_entity.tache_id.id
                     tache_info['sub_tache_id'] = sub_tache_entity.id
@@ -415,7 +437,7 @@ class Cowin_project(models.Model):
 
 
 
-                    stage['tache_ids'].append(tache_info)
+                    stage_info['tache_ids'].append(tache_info)
 
 
 
@@ -429,13 +451,15 @@ class Cowin_project(models.Model):
     def _get_info(self, **kwargs):
         tmp = kwargs.get("meta_project_id")
         meta_project_id = 0 if not tmp else int(tmp)
+        prev_or_post_investment = kwargs.get('prev_or_post_investment', True)
 
         info = self.copy_data()[0]
         info['id'] = self.id
         info['investment_funds'] = self.get_investment_funds()
 
+
         # 需要传递数据
-        info['process'], info['sub_project_info'] = self.process_settings2(meta_project_id)
+        info['process'], info['sub_project_info'] = self.process_settings2(meta_project_id, prev_or_post_investment)
         info['permission_configuration'] = self.rpc_get_permission_configuration()
 
         return info
@@ -602,18 +626,18 @@ class Cowin_project(models.Model):
 
 
 
-    # 派生继承之后的方法=
-    @api.model
-    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
-
-        # 在这个地方做拦截,拦截action在后台取数据,以及要绑定到的当前的用户是否为当前审批节点需要的用户!!!
-        all_projects = self.search([])
-        for pro_entity in all_projects:
-            pro_entity.write({
-                'iscurrentUser_and_Admin': True if pro_entity._iscurrentUser_and_Admin() else False
-            })
-
-        return super(Cowin_project, self).search_read(domain, fields, offset, limit, order)
+    # # 派生继承之后的方法=
+    # @api.model
+    # def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+    #
+    #     # 在这个地方做拦截,拦截action在后台取数据,以及要绑定到的当前的用户是否为当前审批节点需要的用户!!!
+    #     all_projects = self.search([])
+    #     for pro_entity in all_projects:
+    #         pro_entity.write({
+    #             'iscurrentUser_and_Admin': True if pro_entity._iscurrentUser_and_Admin() else False
+    #         })
+    #
+    #     return super(Cowin_project, self).search_read(domain, fields, offset, limit, order)
 
 
 

@@ -3,7 +3,7 @@ from odoo import models, fields, api
 
 
 class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Model):
-    _name = 'cowin_project.sub_sum_of_the_pro_withdrawal_from_the_meeting'
+    _name = 'cowin_project.sub_sum_pro_withdraw_from_meeting'
 
     '''
         项目退出会议纪要

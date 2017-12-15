@@ -8,7 +8,7 @@
         <record id="init_process_project_1" model="cowin_settings.process">
             <field name="name">投前流程</field>
             <field name="description">项目投前的流程配置</field>
-            <field name="category">init_preinvestment</field>
+            <field name="category">init_previnvestment</field>
 
         </record>
 
@@ -181,16 +181,6 @@
             </field>
             <field name="model_id" eval="ref('init_custom_model_15')"/>
         </record>
-
-
-
-
-        <!-- 3. 审批流程 -->
-        <record id="init_process_project_review" model="cowin_settings.process">
-            <field name="name">审批流程</field>
-            <field name="description">项目各个环节的审批流程配置</field>
-        </record>
-
 
     </data>
 </odoo>
