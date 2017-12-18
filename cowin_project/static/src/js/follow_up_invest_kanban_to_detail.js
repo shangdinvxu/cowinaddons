@@ -27,7 +27,35 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
     var FollowInvestKanbanToDetail = Widget.extend({
         template: '',
         events:{
+            'click .process_data_rounds .fund': 'fund_func',
+            'click .initiate':'initiate_func'
+        },
 
+        //发起
+        initiate_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var tache_index = $(target).parents('.process_data_item_line').attr('tache-index');
+            var tache_id = parseInt($(target).parents('.process_data_item_line').attr('data-tache-id'));
+            var self = this;
+            self.tache_arr[tache_index].project_id = self.id;
+            self.tache_arr[tache_index].tache_id = tache_id;
+
+            var action = {
+                view_type: 'form',
+                view_mode: 'form',
+                views: [[false, 'form']],
+                res_model: self.tache_arr[parseInt(tache_index)].model_name,
+                res_id: self.tache_arr[tache_index].res_id,
+                context: {
+                    'tache': self.tache_arr[tache_index],
+                    'default_name':self.pagedata.name,
+                },
+                type: 'ir.actions.act_window',
+                name: self.tache_arr[tache_index].name,
+                target:'current'
+            }
+            self.do_action(action);
         },
 
         //基金切换
@@ -42,7 +70,7 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
             var self =this;
             self.tache_arr = [];
             return new Model("cowin_project.cowin_project")
-                    .call("rpc_get_info", [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
+                    .call("rpc_get_post_info", [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
                     .then(function (result) {
                         console.log(result);
                         $('.process_data_main_wrap').html('');
@@ -53,7 +81,7 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
                             });
                         });
                         self.id = parseInt(result.id);
-                        $('.process_data_main_wrap').append(QWeb.render('approval_info_right_tmpl', {result: result}))
+                        $('.process_data_main_wrap').append(QWeb.render('after_invest_info_right_tmpl', {result: result}))
                     })
         },
 
@@ -66,6 +94,9 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
                 this.id = action.params.active_id;
             }
             var self = this;
+
+            //存储环节
+            self.tache_arr = [];
         },
         start: function () {
             var self = this;
@@ -73,8 +104,14 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
                     .call("rpc_get_post_info", [parseInt(self.id)],{})
                     .then(function (result) {
                         console.log(result);
-
-                        // self.id = parseInt(result.id);
+                        self.pagedata = result;
+                        //获取每个环节的model_name存入数组
+                        result.process.forEach(function (value) {
+                            value.tache_ids.forEach(function (model) {
+                                self.tache_arr.push(model)
+                            });
+                        });
+                        self.id = parseInt(result.id);
                         self.$el.append(QWeb.render('follow_up_invest_detail_tmp', {result: result}))
                     })
         }
