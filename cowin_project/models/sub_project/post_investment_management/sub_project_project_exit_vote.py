@@ -36,3 +36,27 @@ class sub_project_project_exit_vote(models.Model):
     voting_result = fields.Boolean(string=u'表决结果')
     voting_opinion = fields.Text(string=u'表决意见')
     voter = fields.Many2one('hr.employee', string=u'表决人')
+
+
+
+    @api.model
+    def create(self, vals):
+        tache_info = self._context['tache']
+
+        sub_tache_id = int(tache_info['sub_tache_id'])
+        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+
+        sub_project_id = meta_sub_project_entity.sub_project_ids.id
+
+        target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
+
+        vals['subproject_id'] = sub_project_id
+        res = super(sub_project_project_exit_vote, self).create(vals)
+        target_sub_tache_entity.write({
+            'res_id': res.id,
+            # 'is_unlocked': True,
+            'view_or_launch': True,
+        })
+
+        return res
