@@ -451,7 +451,7 @@ class Cowin_project(models.Model):
     def _get_info(self, **kwargs):
         tmp = kwargs.get("meta_project_id")
         meta_project_id = 0 if not tmp else int(tmp)
-        prev_or_post_investment = kwargs.get('prev_or_post_investment', True)
+        # prev_or_post_investment = kwargs.get('prev_or_post_investment', True)
 
         info = self.copy_data()[0]
         info['id'] = self.id
@@ -624,30 +624,6 @@ class Cowin_project(models.Model):
 
 
 
-
-
-
-
-
-
-
-
-
-    # # 派生继承之后的方法=
-    # @api.model
-    # def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
-    #
-    #     # 在这个地方做拦截,拦截action在后台取数据,以及要绑定到的当前的用户是否为当前审批节点需要的用户!!!
-    #     all_projects = self.search([])
-    #     for pro_entity in all_projects:
-    #         pro_entity.write({
-    #             'iscurrentUser_and_Admin': True if pro_entity._iscurrentUser_and_Admin() else False
-    #         })
-    #
-    #     return super(Cowin_project, self).search_read(domain, fields, offset, limit, order)
-
-
-
     # 构建审批流,
 
     # 获取子审批流记录信息
@@ -672,6 +648,7 @@ class Cowin_project(models.Model):
         sub_approval_flow_settings_id = tache_info['sub_approval_flow_settings_id']
         meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
         sub_approval_flow_settings_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(sub_approval_flow_settings_id)
+        prev_or_post_investment = kwargs['prev_or_post_investment']
 
 
         approval_flow_settings_record_info = kwargs.get('approval_flow_settings_record')
@@ -709,7 +686,7 @@ class Cowin_project(models.Model):
                     break
 
 
-        return self._get_info(meta_project_id=meta_sub_project_id)
+        return self._get_info(meta_project_id=meta_sub_project_id, prev_or_post_investment=prev_or_post_investment)
 
 
 
