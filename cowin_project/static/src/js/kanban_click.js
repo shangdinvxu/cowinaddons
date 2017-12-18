@@ -40,6 +40,15 @@ KanbanRecord.include({
                     params:{'active_id':this.record.id.raw_value,action:'approval_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
                 }
                 this.do_action(action);
+            }else if(this.$el.eq(0).hasClass('project_follow_up_invest_kanban')){
+                var action = {
+                    type: 'ir.actions.client',
+                    name: '投后跟进',
+                    tag: 'follow_invest_kanban_to_detail',
+                    active_id:this.record.id.raw_value,
+                    params:{'active_id':this.record.id.raw_value,action:'follow_invest_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
+                }
+                this.do_action(action);
             }
         }
         else {
