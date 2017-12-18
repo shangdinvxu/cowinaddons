@@ -1,13 +1,13 @@
 <odoo>
 
+
     <data>
-        <!-- 投资项目年度分析报告-->
 
-
-           <!--投资项目年度分析报告的form视图-->
-        <record model="ir.ui.view" id="sub_project_annual_analysis_report_on_investment_projects_form">
-            <field name="name">cowin_project.sub_annual_analysis_report_on_invest_pros form</field>
-            <field name="model">cowin_project.sub_annual_analysis_report_on_invest_pros</field>
+         <!-- 投资项目季度分析报告-->
+        <!--投资项目季度分析报告的form视图-->
+        <record model="ir.ui.view" id="sub_quarterly_analysis_report_form">
+            <field name="name">cowin_project.sub_quarterly_analysis_report form</field>
+            <field name="model">cowin_project.sub_quarterly_analysis_report</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year">
                     <group>
@@ -24,6 +24,8 @@
                         <field name="founding_time"/>
                         <field name="investment_phase"/>
                         <field name="current_phase"/>
+
+
                         <!--投资基金-->
                         <field name="foundation_id"/>
                         <field name="the_amount_of_investment"/>
@@ -34,10 +36,11 @@
                         <field name="total_assets"/>
                         <field name="gross_liabilities"/>
                         <field name="trustee"/>
-                        <field name="securities_trader"/>
+                        <field name="accounting_firm"/>
                         <field name="IPOplan"/>
                         <field name="company_status"/>
                         <field name="industry_status"/>
+
 
                     </group>
 

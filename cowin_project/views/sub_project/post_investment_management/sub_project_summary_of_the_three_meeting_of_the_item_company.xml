@@ -1,20 +1,23 @@
 <odoo>
     <data>
-        <!-- 立项意见书-->
 
-
-           <!--立项意见书的form视图-->
-        <record model="ir.ui.view" id="sub_project_opinion_book_form">
-            <field name="name">cowin_project.sub_opinion_book form</field>
-            <field name="model">cowin_project.sub_opinion_book</field>
+        <!-- 项目公司三会纪要-->
+        <!--项目公司三会纪要的form视图-->
+        <record model="ir.ui.view" id="sub_sum_of_the_three_meeting_form">
+            <field name="name">cowin_project.sub_sum_of_the_three_meeting form</field>
+            <field name="model">cowin_project.sub_sum_of_the_three_meeting</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year">
                     <group>
 
                         <field name="name"/>
                         <field name="project_number"/>
-                        <field name="invest_manager_id"/>
-                        <field name="date_of_project"/>
+                        <field name="reporter"/>
+                        <field name="filing_date"/>
+                        <field name="form_of_mettings"/>
+                        <field name="mettings_summary"/>
+
+
                         <!--投资基金-->
                         <field name="foundation_id"/>
                         <field name="the_amount_of_investment"/>
@@ -22,16 +25,13 @@
                         <field name="round_financing_id"/>
                         <field name="the_amount_of_financing"/>
                         <!---->
-                        <field name="project_mumbers"/>
-                        <field name="partner_opinion"/>
-                        <field name="business_director_option"/>
-                        <field name="policy_making_committee"/>
+
+
                     </group>
 
                 </form>
             </field>
         </record>
-
 
     </data>
 </odoo>

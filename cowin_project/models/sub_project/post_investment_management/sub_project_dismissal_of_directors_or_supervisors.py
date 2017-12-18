@@ -24,7 +24,7 @@ class sub_project_dismissal_of_directors_or_supervisors(models.Model):
 
     supervisor = fields.Many2one('hr.employee', string=u'监事')
     appointment_time_begin_supervisor = fields.Date(string=u'开始日期')
-    appointment_time_endr_supervisor = fields.Date(string=u'结束日期')
+    appointment_time_end_supervisor = fields.Date(string=u'结束日期')
 
     Tenure_supervisor = fields.Float(string=u'任职年限')
 

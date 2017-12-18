@@ -1,22 +1,21 @@
-
-
 <odoo>
 
     <data>
-        <!-- 投资项目年度分析报告-->
 
-
-           <!--投资项目年度分析报告的form视图-->
-        <record model="ir.ui.view" id="sub_project_annual_analysis_report_on_investment_projects_form">
-            <field name="name">cowin_project.sub_app_for_investment_withdrawal form</field>
-            <field name="model">cowin_project.sub_app_for_investment_withdrawal</field>
+         <!-- 项目退出决议-->
+        <!--项目退出决议的form视图-->
+        <record model="ir.ui.view" id="sub_project_exit_resolution_form">
+            <field name="name">cowin_project.sub_project_exit_resolution form</field>
+            <field name="model">cowin_project.sub_project_exit_resolution</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year">
                     <group>
 
                         <field name="name"/>
-                        <field name="reporter"/>
-                        <field name="report_date"/>
+                        <field name="project_number"/>
+                        <field name="invest_manager_id"/>
+                        <field name="project_exit_date"/>
+                        <field name="result"/>
 
                         <!--投资基金-->
                         <field name="foundation_id"/>
@@ -25,19 +24,18 @@
                         <field name="round_financing_id"/>
                         <field name="the_amount_of_financing"/>
                         <!---->
-
-                        <field name="trustee"/>
-                        <field name="supervisor"/>
                         <field name="withdrawal_amount"/>
                         <field name="withdrawal_ratio"/>
-                        <field name="decision_file_list" widget="many2many_binary"/>
                         <field name="exit_plan"/>
+                        <field name="chairman_of_investment_decision_committee"/>
+
 
                     </group>
 
                 </form>
             </field>
         </record>
+
 
     </data>
 </odoo>

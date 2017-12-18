@@ -1,0 +1,41 @@
+<odoo>
+
+    <data>
+
+        <!-- 董事／监事解聘书-->
+        <!--董事／监事解聘书的form视图-->
+        <record model="ir.ui.view" id="sub_dismissal_of_directs_or_supers_form">
+            <field name="name">cowin_project.sub_dismissal_of_directs_or_supers form</field>
+            <field name="model">cowin_project.sub_dismissal_of_directs_or_supers</field>
+            <field name="arch" type="xml">
+                <form string="Fiscal year">
+                    <group>
+
+                        <field name="name"/>
+                        <field name="invest_manager_id"/>
+                        <field name="trustee"/>
+                        <field name="appointment_time_begin_trustee"/>
+                        <field name="appointment_time_end_trustee"/>
+                        <field name="Tenure_trustee"/>
+                        <field name="supervisor"/>
+                        <field name="appointment_time_begin_supervisor"/>
+                        <field name="appointment_time_end_supervisor"/>
+                        <field name="Tenure_supervisor"/>
+                        <field name="managing_partner"/>
+
+                        <!--投资基金-->
+                        <field name="foundation_id"/>
+                        <field name="the_amount_of_investment"/>
+                        <field name="ownership_interest"/>
+                        <field name="round_financing_id"/>
+                        <field name="the_amount_of_financing"/>
+                        <!---->
+
+                    </group>
+
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>
