@@ -525,6 +525,13 @@ class Cowin_project(models.Model):
 
     # 通过rpc调用,把详细的信息传递到前端以便于显示操作
     def rpc_get_info(self, **kwargs):
+        kwargs['prev_or_post_investment'] = True
+        return self._get_info(**kwargs)
+
+
+    # 投后的操作,操作的流程的使用的特性!!!
+    def rpc_get_post_info(self, **kwargs):
+        kwargs['prev_or_post_investment'] = False
         return self._get_info(**kwargs)
 
 
