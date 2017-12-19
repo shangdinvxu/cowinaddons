@@ -21,6 +21,14 @@
             <field name="view_mode">tree,form</field>
         </record>
 
+         <record model="ir.actions.act_window" id="cowin_project.action_window2">
+            <field name="name">cowin_project 项目查询</field>
+            <field name="res_model">cowin_project.cowin_project</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name="groups_id" eval="[(4, ref('cowin_project_normal_group'))]"/>-->
+
+        </record>
+
 
 
          <!--项目流程 看板-->
@@ -261,7 +269,7 @@
 
         <!--项目管理-项目流程-->
         <record model="ir.actions.act_window" id="action_project_process">
-            <field name="name">所有项目</field>
+            <field name="name">项目流程</field>
             <field name="res_model">cowin_project.cowin_project</field>
             <field name="view_ids"
                    eval="[(5, 0, 0),

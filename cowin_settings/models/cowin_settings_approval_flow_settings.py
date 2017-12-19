@@ -90,15 +90,19 @@ class Cowin_settings_approval_flow_settings(models.Model):
         for node in create_nodes:
             # create a new node!!!
             # role_ids = node['operation_role_ids']
-            self.env['cowin_settings.approval_flow_setting_node'].create({
+            # self.env['cowin_settings.approval_flow_setting_node'].create({
+            approval_flow_setting_node_entity = self.approval_flow_settings_node_ids.create({
                 'name': node['name'],
                 'approval_flow_settings_id': self.id,
                 'accept': node['accept'],
                 'reject': node['reject'],
                 'put_off': node['put_off'],
                 # 'operation_role_ids': [(6, 0, role_ids)],
-                'operation_role_id': node['operation_role_id'],
+                # 'operation_role_id': node['operation_role_id'],
             })
+
+            # 通过写入的方法把审批节点写入进去!!!
+            approval_flow_setting_node_entity.write({'operation_role_id': node['operation_role_id']})
 
 
 
@@ -178,8 +182,9 @@ class Cowin_approval_flow_setting_node(models.Model):
 
     @api.model
     def create(self, vals):
-        # 默认情况下,给给每个审批节点添加一个默认的审批角色
-        operation_role_entity = self.operation_role_id.search([])[0]
+        # 默认情况下,给每个审批节点添加一个默认的审批角色
+        that = self if len(self) <= 1 else self[0]
+        operation_role_entity = that.operation_role_id.search([])[0]
         vals['operation_role_id'] = operation_role_entity.id
         res = super(Cowin_approval_flow_setting_node, self).create(vals)
         res._fix_dependency_at_create()
