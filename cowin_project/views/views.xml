@@ -5,7 +5,7 @@
             <field name="name">cowin_project list</field>
             <field name="model">cowin_project.cowin_project</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree create="false">
                     <field name="name"/>
                     <!--<field name="project_number"/>-->
                     <field name="industry"/>
@@ -92,7 +92,7 @@
             <field name="model">cowin_project.cowin_project</field>
             <!--<field name="priority">10</field>-->
             <field name="arch" type="xml">
-                <kanban class="project_process_kanban_wrap">
+                <kanban class="project_process_kanban_wrap" create="false">
                     <field name="name"/>
                     <field name="image" widget="image"/>
                     <!--<field name="register_person"/>-->
@@ -147,7 +147,7 @@
             <field name="model">cowin_project.cowin_project</field>
             <!--<field name="priority">10</field>-->
             <field name="arch" type="xml">
-                <kanban class="project_process_kanban_wrap">
+                <kanban class="project_process_kanban_wrap" create="false">
                     <field name="name"/>
                     <field name="image" widget="image"/>
                     <!--<field name="register_person"/>-->
@@ -202,7 +202,7 @@
             <field name="model">cowin_project.cowin_project</field>
             <!--<field name="priority">10</field>-->
             <field name="arch" type="xml">
-                <kanban class="project_process_kanban_wrap">
+                <kanban class="project_process_kanban_wrap" create="false">
                     <field name="name"/>
                     <field name="image" widget="image"/>
                     <!--<field name="register_person"/>-->
