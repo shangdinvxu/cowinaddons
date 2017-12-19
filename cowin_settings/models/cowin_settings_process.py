@@ -135,6 +135,21 @@ class Cowin_settings_process(models.Model):
         return self.get_info()
 
 
+    def rpc_edit_group(self, **kwargs):
+        '''
+        name 分组名
+        stage_id: 分组id
+        :param kwargs:
+        :return:
+        '''
+
+        id = kwargs.get('stage_id')
+        name = kwargs.get('name')
+        if not name:
+            raise UserError(u'分组名不能为空!!!')
+        self.env['cowin_settings.process_stage'].search([('id', '=', id)]).write({'name': name})
+
+
 
     # 使用rpc方法来对删除分组所对应的实例(记录)
     def rpc_delete_group(self, **kwargs):

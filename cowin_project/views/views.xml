@@ -271,6 +271,7 @@
         <record model="ir.actions.act_window" id="action_project_process">
             <field name="name">项目流程</field>
             <field name="res_model">cowin_project.cowin_project</field>
+            <field name="domain">[('create_uid', '=', uid)]</field>
             <field name="view_ids"
                    eval="[(5, 0, 0),
                           (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_process_kanban_view')})]"/>
@@ -281,6 +282,7 @@
         <!--投后管理-投后跟进-->
         <record model="ir.actions.act_window" id="action_follow_up_invest">
             <field name="name">投后跟进</field>
+            <field name="domain">[('create_uid', '=', uid)]</field>
             <field name="res_model">cowin_project.cowin_project</field>
             <field name="view_ids"
                    eval="[(5, 0, 0),
@@ -290,7 +292,8 @@
         </record>
 
         <record model="ir.actions.act_window" id="action_project_approval">
-            <field name="name">cowin_project_process window</field>
+            <field name="name">项目审批</field>
+            <field name="domain">[('create_uid', '=', uid)]</field>
             <field name="res_model">cowin_project.cowin_project</field>
             <field name="view_type">form</field>
             <field name="view_mode">kanban</field>
