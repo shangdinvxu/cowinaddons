@@ -107,7 +107,7 @@
                     编辑分组
                 </div>
                 <div class="edit_input_wrap">分组名称: <input class="edit_group_input" type="text"/></div>
-                <button class=" btn btn-primary alia_confirm" style="margin-left:112px">确定</button>
+                <button class=" btn btn-primary edit_group_confirm" style="margin-left:112px">确定</button>
                 <button class="btn btn-default alia_cancel">取消</button>
             </div>
         </div>

@@ -38,12 +38,25 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             'click .delete_node':'delete_node_func',
             'click .add_approval_node':'add_approval_node_func',
             'click .approval_save':'approval_save_func',
-            'click .trans':'show_edit_group'
+            'click .trans':'show_edit_group',
+            'click .edit_group_confirm':'save_edit_group'
+        },
+        //保存编辑分组
+        save_edit_group:function () {
+            var self = this;
+            return new Model("cowin_settings.process")
+                .call("rpc_edit_group",[self.id],{stage_id:parseInt(self.edit_group_id),name:$('.edit_group_input').val()})
+                .then(function (result) {
+                    self.$el.html('');
+                    self.$el.append(QWeb.render('process_conf_detail_tmp', {result: result}));
+                })
         },
         //显示编辑分组
         show_edit_group:function (e) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
+            var self = this;
+            self.edit_group_id = $(target).parents('tr').attr('data-id');
             $(".edit_group").show();
             $('.edit_group_input').val($(target).parents('td').find('.group_name').text())
         },

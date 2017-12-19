@@ -114,7 +114,7 @@ odoo.define('cowin_project.approval_after_invest_kanban_to_detail', function (re
                     'approval_result': approval_result,
                     'approval_opinion': opinion,
                 },
-                'prev_or_post_investment': false,
+                'prev_or_post_investment': false
             };
             return new Model("cowin_project.cowin_project")
                     .call("rpc_save_approval_flow_info", [parseInt(self.id)],data)

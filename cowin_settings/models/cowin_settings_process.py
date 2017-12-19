@@ -148,7 +148,7 @@ class Cowin_settings_process(models.Model):
         if not name:
             raise UserError(u'分组名不能为空!!!')
         self.env['cowin_settings.process_stage'].search([('id', '=', id)]).write({'name': name})
-
+        return self.get_info()
 
 
     # 使用rpc方法来对删除分组所对应的实例(记录)
