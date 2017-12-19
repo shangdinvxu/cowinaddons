@@ -98,11 +98,11 @@ class Cowin_settings_approval_flow_settings(models.Model):
                 'reject': node['reject'],
                 'put_off': node['put_off'],
                 # 'operation_role_ids': [(6, 0, role_ids)],
-                # 'operation_role_id': node['operation_role_id'],
+                'operation_role_id': node['operation_role_id'],
             })
 
             # 通过写入的方法把审批节点写入进去!!!
-            approval_flow_setting_node_entity.write({'operation_role_id': node['operation_role_id']})
+            # approval_flow_setting_node_entity.write({'operation_role_id': node['operation_role_id']})
 
 
 
@@ -184,8 +184,10 @@ class Cowin_approval_flow_setting_node(models.Model):
     def create(self, vals):
         # 默认情况下,给每个审批节点添加一个默认的审批角色
         that = self if len(self) <= 1 else self[0]
-        operation_role_entity = that.operation_role_id.search([])[0]
-        vals['operation_role_id'] = operation_role_entity.id
+
+        if not vals['operation_role_id']:
+            operation_role_entity = that.operation_role_id.search([])[0]
+            vals['operation_role_id'] = operation_role_entity.id
         res = super(Cowin_approval_flow_setting_node, self).create(vals)
         res._fix_dependency_at_create()
         return res
