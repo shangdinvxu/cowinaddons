@@ -11,10 +11,10 @@
                     <span class="fa fa-plus"></span>
                     新建分组
                 </div>
-                <div class="new_link_button">
-                    <span class="fa fa-plus"></span>
-                    新增环节
-                </div>
+                <!--<div class="new_link_button">-->
+                    <!--<span class="fa fa-plus"></span>-->
+                    <!--新增环节-->
+                <!--</div>-->
                 <div class="sort_button sort_group">
                     <span class="fa fa-exchange fa-rotate-90"></span>
                     <span class="sort_state">排序</span>
@@ -32,7 +32,7 @@
                       <th>进度</th>
                       <th>解锁条件</th>
                       <th style="width:500px">说明</th>
-                      <th>启用状态</th>
+                      <!--<th>启用状态</th>-->
                       <th>操作</th>
                     </tr>
                   </thead>
@@ -56,25 +56,25 @@
                                 <td class="tache_name"><t t-esc="obj.name"/></td>
                                 <td class="tache_parent">
                                     <t t-if="obj.parent_id==false">
-                                        无条件
+                                        <span>无条件</span>
                                     </t>
                                     <t t-else="">
-                                        <t t-esc="obj.parent_id"/>
+                                        <span><t t-esc="obj.parent_id"/></span>
                                     </t>
                                 </td>
                                 <td class="tache_description"><t t-esc="obj.description"/></td>
-                                <td>
-                                    <t t-if="obj.state==true">
-                                        <input type="checkbox" checked="checked"/>
-                                    </t>
-                                    <t t-else="">
-                                        <input type="checkbox"/>
-                                    </t>
-                                </td>
+                                <!--<td>-->
+                                    <!--<t t-if="obj.state==true">-->
+                                        <!--<input type="checkbox" checked="checked"/>-->
+                                    <!--</t>-->
+                                    <!--<t t-else="">-->
+                                        <!--<input type="checkbox"/>-->
+                                    <!--</t>-->
+                                <!--</td>-->
                                 <td class="operate_wrap">
                                     <span class="edit_tache">编辑</span>
                                     <!--<span>移动到</span>-->
-                                    <span class="tache_delete">删除</span>
+                                    <!--<span class="tache_delete">删除</span>-->
                                     <span class="approval_flow">审批流</span>
                                 </td>
                             </tr>
@@ -94,6 +94,19 @@
                 </div>
                 <div class="create_input_wrap">分组名称: <input class="create_group_input" type="text"/></div>
                 <div class="create_texts">提示：新建分组后，您可对所有分组进行排序，将该分组放在合适的位置。并在该分组下新增所属环节</div>
+                <button class=" btn btn-primary alia_confirm" style="margin-left:112px">确定</button>
+                <button class="btn btn-default alia_cancel">取消</button>
+            </div>
+        </div>
+
+        <!--编辑分组-->
+        <div class="edit_group close_this_container">
+            <div class="modal-backdrop  in"></div>
+            <div class="create_wrap">
+                <div class="create_wrap_head">
+                    编辑分组
+                </div>
+                <div class="edit_input_wrap">分组名称: <input class="edit_group_input" type="text"/></div>
                 <button class=" btn btn-primary alia_confirm" style="margin-left:112px">确定</button>
                 <button class="btn btn-default alia_cancel">取消</button>
             </div>
@@ -180,8 +193,10 @@
                 <p>审批流设置</p>
                 <div class="add_approval_node_wrap">
                     <div class="add_approval_node">
-                        <span class="fa fa-plus"></span>
-                        审批节点
+                        <t t-if="operate==true">
+                            <span class="fa fa-plus"></span>
+                            审批节点
+                        </t>
                     </div>
                 </div>
                 <div class="approval_main_left">
@@ -271,7 +286,9 @@
                 </div>
 
                 <div class="approval_wrap_footer">
-                    <span class="approval_save">保存</span>
+                    <t t-if="operate==true">
+                        <span class="approval_save">保存</span>
+                    </t>
                     <span class="approval_cancel">取消</span>
                 </div>
             </div>

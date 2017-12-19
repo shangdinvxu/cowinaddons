@@ -1,7 +1,7 @@
 /**
- * Created by 123 on 2017/12/1.
+ * Created by 123 on 2017/12/18.
  */
-odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
+odoo.define('cowin_project.approval_after_invest_kanban_to_detail', function (require) {
     "use strict";
 
     var core = require('web.core');
@@ -24,7 +24,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
     var approval_tache_index;    //当前审核节点
 
 
-    var ApprovalKanbanToDetail = Widget.extend({
+    var ApprovalAfterInvestKanbanToDetail = Widget.extend({
         template: '',
         events:{
             'click .process_data_rounds .fund': 'fund_func',
@@ -114,7 +114,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
                     'approval_result': approval_result,
                     'approval_opinion': opinion,
                 },
-                'prev_or_post_investment': true,
+                'prev_or_post_investment': false,
             };
             return new Model("cowin_project.cowin_project")
                     .call("rpc_save_approval_flow_info", [parseInt(self.id)],data)
@@ -192,7 +192,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
         start: function () {
             var self = this;
             return new Model("cowin_project.cowin_project")
-                    .call("rpc_get_info", [parseInt(self.id)],{})
+                    .call("rpc_get_post_info", [parseInt(self.id)],{})
                     .then(function (result) {
                         console.log(result);
                         //获取每个环节的model_name存入数组
@@ -203,11 +203,11 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
                         });
 
                         self.id = parseInt(result.id);
-                        self.$el.append(QWeb.render('project_approval_detail_tmp', {result: result}))
+                        self.$el.append(QWeb.render('project_approval_after_invest_detail_tmp', {result: result}))
                     })
         }
     });
-    core.action_registry.add('approval_kanban_to_detail', ApprovalKanbanToDetail);
+    core.action_registry.add('approval_after_invest_kanban_to_detail', ApprovalAfterInvestKanbanToDetail);
 
-    return ApprovalKanbanToDetail;
+    return ApprovalAfterInvestKanbanToDetail;
 });

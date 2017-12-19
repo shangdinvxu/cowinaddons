@@ -113,7 +113,9 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                                 $("<span class='no_perfect'>未完善</span>").insertBefore($('.manage_team_btn .fa'));
                             }
                         }
-
+                        $('.process_data_main_wrap').html('');
+                        $('.process_data_main_wrap').append(QWeb.render('project_manage_team_tmp', {result: result}));
+                        Dialog.alert(this, _t("保存成功"))
                     })
         },
         //确定员工选择

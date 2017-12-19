@@ -37,7 +37,15 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             'click .approval_cancel':'close_approval_flow_wrap',
             'click .delete_node':'delete_node_func',
             'click .add_approval_node':'add_approval_node_func',
-            'click .approval_save':'approval_save_func'
+            'click .approval_save':'approval_save_func',
+            'click .trans':'show_edit_group'
+        },
+        //显示编辑分组
+        show_edit_group:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            $(".edit_group").show();
+            $('.edit_group_input').val($(target).parents('td').find('.group_name').text())
         },
         //保存审批流设置
         approval_save_func:function () {
@@ -121,6 +129,11 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
         show_approval_flow_wrap:function (e) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
+            if($(target).parents('tr').find('.tache_name').text()=='信息登记'){
+                var operate = false;
+            }else {
+                var operate = true;
+            }
             var tache_id = $(target).parents('.process_detail_group_detail_line').attr('data-tache-id');
             var self = this;
             self.approval_opearate_tache_id = tache_id;
@@ -135,7 +148,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                     self.select_roles = result.approval_flow_setting_node_ids[0].all_operator_role_ids;   //存储所有角色
                     self.approval_over = result.approval_flow_setting_node_ids[result.approval_flow_setting_node_ids.length-1];   //存储审批结束的节点
 
-                    self.$el.append(QWeb.render('approval_flow_tmpl',{result: result}));
+                    self.$el.append(QWeb.render('approval_flow_tmpl',{result: result,operate:operate}));
                 })
         },
         //取消排序
@@ -207,10 +220,12 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
         sort_group_show:function () {
             $('.drag_show').show();
             $('.sort_group .sort_state').html('保存');
+            $('.sort_group .fa').removeClass('fa-exchange fa-rotate-90').addClass('fa-check');
             $('.sort_group').addClass('sort_group_save');
             $('.sort_group').removeClass('sort_group');
             $('.process_detail_group_line').attr('draggable','true');
             $('.cancel_sort').css('display','inline-block');
+            $('.operate_wrap').hide();
         },
         //确定环节编辑
         confirm_unlock_condition:function (e) {
@@ -252,9 +267,9 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             }
             $('.current_tache').val($(target).parents('.operate_wrap').prevAll('.tache_name').html());
             $('.condition_wrap option').each(function () {
-                $(this)[0].selected =  false
-                if($(this).html() == $(target).parents('.operate_wrap').prevAll('.tache_parent').html()){
-                    $(this)[0].selected = true
+                $(this)[0].selected =  false;
+                if($(this).text() == $(target).parents('.operate_wrap').prevAll('.tache_parent').find('span').text()){
+                    $(this)[0].selected = true;
                 }
             });
             $('.edit_tache_input_wrap option').each(function () {
@@ -271,18 +286,22 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             var target = e.target || e.srcElement;
             var self = this;
             var del_group_id = $(target).parents('tr').attr('data-id');
-            Dialog.confirm(this, _t("确定删除这条分组吗?"), {
-                confirm_callback: function() {
-                    new Model("cowin_settings.process")
-                        .call("rpc_delete_group", [self.id], {stage_id:del_group_id})
-                        .then(function (result) {
-                            console.log(result);
-                            $('.create_new_tache').hide();
-                            self.$el.html('');
-                            self.$el.append(QWeb.render('process_conf_detail_tmp', {result: result}));
-                        })
-                },
-            });
+            if($(".process_detail_group_detail_line[data-stage-id="+ parseInt(del_group_id) +"]").length>0){
+                Dialog.alert(this,_t("无法删除(已存在环节，请移除环节后再删除）"))
+            }else {
+                 Dialog.confirm(this, _t("确定删除这条分组吗?"), {
+                    confirm_callback: function() {
+                        new Model("cowin_settings.process")
+                            .call("rpc_delete_group", [self.id], {stage_id:del_group_id})
+                            .then(function (result) {
+                                console.log(result);
+                                $('.create_new_tache').hide();
+                                self.$el.html('');
+                                self.$el.append(QWeb.render('process_conf_detail_tmp', {result: result}));
+                            })
+                    },
+                 });
+            }
         },
         //删除环节
         delete_tache_func:function (e) {

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="project_approval_after_invest_detail_tmp">
+        <div id="project_process_container">
+            <div class="project_header">
+                <h2><t t-esc="result.name"/></h2>
+            </div>
+            <div style="width:100%;height:10px;background:rgba(242, 242, 242, 1)"></div>
+            <ul id="process_tab" class="nav nav-tabs">
+                <li><a href="#process_detail" data-toggle="tab">详情</a></li>
+                <li class="active"><a href="#process_data" data-toggle="tab">流程资料</a></li>
+                <li><a href="#process_contact" data-toggle="tab">联系人</a></li>
+                <li><a href="#process_record" data-toggle="tab">操作记录</a></li>
+            </ul>
+            <div id="process_tab_content" class="tab-content">
+                <div class="tab-pane fade" id="process_detail">
+
+                </div>
+                <div class="tab-pane fade in active" id="process_data">
+                    <t t-call="process_info">
+                        <t t-set="result" t-value="result"></t>
+                    </t>
+                </div>
+                <div class="tab-pane fade" id="process_contact">
+
+                </div>
+                <div class="tab-pane fade" id="process_record">
+
+                </div>
+            </div>
+        </div>
+    </t>
+
+
+    <!--流程资料tab内容-->
+    <t t-name="process_info">
+        <div class="process_data_left_wrap">
+            <div class="process_data_rounds">
+                <div>项目流程</div>
+                <t t-set="active_flag" t-value="1"/>
+                <t t-foreach="result.investment_funds" t-as="item">
+                    <div class="process_rounds_wrap">
+                        <strong><t t-esc="item.round_financing_name ? item.round_financing_name:''"/></strong>
+                        <ul>
+                            <t t-foreach="item.foundation_names" t-as="obj">
+                                <t t-if="active_flag==1">
+                                    <li t-att-data-sub-id="obj.meta_sub_project_id" class="active_fund fund">
+                                        <t t-if="obj.foundation_name==''">
+                                            暂无基金
+                                        </t>
+                                        <t t-else="">
+                                            <t t-esc="obj.foundation_name"/> <span class="fa fa-chevron-right"></span>
+                                        </t>
+                                    </li>
+                                    <t t-set="active_flag" t-value="0"/>
+                                </t>
+                                <t t-else="">
+                                    <li class="fund" t-att-data-sub-id="obj.meta_sub_project_id"><t t-esc="obj.foundation_name"/> </li>
+                                </t>
+                            </t>
+                        </ul>
+                    </div>
+                </t>
+            </div>
+        </div>
+        <div class="process_data_main_wrap">
+            <t t-call="approval_info_right_tmpl">
+                <t t-set="result" t-value="result"></t>
+            </t>
+        </div>
+    </t>
+
+    <!--流程资料右边内容-->
+    <t t-name="approval_info_right_tmpl">
+        <t t-set="tache_index" t-value="0"/>
+        <t t-foreach="result.process" t-as="item">
+            <div class="process_data_item_line header_line">
+                <span class="fa fa-folder-o"></span>
+                <span><t t-esc="item.name"/> </span>
+            </div>
+            <t t-foreach="item.tache_ids" t-as="obj">
+                <div class="process_data_item_line detail_line" t-att-data-sub-tache-id="obj.sub_tache_id" t-att-data-sub-project-id="obj.meta_sub_project_id" t-att-data-sub-approval-id="obj.approval_status.sub_approval_flow_settings_id" t-att-data-tache-id="obj.id" t-att-tache-index="tache_index">
+                    <t t-set="tache_index" t-value="tache_index + 1"/>
+                    <span><t t-esc="obj.name"/> </span>
+                    <span>【
+                        <t t-esc="obj.approval_status.status_name"/>
+                        】
+                    </span>
+                    <div class="button_wrap">
+                        <t t-if="obj.approval_status.approval_view_or_launch==true">
+                            <span class="to_approval" style="color:red"><a href="javascript:void(0)">审核</a></span>
+                        </t>
+                        <t t-elif="obj.approval_status.approval_view_or_launch==false">
+                            <span class="view_approval"><a href="javascript:void(0)">查看</a></span>
+                        </t>
+                        <t t-else="">
+
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </t>
+
+    <t t-name="process_info_left_tmpl">
+        <div>项目流程</div>
+        <!--<t t-set="active_flag" t-value="1"/>-->
+        <t t-foreach="result.investment_funds" t-as="item">
+            <div class="process_rounds_wrap">
+                <strong><t t-esc="item.round_financing_name ? item.round_financing_name:''"/></strong>
+                <ul>
+                    <t t-foreach="item.foundation_names" t-as="obj">
+                        <t t-if="active_flag== obj.meta_sub_project_id">
+                            <li t-att-data-sub-id="obj.meta_sub_project_id" class="active_fund fund">
+                                <t t-if="obj.foundation_name==''">
+                                    暂无基金
+                                </t>
+                                <t t-else="">
+                                    <t t-esc="obj.foundation_name"/> <span class="fa fa-chevron-right"></span>
+                                </t>
+                            </li>
+                            <t t-set="active_flag" t-value="0"/>
+                        </t>
+                        <t t-else="">
+                            <li class="fund" t-att-data-sub-id="obj.meta_sub_project_id"><t t-esc="obj.foundation_name"/> </li>
+                        </t>
+                    </t>
+                </ul>
+            </div>
+        </t>
+    </t>
+
+    <!--审批页面-->
+    <t t-name="approval_page">
+        <p class="approval_head">
+            环节名称：投资决策申请
+        </p>
+        <div class="approval_body">
+            <div>查看</div>
+        </div>
+
+        <p class="approval_head">审批记录</p>
+        <div class="approval_page_record">
+            <div class="approval_record_head">
+                <span>审批人</span>
+                <span>审批角色</span>
+                <span>审批结果</span>
+                <span>审批意见</span>
+                <span>审批时间</span>
+            </div>
+            <t t-foreach="result" t-as="item">
+                <div class="approval_record_body">
+                    <span><t t-esc="item.approval_person"/></span>
+                    <span><t t-esc="item.approval_role_name"/> </span>
+                    <span><t t-esc="item.approval_result"/></span>
+                    <span><t t-esc="item.approval_opinion"/></span>
+                    <span><t t-esc="item.create_date"/></span>
+                </div>
+            </t>
+        </div>
+
+        <t t-if="edit==true">
+            <p class="approval_head">审批意见</p>
+            <div class="approval_page_opinion_wrap">
+                <textarea class="approval_opinion"></textarea>
+            </div>
+            <div class="approval_page_btns_wrap">
+                <span class="approval_yes approval_btn">同意</span>
+                <span class="approval_no approval_btn">不同意</span>
+            </div>
+        </t>
+    </t>
+</templates>
