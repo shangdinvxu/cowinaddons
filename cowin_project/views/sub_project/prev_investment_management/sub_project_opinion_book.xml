@@ -23,9 +23,9 @@
                         <field name="the_amount_of_financing"/>
                         <!---->
                         <field name="project_mumbers"/>
-                        <field name="partner_opinion"/>
-                        <field name="business_director_option"/>
-                        <field name="policy_making_committee"/>
+                        <!--<field name="partner_opinion"/>-->
+                        <!--<field name="business_director_option"/>-->
+                        <!--<field name="policy_making_committee"/>-->
                     </group>
 
                 </form>

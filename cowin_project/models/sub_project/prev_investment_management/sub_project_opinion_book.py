@@ -41,9 +41,9 @@ class Cowin_project_subproject_opinion_book(models.Model):
 
     # examine_and_verify = fields.Char(string=u'审核校验', default=u'未开始审核')
 
-    partner_opinion = fields.Text(string=u'项目合伙人表决意见')
-    business_director_option = fields.Text(string=u'业务总监表决意见')
-    policy_making_committee = fields.Text(string=u'投资决策委员会意见')
+    # partner_opinion = fields.Text(string=u'项目合伙人表决意见')
+    # business_director_option = fields.Text(string=u'业务总监表决意见')
+    # policy_making_committee = fields.Text(string=u'投资决策委员会意见')
 
 
     @api.model

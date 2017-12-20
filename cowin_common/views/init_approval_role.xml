@@ -2,9 +2,7 @@
     <data>
 
         <!--初始化虚拟角色-->
-        <record id="init_approval_flow_operation_role_1" model="cowin_common.approval_role">
-            <field name="name">创建人</field>
-        </record>
+
         <record id="init_approval_flow_operation_role_2" model="cowin_common.approval_role">
             <field name="name">投资经理</field>
         </record>
@@ -22,9 +20,6 @@
         </record>
         <record id="init_approval_flow_operation_role_7" model="cowin_common.approval_role">
             <field name="name">管理合伙人</field>
-        </record>
-        <record id="init_approval_flow_operation_role_8" model="cowin_common.approval_role">
-            <field name="name">复核人</field>
         </record>
         <record id="init_approval_flow_operation_role_9" model="cowin_common.approval_role">
             <field name="name">财务专员</field>

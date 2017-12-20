@@ -185,7 +185,7 @@ class Cowin_approval_flow_setting_node(models.Model):
         # 默认情况下,给每个审批节点添加一个默认的审批角色
         that = self if len(self) <= 1 else self[0]
 
-        if not vals['operation_role_id']:
+        if not vals.get('operation_role_id'):
             operation_role_entity = that.operation_role_id.search([])[0]
             vals['operation_role_id'] = operation_role_entity.id
         res = super(Cowin_approval_flow_setting_node, self).create(vals)

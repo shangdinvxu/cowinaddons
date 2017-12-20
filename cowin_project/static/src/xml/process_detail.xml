@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <templates xml:space="preserve">
+
+        <t t-name="KanbanView.nocontent">
+            <div class="oe_view_nocontent">
+                暂无内容
+            </div>
+        </t>
+
+
     <t t-name="project_process_detail_tmp">
         <div id="project_process_container">
             <div class="project_header">
