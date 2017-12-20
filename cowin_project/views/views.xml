@@ -1,36 +1,5 @@
 <openerp>
     <data>
-         <!--explicit list view definition-->
-        <record model="ir.ui.view" id="cowin_project.list">
-            <field name="name">cowin_project list</field>
-            <field name="model">cowin_project.cowin_project</field>
-            <field name="arch" type="xml">
-                <tree create="false">
-                    <field name="name"/>
-                    <!--<field name="project_number"/>-->
-                    <field name="industry"/>
-                    <field name="production"/>
-                </tree>
-            </field>
-        </record>
-
-        <!-- actions opening views on models -->
-        <record model="ir.actions.act_window" id="cowin_project.action_window">
-            <field name="name">cowin_project window</field>
-            <field name="res_model">cowin_project.cowin_project</field>
-            <field name="view_mode">tree,form</field>
-        </record>
-
-         <record model="ir.actions.act_window" id="cowin_project.action_window2">
-            <field name="name">cowin_project 项目查询</field>
-            <field name="res_model">cowin_project.cowin_project</field>
-            <field name="view_mode">tree,form</field>
-            <!--<field name="groups_id" eval="[(4, ref('cowin_project_normal_group'))]"/>-->
-
-        </record>
-
-
-
          <!--项目流程 看板-->
         <record id="project_process_kanban_view" model="ir.ui.view">
             <field name="name">cowin_project.process.kanban</field>
@@ -336,7 +305,7 @@
 
         <!--项目管理-项目审批-->
         <record model="ir.actions.act_window" id="action_project_approval">
-            <field name="name">cowin_project_process window</field>
+            <field name="name">项目审批</field>
             <field name="domain">[('create_uid', '=', uid)]</field>
             <field name="res_model">cowin_project.cowin_project</field>
             <field name="view_type">form</field>
@@ -369,11 +338,37 @@
         </record>
 
 
+        <!--项目查询-->
+        <record model="ir.actions.act_window" id="cowin_project.action_window">
+            <field name="name">项目查询</field>
+            <field name="res_model">cowin_project.cowin_project</field>
+            <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_process_kanban_view')})]"/>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+
         <!--开始为菜单构建用户组/角色-->
 
         <record id="cowin_project_menu_group" model="res.groups">
             <field name="name">cowin_project_menu_group</field>
             <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+
+        <record model="ir.ui.view" id="project_search_view">
+            <field name="name">project.search</field>
+            <field name="model">cowin_project.cowin_project</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <!--<field name="meta_sub_project_ids" string="投资经理"-->
+                           <!--filter_domain="[('meta_sub_project_ids.sub_project_ids.invest_manager_id.name','ilike',self)]"/>-->
+                    <field name="meta_sub_project_ids" string="项目编号"
+                           filter_domain="[('meta_sub_project_ids.sub_project_ids.project_number','ilike',self)]"/>
+                </search>
+            </field>
         </record>
 
         <!-- Top menu item -->
