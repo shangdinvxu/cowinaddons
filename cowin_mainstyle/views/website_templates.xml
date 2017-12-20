@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-	<!--<delete model="ir.ui.view" search="[('id','=', ref('website.login_layout'))]"/>-->
+	<data>
+        <template id="mainstyle_static" name="cowin_mainstyle_assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+
+            </xpath>
+        </template>
+    </data>
 </odoo>

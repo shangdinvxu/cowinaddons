@@ -62,7 +62,11 @@
                                         <span><t t-esc="obj.parent_id"/></span>
                                     </t>
                                 </td>
-                                <td class="tache_description"><t t-esc="obj.description"/></td>
+                                <td class="tache_description">
+                                    <t t-if="obj.description!=false">
+                                        <t t-esc="obj.description"/>
+                                    </t>
+                                </td>
                                 <!--<td>-->
                                     <!--<t t-if="obj.state==true">-->
                                         <!--<input type="checkbox" checked="checked"/>-->
