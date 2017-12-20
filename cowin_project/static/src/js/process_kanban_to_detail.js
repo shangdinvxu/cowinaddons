@@ -115,7 +115,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                         }
                         $('.process_data_main_wrap').html('');
                         $('.process_data_main_wrap').append(QWeb.render('project_manage_team_tmp', {result: result}));
-                        Dialog.alert(this, _t("保存成功"))
+                        Dialog.confirm(this, _t("保存成功"), {});
                     })
         },
         //确定员工选择
