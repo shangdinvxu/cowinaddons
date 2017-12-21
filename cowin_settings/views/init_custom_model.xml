@@ -97,7 +97,7 @@
         </record>
 
         <record id="init_custom_model_24" model="cowin_settings.custome_model_data">
-            <field name="model_name">cowin_project.sub_app_for_investment_withdrawal</field>
+            <field name="model_name">cowin_project.sub_app_invest_withdrawal</field>
         </record>
 
         <record id="init_custom_model_25" model="cowin_settings.custome_model_data">

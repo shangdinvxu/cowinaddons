@@ -3,13 +3,13 @@
 <odoo>
 
     <data>
-        <!-- 投资项目年度分析报告-->
+        <!-- 投资退出申请书-->
 
 
-           <!--投资项目年度分析报告的form视图-->
-        <record model="ir.ui.view" id="sub_project_annual_analysis_report_on_investment_projects_form">
-            <field name="name">cowin_project.sub_app_for_investment_withdrawal form</field>
-            <field name="model">cowin_project.sub_app_for_investment_withdrawal</field>
+           <!--投资退出申请书的form视图-->
+        <record model="ir.ui.view" id="sub_app_invest_withdrawal_form">
+            <field name="name">cowin_project.sub_app_invest_withdrawal form</field>
+            <field name="model">cowin_project.sub_app_invest_withdrawal</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year">
                     <group>
