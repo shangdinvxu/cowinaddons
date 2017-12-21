@@ -149,7 +149,7 @@
                 <span>审批意见</span>
                 <span>审批时间</span>
             </div>
-            <t t-foreach="result" t-as="item">
+            <t t-foreach="result.all_sub_aproval_flow_settings_records" t-as="item">
                 <div class="approval_record_body">
                     <span><t t-esc="item.approval_person"/></span>
                     <span><t t-esc="item.approval_role_name"/> </span>

@@ -90,6 +90,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
                     .then(function (result) {
                         $('#process_data').html('')
                         console.log(result);
+                        self.current_approval_flow_node_id = result.current_approval_flow_node_id;
                         $('#process_data').append(QWeb.render('approval_page', {result: result,edit:false}))
                     })
         },
@@ -113,6 +114,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
                 'approval_flow_settings_record':{
                     'approval_result': approval_result,
                     'approval_opinion': opinion,
+                    'current_approval_flow_node_id':self.current_approval_flow_node_id,
                 },
                 'prev_or_post_investment': true,
             };
@@ -145,6 +147,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
                     .then(function (result) {
                         $('#process_data').html('')
                         console.log(result);
+                        self.current_approval_flow_node_id = result.current_approval_flow_node_id;
                         $('#process_data').append(QWeb.render('approval_page', {result: result,edit:true}))
                     })
 

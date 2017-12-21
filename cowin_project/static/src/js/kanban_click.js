@@ -35,6 +35,7 @@ KanbanRecord.include({
         if (this.model === 'project.project') {
             this.$('.o_project_kanban_boxes a').first().click();
         }else if(this.model === 'cowin_project.cowin_project'){
+            // console.log(self.getParent().dataset)
             if(this.$el.eq(0).hasClass('project_process_kanban')){
                 var action = {
                     type: 'ir.actions.client',

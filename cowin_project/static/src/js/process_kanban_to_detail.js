@@ -386,9 +386,12 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             refresh_page(self,self.tache_arr[tache_index].model_name);
         },
 
-        init: function (parent, action) {
+        init: function (parent, action, options) {
             this._super(parent);
             this._super.apply(this, arguments);
+            options = options || {};
+            this.context = options.context || {};
+            console.log(options)
             if(action.active_id){
                 this.id = action.active_id;
             }else {
