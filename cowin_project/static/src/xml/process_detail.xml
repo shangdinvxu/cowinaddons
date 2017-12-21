@@ -103,8 +103,11 @@
                             <t t-if="obj.view_or_launch==true">
                                 <span class="view_tache"><a href="javascript:void(0)">查看</a></span>
                             </t>
-                            <t t-else="obj.view_or_launch==false">
+                            <t t-elif="obj.view_or_launch==false">
                                 <span class="initiate"><a href="javascript:void(0)">发起</a></span>
+                            </t>
+                             <t t-elif="obj.view_or_launch==null">
+                                <!--<span class="initiate"><a href="javascript:void(0)">发起</a></span>-->
                             </t>
                             <t t-if="obj.once_or_more==true">
                                 <span class="add_new_tache"><a href="javascript:void(0)">新增</a></span>
