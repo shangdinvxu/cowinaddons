@@ -48,18 +48,51 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             res.append(entity.get_info())
 
 
-        return res
+
+
+        return {'current_approval_flow_node_id': self.current_approval_flow_node_id.id,
+                'all_sub_aproval_flow_settings_records': res}
 
 
 
     def save_approval_flow_info(self, approval_flow_settings_record_info):
+        status = approval_flow_settings_record_info['approval_result']
+        current_approval_flow_node_id = approval_flow_settings_record_info['current_approval_flow_node_id']
+
+
+        # 这种情况下代表着出现多次并行的操作的问题!!!
+        if current_approval_flow_node_id != self.current_approval_flow_node_id.id:
+            return
+
+
+
+
+
 
         # 状态设定的更改,位置的顺序很重要,和下一句!!!
-        self.status = 4 if approval_flow_settings_record_info['approval_result'] else 5
+        # self.status = 4 if approval_flow_settings_record_info['approval_result'] else 5
 
 
-        approval_flow_settings_record_info['approval_result'] = u'同意' if approval_flow_settings_record_info[
-            'approval_result'] else u'不同意'
+        # 根据审批得到的结果来获得是否是审批审批通过与否
+        if status == True:
+            # 同意
+            self.current_approval_flow_node_id = True
+            self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
+            if not self.current_approval_flow_node_id.parent_id:
+                # 代表审批结束
+                self.status = 4
+            approval_flow_settings_record_info['approval_result'] = u'同意'
+        if status == False:
+            # 拒绝
+            self.status = 5
+            approval_flow_settings_record_info['approval_result'] = u'拒绝'
+        if status is None:
+            # 暂缓
+            self.status = 3
+            approval_flow_settings_record_info['approval_result'] = u'暂缓'
+
+        # approval_flow_settings_record_info['approval_result'] = u'同意' if approval_flow_settings_record_info[
+        #     'approval_result'] else u'不同意'
 
         self.write({
             'sub_pro_approval_flow_settings_record_ids': [(0, 0, approval_flow_settings_record_info)]

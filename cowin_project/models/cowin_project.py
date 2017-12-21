@@ -663,10 +663,13 @@ class Cowin_project(models.Model):
 
         sub_approval_flow_settings_entity.save_approval_flow_info(approval_flow_settings_record_info)
 
-        # 触发下一个子环节
-        current_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(tache_info['sub_tache_id'])
+
 
         if sub_approval_flow_settings_entity.is_success():
+
+            # 触发下一个子环节
+            current_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(tache_info['sub_tache_id'])
+
             for sub_tache_entity in meta_sub_project_entity.get_sub_taches():
                 if sub_tache_entity.parent_id == current_sub_tache_entity:
                     sub_tache_entity.write({
