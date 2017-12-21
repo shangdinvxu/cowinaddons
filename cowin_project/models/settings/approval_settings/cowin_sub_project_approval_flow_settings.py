@@ -62,7 +62,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         # 这种情况下代表着出现多次并行的操作的问题!!!
         if current_approval_flow_node_id != self.current_approval_flow_node_id.id:
-            return
+            raise UserWarning(u'该审批已经被审核!!!')
 
 
 
@@ -76,7 +76,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         # 根据审批得到的结果来获得是否是审批审批通过与否
         if status == True:
             # 同意
-            self.current_approval_flow_node_id = True
+            # self.current_approval_flow_node_id = True
             self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
             if not self.current_approval_flow_node_id.parent_id:
                 # 代表审批结束
