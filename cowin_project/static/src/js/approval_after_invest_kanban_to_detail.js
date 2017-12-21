@@ -161,7 +161,7 @@ odoo.define('cowin_project.approval_after_invest_kanban_to_detail', function (re
             var self =this;
             self.tache_arr = [];
             return new Model("cowin_project.cowin_project")
-                    .call("rpc_get_info", [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
+                    .call("rpc_get_post_info", [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
                     .then(function (result) {
                         console.log(result);
                         $('.process_data_main_wrap').html('');
