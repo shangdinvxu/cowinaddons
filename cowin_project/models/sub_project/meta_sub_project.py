@@ -105,7 +105,7 @@ class Meat_sub_project(models.Model):
                 target_sub_approval_flow_entity = sub_tache_entity.sub_pro_approval_flow_settings_ids
 
                 target_sub_approval_flow_entity.write({
-                    'status': 2,
+                    'status': 1,
                 })
 
 

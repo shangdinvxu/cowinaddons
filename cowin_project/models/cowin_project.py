@@ -338,55 +338,88 @@ class Cowin_project(models.Model):
                     status = target_sub_approval_flow_entity.status
                     info = ''
 
+                    is_target_role = self.is_target_role(target_sub_approval_flow_entity)
+
                     # True 代表着审核状态
                     approval_view_or_launch = None
                     if status == 1:
-                        # 未开始审核
-                        info = u'暂无'
+
+                        if self.env.user.id == SUPERUSER_ID:
+                            approval_view_or_launch = True
+                        else:
+
+                            name = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id.name
+                            # 由xxx发起
+                            info = u'由%s发起' % name
+
+                            # is_target_role = self.is_target_role(target_sub_approval_flow_entity)
+                            # 当前用户是否属于某个角色!!!
+                            if is_target_role:
+                                # approval_view_or_launch = False
+                                pass
+                            else:
+                                if not tache_info['view_or_launch']:
+                                    tache_info['view_or_launch'] = None
+
+
+
+
                     elif status == 2:
                         # 审核中...
                         # 找出当前的审核人
 
-
-                        # 考虑到可能改子环节还没有开始发起,所以也是直接回到 '暂无状态'
-                        if not sub_tache_entity.view_or_launch:
-                            info = u'暂无'
+                        if self.env.user.id == SUPERUSER_ID:
+                            approval_view_or_launch = True
                         else:
-                            # 当前的虚拟角色名
                             name = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id.name
-
-                            current_operation_role_entity = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
-
-                            # 当前虚拟角色所属的员工
-                            sub_approval_settings_role_ids1 = current_operation_role_entity.sub_approval_settings_role_ids
-
-                            # 需要考虑到是不同的元子工程来配置角色,获得到时虚拟角色和员工之间的M 2 M之间的关系
-                            approval_role_and_employee_ids = meta_sub_project_entity.sub_approval_settings_role_ids
-
-                            # 当前员工所对应的角色
-                            sub_approval_settings_role_ids2 = self.env.user.employee_ids.sub_approval_settings_role_ids
-                            # 当前用户所对应的员工
-                            # current_employee = self.env.user.employee_ids
-
-                            # current_user_approval_flow_ids = self.env.user.employee_ids.approval_role_ids
-
                             info = u'待%s审核' % name
-
-                            # 接下来要考虑当前用户是否属于某一个虚拟角色
-                            # if current_approval_flow_entity in current_user_approval_flow_ids:
-                            if approval_role_and_employee_ids & sub_approval_settings_role_ids1 & sub_approval_settings_role_ids2:
-                            # if current_employee in employee_ids:
-                                # 很显然当前用户可以审批
+                            # 当前用户是否属于某个角色!!!
+                            if is_target_role:
+                                # approval_view_or_launch = False
                                 approval_view_or_launch = True
                             else:
-                                # 很显然不需要去审批,因为没有这个
                                 approval_view_or_launch = False
 
-                            if self.env.user.id == SUPERUSER_ID:
-                                approval_view_or_launch = True
+                        # # 考虑到可能该子环节还没有开始发起,所以也是直接回到 '暂无状态'
+                        # if not sub_tache_entity.view_or_launch:
+                        #     # info = u'暂无'
+                        #     pass
+                        # else:
+                        #     # 当前的虚拟角色名
+                        #     name = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id.name
+                        #
+                        #     current_operation_role_entity = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
+                        #
+                        #     # 当前虚拟角色所属的员工
+                        #     sub_approval_settings_role_ids1 = current_operation_role_entity.sub_approval_settings_role_ids
+                        #
+                        #     # 需要考虑到是不同的元子工程来配置角色,获得到时虚拟角色和员工之间的M 2 M之间的关系
+                        #     approval_role_and_employee_ids = meta_sub_project_entity.sub_approval_settings_role_ids
+                        #
+                        #     # 当前员工所对应的角色
+                        #     sub_approval_settings_role_ids2 = self.env.user.employee_ids.sub_approval_settings_role_ids
+                        #     # 当前用户所对应的员工
+                        #     # current_employee = self.env.user.employee_ids
+                        #
+                        #     # current_user_approval_flow_ids = self.env.user.employee_ids.approval_role_ids
+                        #
+                        #     info = u'待%s审核' % name
+                        #
+                        #     # 接下来要考虑当前用户是否属于某一个虚拟角色
+                        #     # if current_approval_flow_entity in current_user_approval_flow_ids:
+                        #     if approval_role_and_employee_ids & sub_approval_settings_role_ids1 & sub_approval_settings_role_ids2:
+                        #     # if current_employee in employee_ids:
+                        #         # 很显然当前用户可以审批
+                        #         approval_view_or_launch = True
+                        #     else:
+                        #         # 很显然不需要去审批,因为没有这个
+                        #         approval_view_or_launch = False
+                        #
+                        #     if self.env.user.id == SUPERUSER_ID:
+                        #         approval_view_or_launch = True
 
                     elif status == 3:
-                        # 暂缓
+                        # 暂缓(需要从新操作!!!)
                         info = u'暂缓'
                     elif status == 4:
                         # 同意
@@ -445,6 +478,32 @@ class Cowin_project(models.Model):
         return (process_info['stage_ids'], sub_project_info)
 
 
+    def is_target_role(self, target_sub_approval_flow_entity):
+        meta_sub_project_entity = target_sub_approval_flow_entity.meta_sub_project_id
+        current_operation_role_entity = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
+
+        # 当前虚拟角色所属的员工
+        sub_approval_settings_role_ids1 = current_operation_role_entity.sub_approval_settings_role_ids
+
+        # 需要考虑到是不同的元子工程来配置角色,获得到时虚拟角色和员工之间的M 2 M之间的关系
+        approval_role_and_employee_ids = meta_sub_project_entity.sub_approval_settings_role_ids
+
+        # 当前员工所对应的角色
+        sub_approval_settings_role_ids2 = self.env.user.employee_ids.sub_approval_settings_role_ids
+        # 当前用户所对应的员工
+        # current_employee = self.env.user.employee_ids
+
+        # current_user_approval_flow_ids = self.env.user.employee_ids.approval_role_ids
+
+        # 接下来要考虑当前用户是否属于某一个虚拟角色
+        # if current_approval_flow_entity in current_user_approval_flow_ids:
+        if approval_role_and_employee_ids & sub_approval_settings_role_ids1 & sub_approval_settings_role_ids2:
+            # if current_employee in employee_ids:
+            # 很显然当前用户可以审批
+            return True
+        else:
+            # 很显然不需要去审批,因为没有这个
+            return False
 
 
     # 获得每个project的详细信息
@@ -635,6 +694,49 @@ class Cowin_project(models.Model):
         sub_approval_flow_settings_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(sub_approval_flow_settings_id)
 
         return sub_approval_flow_settings_entity.get_all_sub_aproval_flow_settings_records()
+
+
+    # 保存发起人信息
+    # 触发审批节点
+    def rpc_save__launch_edit_operation_records(self, **kwargs):
+        tache_info = kwargs.get('tache')
+        meta_sub_project_id = tache_info['meta_sub_project_id']
+        sub_approval_flow_settings_id = tache_info['sub_approval_flow_settings_id']
+        meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
+        sub_approval_flow_settings_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(
+            sub_approval_flow_settings_id)
+        prev_or_post_investment = kwargs['prev_or_post_investment']
+
+        sub_approval_flow_settings_entity.update_current_approval_flow_node()
+
+        if sub_approval_flow_settings_entity.is_success():
+            # 触发下一个环节
+            current_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(tache_info['sub_tache_id'])
+            for sub_tache_entity in meta_sub_project_entity.get_sub_taches():
+                if sub_tache_entity.parent_id == current_sub_tache_entity:
+                    sub_tache_entity.write({
+                        'is_unlocked': True,
+                        # 'status': 2,
+                    })
+
+
+                    # 在触发下一个子环节过程中,还需要触发下一个子环节所对应的子审批节点信息
+
+                    sub_approval_flow_settings_entity_next = sub_tache_entity.sub_pro_approval_flow_settings_ids
+
+                    sub_approval_flow_settings_entity_next.write({
+                        'status': 1,
+                    })
+
+                    break
+
+
+
+
+
+
+        return self._get_info(meta_project_id=meta_sub_project_id, prev_or_post_investment=prev_or_post_investment)
+
 
 
 

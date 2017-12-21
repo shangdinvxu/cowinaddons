@@ -16,7 +16,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
     approval_flow_settings_id = fields.Many2one('cowin_project.approval_flow_settings', string=u'工程审批流', ondelete="restrict")
     meta_sub_project_id = fields.Many2one('cowin_project.meat_sub_project', string=u'元子工程实例', ondelete="cascade")
 
-    status = fields.Selection([(1, u'暂无'), (2, u'审核中'), (3, u'暂缓'), (4, u'同意'), (5, u'拒绝')],
+    status = fields.Selection([(1, u'发起'), (2, u'审核中'), (3, u'暂缓(从新发起)'), (4, u'同意'), (5, u'拒绝')],
                      string=u'审核状态', default=1)
 
 
@@ -33,12 +33,18 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
 
 
+
+
     # 构建子环节和子审批实体一对一的关系
     sub_project_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
 
     def is_success(self):
         return self.status == 4
+
+    def is_reject(self):
+
+        return self.status == 3
 
 
     def get_all_sub_aproval_flow_settings_records(self):
@@ -52,6 +58,17 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         return {'current_approval_flow_node_id': self.current_approval_flow_node_id.id,
                 'all_sub_aproval_flow_settings_records': res}
+
+
+    def update_current_approval_flow_node(self):
+        if self.status == 4 or self.status == 5:
+            return
+
+        self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
+
+        if not self.current_approval_flow_node_id.parent_id:
+            self.status = 4
+
 
 
 
