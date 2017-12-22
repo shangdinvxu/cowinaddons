@@ -472,6 +472,7 @@ class Cowin_project(models.Model):
 
     # 获得每个project的详细信息
     def _get_info(self, **kwargs):
+        no_initate = self._context.get('no_initate', False)
         tmp = kwargs.get("meta_project_id")
         meta_project_id = 0 if not tmp else int(tmp)
         prev_or_post_investment = kwargs.get('prev_or_post_investment')
@@ -485,6 +486,7 @@ class Cowin_project(models.Model):
         info['process'], info['sub_project_info'] = self.process_settings2(meta_project_id, prev_or_post_investment)
         info['permission_configuration'] = self.rpc_get_permission_configuration()
 
+        info[' no_initate'] = no_initate
         return info
 
 
@@ -924,6 +926,7 @@ class Cowin_project(models.Model):
         # 该方法中有四个状态需要考虑
         # (1, 1) --> 投前流程 (1, 2) --> 投前审批
         # (2, 1) --> 投后流程 (2, 2) --> 投后审批
+        # (3, 1) --> 全局搜索,只读模式
         prev_or_post_investment = self._context.get('prev_or_post_investment')
 
         prev_or_post_investment = tuple(prev_or_post_investment) if prev_or_post_investment else ()
