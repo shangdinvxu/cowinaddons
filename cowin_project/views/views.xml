@@ -297,7 +297,7 @@
             <field name="res_model">cowin_project.cowin_project</field>
             <!--<field name="domain">[('create_uid', '=', uid)]</field>-->
             <field name="context">
-                {'prev_or_post_investment':True}
+                {'prev_or_post_investment':(1,1)}
             </field>
             <field name="view_ids"
                    eval="[(5, 0, 0),
@@ -312,7 +312,7 @@
             <!--<field name="domain">[('create_uid', '=', uid)]</field>-->
             <field name="res_model">cowin_project.cowin_project</field>
             <field name="context">
-                {'prev_or_post_investment':True}
+                {'prev_or_post_investment':(1,2)}
             </field>
             <field name="view_type">form</field>
             <field name="view_mode">kanban</field>
@@ -325,7 +325,7 @@
             <!--<field name="domain">[('create_uid', '=', uid)]</field>-->
             <field name="res_model">cowin_project.cowin_project</field>
             <field name="context">
-                {'prev_or_post_investment':False}
+                {'prev_or_post_investment':(2,1)}
             </field>
             <field name="view_ids"
                    eval="[(5, 0, 0),
@@ -340,7 +340,7 @@
             <field name="res_model">cowin_project.cowin_project</field>
             <!--<field name="domain">[('create_uid', '=', uid)]</field>-->
             <field name="context">
-                {'prev_or_post_investment':False}
+                {'prev_or_post_investment':(2,2)}
             </field>
             <field name="view_ids"
                    eval="[(5, 0, 0),
