@@ -56,38 +56,38 @@ class Cowin_project(models.Model):
     attachment_note = fields.Char(string=u'附件说明')
 
     # @api.model
-    def _iscurrentUser_and_Admin(self):
-        '''
-
-        :return:
-        '''
-
-        # 检测当前的用户是否是管理员
-        if self.env.user.id == SUPERUSER_ID:
-            return True
-
-
-        # 每个主工程所有的元子工程信息
-        for meta_sub_pro_entity in self.meta_sub_project_ids:
-
-            # 每个元子工程的子审批流信息
-            for sub_approval_flow_entity in meta_sub_pro_entity.sub_approval_flow_settings_ids:
-
-                # 每个子审批流所对应的当前的操作角色
-                current_role_entity = sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
-                # 当前用户所关联的操作角色
-                all_role_rel_entities = self.env.user.employee_ids.sub_approval_settings_role_ids
-
-                # if current_role_entity in all_role_entities:
-                #     return True
-
-                for rel_entity in all_role_rel_entities:
-                    if current_role_entity == rel_entity.approval_role_id:
-                        return True
-
-        return False
-
-    iscurrentUser_and_Admin = fields.Boolean(string=u'当前的用户是否有权限审批', default=_iscurrentUser_and_Admin)
+    # def _iscurrentUser_and_Admin(self):
+    #     '''
+    #
+    #     :return:
+    #     '''
+    #
+    #     # 检测当前的用户是否是管理员
+    #     if self.env.user.id == SUPERUSER_ID:
+    #         return True
+    #
+    #
+    #     # 每个主工程所有的元子工程信息
+    #     for meta_sub_pro_entity in self.meta_sub_project_ids:
+    #
+    #         # 每个元子工程的子审批流信息
+    #         for sub_approval_flow_entity in meta_sub_pro_entity.sub_approval_flow_settings_ids:
+    #
+    #             # 每个子审批流所对应的当前的操作角色
+    #             current_role_entity = sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
+    #             # 当前用户所关联的操作角色
+    #             all_role_rel_entities = self.env.user.employee_ids.sub_meta_pro_approval_settings_role_rel
+    #
+    #             # if current_role_entity in all_role_entities:
+    #             #     return True
+    #
+    #             for rel_entity in all_role_rel_entities:
+    #                 if current_role_entity == rel_entity.approval_role_id:
+    #                     return True
+    #
+    #     return False
+    #
+    # iscurrentUser_and_Admin = fields.Boolean(string=u'当前的用户是否有权限审批', default=_iscurrentUser_and_Admin)
 
 
 
@@ -444,13 +444,13 @@ class Cowin_project(models.Model):
         current_operation_role_entity = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
 
         # 当前虚拟角色所属的员工
-        sub_approval_settings_role_ids1 = current_operation_role_entity.sub_approval_settings_role_ids
+        sub_approval_settings_role_ids1 = current_operation_role_entity.sub_meta_pro_approval_settings_role_rel
 
         # 需要考虑到是不同的元子工程来配置角色,获得到时虚拟角色和员工之间的M 2 M之间的关系
-        approval_role_and_employee_ids = meta_sub_project_entity.sub_approval_settings_role_ids
+        approval_role_and_employee_ids = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel
 
         # 当前员工所对应的角色
-        sub_approval_settings_role_ids2 = self.env.user.employee_ids.sub_approval_settings_role_ids
+        sub_approval_settings_role_ids2 = self.env.user.employee_ids.sub_meta_pro_approval_settings_role_rel
         # 当前用户所对应的员工
         # current_employee = self.env.user.employee_ids
 
@@ -779,7 +779,7 @@ class Cowin_project(models.Model):
 
             tmp['approval_role_infos'] = []
 
-            approval_role_employee_rel_repr = meta_sub_pro_entity.sub_approval_settings_role_ids[0] if meta_sub_pro_entity.sub_approval_settings_role_ids else meta_sub_pro_entity.sub_approval_settings_role_ids
+            approval_role_employee_rel_repr = meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel[0] if meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel else meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel
             approval_role_ids = approval_role_employee_rel_repr.approval_role_id.search([])
 
             employee_ids = approval_role_employee_rel_repr.employee_id.search([])
@@ -792,7 +792,7 @@ class Cowin_project(models.Model):
                 tmp2['approval_role_name'] = approval_role_entity.name
 
                 tmp2['employee_infos'] = [{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
-                    for approval_employee_rel in meta_sub_pro_entity.sub_approval_settings_role_ids if approval_employee_rel.approval_role_id == approval_role_entity]
+                    for approval_employee_rel in meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel if approval_employee_rel.approval_role_id == approval_role_entity]
 
 
                 if not tmp2['employee_infos']:
@@ -835,7 +835,7 @@ class Cowin_project(models.Model):
 
 
 
-        current_rel_entities = meta_sub_project_entity.sub_approval_settings_role_ids
+        current_rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel
 
         current_rel_info_ids = set((rel.approval_role_id.id, rel.employee_id.id) for rel in current_rel_entities)
         target_rel_info_ids = set((approval_role_info['approval_role_id'], employee_info['employee_id'])
@@ -899,7 +899,7 @@ class Cowin_project(models.Model):
         # current_meta_sub_pro_entity = self.meta_sub_project_ids.browse(current_meta_sub_pro_id)
         copy_meta_sub_pro_entity = self.meta_sub_project_ids.browse(copy_meta_sub_pro_id)
 
-        copy_rel_entities = copy_meta_sub_pro_entity.sub_approval_settings_role_ids
+        copy_rel_entities = copy_meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel
 
         for c_rel_entity in copy_rel_entities:
             c_rel_entity.create({
@@ -915,6 +915,74 @@ class Cowin_project(models.Model):
         return self.rpc_get_permission_configuration()
 
 
+
+
+
+    @api.model
+    def search(self, args, offset=0, limit=None, order=None, count=False):
+        print(u'该方法应该是可以回执行的!!!')
+        # 该方法中有四个状态需要考虑
+        # (1, 1) --> 投前流程 (1, 2) --> 投前审批
+        # (2, 1) --> 投后流程 (2, 2) --> 投后审批
+        prev_or_post_investment = self._context.get('prev_or_post_investment')
+
+        entities = super(Cowin_project, self).search(args, offset, limit, order, count)
+        # return entities
+
+        if self.env.user.id == SUPERUSER_ID:
+            return entities
+
+        to_filter_projects = []
+
+        if prev_or_post_investment is None:
+            return entities
+
+
+        elif prev_or_post_investment == (1, 1):
+
+            # # 接下来需要考虑属于我们
+            for entity in entities:
+                # 发起人所对应的角色
+                operation_role_entitis = set()
+                for stage_entity in entities.process_id.stage_ids:
+                    if stage_entity.prev_or_post_investment:
+                        # 投前
+                        for tache_entity in stage_entity.tache_ids:
+                            # 把提交角色放入提取出来
+                            operation_role_entitis\
+                                .add(tache_entity.approval_flow_settings_ids.approval_flow_setting_node_ids[0].operation_role_id)
+                # 当前工程所有元子工程操作角色
+                approval_role_entities = set()
+                for meta_sub_pro_entity in entity.meta_sub_project_ids:
+                    # 多个这样的关系
+                    for rel_entity in meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel:
+                        approval_role_entities.add(rel_entity.approval_role_id)
+
+                if approval_role_entities & self.env.user.employee_ids.sub_meta_pro_approval_settings_role_rel & operation_role_entitis:
+                    to_filter_projects.append(entity)
+
+
+
+
+
+
+        elif prev_or_post_investment == (1, 2):
+            pass
+
+        elif prev_or_post_investment == (1, 2):
+            pass
+
+        elif prev_or_post_investment == (1, 2):
+            pass
+
+        else:
+            return entities
+
+        tem = self.env[self._name]
+
+
+
+        return reduce(lambda x, y: x & y, to_filter_projects)
 
 
 

@@ -32,7 +32,7 @@ class Meat_sub_project(models.Model):
     sub_approval_flow_settings_ids = fields.One2many('cowin_project.sub_approval_flow_settings', 'meta_sub_project_id',
                                                      string=u'子流程配置实例')
 
-    sub_approval_settings_role_ids = fields.One2many('cowin_project.meta_sub_appro_role_hr_em', 'meta_sub_project_id', string=u'虚拟角色与员工的关系')
+    sub_meta_pro_approval_settings_role_rel = fields.One2many('cowin_project.meta_sub_appro_role_hr_em', 'meta_sub_project_id', string=u'虚拟角色与员工的关系')
 
 
 

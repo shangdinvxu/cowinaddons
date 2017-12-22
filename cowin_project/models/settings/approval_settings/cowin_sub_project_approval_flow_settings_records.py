@@ -17,6 +17,7 @@ class Cowin_sub_project_approval_flow_settings_records(models.Model):
     sub_approval_settings_id = fields.Many2one('cowin_project.sub_approval_flow_settings', string=u'子审批实体',
                                                ondelete="cascade")
     approval_person_id = fields.Many2one('hr.employee', string=u'审批人')
+    # approval_person_id = fields.Char(string=u'审批人')
     approval_role_id = fields.Many2one('cowin_common.approval_role', string=u'审批角色')
 
     approval_result = fields.Char(string=u'审批结果')

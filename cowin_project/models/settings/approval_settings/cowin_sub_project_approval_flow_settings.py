@@ -143,20 +143,13 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
     def save_approval_flow_info(self, approval_flow_settings_record_info):
         status = approval_flow_settings_record_info['approval_result']
-        current_approval_flow_node_id = approval_flow_settings_record_info['current_approval_flow_node_id']
+        # current_approval_flow_node_id = approval_flow_settings_record_info['current_approval_flow_node_id']
 
 
         # 这种情况下代表着出现多次并行的操作的问题!!!
-        # if current_approval_flow_node_id != self.current_approval_flow_node_id.id:
-        #     raise UserWarning(u'该审批已经被审核!!!')
 
         if self.status == 4 or self.status == 5:
             raise UserWarning(u'该审批已经被审核!!!')
-
-
-
-
-
 
         # 状态设定的更改,位置的顺序很重要,和下一句!!!
         # self.status = 4 if approval_flow_settings_record_info['approval_result'] else 5
@@ -191,6 +184,8 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         # approval_flow_settings_record_info['approval_result'] = u'同意' if approval_flow_settings_record_info[
         #     'approval_result'] else u'不同意'
+
+
 
         self.write({
             'sub_pro_approval_flow_settings_record_ids': [(0, 0, approval_flow_settings_record_info)]
