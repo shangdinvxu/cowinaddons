@@ -296,6 +296,9 @@
             <field name="name">项目流程</field>
             <field name="res_model">cowin_project.cowin_project</field>
             <!--<field name="domain">[('create_uid', '=', uid)]</field>-->
+            <field name="context">
+                {'prev_or_post_investment':True}
+            </field>
             <field name="view_ids"
                    eval="[(5, 0, 0),
                           (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_process_kanban_view')})]"/>
@@ -308,6 +311,9 @@
             <field name="name">项目审批</field>
             <!--<field name="domain">[('create_uid', '=', uid)]</field>-->
             <field name="res_model">cowin_project.cowin_project</field>
+            <field name="context">
+                {'prev_or_post_investment':True}
+            </field>
             <field name="view_type">form</field>
             <field name="view_mode">kanban</field>
             <field name="view_id" ref="project_approval_view_kanban"/>
@@ -318,6 +324,9 @@
             <field name="name">投后跟进</field>
             <!--<field name="domain">[('create_uid', '=', uid)]</field>-->
             <field name="res_model">cowin_project.cowin_project</field>
+            <field name="context">
+                {'prev_or_post_investment':False}
+            </field>
             <field name="view_ids"
                    eval="[(5, 0, 0),
                           (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_follow_up_invest_kanban_view')})]"/>
@@ -330,6 +339,9 @@
             <field name="name">投后审批</field>
             <field name="res_model">cowin_project.cowin_project</field>
             <!--<field name="domain">[('create_uid', '=', uid)]</field>-->
+            <field name="context">
+                {'prev_or_post_investment':False}
+            </field>
             <field name="view_ids"
                    eval="[(5, 0, 0),
                           (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_follow_up_invest_approval_kanban_view')})]"/>
