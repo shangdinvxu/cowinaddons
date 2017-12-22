@@ -926,25 +926,27 @@ class Cowin_project(models.Model):
         # (2, 1) --> 投后流程 (2, 2) --> 投后审批
         prev_or_post_investment = self._context.get('prev_or_post_investment')
 
+        prev_or_post_investment = tuple(prev_or_post_investment) if prev_or_post_investment else ()
+
         entities = super(Cowin_project, self).search(args, offset, limit, order, count)
         # return entities
 
         if self.env.user.id == SUPERUSER_ID:
             return entities
 
-        to_filter_projects = []
+        to_filter_projects = set()
 
         if prev_or_post_investment is None:
             return entities
 
-
+        # 投前流程
         elif prev_or_post_investment == (1, 1):
 
-            # # 接下来需要考虑属于我们
+            # # 接下来需要考虑属于每个工程的虚拟角色问题
             for entity in entities:
                 # 发起人所对应的角色
                 operation_role_entitis = set()
-                for stage_entity in entities.process_id.stage_ids:
+                for stage_entity in entity.process_id.stage_ids:
                     if stage_entity.prev_or_post_investment:
                         # 投前
                         for tache_entity in stage_entity.tache_ids:
@@ -952,22 +954,47 @@ class Cowin_project(models.Model):
                             operation_role_entitis\
                                 .add(tache_entity.approval_flow_settings_ids.approval_flow_setting_node_ids[0].operation_role_id)
                 # 当前工程所有元子工程操作角色
+
                 approval_role_entities = set()
                 for meta_sub_pro_entity in entity.meta_sub_project_ids:
                     # 多个这样的关系
                     for rel_entity in meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel:
                         approval_role_entities.add(rel_entity.approval_role_id)
 
-                if approval_role_entities & self.env.user.employee_ids.sub_meta_pro_approval_settings_role_rel & operation_role_entitis:
-                    to_filter_projects.append(entity)
+                # 注:当前用户所对应的虚拟角色可能跨越多个主工程
+                current_approle_entities = set(rel_entity.approval_role_id for rel_entity in self.env.user.employee_ids.sub_meta_pro_approval_settings_role_rel)
+
+                if approval_role_entities & current_approle_entities & operation_role_entitis:
+                    to_filter_projects.add(entity)
 
 
-
-
-
-
+        # 投前审批
         elif prev_or_post_investment == (1, 2):
-            pass
+            # # 接下来需要考虑属于每个工程的虚拟角色问题
+            for entity in entities:
+                # 发起人所对应的角色
+                operation_role_entitis = set()
+                for stage_entity in entity.process_id.stage_ids:
+                    if stage_entity.prev_or_post_investment:
+                        # 投前
+                        for tache_entity in stage_entity.tache_ids:
+                            # 把提交角色放入提取出来
+                            operation_role_entitis |= set(approval_flow_setting_node_entity.operation_role_id for approval_flow_setting_node_entity in tache_entity.approval_flow_settings_ids.approval_flow_setting_node_ids[1:-1])
+                # 当前工程所有元子工程操作角色
+
+                approval_role_entities = set()
+                for meta_sub_pro_entity in entity.meta_sub_project_ids:
+                    # 多个这样的关系
+                    for rel_entity in meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel:
+                        approval_role_entities.add(rel_entity.approval_role_id)
+
+                # 注:当前用户所对应的虚拟角色可能跨越多个主工程
+                current_approle_entities = set(rel_entity.approval_role_id for rel_entity in
+                                               self.env.user.employee_ids.sub_meta_pro_approval_settings_role_rel)
+
+                if approval_role_entities & current_approle_entities & operation_role_entitis:
+                    to_filter_projects.add(entity)
+
 
         elif prev_or_post_investment == (1, 2):
             pass
@@ -982,7 +1009,7 @@ class Cowin_project(models.Model):
 
 
 
-        return reduce(lambda x, y: x & y, to_filter_projects)
+        return reduce(lambda x, y: x | y, to_filter_projects, tem)
 
 
 
