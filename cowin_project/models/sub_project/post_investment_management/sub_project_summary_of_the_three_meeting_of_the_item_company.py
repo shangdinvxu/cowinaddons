@@ -61,4 +61,7 @@ class sub_project_summary_of_the_three_meeting_of_the_item_company(models.Model)
             'view_or_launch': True,
         })
 
+        # 判断 发起过程 是否需要触发下一个子环节
+        target_sub_tache_entity.check_or_not_next_sub_tache()
+
         return res

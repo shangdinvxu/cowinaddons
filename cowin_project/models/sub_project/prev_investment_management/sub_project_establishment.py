@@ -94,17 +94,23 @@ class Cowin_project_subproject(models.Model):
             raise UserError(u'每个元子工程只能有一份实体!!!')
 
 
+
+
         vals['meta_sub_project_id'] = meta_sub_project_id
 
         sub_tache_id = int(tache_info['sub_tache_id'])
 
         target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
 
+
+
         sub_project = super(Cowin_project_subproject, self).create(vals)
         target_sub_tache_entity.write({
             'res_id': sub_project.id,
             'view_or_launch': True,
         })
+        # 判断 发起过程 是否需要触发下一个子环节
+        target_sub_tache_entity.check_or_not_next_sub_tache()
 
 
         # # 触发下一个依赖子环节处于解锁状态

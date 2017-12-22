@@ -32,9 +32,50 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
     index = fields.Integer(string=u'多个自定义的环节', default=0)
 
+    # res_id_trigger = fields.Integer(compute='_compute_res_id', store=True)
+    #
+    # @api.depends('res_id')
+    # def _compute_res_id(self):
+    #     self.ensure_one()
+    #     if self.res_id_trigger > 0:
+    #         raise UserWarning(u'只能发起一次请求!!!')
+    #
+    #     self.res_id_trigger = self.res_id
+    #
+    #     # 检查提交状态是否有审批节点
+    #     if len(self.sub_pro_approval_flow_settings_ids.approval_flow_settings_id.approval_flow_setting_node_ids) == 2:
+    #         # 触发下一个环节的激活
+    #         self.sub_pro_approval_flow_settings_ids.status = 4
+    #
+    #         # 触发该字段计算的数据
+    #         # self.sub_pro_approval_flow_settings_ids.status_trigger_m()
 
     def get_tache(self):
         return self.tache_id
+
+
+    def check_or_not_next_sub_tache(self):
+        if self.sub_pro_approval_flow_settings_ids.update_final_approval_flow_settings_status_and_node():
+            # 当前子审批实体状态设置为4
+            # self.sub_pro_approval_flow_settings_ids.status = 4
+            # self.sub_pro_approval_flow_settings_ids.write({
+            #         'status': 4,
+            #     })
+
+            # self.sub_pro_approval_flow_settings_ids.update_final_approval_flow_settings_status_and_node()
+            for sub_tache_entity in self.meta_sub_project_id.sub_tache_ids:
+
+                if sub_tache_entity.parent_id == self:
+                                    sub_tache_entity.write({
+                                        'is_unlocked': True,
+                                        })
+                                    break
+
+        else:
+            # 调整审核状态
+
+            # 更新子审批实体的状态
+            self.sub_pro_approval_flow_settings_ids.update_approval_flow_settings_status_and_node()
 
 
 

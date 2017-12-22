@@ -59,6 +59,10 @@ class Cowin_project_subproject_application_form_for_project_investment(models.Mo
             'res_id': res_entity.id,
             'view_or_launch': True,
         })
+
+        # 判断 发起过程 是否需要触发下一个子环节
+        target_sub_tache_entity.check_or_not_next_sub_tache()
+
         #
         # # 触发下一个依赖子环节处于解锁状态
         # for current_sub_tache_entity in meta_sub_project_entity.sub_tache_ids:

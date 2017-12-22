@@ -57,4 +57,7 @@ class sub_project_general_vote(models.Model):
             'view_or_launch': True,
         })
 
+        # 判断 发起过程 是否需要触发下一个子环节
+        target_sub_tache_entity.check_or_not_next_sub_tache()
+
         return res
