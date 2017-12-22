@@ -45,6 +45,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     return new Model("cowin_project.cowin_project")
                         .call("new_sub_tache",[[self.id]],{'sub_tache_id':self.tache_arr[parseInt(tache_index)].sub_tache_id,'meta_sub_project_id':self.tache_arr[parseInt(tache_index)].meta_sub_project_id})
                         .then(function (result) {
+                            result.no_initate = self.no_initate
                             console.log(result);
                             $('.process_data_main_wrap').html('');
                             $('.process_data_main_wrap').append(QWeb.render('process_info_right_tmpl', {result: result}));
@@ -195,6 +196,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             return new Model("cowin_project.cowin_project")
                     .call("rpc_get_info", [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
                     .then(function (result) {
+                        result.no_initate = self.no_initate
                         console.log(result);
                         $('.process_data_main_wrap').html('');
                         // 获取每个环节的model_name存入数组
@@ -363,6 +365,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                                     return new Model("cowin_project.cowin_project")
                                         .call("rpc_get_info", [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
                                         .then(function (result) {
+                                            result.no_initate = self.no_initate
                                             console.log(result);
                                             $('.process_data_main_wrap').html('');
                                             // 获取每个环节的model_name存入数组
@@ -391,7 +394,11 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             this._super.apply(this, arguments);
             options = options || {};
             this.context = options.context || {};
-            console.log(options)
+            console.log(action.params.no_initate)
+
+            //项目查询界面的判断，没有发起按钮
+            this.no_initate = action.params.no_initate;
+
             if(action.active_id){
                 this.id = action.active_id;
             }else {
@@ -411,6 +418,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             return new Model("cowin_project.cowin_project")
                     .call("rpc_get_info", [parseInt(self.id)],{})
                     .then(function (result) {
+                        result.no_initate = self.no_initate
                         console.log(result);
                         self.pagedata = result;
                         //获取每个环节的model_name存入数组

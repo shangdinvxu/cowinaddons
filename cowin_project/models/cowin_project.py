@@ -472,7 +472,6 @@ class Cowin_project(models.Model):
 
     # 获得每个project的详细信息
     def _get_info(self, **kwargs):
-        no_initate = self._context.get('no_initate', False)
         tmp = kwargs.get("meta_project_id")
         meta_project_id = 0 if not tmp else int(tmp)
         prev_or_post_investment = kwargs.get('prev_or_post_investment')
@@ -486,7 +485,6 @@ class Cowin_project(models.Model):
         info['process'], info['sub_project_info'] = self.process_settings2(meta_project_id, prev_or_post_investment)
         info['permission_configuration'] = self.rpc_get_permission_configuration()
 
-        info[' no_initate'] = no_initate
         return info
 
 

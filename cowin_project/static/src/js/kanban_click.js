@@ -35,15 +35,20 @@ KanbanRecord.include({
         if (this.model === 'project.project') {
             this.$('.o_project_kanban_boxes a').first().click();
         }else if(this.model === 'cowin_project.cowin_project'){
-            // console.log(self.getParent().dataset)
+            console.log(this)
             if(this.$el.eq(0).hasClass('project_process_kanban')){
+                if(this.$el.eq(0).hasClass('project_search_kanban')){
+                    var no_initate = true
+                }else {
+                    var no_initate = false
+                }
                 var action = {
                     type: 'ir.actions.client',
                     name: '项目流程',
                     tag: 'process_kanban_to_detail',
                     // id: this.record.id.raw_value,
                     active_id:this.record.id.raw_value,
-                    params:{'active_id':this.record.id.raw_value,action:'process_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
+                    params:{'no_initate':no_initate,'active_id':this.record.id.raw_value,action:'process_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
                 }
                 this.do_action(action);
             }else if(this.$el.eq(0).hasClass('project_approval_kanban')){

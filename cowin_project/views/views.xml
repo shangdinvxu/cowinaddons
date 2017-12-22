@@ -220,6 +220,61 @@
             </field>
         </record>
 
+        <!--项目查询 看板-->
+        <record id="project_process_kanban_search_view" model="ir.ui.view">
+            <field name="name">cowin_project.process.kanban</field>
+            <field name="model">cowin_project.cowin_project</field>
+            <!--<field name="priority">10</field>-->
+            <field name="arch" type="xml">
+                <kanban class="project_process_kanban_wrap">
+                    <field name="name"/>
+                    <field name="image" widget="image"/>
+                    <!--<field name="register_person"/>-->
+                    <!--<field name="project_number"/>-->
+                    <field name="write_date"/>
+                    <!--<field name="invest_manager"/>-->
+                    <!--<field name="project_partner"/>-->
+                    <field name="registered_address"/>
+                    <field name="peration_place"/>
+                    <field name="contract_person"/>
+                    <field name="industry"/>
+                    <field name="production"/>
+                    <field name="stage"/>
+                    <templates>
+                    <t t-name="kanban-box">
+                        <div class="project_process_kanban project_search_kanban oe_kanban_global_click cowin_project_kanban">
+                            <div class="kanban_top">
+                                <div class="project_name">项目名称：<t t-esc="record.name.value"/></div>
+                                <div class="project_top_right">
+                                    <!--<span>登记人：<t t-esc="record.register_person.value"/> </span>-->
+                                    <span><t t-esc="record.write_date.value"/> </span>
+                                </div>
+                            </div>
+                            <div class="kanban_project_logo">
+                                <t t-if="record.image.value">
+                                    <img t-att-src="'data:image/png;base64,'+record.image.value"/>
+                                </t>
+                                <t t-else="">
+                                    <img src="/cowin_project/static/src/img/project_logo.png"/>
+                                </t>
+                            </div>
+                            <div class="kanban_main">
+                                <!--<div>投资经理：<t t-esc="record.invest_manager.value"/></div>-->
+                                <!--<div>项目合伙人：<t t-esc="record.project_partner.value"/></div>-->
+                                <div>注册地:<t t-esc="record.registered_address.value"/></div>
+                                <div>运营地:<t t-esc="record.peration_place.value"/></div>
+                                <div>联系人:<t t-esc="record.contract_person.value"/></div>
+                                <div>所属行业:<t t-esc="record.industry.value"/></div>
+                                <div class="kanban_project_product">产品:<t t-esc="record.production.value"/></div>
+                                <!--<div class="kanban_project_state">【状态：<t t-esc="record.stage.value"/>】</div>-->
+                            </div>
+                        </div>
+                    </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
 
         <!-- 此试图的含义在于新建时候所需要关联的视图结构 -->
         <!--项目流程的form视图-->
@@ -354,9 +409,10 @@
         <record model="ir.actions.act_window" id="cowin_project.action_window">
             <field name="name">项目查询</field>
             <field name="res_model">cowin_project.cowin_project</field>
+            <field name="context">{'no_initate':True}</field>
             <field name="view_ids"
                    eval="[(5, 0, 0),
-                          (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_process_kanban_view')})]"/>
+                          (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_process_kanban_search_view')})]"/>
             <field name="view_mode">kanban,tree,form</field>
         </record>
 
