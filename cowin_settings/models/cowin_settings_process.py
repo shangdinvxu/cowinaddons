@@ -40,6 +40,8 @@ class Cowin_settings_process(models.Model):
 
         asc_by_show_orders = self.stage_ids.sorted('show_order')
 
+
+
         for stage in asc_by_show_orders:
             tmp_stage = {}
             tmp_stage['id'] = stage.id
@@ -90,13 +92,16 @@ class Cowin_settings_process(models.Model):
 
             stages.append(tmp_stage)
 
+
+
         result = {
             'id': self.id,
             'name': self.name,
             'module': self.module,
             'description': self.description,
             'category': self.category,
-            'stage_ids': stages
+            'stage_ids': stages,
+            'tache_name_info': self.get_all_tache_entities_in_big().read(['name']),
         }
 
         return result
@@ -291,6 +296,9 @@ class Cowin_settings_process(models.Model):
                  for stage in self.stage_ids
                  for tache in stage.tache_ids
                  ]
+
+    def get_all_tache_entities_in_big(self):
+        return reduce(lambda x, y: x | y, self.get_all_tache_entities())
 
 
     # 数据的转发都是通过元配置的来触发!!!
