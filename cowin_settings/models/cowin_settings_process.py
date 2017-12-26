@@ -92,7 +92,8 @@ class Cowin_settings_process(models.Model):
 
             stages.append(tmp_stage)
 
-
+        tache_name_infos = [{'id': 0, 'name': u'无条件', 'parent_id': False}]
+        tache_name_infos.extend(self.get_all_tache_entities_in_big().read(['name', 'parent_id']))
 
         result = {
             'id': self.id,
@@ -101,7 +102,7 @@ class Cowin_settings_process(models.Model):
             'description': self.description,
             'category': self.category,
             'stage_ids': stages,
-            'tache_name_info': self.get_all_tache_entities_in_big().read(['name']),
+            'tache_name_infos': tache_name_infos,
         }
 
         return result
