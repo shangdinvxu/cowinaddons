@@ -1162,9 +1162,6 @@ class Cowin_project(models.Model):
 
 
 
-
-
-
 # class Project_roles(models.Model):
 #     _name = 'cowin_project.project_approval_role'
 #     '''

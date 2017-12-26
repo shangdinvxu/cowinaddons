@@ -91,8 +91,15 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
     def get_approval_flow_settings_nodes(self):
         return len(self.approval_flow_settings_id.approval_flow_setting_node_ids)
 
+    def is_approval_flow_status(self):
+        return self.status == 2
+
+    def is_final_approval_flow_settings_status(self):
+        return self.status == 4 or self.status == 5
+
+    # 能更新就更新
     def update_final_approval_flow_settings_status_and_node(self):
-        if self.status == 4:
+        if self.is_final_approval_flow_settings_status():
             return True
 
         # 当前审批节点的个数
@@ -162,35 +169,25 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         if self.status == 4 or self.status == 5:
             raise UserWarning(u'该审批已经被审核!!!')
 
-        # 状态设定的更改,位置的顺序很重要,和下一句!!!
-        # self.status = 4 if approval_flow_settings_record_info['approval_result'] else 5
 
         # 根据审批得到的结果来获得是否是审批审批通过与否
         if status == True:
-            # 同意
-            # self.current_approval_flow_node_id = True
-            self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
-            if not self.current_approval_flow_node_id.parent_id:
+            # 是否还处于审批状态
+            if self.is_approval_flow_status():
                 # 代表审批结束
                 # self.status = 4
                 self.update_approval_flow_settings_status_and_node()
-                # self.write({
-                #     'status': 4,
-                #     })
+
             approval_flow_settings_record_info['approval_result'] = u'同意'
         if status == False:
             # 拒绝
-            # self.status = 5
-            self.write({
-                'status': 5,
-                })
+            self.status = 5
+
             approval_flow_settings_record_info['approval_result'] = u'拒绝'
         if status is None:
             # 暂缓
-            # self.status = 3
-            self.write({
-                'status': 3,
-                })
+            self.status = 3
+
             approval_flow_settings_record_info['approval_result'] = u'暂缓'
 
         # approval_flow_settings_record_info['approval_result'] = u'同意' if approval_flow_settings_record_info[

@@ -140,6 +140,7 @@ class Cowin_hr(models.Model):
 
     @api.multi
     def write(self, vals):
+        print(type(self))
         print u'开始进入到write方法中开始去执行的操作!!!'
         print self.login_name
         if vals.get('login_name'):
