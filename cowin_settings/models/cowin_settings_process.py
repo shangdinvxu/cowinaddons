@@ -92,8 +92,21 @@ class Cowin_settings_process(models.Model):
 
             stages.append(tmp_stage)
 
-        tache_name_infos = [{'id': 0, 'name': u'无条件', 'parent_id': False}]
-        tache_name_infos.extend(self.get_all_tache_entities_in_big().read(['name', 'parent_id']))
+        tache_name_infos = [{'id': 0, 'name': u'无条件'}]
+
+        tmps = self.get_all_tache_entities_in_big().read(['name', 'parent_id'])
+
+        tache_name_infos.extend({'id': k['id'] , 'name': k['name']} for k in tmps)
+        tache_name_infos.extend({'id': k['parent_id'][0], 'name': k['parent_id'][1]} for k in tmps if k['parent_id'])
+
+        # 去重操作
+
+        union_tmps = []
+        for i in tache_name_infos:
+            if not i in union_tmps:
+                union_tmps.append(i)
+
+
 
         result = {
             'id': self.id,
@@ -102,7 +115,7 @@ class Cowin_settings_process(models.Model):
             'description': self.description,
             'category': self.category,
             'stage_ids': stages,
-            'tache_name_infos': tache_name_infos,
+            'tache_name_infos': union_tmps,
         }
 
         return result
