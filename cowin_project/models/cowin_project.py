@@ -6,8 +6,35 @@ from odoo.exceptions import UserError
 from odoo import SUPERUSER_ID
 
 
+# # 审批角色
+# class Cowin_common_approval_role_project_inherited(models.Model):
+#     _inherit = 'cowin_common.approval_role'
+#
+#     project_approval_role_ids = fields.Many2many('cowin_project.project_approval_role', 'cowin_approval_role_cowin_project_rel',  string=u'工程主角色')
+
+# class innner_status_for_project(models.Model):
+#     _name = 'cowin_project.innner_status'
+#
+#     prev_or_post_investment = fields.Boolean(default=True, string=u'投前/投后')
+
+
 class Cowin_project(models.Model):
     _name = 'cowin_project.cowin_project'
+
+    # 这些公有的字段用于投前,投后区别
+    created = False
+    # prev_or_post_investment = True
+
+    # innner_status_id = fields.Many2one('cowin_project.innner_status', string=u'主工程内部状态,标志区分投前/投后')
+
+    @classmethod
+    def update_created(cls, ture_or_false):
+        # 此方法一般需要用类名的方式来访问
+        cls.created = ture_or_false
+
+    @classmethod
+    def get_created(cls):
+        return cls.created
 
     @api.model
     def _default_image(self):
@@ -52,42 +79,29 @@ class Cowin_project(models.Model):
 
     attachment_ids = fields.Many2many('ir.attachment', string=u"附件")
 
+    prev_or_post_investment = fields.Boolean(string=u'投前/投后', default=True)
+
+
+    # main_approval_role_ids = fields.One2many('cowin_project.project_approval_role', 'project_id', string=u'工程主角色')
+
 
     attachment_note = fields.Char(string=u'附件说明')
 
-    # @api.model
-    # def _iscurrentUser_and_Admin(self):
-    #     '''
+    # # 投前 获取当前主工程所有的发起人角色
+    # prev_approval_flow_launch_roles_ids = fields.Many2many('cowin_common.approval_role', string=u'投前发起角色')
     #
-    #     :return:
-    #     '''
+    # # 投前 获取当期主工程所有的审批角色
+    # prev_approval_flow_role_ids = fields.Many2many('cowin_common.approval_role', string=u'投前审批角色')
     #
-    #     # 检测当前的用户是否是管理员
-    #     if self.env.user.id == SUPERUSER_ID:
-    #         return True
+    # # 投后 获取当前主工程所有的发起人角色
+    # post_approval_flow_launch_roles_ids = fields.Many2many('cowin_common.approval_role', string=u'投后发起角色')
     #
-    #
-    #     # 每个主工程所有的元子工程信息
-    #     for meta_sub_pro_entity in self.meta_sub_project_ids:
-    #
-    #         # 每个元子工程的子审批流信息
-    #         for sub_approval_flow_entity in meta_sub_pro_entity.sub_approval_flow_settings_ids:
-    #
-    #             # 每个子审批流所对应的当前的操作角色
-    #             current_role_entity = sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id
-    #             # 当前用户所关联的操作角色
-    #             all_role_rel_entities = self.env.user.employee_ids.sub_meta_pro_approval_settings_role_rel
-    #
-    #             # if current_role_entity in all_role_entities:
-    #             #     return True
-    #
-    #             for rel_entity in all_role_rel_entities:
-    #                 if current_role_entity == rel_entity.approval_role_id:
-    #                     return True
-    #
-    #     return False
-    #
-    # iscurrentUser_and_Admin = fields.Boolean(string=u'当前的用户是否有权限审批', default=_iscurrentUser_and_Admin)
+    # # 投后 获取当期主工程所有的审批角色
+    # post_approval_flow_role_ids = fields.Many2many('cowin_common.approval_role', string=u'投后审批角色')
+
+
+
+
 
 
 
@@ -137,6 +151,36 @@ class Cowin_project(models.Model):
 
         project = super(Cowin_project, self).create(vals)
 
+        # 把当前的主工程和虚拟角色进行绑定操作!!!
+        # prev_approval_flow_launch_roles_entities, prev_approval_flow_roles_entities,  \
+        #     post_approval_flow_launch_roles_entities, post_approval_flow_roles_entities  = process.approval_launch_roles_flow_roles()
+
+        # project.main_approval_role_ids.create({
+        #     'project_id': project.id,
+        #     'status': 1,
+        #     'approval_role_ids': [(6, 0, map(lambda x: x.id, prev_approval_flow_launch_roles_entities))],
+        # })
+        #
+        # project.main_approval_role_ids.create({
+        #     'project_id': project.id,
+        #     'status': 2,
+        #     'approval_role_ids': [(6, 0, map(lambda x: x.id, prev_approval_flow_roles_entities))],
+        # })
+        #
+        # project.main_approval_role_ids.create({
+        #     'project_id': project.id,
+        #     'status': 3,
+        #     'approval_role_ids': [(6, 0, map(lambda x: x.id, post_approval_flow_launch_roles_entities))],
+        # })
+        #
+        # project.main_approval_role_ids.create({
+        #     'project_id': project.id,
+        #     'status': 4,
+        #     'approval_role_ids': [(6, 0, map(lambda x: x.id, post_approval_flow_roles_entities))],
+        # })
+
+
+
 
         #  更改解锁条件
         #  修改这个需求的作用在于对之后的环节进行处理
@@ -163,22 +207,26 @@ class Cowin_project(models.Model):
             'project_id': project.id,
         })
 
-
+        # #
         # self.env['cowin_project.round_financing_and_foundation'].create({
         #     'meta_sub_project_id': meta_sub_project.id,
         #     # 很显然,这种情况下是只能是为空的,因为是第一次的操作!!!
         #     'sub_invest_decision_committee_res_id': None,
         # })
-
-
-        # 1-2 默认创建该元子工程实例一个基金轮次实例
+        #
+        #
+        # # 1-2 默认创建该元子工程实例一个基金轮次实例
         meta_sub_project.round_financing_and_Foundation_ids.create({
             'meta_sub_project_id': meta_sub_project.id,
             # 很显然,这种情况下是只能是为空的,因为是第一次的操作!!!
             'sub_invest_decision_committee_res_id': None,
         })
 
+        # type(self).created = True
+        # setattr(type(self.env[self._name]), 'created', True)
+        type(self.env[self._name]).update_created(True)
         return project
+
 
 
 
@@ -253,7 +301,7 @@ class Cowin_project(models.Model):
             meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
 
 
-        sub_project_info = meta_sub_project_entity.sub_project_ids.copy_data()[0] if meta_sub_project_entity.sub_project_ids \
+        sub_project_info = meta_sub_project_entity.sub_project_ids[0].copy_data()[0] if meta_sub_project_entity.sub_project_ids \
                 else {}
 
 
@@ -935,7 +983,13 @@ class Cowin_project(models.Model):
         if self.env.user.id == SUPERUSER_ID:
             return entities
 
+        if type(self.env[self._name]).get_created():
+            type(self.env[self._name]).update_created(False)
+            return entities
+
         to_filter_projects = set()
+
+        # return self.env[self._name]
 
         if prev_or_post_investment is None:
             return entities
@@ -951,9 +1005,11 @@ class Cowin_project(models.Model):
                     if stage_entity.prev_or_post_investment:
                         # 投前
                         for tache_entity in stage_entity.tache_ids:
+                            if tache_entity.model_id.model_name == self._name:
+                                continue
                             # 把提交角色放入提取出来
                             operation_role_entitis\
-                                .add(tache_entity.approval_flow_settings_ids.approval_flow_setting_node_ids[0].operation_role_id)
+                                .add(tache_entity.approval_flow_settings_ids.approval_flow_setting_node_ids[1].operation_role_id)
                 # 当前工程所有元子工程操作角色
 
                 approval_role_entities = set()
@@ -973,14 +1029,64 @@ class Cowin_project(models.Model):
         elif prev_or_post_investment == (1, 2):
             # # 接下来需要考虑属于每个工程的虚拟角色问题
             for entity in entities:
+                if not entity.prev_or_post_investment:
+                    continue
                 # 发起人所对应的角色
                 operation_role_entitis = set()
                 for stage_entity in entity.process_id.stage_ids:
                     if stage_entity.prev_or_post_investment:
                         # 投前
                         for tache_entity in stage_entity.tache_ids:
+                            if tache_entity.model_id.model_name == self._name:
+                                continue
                             # 把提交角色放入提取出来
-                            operation_role_entitis |= set(approval_flow_setting_node_entity.operation_role_id for approval_flow_setting_node_entity in tache_entity.approval_flow_settings_ids.approval_flow_setting_node_ids[1:-1])
+
+                            approval_flow_settings_entity = tache_entity.approval_flow_settings_ids
+                            approval_node_entities = list(approval_flow_settings_entity.approval_flow_setting_node_ids)
+                            # 大于2的意义在于这个除了提交节点和结束节点之外,还有审核节点
+                            if len(approval_node_entities) > 2:
+                                # 这个sub_approval_flow_settings_ids 代表的意思在于每个主工程中的元子工程都会有子审批流
+                                for sub_approval_entity in approval_flow_settings_entity.sub_approval_flow_settings_ids:
+                                    # 数据库的取巧操作,前两个分别是提交结束,提交,后面的都是审核节点,并且是以此顺序存储
+                                    if sub_approval_entity.status >= 2 :
+                                        if not sub_approval_entity.current_approval_flow_node_id:
+                                            # 还未发起
+                                            continue
+                                        node_index = approval_node_entities.index(sub_approval_entity.current_approval_flow_node_id)
+
+
+                                        operation_role_entitis |= set(node.operation_role_id for node in approval_flow_settings_entity.approval_flow_setting_node_ids[2:node_index+1])
+
+
+
+                # 注:当前用户所对应的虚拟角色可能跨越多个主工程
+                current_approle_entities = set(rel_entity.approval_role_id for rel_entity in
+                                               self.env.user.employee_ids[0].sub_meta_pro_approval_settings_role_rel)
+
+                # if approval_role_entities & current_approle_entities & operation_role_entitis:
+                if current_approle_entities & operation_role_entitis:
+                    to_filter_projects.add(entity)
+
+        # 投后流程
+        elif prev_or_post_investment == (2, 1):
+
+            # # 接下来需要考虑属于每个工程的虚拟角色问题
+            for entity in entities:
+                # 如果还是投状态,那么需要过滤过去
+                if entity.prev_or_post_investment:
+                    continue
+                # 发起人所对应的角色
+                operation_role_entitis = set()
+                for stage_entity in entity.process_id.stage_ids:
+                    if not stage_entity.prev_or_post_investment:
+                        # 投前
+                        for tache_entity in stage_entity.tache_ids:
+                            if tache_entity.model_id.model_name == self._name:
+                                continue
+                            # 把提交角色放入提取出来
+                            operation_role_entitis \
+                                .add(tache_entity.approval_flow_settings_ids.approval_flow_setting_node_ids[
+                                         1].operation_role_id)
                 # 当前工程所有元子工程操作角色
 
                 approval_role_entities = set()
@@ -997,11 +1103,51 @@ class Cowin_project(models.Model):
                     to_filter_projects.add(entity)
 
 
-        elif prev_or_post_investment == (1, 2):
-            pass
+        # 投后审批
+        elif prev_or_post_investment == (2, 2):
 
-        elif prev_or_post_investment == (1, 2):
-            pass
+            # # 接下来需要考虑属于每个工程的虚拟角色问题
+            for entity in entities:
+
+                # 如果还是投后状态,那么需要过滤过去
+                if entity.prev_or_post_investment:
+                    continue
+
+                # 发起人所对应的角色
+                operation_role_entitis = set()
+                for stage_entity in entity.process_id.stage_ids:
+                    if stage_entity.prev_or_post_investment:
+                        # 投前
+                        for tache_entity in stage_entity.tache_ids:
+                            if tache_entity.model_id.model_name == self._name:
+                                continue
+                            # 把提交角色放入提取出来
+
+                            approval_flow_settings_entity = tache_entity.approval_flow_settings_ids
+                            approval_node_entities = list(approval_flow_settings_entity.approval_flow_setting_node_ids)
+                            # 大于2的意义在于这个除了提交节点和结束节点之外,还有审核节点
+                            if len(approval_node_entities) > 2:
+                                # 这个sub_approval_flow_settings_ids 代表的意思在于每个主工程中的元子工程都会有子审批流
+                                for sub_approval_entity in approval_flow_settings_entity.sub_approval_flow_settings_ids:
+                                    # 数据库的取巧操作,前两个分别是提交结束,提交,后面的都是审核节点,并且是以此顺序存储
+                                    if sub_approval_entity.status >= 2 :
+                                        if not sub_approval_entity.current_approval_flow_node_id:
+                                            # 还未发起
+                                            continue
+                                        node_index = approval_node_entities.index(sub_approval_entity.current_approval_flow_node_id)
+
+
+                                        operation_role_entitis |= set(node.operation_role_id for node in approval_flow_settings_entity.approval_flow_setting_node_ids[2:node_index+1])
+
+
+
+                # 注:当前用户所对应的虚拟角色可能跨越多个主工程
+                current_approle_entities = set(rel_entity.approval_role_id for rel_entity in
+                                               self.env.user.employee_ids[0].sub_meta_pro_approval_settings_role_rel)
+
+                # if approval_role_entities & current_approle_entities & operation_role_entitis:
+                if current_approle_entities & operation_role_entitis:
+                    to_filter_projects.add(entity)
 
         else:
             return entities
@@ -1010,7 +1156,24 @@ class Cowin_project(models.Model):
 
 
 
-        return reduce(lambda x, y: x | y, to_filter_projects, tem)
+        res = reduce(lambda x, y: x | y, to_filter_projects, tem)
+
+        return res
 
 
 
+
+
+
+# class Project_roles(models.Model):
+#     _name = 'cowin_project.project_approval_role'
+#     '''
+#         工程审批角色的: 目的在于方便的操作虚拟角色操作
+#     '''
+#
+#
+#     project_id = fields.Many2one('cowin_project.cowin_project', string=u'主工程', ondelete="cascade")
+#
+#     status = fields.Selection([(1, u'投前发起角色'), (2, u'投前审批角色'), (3, u'投后发起角色'), (4, u'投后审批角色')], string=u'投前投后阶段')
+#
+#     approval_role_ids = fields.Many2many('cowin_common.approval_role', 'cowin_approval_role_cowin_project_rel', string=u'虚拟角色')

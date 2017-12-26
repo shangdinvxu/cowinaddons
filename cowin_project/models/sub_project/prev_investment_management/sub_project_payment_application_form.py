@@ -74,6 +74,16 @@ class Cowin_project_subproject_payment_application_form(models.Model):
         # 判断 发起过程 是否需要触发下一个子环节
         target_sub_tache_entity.check_or_not_next_sub_tache()
 
+
+        # 由 '付款申请表来获得投后跟进列表的展现的操作(鼠标点击投后跟进菜单项的时候)!!!'
+
+        project_entity = res.sub_project_id.meta_sub_project_id.project_id
+
+        # 类对象中的属性
+        project_entity.write({
+            'prev_or_post_investment': False,
+        })
+
         # 触发下一个依赖子环节处于解锁状态
         # for current_sub_tache_entity in meta_sub_project_entity.sub_tache_ids:
         #     if current_sub_tache_entity.parent_id == target_sub_tache_entity:

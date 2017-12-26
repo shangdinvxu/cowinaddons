@@ -113,14 +113,18 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         if self.status == 4 or self.status == 5:
             return
 
+        prev = self.current_approval_flow_node_id
         self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
+
+
 
         # 如果没有审核人,那么直接进入同意状态
         if not self.current_approval_flow_node_id.parent_id:
             # self.status = 4
             self.write({
                     'status': 4,
-                    'current_approval_flow_node_id': self.current_approval_flow_node_id.id,
+                    # 'current_approval_flow_node_id': self.current_approval_flow_node_id.id,
+                    'current_approval_flow_node_id': prev.id,
                 })
 
             # 需要触发下一个子环节

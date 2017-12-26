@@ -316,3 +316,32 @@ class Cowin_settings_process(models.Model):
 
 
 
+
+
+    # def approval_launch_roles_flow_roles(self):
+    #
+    #     # 投前 发起角色,审批角色
+    #     prev_approval_flow_launch_roles_entities = []
+    #     prev_approval_flow_roles_entities = []
+    #
+    #     # 投后 发起角色,审批角色
+    #     post_approval_flow_launch_roles_entities = []
+    #     post_approval_flow_roles_entities = []
+    #
+    #     for stage_entity in self.stage_ids:
+    #         if stage_entity.prev_or_post_investment:
+    #             for tache_entity in stage_entity.tache_ids:
+    #                 for approval_flow_settings_entity in tache_entity.approval_flow_settings_ids:
+    #                     prev_approval_flow_launch_roles_entities.append(approval_flow_settings_entity.approval_flow_settings_node_ids[0])
+    #                     prev_approval_flow_roles_entities.extend(approval_flow_settings_entity.approval_flow_settings_node_ids[1:-1])
+    #         else:
+    #             for tache_entity in stage_entity.tache_ids:
+    #                 for approval_flow_settings_entity in tache_entity.approval_flow_settings_ids:
+    #                     post_approval_flow_launch_roles_entities.append(
+    #                         approval_flow_settings_entity.approval_flow_settings_node_ids[0])
+    #                     post_approval_flow_roles_entities.extend(
+    #                         approval_flow_settings_entity.approval_flow_settings_node_ids[1:-1])
+    #
+    #
+    #     return (prev_approval_flow_launch_roles_entities, prev_approval_flow_roles_entities,
+    #                 post_approval_flow_launch_roles_entities, post_approval_flow_roles_entities)
