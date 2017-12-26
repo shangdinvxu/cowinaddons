@@ -166,11 +166,11 @@
 
                 <div class="condition_wrap">解锁条件:
                     <select class="form-control">
-                        <option data-id="">无条件</option>
-                        <t t-foreach="result.stage_ids" t-as="item">
-                            <t t-foreach="item.tache_ids" t-as="obj">
-                                <option t-att-data-id="obj.id"><t t-esc="obj.name"/></option>
-                            </t>
+                        <!--<option data-id="">无条件</option>-->
+                        <t t-foreach="result.tache_name_infos" t-as="item">
+                            <!--<t t-foreach="item.tache_ids" t-as="obj">-->
+                                <option t-att-data-id="item.id"><t t-esc="item.name"/></option>
+                            <!--</t>-->
                         </t>
                     </select>
                 </div>
