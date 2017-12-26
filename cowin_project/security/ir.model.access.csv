@@ -1,3 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_cowin_project_cowin_project,cowin_project.cowin_project,model_cowin_project_cowin_project,,1,1,1,1
-access_cowin_project_project_approval_role,cowin_project.project_approval_role,model_cowin_project_project_approval_role,,1,1,1,1
