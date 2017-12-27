@@ -77,7 +77,7 @@ class Cowin_project_subproject_payment_application_form(models.Model):
 
         # 由 '付款申请表来获得投后跟进列表的展现的操作(鼠标点击投后跟进菜单项的时候)!!!'
 
-        project_entity = res.sub_project_id.meta_sub_project_id.project_id
+        project_entity = res.subproject_id.meta_sub_project_id.project_id
 
         # 类对象中的属性
         project_entity.write({

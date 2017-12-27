@@ -1011,19 +1011,40 @@ class Cowin_project(models.Model):
                             # 把提交角色放入提取出来
                             operation_role_entitis\
                                 .add(tache_entity.approval_flow_settings_ids.approval_flow_setting_node_ids[1].operation_role_id)
-                # 当前工程所有元子工程操作角色
 
-                approval_role_entities = set()
+
+                # 获得所有的发起人的角色之后,还需要依据元子工程过滤中该主工所有三张表之间依赖的实体
+                # 找到该主工程中,发起人所关联的employee
+                target_employ_entities = set()
+
+
                 for meta_sub_pro_entity in entity.meta_sub_project_ids:
-                    # 多个这样的关系
-                    for rel_entity in meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel:
-                        approval_role_entities.add(rel_entity.approval_role_id)
+                    restrict_rels = meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel
+                    for role in operation_role_entitis:
+                        rel_entities = restrict_rels & role.sub_meta_pro_approval_settings_role_rel
 
-                # 注:当前用户所对应的虚拟角色可能跨越多个主工程
-                current_approle_entities = set(rel_entity.approval_role_id for rel_entity in self.env.user.employee_ids.sub_meta_pro_approval_settings_role_rel)
 
-                if approval_role_entities & current_approle_entities & operation_role_entitis:
+                        for rel_entity in rel_entities:
+                            target_employ_entities.add(rel_entity.employee_id)
+
+
+
+                # 当前用户所对应的employee
+                current_employee_entities = set(self.env.user.employee_ids)
+                employee_e = current_employee_entities & target_employ_entities
+
+
+                if employee_e:
                     to_filter_projects.add(entity)
+                elif entity.create_uid == self.env.user:
+                    to_filter_projects.add(entity)
+                else:
+                    pass
+
+
+
+
+
 
 
         # 投前审批
@@ -1058,15 +1079,25 @@ class Cowin_project(models.Model):
 
                                         operation_role_entitis |= set(node.operation_role_id for node in approval_flow_settings_entity.approval_flow_setting_node_ids[2:node_index+1])
 
+                # 获得所有的发起人的角色之后,还需要依据元子工程过滤中该主工所有三张表之间依赖的实体
+                # 找到该主工程中,发起人所关联的employee
+                target_employ_entities = set()
 
+                for meta_sub_pro_entity in entity.meta_sub_project_ids:
+                    restrict_rels = meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel
+                    for role in operation_role_entitis:
+                        rel_entities = restrict_rels & role.sub_meta_pro_approval_settings_role_rel
 
-                # 注:当前用户所对应的虚拟角色可能跨越多个主工程
-                current_approle_entities = set(rel_entity.approval_role_id for rel_entity in
-                                               self.env.user.employee_ids[0].sub_meta_pro_approval_settings_role_rel)
+                        for rel_entity in rel_entities:
+                            target_employ_entities.add(rel_entity.employee_id)
 
-                # if approval_role_entities & current_approle_entities & operation_role_entitis:
-                if current_approle_entities & operation_role_entitis:
+                # 当前用户所对应的employee
+                current_employee_entities = set(self.env.user.employee_ids)
+                employee_e = current_employee_entities & target_employ_entities
+
+                if employee_e:
                     to_filter_projects.add(entity)
+
 
         # 投后流程
         elif prev_or_post_investment == (2, 1):
@@ -1088,20 +1119,44 @@ class Cowin_project(models.Model):
                             operation_role_entitis \
                                 .add(tache_entity.approval_flow_settings_ids.approval_flow_setting_node_ids[
                                          1].operation_role_id)
-                # 当前工程所有元子工程操作角色
 
-                approval_role_entities = set()
+                # 获得所有的发起人的角色之后,还需要依据元子工程过滤中该主工所有三张表之间依赖的实体
+                # 找到该主工程中,发起人所关联的employee
+                target_employ_entities = set()
+
                 for meta_sub_pro_entity in entity.meta_sub_project_ids:
-                    # 多个这样的关系
-                    for rel_entity in meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel:
-                        approval_role_entities.add(rel_entity.approval_role_id)
+                    restrict_rels = meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel
+                    for role in operation_role_entitis:
+                        rel_entities = restrict_rels & role.sub_meta_pro_approval_settings_role_rel
 
-                # 注:当前用户所对应的虚拟角色可能跨越多个主工程
-                current_approle_entities = set(rel_entity.approval_role_id for rel_entity in
-                                               self.env.user.employee_ids.sub_meta_pro_approval_settings_role_rel)
+                        for rel_entity in rel_entities:
+                            target_employ_entities.add(rel_entity.employee_id)
 
-                if approval_role_entities & current_approle_entities & operation_role_entitis:
+                # 当前用户所对应的employee
+                current_employee_entities = set(self.env.user.employee_ids)
+                employee_e = current_employee_entities & target_employ_entities
+
+                if employee_e:
                     to_filter_projects.add(entity)
+                elif entity.create_uid == self.env.user:
+                    to_filter_projects.add(entity)
+                else:
+                    pass
+
+                # # 当前工程所有元子工程操作角色
+                #
+                # approval_role_entities = set()
+                # for meta_sub_pro_entity in entity.meta_sub_project_ids:
+                #     # 多个这样的关系
+                #     for rel_entity in meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel:
+                #         approval_role_entities.add(rel_entity.approval_role_id)
+                #
+                # # 注:当前用户所对应的虚拟角色可能跨越多个主工程
+                # current_approle_entities = set(rel_entity.approval_role_id for rel_entity in
+                #                                self.env.user.employee_ids.sub_meta_pro_approval_settings_role_rel)
+                #
+                # if approval_role_entities & current_approle_entities & operation_role_entitis:
+                #     to_filter_projects.add(entity)
 
 
         # 投后审批
@@ -1140,15 +1195,32 @@ class Cowin_project(models.Model):
 
                                         operation_role_entitis |= set(node.operation_role_id for node in approval_flow_settings_entity.approval_flow_setting_node_ids[2:node_index+1])
 
+                # 获得所有的发起人的角色之后,还需要依据元子工程过滤中该主工所有三张表之间依赖的实体
+                # 找到该主工程中,发起人所关联的employee
+                target_employ_entities = set()
 
+                for meta_sub_pro_entity in entity.meta_sub_project_ids:
+                    restrict_rels = meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel
+                    for role in operation_role_entitis:
+                        rel_entities = restrict_rels & role.sub_meta_pro_approval_settings_role_rel
 
-                # 注:当前用户所对应的虚拟角色可能跨越多个主工程
-                current_approle_entities = set(rel_entity.approval_role_id for rel_entity in
-                                               self.env.user.employee_ids[0].sub_meta_pro_approval_settings_role_rel)
+                        for rel_entity in rel_entities:
+                            target_employ_entities.add(rel_entity.employee_id)
 
-                # if approval_role_entities & current_approle_entities & operation_role_entitis:
-                if current_approle_entities & operation_role_entitis:
+                # 当前用户所对应的employee
+                current_employee_entities = set(self.env.user.employee_ids)
+                employee_e = current_employee_entities & target_employ_entities
+
+                if employee_e:
                     to_filter_projects.add(entity)
+
+                # # 注:当前用户所对应的虚拟角色可能跨越多个主工程
+                # current_approle_entities = set(rel_entity.approval_role_id for rel_entity in
+                #                                self.env.user.employee_ids[0].sub_meta_pro_approval_settings_role_rel)
+                #
+                # # if approval_role_entities & current_approle_entities & operation_role_entitis:
+                # if current_approle_entities & operation_role_entitis:
+                #     to_filter_projects.add(entity)
 
         else:
             return entities
