@@ -272,6 +272,11 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             var target = e.target || e.srcElement;
             var self = this;
             $('.unlock_condition').show();
+            if($('.project_header h2').text() == '投前流程'){
+                $('.condition_wrap select').attr('disabled','disabled');
+            }else {
+                $('.condition_wrap select').attr('disabled',false)
+            }
 
             if($(target).parents('tr').attr('more') == 'true'){
                 $('.launch_more input').attr('checked',true)
