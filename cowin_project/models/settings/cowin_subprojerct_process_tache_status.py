@@ -64,8 +64,8 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
             # self.sub_pro_approval_flow_settings_ids.update_final_approval_flow_settings_status_and_node()
             for sub_tache_entity in self.meta_sub_project_id.sub_tache_ids:
-
-                if sub_tache_entity.parent_id == self:
+                # 可能下一个子环节已经解锁了!!!
+                if sub_tache_entity.parent_id == self and not sub_tache_entity.is_unlocked:
                                     sub_tache_entity.write({
                                         'is_unlocked': True,
                                         })

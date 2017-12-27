@@ -1051,8 +1051,8 @@ class Cowin_project(models.Model):
         elif prev_or_post_investment == (1, 2):
             # # 接下来需要考虑属于每个工程的虚拟角色问题
             for entity in entities:
-                if not entity.prev_or_post_investment:
-                    continue
+                # if not entity.prev_or_post_investment:
+                #     continue
                 # 发起人所对应的角色
                 operation_role_entitis = set()
                 for stage_entity in entity.process_id.stage_ids:
@@ -1104,7 +1104,8 @@ class Cowin_project(models.Model):
 
             # # 接下来需要考虑属于每个工程的虚拟角色问题
             for entity in entities:
-                # 如果还是投状态,那么需要过滤过去
+                # 如果还是投前状态,那么需要过滤过去
+                # 如果是投后状态,那么这个值就是false
                 if entity.prev_or_post_investment:
                     continue
                 # 发起人所对应的角色
@@ -1165,14 +1166,15 @@ class Cowin_project(models.Model):
             # # 接下来需要考虑属于每个工程的虚拟角色问题
             for entity in entities:
 
-                # 如果还是投后状态,那么需要过滤过去
+                # 如果还是投前状态,那么需要过滤过去
+                # 如果是投后状态,那么这个值就是false
                 if entity.prev_or_post_investment:
                     continue
 
                 # 发起人所对应的角色
                 operation_role_entitis = set()
                 for stage_entity in entity.process_id.stage_ids:
-                    if stage_entity.prev_or_post_investment:
+                    if not stage_entity.prev_or_post_investment:
                         # 投前
                         for tache_entity in stage_entity.tache_ids:
                             if tache_entity.model_id.model_name == self._name:
