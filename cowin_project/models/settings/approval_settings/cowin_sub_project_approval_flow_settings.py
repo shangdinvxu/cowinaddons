@@ -104,12 +104,12 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         # 当前审批节点的个数
         if self.get_approval_flow_settings_nodes() == 2:
-            prev = self.current_approval_flow_node_id
+            # prev = self.current_approval_flow_node_id
 
             self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
 
             if not self.current_approval_flow_node_id.parent_id:
-                self.current_approval_flow_node_id = prev
+                # self.current_approval_flow_node_id = prev
 
                 self.write({
                     'status': 4,
@@ -126,14 +126,14 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         if self.status == 4 or self.status == 5:
             return
 
-        prev = self.current_approval_flow_node_id
+        # prev = self.current_approval_flow_node_id
         self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
 
 
 
         # 如果到达审批结束节点,那么直接进入同意状态
         if not self.current_approval_flow_node_id.parent_id:
-            self.current_approval_flow_node_id = prev
+            # self.current_approval_flow_node_id = prev
             # self.status = 4
             self.write({
                     'status': 4,

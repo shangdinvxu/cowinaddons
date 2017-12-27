@@ -1070,7 +1070,7 @@ class Cowin_project(models.Model):
                                 # 这个sub_approval_flow_settings_ids 代表的意思在于每个主工程中的元子工程都会有子审批流
                                 for sub_approval_entity in approval_flow_settings_entity.sub_approval_flow_settings_ids:
                                     # 数据库的取巧操作,前两个分别是提交结束,提交,后面的都是审核节点,并且是以此顺序存储
-                                    if sub_approval_entity.status >= 2 :
+                                    if sub_approval_entity.status == 2 :
                                         if not sub_approval_entity.current_approval_flow_node_id:
                                             # 还未发起
                                             continue
@@ -1186,7 +1186,7 @@ class Cowin_project(models.Model):
                                 # 这个sub_approval_flow_settings_ids 代表的意思在于每个主工程中的元子工程都会有子审批流
                                 for sub_approval_entity in approval_flow_settings_entity.sub_approval_flow_settings_ids:
                                     # 数据库的取巧操作,前两个分别是提交结束,提交,后面的都是审核节点,并且是以此顺序存储
-                                    if sub_approval_entity.status >= 2 :
+                                    if sub_approval_entity.status == 2 :
                                         if not sub_approval_entity.current_approval_flow_node_id:
                                             # 还未发起
                                             continue
