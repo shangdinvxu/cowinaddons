@@ -19,6 +19,8 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
     status = fields.Selection([(1, u'发起'), (2, u'审核中'), (3, u'暂缓(从新发起)'), (4, u'同意'), (5, u'拒绝')],
                      string=u'审核状态', default=1)
 
+    # is_putoff = fields.Boolean(string=u'是否暂缓', default=True)
+
 
     # status_trigger = fields.Integer(compute='_compute_status')
 
@@ -36,35 +38,6 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
     # 构建子环节和子审批实体一对一的关系
     sub_project_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
-    # def status_trigger_m(self):
-    #     self.status_trigger
-    #
-    # @api.depends('status')
-    # def _compute_status(self):
-    #     # self.ensure_one()
-    #     for record in self:
-    #         record.status_trigger = record.status
-    #         print(u'数据库的问题吗?')
-    #
-    #         if record.status == 4:
-    #             # 触发下一个子环节操作
-    #             for sub_tache_entity in record.meta_sub_project_id.sub_tache_ids:
-    #                 if sub_tache_entity.parent_id == record.sub_project_tache_id:
-    #                     sub_tache_entity.write({
-    #                         'is_unlocked': True,
-    #                         })
-    #                     break
-    #
-    #
-    #         elif self.status == 3:
-    #             # 暂缓
-    #             pass
-    #
-    #         elif self.status == 5:
-    #             # 拒绝
-    #             pass
-    #
-    #     i = 0
 
 
     def is_success(self):
@@ -123,7 +96,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
 
     def update_approval_flow_settings_status_and_node(self):
-        if self.status == 4 or self.status == 5:
+        if self.is_final_approval_flow_settings_status():
             return
 
         # prev = self.current_approval_flow_node_id
@@ -166,7 +139,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         # 这种情况下代表着出现多次并行的操作的问题!!!
 
-        if self.status == 4 or self.status == 5:
+        if self.is_final_approval_flow_settings_status():
             raise UserWarning(u'该审批已经被审核!!!')
 
 
@@ -186,7 +159,13 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             approval_flow_settings_record_info['approval_result'] = u'拒绝'
         if status is None:
             # 暂缓
-            self.status = 3
+            self.status = 1
+            # self.approval_flow_settings_id.approval_flow_setting_node_ids[1] 代表发起人
+            # self.approval_flow_settings_id.approval_flow_setting_node_ids[0] 代表审批结束
+            self.current_approval_flow_node_id = self.approval_flow_settings_id.approval_flow_setting_node_ids[1]
+            self.sub_project_tache_id.write({
+                'is_launch_again': True,
+            })
 
             approval_flow_settings_record_info['approval_result'] = u'暂缓'
 

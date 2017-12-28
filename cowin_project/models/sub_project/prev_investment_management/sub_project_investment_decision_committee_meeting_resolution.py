@@ -80,6 +80,8 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
         return res
 
 
+
+
     @api.multi
     def write(self, vals):
 
@@ -106,6 +108,27 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
             round_financing_and_Foundation.write({
                 'meta_sub_project_id': meta_sub_project.id,
             })
+
+
+
+        # 处理暂缓的情况!!!
+        tache_info = self._context['tache']
+
+        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+
+        # 校验meta_sub_project所对应的子工程只能有一份实体
+        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+
+        sub_tache_id = int(tache_info['sub_tache_id'])
+
+        target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
+
+        target_sub_tache_entity.write({
+            'is_launch_again': False,
+        })
+
+        # 判断 发起过程 是否需要触发下一个子环节
+        target_sub_tache_entity.check_or_not_next_sub_tache()
 
         return result
 

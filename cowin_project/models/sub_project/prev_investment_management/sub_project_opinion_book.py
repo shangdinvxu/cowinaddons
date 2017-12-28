@@ -39,11 +39,6 @@ class Cowin_project_subproject_opinion_book(models.Model):
 
     project_mumbers = fields.Many2many('hr.employee', string=u'项目小组成员')
 
-    # examine_and_verify = fields.Char(string=u'审核校验', default=u'未开始审核')
-
-    # partner_opinion = fields.Text(string=u'项目合伙人表决意见')
-    # business_director_option = fields.Text(string=u'业务总监表决意见')
-    # policy_making_committee = fields.Text(string=u'投资决策委员会意见')
 
 
     @api.model
@@ -62,7 +57,6 @@ class Cowin_project_subproject_opinion_book(models.Model):
         res = super(Cowin_project_subproject_opinion_book, self).create(vals)
         target_sub_tache_entity.write({
             'res_id': res.id,
-            # 'is_unlocked': True,
             'view_or_launch': True,
         })
 
@@ -72,6 +66,29 @@ class Cowin_project_subproject_opinion_book(models.Model):
         return res
 
 
+
+    @api.model
+    def write(self, vals):
+        res = super(Cowin_project_subproject_opinion_book, self).write(vals)
+        tache_info = self._context['tache']
+
+        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+
+        # 校验meta_sub_project所对应的子工程只能有一份实体
+        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+
+        sub_tache_id = int(tache_info['sub_tache_id'])
+
+        target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
+
+        target_sub_tache_entity.write({
+            'is_launch_again': False,
+        })
+
+        # 判断 发起过程 是否需要触发下一个子环节
+        target_sub_tache_entity.check_or_not_next_sub_tache()
+
+        return res
 
 
 

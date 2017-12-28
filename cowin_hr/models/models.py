@@ -65,7 +65,7 @@ class Cowin_hr(models.Model):
     industry = fields.Many2one('cowin_common.cowin_industry', string=u'所属行业')
 
     # 员工与登录角色的关系 理论上 One-2-One关系
-    user_id = fields.Many2one('res.users', string=u'登陆用户')
+    # user_id = fields.Many2one('res.users', string=u'登陆用户')
     #
     # approval_role_ids = fields.Many2many('cowin_common.approval_role', string=u'审批角色')
     sub_meta_pro_approval_settings_role_rel = fields.One2many('cowin_project.meta_sub_appro_role_hr_em', 'employee_id', string=u'审批角色')

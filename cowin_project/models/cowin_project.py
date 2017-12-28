@@ -365,6 +365,7 @@ class Cowin_project(models.Model):
                     tache_info['state'] = sub_tache_entity.tache_id.state
                     tache_info['once_or_more'] = sub_tache_entity.tache_id.once_or_more
                     tache_info['view_or_launch'] = sub_tache_entity.view_or_launch
+                    tache_info['is_launch_again'] = sub_tache_entity.is_launch_again
                     tache_info['res_id'] = sub_tache_entity.res_id
 
                     # tmp_tache['res_id'] = tache.res_id

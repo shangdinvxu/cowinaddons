@@ -84,12 +84,29 @@ class Cowin_project_subproject_payment_application_form(models.Model):
             'prev_or_post_investment': False,
         })
 
-        # 触发下一个依赖子环节处于解锁状态
-        # for current_sub_tache_entity in meta_sub_project_entity.sub_tache_ids:
-        #     if current_sub_tache_entity.parent_id == target_sub_tache_entity:
-        #         current_sub_tache_entity.write({
-        #             'is_unlocked': True,
-        #         })
+        return res
+
+    @api.model
+    def write(self, vals):
+        res = super(Cowin_project_subproject_payment_application_form, self).write(vals)
+        tache_info = self._context['tache']
+
+        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+
+        # 校验meta_sub_project所对应的子工程只能有一份实体
+        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+
+        sub_tache_id = int(tache_info['sub_tache_id'])
+
+        target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
+
+        target_sub_tache_entity.write({
+            'is_launch_again': False,
+        })
+
+        # 判断 发起过程 是否需要触发下一个子环节
+        target_sub_tache_entity.check_or_not_next_sub_tache()
 
         return res
+
 
