@@ -155,9 +155,45 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
                 },
                 type: 'ir.actions.act_window',
                 name: self.tache_arr[tache_index].name,
-                target:'current'
+                target:'new'
             }
             self.do_action(action);
+
+            // ajax监听事件 用以刷新页面
+            var sub_id = $('.active_fund').attr('data-sub-id');
+            var refresh_page = null;
+            refresh_page = function (self,model) {
+                $(document).ajaxComplete(function (event, xhr, settings) {
+                    if (settings.data){
+                        var data = JSON.parse(settings.data);
+                        if (data.params.model && data.params.model == model) {
+                            if (data.params.method == 'create'){
+                                $('.close').click(function () {
+                                    return new Model("cowin_project.cowin_project")
+                                        .call("rpc_get_info", [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
+                                        .then(function (result) {
+                                            result.no_initate = self.no_initate
+                                            console.log(result);
+                                            $('.process_data_main_wrap').html('');
+                                            // 获取每个环节的model_name存入数组
+                                            self.tache_arr = [];
+                                            result.process.forEach(function (value) {
+                                                value.tache_ids.forEach(function (model) {
+                                                    self.tache_arr.push((model))
+                                                });
+                                            });
+                                            self.id = parseInt(result.id);
+                                            $('.process_data_main_wrap').append(QWeb.render('process_info_right_tmpl', {result: result}));
+                                            $('.process_funds_rounds').html('');
+                                            $('.process_funds_rounds').append(QWeb.render('process_info_left_tmpl', {result: result,active_flag:sub_id}));
+                                        })
+                                })
+                            }
+                        }
+                    }
+                })
+            }
+            refresh_page(self,self.tache_arr[tache_index].model_name);
         },
 
         //基金切换
