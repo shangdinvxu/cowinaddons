@@ -360,7 +360,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     if (settings.data){
                         var data = JSON.parse(settings.data);
                         if (data.params.model && data.params.model == model) {
-                            if (data.params.method == 'create'){
+                            if (data.params.method == 'create' || data.params.method == 'write'){
                                 $('.close').click(function () {
                                     return new Model("cowin_project.cowin_project")
                                         .call("rpc_get_info", [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
