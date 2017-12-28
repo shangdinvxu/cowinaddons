@@ -103,7 +103,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
             }else if($(target).hasClass('approval_no')){
                 var approval_result = false;
             }else {
-                var approval_result = 'no';
+                var approval_result = null;
             }
             var opinion = $('.approval_opinion').val();
             var self = this;
