@@ -99,8 +99,10 @@ odoo.define('cowin_project.approval_after_invest_kanban_to_detail', function (re
             var target = e.target || e.srcElement;
             if($(target).hasClass('approval_yes')){
                 var approval_result = true;
-            }else {
+            }else if($(target).hasClass('approval_no')){
                 var approval_result = false;
+            }else {
+                var approval_result = 'no';
             }
             var opinion = $('.approval_opinion').val();
             var self = this;
