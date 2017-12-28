@@ -66,7 +66,7 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
 
         return res
 
-    @api.model
+    @api.multi
     def write(self, vals):
         res = super(sub_project_summary_of_the_project_withdrawal_from_the_meeting, self).write(vals)
         tache_info = self._context['tache']

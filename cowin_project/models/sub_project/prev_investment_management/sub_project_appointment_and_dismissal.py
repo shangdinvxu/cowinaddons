@@ -71,7 +71,7 @@ class Cowin_project_subproject_appointment_and_dismissal(models.Model):
 
 
 
-    @api.model
+    @api.multi
     def write(self, vals):
         res = super(Cowin_project_subproject_appointment_and_dismissal, self).write(vals)
         tache_info = self._context['tache']

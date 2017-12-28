@@ -62,7 +62,7 @@ class sub_project_three_empowerment(models.Model):
         return res
 
 
-    @api.model
+    @api.multi
     def write(self, vals):
         res = super(sub_project_three_empowerment, self).write(vals)
         tache_info = self._context['tache']

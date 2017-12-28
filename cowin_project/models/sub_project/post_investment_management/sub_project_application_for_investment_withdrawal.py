@@ -68,7 +68,7 @@ class sub_project_application_for_investment_withdrawal(models.Model):
 
         return res
 
-    @api.model
+    @api.multi
     def write(self, vals):
         res = super(sub_project_application_for_investment_withdrawal, self).write(vals)
         tache_info = self._context['tache']

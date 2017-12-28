@@ -81,7 +81,7 @@ class Cowin_project_subproject_call_up_record(models.Model):
 
 
 
-    @api.model
+    @api.multi
     def write(self, vals):
         res = super(Cowin_project_subproject_call_up_record, self).write(vals)
         tache_info = self._context['tache']

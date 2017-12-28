@@ -75,7 +75,7 @@ class Cowin_project_subproject_investment_decision_application(models.Model):
 
 
 
-    @api.model
+    @api.multi
     def write(self, vals):
         res = super(Cowin_project_subproject_investment_decision_application, self).write(vals)
         tache_info = self._context['tache']

@@ -73,7 +73,7 @@ class sub_project_dismissal_of_directors_or_supervisors(models.Model):
 
         return res
 
-    @api.model
+    @api.multi
     def write(self, vals):
         res = super(sub_project_dismissal_of_directors_or_supervisors, self).write(vals)
         tache_info = self._context['tache']

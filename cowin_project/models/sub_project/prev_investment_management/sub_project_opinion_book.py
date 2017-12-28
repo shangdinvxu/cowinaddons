@@ -67,7 +67,7 @@ class Cowin_project_subproject_opinion_book(models.Model):
 
 
 
-    @api.model
+    @api.multi
     def write(self, vals):
         res = super(Cowin_project_subproject_opinion_book, self).write(vals)
         tache_info = self._context['tache']

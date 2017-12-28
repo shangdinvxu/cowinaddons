@@ -41,7 +41,7 @@ class sub_project_summary_of_the_three_meeting_of_the_item_company(models.Model)
 
 
 
-    @api.model
+    @api.multi
     def create(self, vals):
         tache_info = self._context['tache']
 

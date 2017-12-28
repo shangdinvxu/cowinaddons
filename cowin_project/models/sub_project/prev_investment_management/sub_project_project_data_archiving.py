@@ -79,7 +79,7 @@ class Cowin_project_subproject_project_data_archiving(models.Model):
 
         return sub_project
 
-    @api.model
+    @api.multi
     def write(self, vals):
         res = super(Cowin_project_subproject_project_data_archiving, self).write(vals)
         tache_info = self._context['tache']

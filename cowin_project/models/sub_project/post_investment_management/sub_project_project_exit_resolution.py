@@ -71,7 +71,7 @@ class sub_project_project_exit_resolution(models.Model):
 
 
 
-    @api.model
+    @api.multi
     def write(self, vals):
         res = super(sub_project_project_exit_resolution, self).write(vals)
         tache_info = self._context['tache']

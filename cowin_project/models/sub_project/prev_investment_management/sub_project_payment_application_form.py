@@ -86,7 +86,7 @@ class Cowin_project_subproject_payment_application_form(models.Model):
 
         return res
 
-    @api.model
+    @api.multi
     def write(self, vals):
         res = super(Cowin_project_subproject_payment_application_form, self).write(vals)
         tache_info = self._context['tache']
