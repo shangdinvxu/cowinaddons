@@ -358,7 +358,7 @@
                    eval="[(5, 0, 0),
                           (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_process_kanban_view')})]"/>
             <field name="view_type">form</field>
-            <field name="view_mode">kanban,form</field>
+            <field name="view_mode">kanban,tree,form</field>
         </record>
 
         <!--项目管理-项目审批-->
@@ -370,7 +370,7 @@
                 {'prev_or_post_investment':(1,2)}
             </field>
             <field name="view_type">form</field>
-            <field name="view_mode">kanban</field>
+            <field name="view_mode">kanban,tree,form</field>
             <field name="view_id" ref="project_approval_view_kanban"/>
         </record>
 

@@ -3,6 +3,7 @@
            <template id="cowin_mainstyle_static" name="test_view" inherit_id="web.assets_backend">
                 <xpath expr="." position="inside">
                     <link rel="stylesheet" href="/cowin_mainstyle/static/src/css/main_style.css"/>
+                    <script type="text/javascript" src="/cowin_mainstyle/static/src/js/no_edit_form.js"/>
                 </xpath>
            </template>
 

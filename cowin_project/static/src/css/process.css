@@ -325,7 +325,7 @@
     line-height: 35px;
     cursor: pointer;
 }
-.approval_suspend{
+.approval_page_btns_wrap .approval_suspend{
     background-color: #FFA500;
     color: white;
     display: inline-block;
