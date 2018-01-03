@@ -1263,7 +1263,7 @@ class Cowin_project(models.Model):
             # 删除<p>  </p> 标签
             e['body'] = e['body'][3:-4]
 
-        return res_entity
+        return {'operation_records': res_entity}
 
 
 
