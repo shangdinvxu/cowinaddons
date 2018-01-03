@@ -69,7 +69,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         tmp2[u'foundation_name'] = foundation_name
         tmp2[u'approval_role_name'] = approval_role_name
         tmp2[u'approval_roel_person'] = approval_roel_person
-        tmp2[u'operation_time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+        tmp2[u'operation_time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time() + 8 * 3600))
         tmp2[u'operation'] = ''
 
         approval_sum = u'%s: %s' % ( approval_role_name, approval_roel_person)
