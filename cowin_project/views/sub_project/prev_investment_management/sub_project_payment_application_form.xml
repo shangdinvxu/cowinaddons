@@ -13,12 +13,25 @@
                 <form string="Fiscal year" create="false" edit="false" delete="false">
                     <sheet>
                         <group>
-
-                            <field name="name"/>
-                            <field name="project_number"/>
-                            <field name="invest_manager_id"/>
-                            <field name="date_of_application"/>
-                            <field name="list_of_examination_and_approval_documents" widget="many2many_binary"/>
+                            <group>
+                                <field name="name"/>
+                                <field name="project_number"/>
+                                <field name="invest_manager_id"/>
+                                <field name="date_of_application"/>
+                                <field name="list_of_examination_and_approval_documents" widget="many2many_binary"/>
+                            </group>
+                            <group>
+                                <!--投资基金-->
+                                <field name="foundation_id"/>
+                                <field name="the_amount_of_investment"/>
+                                <field name="ownership_interest"/>
+                                <field name="round_financing_id"/>
+                                <field name="the_amount_of_financing"/>
+                                <!---->
+                                <field name="payment_account"/>
+                            </group>
+                        </group>
+                        <group>
                             <field name="monetary_unit"/>
                             <field name="the_payment_amount"/>
                             <field name="total_investment"/>
@@ -29,14 +42,6 @@
                             <field name="account_number"/>
                             <field name="bank_of_deposit"/>
                             <field name="funds_provided"/>
-                            <!--投资基金-->
-                            <field name="foundation_id"/>
-                            <field name="the_amount_of_investment"/>
-                            <field name="ownership_interest"/>
-                            <field name="round_financing_id"/>
-                            <field name="the_amount_of_financing"/>
-                            <!---->
-                            <field name="payment_account"/>
                         </group>
                     </sheet>
                 </form>
