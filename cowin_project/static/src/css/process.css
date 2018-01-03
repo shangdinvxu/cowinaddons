@@ -461,3 +461,14 @@
 .button_wrap .view_tache{
     margin-right: 20px;
 }
+.back_to_last{
+    margin-left: 77px;
+    margin-top: 15px;
+    background-color:rgba(25, 158, 216, 1);
+    text-align: center;
+    width:118px;
+    height: 35px;
+    color: white;
+    line-height: 35px;
+    cursor: pointer;
+}

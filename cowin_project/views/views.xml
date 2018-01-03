@@ -6,7 +6,7 @@
             <field name="model">cowin_project.cowin_project</field>
             <!--<field name="priority">10</field>-->
             <field name="arch" type="xml">
-                <kanban class="project_process_kanban_wrap">
+                <kanban class="project_process_kanban_wrap" delete="true">
                     <field name="name"/>
                     <field name="image" widget="image"/>
                     <!--<field name="register_person"/>-->

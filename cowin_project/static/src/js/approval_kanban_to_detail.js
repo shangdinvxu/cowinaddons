@@ -31,7 +31,26 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
             'click .to_approval':'to_approval_func',
             'click .approval_btn':'approval_btn_func',
             'click .view_approval':'view_approval_func',
-            'click .approval_body div':'view_approval_tache'
+            'click .approval_body div':'view_approval_tache',
+            'click .back_to_last':'back_to_last_func'
+        },
+        //返回
+        back_to_last_func:function () {
+            var self = this;
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_get_info", [parseInt(self.id)],{})
+                    .then(function (result) {
+                        console.log(result);
+                        //获取每个环节的model_name存入数组
+                        result.process.forEach(function (value) {
+                            value.tache_ids.forEach(function (model) {
+                                self.tache_arr.push(model)
+                            });
+                        });
+                        self.$el.children().remove();
+                        self.id = parseInt(result.id);
+                        self.$el.append(QWeb.render('project_approval_detail_tmp', {result: result}))
+                    })
         },
         //查看审核的环节
         view_approval_tache:function () {
@@ -91,7 +110,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
                         $('#process_data').html('')
                         console.log(result);
                         self.current_approval_flow_node_id = result.current_approval_flow_node_id;
-                        $('#process_data').append(QWeb.render('approval_page', {result: result,edit:false}))
+                        $('#process_data').append(QWeb.render('approval_page', {result: result,edit:false,tache: self.tache_arr[approval_tache_index].name}))
                     })
         },
         //审核同意、不同意
@@ -137,6 +156,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
             sub_approval_flow_settings_id = $(target).parents('.process_data_item_line').attr('data-sub-approval-id');
             sub_tache_id = $(target).parents('.process_data_item_line').attr('data-sub-tache-id');
             approval_tache_index = $(target).parents('.process_data_item_line').attr('tache-index');
+            console.log(self.tache_arr)
             var data = {
                 "tache":{
                     "meta_sub_project_id":parseInt(meta_sub_project_id),
@@ -150,7 +170,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
                         $('#process_data').html('')
                         console.log(result);
                         self.current_approval_flow_node_id = result.current_approval_flow_node_id;
-                        $('#process_data').append(QWeb.render('approval_page', {result: result,edit:true}))
+                        $('#process_data').append(QWeb.render('approval_page', {result: result,edit:true,tache: self.tache_arr[approval_tache_index].name}))
                     })
 
         },
