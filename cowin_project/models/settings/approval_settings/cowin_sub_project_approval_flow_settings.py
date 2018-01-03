@@ -3,6 +3,8 @@ from odoo import models, fields, api
 
 
 class Cowin_sub_project_approval_flow_settings(models.Model):
+    _inherit = ['mail.thread']
+
     _name = 'cowin_project.sub_approval_flow_settings'
 
     '''
@@ -44,26 +46,52 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
     # 改变状态的操作!!!
     def process_action(self):
         prevstatus, newstatus = self.prev_status, self.status
+        sub_project_name = self.meta_sub_project_id.sub_project_ids[0].name
+        round_financing_name = self.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id.name
+        foundation_name = self.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id.name
+
+        sub_project_name = sub_project_name if sub_project_name else u''
+        round_financing_name = round_financing_name if round_financing_name else u'暂无轮次'
+        foundation_name = foundation_name if foundation_name else u'暂无基金'
+        approval_role_name = self.current_approval_flow_node_id.operation_role_id.name
+
+        tmp = u'/'.join([sub_project_name, foundation_name, round_financing_name])
+        tmp = u'[ ' + tmp + u' ] ' + self.sub_project_tache_id.name
+
+        approval_roel_person = self.env.user.employee_ids[0].name
+
+        approval_sum = u'%s: %s' % ( approval_role_name, approval_roel_person)
+
         if (prevstatus, newstatus) == (1, 2):
             print(u'(1, 2) aciton...')
+            self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
             self.prev_status = self.status = newstatus
         elif (prevstatus, newstatus) == (1, 4):
             print(u'(1, 4) aciton...')
+            self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
             self.prev_status = self.status = newstatus
             self.sub_project_tache_id.trigger_next_subtache()
         elif (prevstatus, newstatus) == (2, 2):
             print(u'(2, 2) acion...')
+            tmp += u'审核结果: 同意'
+            self.message_post(u'%s 审核 %s' % (approval_sum, tmp))
             self.prev_status = self.status = newstatus
         elif (prevstatus, newstatus) == (2, 3):
             self.sub_project_tache_id.write({
                 'is_launch_again': True,
             })
+            tmp += u'审核结果: 暂缓'
+            self.message_post(u'%s 暂缓 %s' % (approval_sum, tmp))
             self.prev_status = self.status = 1
         elif (prevstatus, newstatus) == (2, 4):
             self.prev_status = self.status = newstatus
+            tmp += u'审核结果: 同意'
+            self.message_post(u'%s 审核 %s' % (approval_sum, tmp))
             self.sub_project_tache_id.trigger_next_subtache()
         elif (prevstatus, newstatus) == (2, 5):
             self.prev_status = self.status = newstatus
+            tmp += u'审核结果: 拒绝'
+            self.message_post(u'%s 拒绝 %s' % (approval_sum, tmp))
 
         else:
             pass
@@ -85,6 +113,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             #     raise UserWarning(u'未知的错误,审核环节不可能出现这类错误!!!')
             self.status = 2
             self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
+            # self.process_action()
             if not self.current_approval_flow_node_id.parent_id:
                 self.status = 4
 
@@ -147,77 +176,77 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         return self.status == 4 or self.status == 5
 
     # 能更新就更新
-    def update_final_approval_flow_settings_status_and_node(self):
-        if self.is_final_approval_flow_settings_status():
-            return True
+    # def update_final_approval_flow_settings_status_and_node(self):
+    #     if self.is_final_approval_flow_settings_status():
+    #         return True
+    #
+    #     # 当前审批节点的个数
+    #     if self.get_approval_flow_settings_nodes() == 2:
+    #         # prev = self.current_approval_flow_node_id
+    #
+    #         self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
+    #
+    #         if not self.current_approval_flow_node_id.parent_id:
+    #             # self.current_approval_flow_node_id = prev
+    #
+    #             self.write({
+    #                 'status': 4,
+    #                 'current_approval_flow_node_id': self.current_approval_flow_node_id.id,
+    #                 })
+    #
+    #             if (self.status, self.prev_status) == (1, 4):
+    #                 # acton ...
+    #                 print u'发起操作'
+    #
+    #             self.prev_status = self.status
+    #
+    #
+    #             return True
+    #
+    #     return False
 
-        # 当前审批节点的个数
-        if self.get_approval_flow_settings_nodes() == 2:
-            # prev = self.current_approval_flow_node_id
-
-            self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
-
-            if not self.current_approval_flow_node_id.parent_id:
-                # self.current_approval_flow_node_id = prev
-
-                self.write({
-                    'status': 4,
-                    'current_approval_flow_node_id': self.current_approval_flow_node_id.id,
-                    })
-
-                if (self.status, self.prev_status) == (1, 4):
-                    # acton ...
-                    print u'发起操作'
-
-                self.prev_status = self.status
-
-
-                return True
-
-        return False
-
-
-    def update_approval_flow_settings_status_and_node(self):
-        if self.is_final_approval_flow_settings_status():
-            return
-
-        # prev = self.current_approval_flow_node_id
-        self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
-
-
-
-        # 如果到达审批结束节点,那么直接进入同意状态
-        if not self.current_approval_flow_node_id.parent_id:
-            # self.current_approval_flow_node_id = prev
-            # self.status = 4
-            self.write({
-                    'status': 4,
-                    # 'current_approval_flow_node_id': self.current_approval_flow_node_id.id,
-                    'current_approval_flow_node_id': self.current_approval_flow_node_id.id,
-                })
-
-            if (self.prev_status, self.status) == (2, 4):
-                # action
-                print(u'审核同意操作!!!')
-
-            self.prev_status = self.prev_status
-
-            # 需要触发下一个子环节
-            self.sub_project_tache_id.check_or_not_next_sub_tache()
-
-
-            return
-
-
-        # 否则,目前讨论审核中的状态
-        self.write({
-            'status': 2,
-            'current_approval_flow_node_id': self.current_approval_flow_node_id.id,
-            })
-
-        if (self.prev_status, self.status) == (2, 2):
-            # action
-            print(u'继续审核操作!!!')
+    #
+    # def update_approval_flow_settings_status_and_node(self):
+    #     if self.is_final_approval_flow_settings_status():
+    #         return
+    #
+    #     # prev = self.current_approval_flow_node_id
+    #     self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
+    #
+    #
+    #
+    #     # 如果到达审批结束节点,那么直接进入同意状态
+    #     if not self.current_approval_flow_node_id.parent_id:
+    #         # self.current_approval_flow_node_id = prev
+    #         # self.status = 4
+    #         self.write({
+    #                 'status': 4,
+    #                 # 'current_approval_flow_node_id': self.current_approval_flow_node_id.id,
+    #                 'current_approval_flow_node_id': self.current_approval_flow_node_id.id,
+    #             })
+    #
+    #         if (self.prev_status, self.status) == (2, 4):
+    #             # action
+    #             print(u'审核同意操作!!!')
+    #
+    #         self.prev_status = self.prev_status
+    #
+    #         # 需要触发下一个子环节
+    #         self.sub_project_tache_id.check_or_not_next_sub_tache()
+    #
+    #
+    #         return
+    #
+    #
+    #     # 否则,目前讨论审核中的状态
+    #     self.write({
+    #         'status': 2,
+    #         'current_approval_flow_node_id': self.current_approval_flow_node_id.id,
+    #         })
+    #
+    #     if (self.prev_status, self.status) == (2, 2):
+    #         # action
+    #         print(u'继续审核操作!!!')
 
 
 

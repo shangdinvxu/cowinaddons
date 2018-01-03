@@ -28,6 +28,7 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'views/initadmin_relation_employee.xml',
         'views/views.xml',
         'views/templates.xml',
         'views/sequences.xml',

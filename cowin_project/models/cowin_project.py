@@ -505,7 +505,7 @@ class Cowin_project(models.Model):
         approval_role_and_employee_ids = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel
 
         # 当前员工所对应的角色
-        sub_approval_settings_role_ids2 = self.env.user.employee_ids.sub_meta_pro_approval_settings_role_rel
+        sub_approval_settings_role_ids2 = self.env.user.employee_ids[0].sub_meta_pro_approval_settings_role_rel
         # 当前用户所对应的员工
         # current_employee = self.env.user.employee_ids
 
@@ -775,7 +775,7 @@ class Cowin_project(models.Model):
         approval_flow_settings_record_info = kwargs.get('approval_flow_settings_record')
 
         # 理论上只会有一个员工  审批人
-        approval_flow_settings_record_info['approval_person_id'] = self.env.user.employee_ids.id
+        approval_flow_settings_record_info['approval_person_id'] = self.env.user.employee_ids[0].id
 
         # 审批角色
         approval_flow_settings_record_info['approval_role_id'] = sub_approval_flow_settings_entity.current_approval_flow_node_id.operation_role_id.id
