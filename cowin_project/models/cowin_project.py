@@ -507,7 +507,9 @@ class Cowin_project(models.Model):
         approval_role_and_employee_ids = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel
 
         # 当前员工所对应的角色
-        sub_approval_settings_role_ids2 = self.env.user.employee_ids[0].sub_meta_pro_approval_settings_role_rel
+        tmp = self.env.user.employee_ids
+        tmp = tmp if len(tmp) <= 1 else tmp[0]
+        sub_approval_settings_role_ids2 = tmp.sub_meta_pro_approval_settings_role_rel
         # 当前用户所对应的员工
         # current_employee = self.env.user.employee_ids
 
