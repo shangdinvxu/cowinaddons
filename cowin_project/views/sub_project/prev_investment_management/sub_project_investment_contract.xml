@@ -11,7 +11,7 @@
             <field name="name">cowin_project.sub_invest_contract form</field>
             <field name="model">cowin_project.sub_invest_contract</field>
             <field name="arch" type="xml">
-                <form string="Fiscal year" create="false" edit="false">
+                <form string="Fiscal year" create="false" edit="false" delete="false">
                     <sheet>
                         <group>
 

@@ -26,7 +26,7 @@
             <field name="model">cowin_project.cowin_project</field>
             <!--<field name="priority">10</field>-->
             <field name="arch" type="xml">
-                <kanban class="project_process_kanban_wrap">
+                <kanban class="project_process_kanban_wrap" delete="true">
                     <field name="name"/>
                     <field name="image" widget="image"/>
                     <!--<field name="register_person"/>-->
@@ -43,6 +43,15 @@
                     <templates>
                     <t t-name="kanban-box">
                         <div class="project_process_kanban oe_kanban_global_click cowin_project_kanban">
+                            <div class="o_dropdown_kanban dropdown" groups="base.group_user">
+                                <a class="dropdown-toggle btn" data-toggle="dropdown" href="#" >
+                                    <span class="fa fa-bars fa-lg"/>
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    <t t-if="widget.deletable"><li><a type="delete">Delete</a></li></t>
+                                </ul>
+                            </div>
+
                             <div class="kanban_top">
                                 <div class="project_name">项目名称：<t t-esc="record.name.value"/></div>
                                 <div class="project_top_right">

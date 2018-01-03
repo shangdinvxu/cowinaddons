@@ -134,12 +134,13 @@
     <!--审批页面-->
     <t t-name="approval_page">
         <p class="approval_head">
-            环节名称：投资决策申请
+            环节名称：<t t-esc="tache"/>
         </p>
         <div class="approval_body">
             <div>查看</div>
         </div>
 
+        <div class="back_to_last">返回</div>
         <p class="approval_head">审批记录</p>
         <div class="approval_page_record">
             <div class="approval_record_head">
