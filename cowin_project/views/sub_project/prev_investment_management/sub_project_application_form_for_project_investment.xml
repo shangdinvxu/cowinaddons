@@ -9,7 +9,7 @@
             <field name="name">cowin_project.sub_app_form_pro_investment form</field>
             <field name="model">cowin_project.sub_app_form_pro_investment</field>
             <field name="arch" type="xml">
-                <form string="Fiscal year" create="false" edit="false">
+                <form string="Fiscal year" create="false" edit="false" delete="false">
                     <sheet>
                         <group>
 

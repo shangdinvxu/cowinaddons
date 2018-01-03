@@ -8,7 +8,7 @@
             <field name="name">cowin_project.subt_dispatch_report form</field>
             <field name="model">cowin_project.subt_dispatch_report</field>
             <field name="arch" type="xml">
-                <form string="Fiscal year" create="false" edit="false">
+                <form string="Fiscal year" create="false" edit="false" delete="false">
                     <sheet>
                         <group>
                             <field name="dispatch_report" widget="many2many_binary"/>
