@@ -19,6 +19,7 @@ from odoo import SUPERUSER_ID
 
 
 class Cowin_project(models.Model):
+
     _name = 'cowin_project.cowin_project'
     _order = "create_date desc"
 
@@ -398,6 +399,9 @@ class Cowin_project(models.Model):
                         # 由xxx发起
                         info = u'由%s发起' % name
 
+                        if tache_info['is_launch_again']:
+                            # 有过暂缓的状态
+                            info = u'暂缓'
                         # is_target_role = self.is_target_role(target_sub_approval_flow_entity)
                         # 当前用户是否属于某个角色!!!
                         if is_target_role:
@@ -406,6 +410,7 @@ class Cowin_project(models.Model):
                         else:
                             if not tache_info['view_or_launch']:
                                 tache_info['view_or_launch'] = None
+
 
 
 
@@ -425,9 +430,9 @@ class Cowin_project(models.Model):
 
 
 
-                    elif status == 3:
-                        # 暂缓(需要从新操作!!!)
-                        info = u'暂缓'
+                    # elif status == 3:
+                    #     # 暂缓(需要从新操作!!!)
+                    #     info = u'暂缓'
                     elif status == 4:
                         # 同意
                         info = u'同意'

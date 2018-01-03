@@ -18,6 +18,9 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
     status = fields.Selection([(1, u'发起'), (2, u'审核中'), (3, u'暂缓(从新发起)'), (4, u'同意'), (5, u'拒绝')],
                      string=u'审核状态', default=1)
+    prev_status = fields.Integer(default=1)
+
+    action = {(1, 2): u'发起', (2, 2): u'审核', (2, 3): u'暂缓', (1, 4): u'同意', (2, 4): u'同意', (2, 5): u'拒绝'}
 
     # is_putoff = fields.Boolean(string=u'是否暂缓', default=True)
 
@@ -38,14 +41,87 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
     # 构建子环节和子审批实体一对一的关系
     sub_project_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
+    # 改变状态的操作!!!
+    def process_action(self):
+        prevstatus, newstatus = self.prev_status, self.status
+        if (prevstatus, newstatus) == (1, 2):
+            print(u'(1, 2) aciton...')
+            self.prev_status = self.status = newstatus
+        elif (prevstatus, newstatus) == (1, 4):
+            print(u'(1, 4) aciton...')
+            self.prev_status = self.status = newstatus
+            self.sub_project_tache_id.trigger_next_subtache()
+        elif (prevstatus, newstatus) == (2, 2):
+            print(u'(2, 2) acion...')
+            self.prev_status = self.status = newstatus
+        elif (prevstatus, newstatus) == (2, 3):
+            self.sub_project_tache_id.write({
+                'is_launch_again': True,
+            })
+            self.prev_status = self.status = 1
+        elif (prevstatus, newstatus) == (2, 4):
+            self.prev_status = self.status = newstatus
+            self.sub_project_tache_id.trigger_next_subtache()
+        elif (prevstatus, newstatus) == (2, 5):
+            self.prev_status = self.status = newstatus
 
+        else:
+            pass
+
+
+
+
+
+
+
+    def upate_status(self, new_status):
+
+        '''
+        :param new_status: 2(同意) 3 (暂缓) 5 (拒绝)
+        :return:
+        '''
+        if new_status == 2:
+            # if self.status != 2:
+            #     raise UserWarning(u'未知的错误,审核环节不可能出现这类错误!!!')
+            self.status = 2
+            self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
+            if not self.current_approval_flow_node_id.parent_id:
+                self.status = 4
+
+        elif new_status == 3:
+            # 暂缓
+            self.status = 3
+            self.current_approval_flow_node_id = self.approval_flow_settings_id.approval_flow_setting_node_ids[1]
+
+        elif new_status == 5:
+            self.status = 5
+
+        else:
+            pass
+
+        self.process_action()
+
+
+
+
+    def is_finish(self):
+
+        if self.get_approval_flow_settings_nodes() == 2:
+            self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
+            self.prev_status = self.status = 4
+            return True
+
+        if self.is_success():
+            return True
+
+        return False
 
     def is_success(self):
         return self.status == 4
 
     def is_reject(self):
 
-        return self.status == 3
+        return self.status == 5
 
 
     def get_all_sub_aproval_flow_settings_records(self):
@@ -89,6 +165,12 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                     'current_approval_flow_node_id': self.current_approval_flow_node_id.id,
                     })
 
+                if (self.status, self.prev_status) == (1, 4):
+                    # acton ...
+                    print u'发起操作'
+
+                self.prev_status = self.status
+
 
                 return True
 
@@ -114,6 +196,12 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                     'current_approval_flow_node_id': self.current_approval_flow_node_id.id,
                 })
 
+            if (self.prev_status, self.status) == (2, 4):
+                # action
+                print(u'审核同意操作!!!')
+
+            self.prev_status = self.prev_status
+
             # 需要触发下一个子环节
             self.sub_project_tache_id.check_or_not_next_sub_tache()
 
@@ -127,6 +215,9 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             'current_approval_flow_node_id': self.current_approval_flow_node_id.id,
             })
 
+        if (self.prev_status, self.status) == (2, 2):
+            # action
+            print(u'继续审核操作!!!')
 
 
 
@@ -143,38 +234,67 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             raise UserWarning(u'该审批已经被审核!!!')
 
 
-        # 根据审批得到的结果来获得是否是审批审批通过与否
-        if status == True:
-            # 是否还处于审批状态
-            if self.is_approval_flow_status():
-                # 代表审批结束
-                # self.status = 4
-                self.update_approval_flow_settings_status_and_node()
-
+        if status == True:      # 同意
+            status = 2
             approval_flow_settings_record_info['approval_result'] = u'同意'
-        if status == False:
-            # 拒绝
-            self.status = 5
-
+        elif status == False:   # 拒绝
+            status = 5
             approval_flow_settings_record_info['approval_result'] = u'拒绝'
-        if status is None:
-            # 暂缓
-            self.status = 1
-            # self.approval_flow_settings_id.approval_flow_setting_node_ids[1] 代表发起人
-            # self.approval_flow_settings_id.approval_flow_setting_node_ids[0] 代表审批结束
-            self.current_approval_flow_node_id = self.approval_flow_settings_id.approval_flow_setting_node_ids[1]
-            self.sub_project_tache_id.write({
-                'is_launch_again': True,
-            })
-
+        elif status is None:    # 暂缓
+            status = 3
             approval_flow_settings_record_info['approval_result'] = u'暂缓'
+        else:
+            pass
 
-        # approval_flow_settings_record_info['approval_result'] = u'同意' if approval_flow_settings_record_info[
-        #     'approval_result'] else u'不同意'
-
-
+        self.upate_status(status)
 
         self.write({
             'sub_pro_approval_flow_settings_record_ids': [(0, 0, approval_flow_settings_record_info)]
         })
+
+            # 根据审批得到的结果来获得是否是审批审批通过与否
+        # if status == True:
+        #     # 是否还处于审批状态
+        #     if self.is_approval_flow_status():
+        #         # 代表审批结束
+        #         # self.status = 4
+        #         self.update_approval_flow_settings_status_and_node()
+        #
+        #     approval_flow_settings_record_info['approval_result'] = u'同意'
+        # if status == False:
+        #     # 拒绝
+        #     self.status = 5
+        #
+        #     if (self.status, self.prev_status) == (2, 5):
+        #         # action
+        #         print(u'暂缓action拒绝!!!')
+        #         self.prev_status = self.status
+        #
+        #     approval_flow_settings_record_info['approval_result'] = u'拒绝'
+        # if status is None:
+        #     # 暂缓
+        #     self.status = 3
+        #
+        #     if (self.status, self.prev_status) == (2, 3):
+        #         # action
+        #         print(u'暂缓action转移!!!')
+        #         self.prev_status = self.status
+        #
+        #     # self.approval_flow_settings_id.approval_flow_setting_node_ids[1] 代表发起人
+        #     # self.approval_flow_settings_id.approval_flow_setting_node_ids[0] 代表审批结束
+        #     self.current_approval_flow_node_id = self.approval_flow_settings_id.approval_flow_setting_node_ids[1]
+        #     self.sub_project_tache_id.write({
+        #         'is_launch_again': True,
+        #     })
+        #
+        #     approval_flow_settings_record_info['approval_result'] = u'暂缓'
+        #
+        # # approval_flow_settings_record_info['approval_result'] = u'同意' if approval_flow_settings_record_info[
+        # #     'approval_result'] else u'不同意'
+        #
+        #
+        #
+        # self.write({
+        #     'sub_pro_approval_flow_settings_record_ids': [(0, 0, approval_flow_settings_record_info)]
+        # })
 

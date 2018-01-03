@@ -43,6 +43,20 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
         return self.tache_id
 
 
+    def update_sub_approval_settings(self):  # 调用子审批流实体
+        self.sub_pro_approval_flow_settings_ids.upate_status(2)
+
+    def trigger_next_subtache(self): # 只触发解锁条件
+        for sub_tache_entity in self.meta_sub_project_id.sub_tache_ids:
+            # 这个操作只会去触发可能有多个子环节的解锁,如果解锁则不需要再次解锁
+            if sub_tache_entity.parent_id == self and not sub_tache_entity.is_unlocked:
+                sub_tache_entity.write({
+                    'is_unlocked': True,
+                })
+
+
+
+
     def check_or_not_next_sub_tache(self):
         if self.sub_pro_approval_flow_settings_ids.update_final_approval_flow_settings_status_and_node():
             # 当前子审批实体状态设置为4

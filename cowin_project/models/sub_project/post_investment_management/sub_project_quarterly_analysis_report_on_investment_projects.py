@@ -87,8 +87,8 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
         })
 
         # 判断 发起过程 是否需要触发下一个子环节
-        target_sub_tache_entity.check_or_not_next_sub_tache()
-
+        # target_sub_tache_entity.check_or_not_next_sub_tache()
+        target_sub_tache_entity.update_sub_approval_settings()
         return res
 
 
@@ -111,6 +111,7 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
         })
 
         # 判断 发起过程 是否需要触发下一个子环节
-        target_sub_tache_entity.check_or_not_next_sub_tache()
+        # target_sub_tache_entity.check_or_not_next_sub_tache()
+        target_sub_tache_entity.update_sub_approval_settings()
 
         return res

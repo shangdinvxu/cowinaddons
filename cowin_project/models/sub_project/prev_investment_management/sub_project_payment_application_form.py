@@ -72,7 +72,8 @@ class Cowin_project_subproject_payment_application_form(models.Model):
         })
 
         # 判断 发起过程 是否需要触发下一个子环节
-        target_sub_tache_entity.check_or_not_next_sub_tache()
+        # target_sub_tache_entity.check_or_not_next_sub_tache()
+        target_sub_tache_entity.update_sub_approval_settings()
 
 
         # 由 '付款申请表来获得投后跟进列表的展现的操作(鼠标点击投后跟进菜单项的时候)!!!'
@@ -105,7 +106,8 @@ class Cowin_project_subproject_payment_application_form(models.Model):
         })
 
         # 判断 发起过程 是否需要触发下一个子环节
-        target_sub_tache_entity.check_or_not_next_sub_tache()
+        # target_sub_tache_entity.check_or_not_next_sub_tache()
+        target_sub_tache_entity.update_sub_approval_settings()
 
         return res
 

@@ -61,7 +61,8 @@ class Cowin_project_subproject_application_form_for_project_investment(models.Mo
         })
 
         # 判断 发起过程 是否需要触发下一个子环节
-        target_sub_tache_entity.check_or_not_next_sub_tache()
+        # target_sub_tache_entity.check_or_not_next_sub_tache()
+        target_sub_tache_entity.update_sub_approval_settings()
 
         #
         # # 触发下一个依赖子环节处于解锁状态
@@ -97,6 +98,7 @@ class Cowin_project_subproject_application_form_for_project_investment(models.Mo
         })
 
         # 判断 发起过程 是否需要触发下一个子环节
-        target_sub_tache_entity.check_or_not_next_sub_tache()
+        # target_sub_tache_entity.check_or_not_next_sub_tache()
+        target_sub_tache_entity.update_sub_approval_settings()
 
         return res
