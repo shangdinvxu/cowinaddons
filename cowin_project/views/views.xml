@@ -1,5 +1,25 @@
 <openerp>
     <data>
+
+        <!---->
+
+
+
+        <record id="project_tree_view" model="ir.ui.view">
+
+          <field name="name">cowin_project cowin_project tree</field>
+          <field name="model">cowin_project.cowin_project</field>
+          <!--<field name="groups_id" eval="[(4,ref('cowin_project.cowin_project_admin_group'))]"/>-->
+          <!--<field name="inherit_id" ref="hr.view_employee_form"/>-->
+          <field name="arch" type="xml">
+              <tree>
+                 <field name="name"/>
+
+              </tree>
+          </field>
+
+        </record>
+
          <!--项目流程 看板-->
         <record id="project_process_kanban_view" model="ir.ui.view">
             <field name="name">cowin_project.process.kanban</field>
@@ -356,7 +376,8 @@
             </field>
             <field name="view_ids"
                    eval="[(5, 0, 0),
-                          (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_process_kanban_view')})]"/>
+                          (4, 0, {'view_mode': 'kanban', 'view_id': ref('project_process_kanban_view')}),
+                          (4, 0, {'view_mode': 'list', 'view_id': ref('project_tree_view')})]"/>
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form</field>
         </record>
