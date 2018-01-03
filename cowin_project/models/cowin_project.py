@@ -1243,6 +1243,32 @@ class Cowin_project(models.Model):
 
 
 
+
+    def rpc_get_operation_record(self):
+
+
+        ids = []
+        model_name = u''
+        for meta_sub_project_entity in self.meta_sub_project_ids:
+            # 子审批流程实体
+            model_name = meta_sub_project_entity.sub_approval_flow_settings_ids._name
+            for entity in meta_sub_project_entity.sub_approval_flow_settings_ids:
+                ids.append(entity.id)
+
+
+        res_entity = self.env['mail.message'].search([('res_id', 'in', ids), ('model', '=', model_name)])
+
+        res_entity.search_read(fields=['body'])
+        for e in res_entity:
+            # 删除<p>  </p> 标签
+            e['body'] = e['body'][3:-4]
+
+        return res_entity
+
+
+
+
+
 # class Project_roles(models.Model):
 #     _name = 'cowin_project.project_approval_role'
 #     '''

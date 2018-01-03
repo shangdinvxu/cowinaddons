@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
-
+import json
 
 class Cowin_sub_project_approval_flow_settings(models.Model):
     _inherit = ['mail.thread']
@@ -60,38 +60,57 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         approval_roel_person = self.env.user.employee_ids[0].name
 
+        tmp2 = {}
+        tmp2[u'sub_project_name'] = sub_project_name
+        tmp2[u'round_financing_name'] = round_financing_name
+        tmp2[u'foundation_name'] = foundation_name
+        tmp2[u'approval_role_name'] = approval_role_name
+        tmp2[u'operation'] = ''
+
         approval_sum = u'%s: %s' % ( approval_role_name, approval_roel_person)
 
         if (prevstatus, newstatus) == (1, 2):
             print(u'(1, 2) aciton...')
-            self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
+            tmp2[u'operation'] = 1
+            # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
+            self.message_post(json.dumps(tmp2))
             self.prev_status = self.status = newstatus
         elif (prevstatus, newstatus) == (1, 4):
             print(u'(1, 4) aciton...')
-            self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
+            tmp2[u'operation'] = 1
+            # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
+            self.message_post(json.dumps(tmp2))
             self.prev_status = self.status = newstatus
             self.sub_project_tache_id.trigger_next_subtache()
         elif (prevstatus, newstatus) == (2, 2):
             print(u'(2, 2) acion...')
-            tmp += u'审核结果: 同意'
-            self.message_post(u'%s 审核 %s' % (approval_sum, tmp))
+            tmp2[u'operation'] = 2
+            # tmp += u'审核结果: 同意'
+            # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
+            self.message_post(json.dumps(tmp2))
             self.prev_status = self.status = newstatus
         elif (prevstatus, newstatus) == (2, 3):
             self.sub_project_tache_id.write({
                 'is_launch_again': True,
             })
-            tmp += u'审核结果: 暂缓'
-            self.message_post(u'%s 暂缓 %s' % (approval_sum, tmp))
+            tmp2[u'operation'] = 3
+            # tmp += u'审核结果: 暂缓'
+            # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
+            self.message_post(json.dumps(tmp2))
             self.prev_status = self.status = 1
         elif (prevstatus, newstatus) == (2, 4):
+            tmp2[u'operation'] = 2
             self.prev_status = self.status = newstatus
-            tmp += u'审核结果: 同意'
-            self.message_post(u'%s 审核 %s' % (approval_sum, tmp))
+            # tmp += u'审核结果: 同意'
+            # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
+            self.message_post(json.dumps(tmp2))
             self.sub_project_tache_id.trigger_next_subtache()
         elif (prevstatus, newstatus) == (2, 5):
             self.prev_status = self.status = newstatus
-            tmp += u'审核结果: 拒绝'
-            self.message_post(u'%s 拒绝 %s' % (approval_sum, tmp))
+            tmp2[u'operation'] = 5
+            # tmp += u'审核结果: 拒绝'
+            # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
+            self.message_post(json.dumps(tmp2))
 
         else:
             pass
