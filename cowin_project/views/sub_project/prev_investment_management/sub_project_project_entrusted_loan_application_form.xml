@@ -10,29 +10,30 @@
             <field name="name">cowin_project.sub_entrusted_loan_app_form form</field>
             <field name="model">cowin_project.sub_entrusted_loan_app_form</field>
             <field name="arch" type="xml">
-                <form string="Fiscal year">
-                    <group>
-                        <field name="name"/>
-                        <field name="project_number"/>
-                        <field name="invest_manager_id"/>
-                        <field name="date_of_application"/>
-                        <!--投资基金-->
-                        <field name="foundation_id"/>
-                        <field name="the_amount_of_investment"/>
-                        <field name="ownership_interest"/>
-                        <field name="round_financing_id"/>
-                        <field name="the_amount_of_financing"/>
-                        <!---->
-                        <field name="list_of_examination_and_approval_documents" widget="many2many_binary"/>
-                        <field name="time_of_application_for_entrusted_loan"/>
-                        <field name="amount_of_application_for_entrusted_loan"/>
-                        <field name="reasons_for_application"/>
-                        <field name="entrusted_loan_bank"/>
-                        <field name="lending_rate"/>
-                        <field name="life_of_loan"/>
-                        <field name="transfer_charge"/>
-                    </group>
-
+                <form string="Fiscal year" create="false" edit="false">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="project_number"/>
+                            <field name="invest_manager_id"/>
+                            <field name="date_of_application"/>
+                            <!--投资基金-->
+                            <field name="foundation_id"/>
+                            <field name="the_amount_of_investment"/>
+                            <field name="ownership_interest"/>
+                            <field name="round_financing_id"/>
+                            <field name="the_amount_of_financing"/>
+                            <!---->
+                            <field name="list_of_examination_and_approval_documents" widget="many2many_binary"/>
+                            <field name="time_of_application_for_entrusted_loan"/>
+                            <field name="amount_of_application_for_entrusted_loan"/>
+                            <field name="reasons_for_application"/>
+                            <field name="entrusted_loan_bank"/>
+                            <field name="lending_rate"/>
+                            <field name="life_of_loan"/>
+                            <field name="transfer_charge"/>
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>

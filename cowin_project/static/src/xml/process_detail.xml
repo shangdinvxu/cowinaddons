@@ -95,15 +95,18 @@
                     <t t-set="tache_index" t-value="tache_index + 1"/>
                     <span><t t-esc="obj.name"/> </span>
                     <span>【
+                        <t t-if="obj.approval_status.status_id==-1">
+                            同意
+                        </t>
                         <t t-esc="obj.approval_status.status_name"/>
                         】
                     </span>
                     <div class="button_wrap">
                         <t t-if="obj.is_unlocked==true">
                             <t t-if="obj.is_launch_again==true">
-                                <span class="initiate"><a href="javascript:void(0)">发起</a></span>
+                                <span class="initiate"><a href="javascript:void(0)">重新发起</a></span>
                             </t>
-                            <t t-if="obj.is_launch_again==false">
+                            <t t-if="obj.is_launch_again==false ">
                                 <t t-if="obj.view_or_launch==true">
                                     <span class="view_tache"><a href="javascript:void(0)">查看</a></span>
                                 </t>
@@ -111,8 +114,9 @@
                                     <span class="initiate"><a href="javascript:void(0)">发起</a></span>
                                 </t>
                             </t>
-
-
+                            <t t-if="!obj.is_launch_again and obj.parent_id==false">
+                                <span class="view_tache"><a href="javascript:void(0)">查看</a></span>
+                            </t>
                             <!--<t t-if="obj.view_or_launch==true">-->
                                 <!--<span class="view_tache"><a href="javascript:void(0)">查看</a></span>-->
                             <!--</t>-->
