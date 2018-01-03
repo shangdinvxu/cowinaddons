@@ -472,3 +472,6 @@
     line-height: 35px;
     cursor: pointer;
 }
+.o_kanban_view .fa-lg{
+    color: #A1A1A1;
+}
