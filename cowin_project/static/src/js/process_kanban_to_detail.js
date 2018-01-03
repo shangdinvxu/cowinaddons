@@ -33,7 +33,17 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .member_name .fa':'del_member_func',
             'click .copy_this_setting':'get_all_settings',
             'click .confirm_copy':'confirm_copy_func',
-            'click .button_wrap .add_new_tache':'add_new_tache_func'
+            'click .button_wrap .add_new_tache':'add_new_tache_func',
+            'click .operate_records':'operate_records_func'
+        },
+        //操作记录
+        operate_records_func:function () {
+            var self = this;
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_get_operation_record",[self.id])
+                    .then(function (result) {
+                        console.log(result);
+                    })
         },
         add_new_tache_func:function (e) {
             var e = e || window.event;

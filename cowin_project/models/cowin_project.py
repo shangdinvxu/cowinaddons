@@ -1258,12 +1258,12 @@ class Cowin_project(models.Model):
 
         res_entity = self.env['mail.message'].search([('res_id', 'in', ids), ('model', '=', model_name)])
 
-        res_entity.search_read(fields=['body'])
+        res_entity = res_entity.read(fields=['body'])
         for e in res_entity:
             # 删除<p>  </p> 标签
             e['body'] = e['body'][3:-4]
 
-        return res_entity
+        return {'operation_records': res_entity}
 
 
 
