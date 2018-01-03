@@ -4,7 +4,9 @@ from odoo.modules.module import get_module_resource
 from odoo import tools
 from odoo.exceptions import UserError
 from odoo import SUPERUSER_ID
+from odoo.tools.mail import html_sanitize, html2plaintext
 
+import json
 
 # # 审批角色
 # class Cowin_common_approval_role_project_inherited(models.Model):
@@ -1261,9 +1263,14 @@ class Cowin_project(models.Model):
         res_entity = res_entity.read(fields=['body'])
         for e in res_entity:
             # 删除<p>  </p> 标签
-            e['body'] = e['body'][3:-4]
+            t = html2plaintext(e['body'])
+            try:
+                e['body'] = json.loads(t)
+            except:
+                e['body'] = None
 
-        return {'operation_records': res_entity}
+
+        return {'operation_records': filter(lambda x: x['body'], res_entity)}
 
 
 
