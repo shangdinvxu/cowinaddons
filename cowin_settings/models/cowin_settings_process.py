@@ -56,6 +56,7 @@ class Cowin_settings_process(models.Model):
                 tmp_tache['id'] = tache.id
                 tmp_tache['name'] = tache.name
                 tmp_tache['parent_id'] = tache.parent_id.name
+                tmp_tache['order_parent_id'] = tache.order_parent_id.name
                 # parent_id 就是解锁条件
                 # tmp_tache['is_unlocked'] = tache.parent_id.is_unlocked
                 # 需要考虑到环节的父节点可能没有
@@ -219,6 +220,17 @@ class Cowin_settings_process(models.Model):
         name = kwargs.get('tache_name')
         stage_id = kwargs.get('stage_id')
         tache_parent_id = int(kwargs.get('tache_parent_id')) if kwargs.get('tache_parent_id') else None
+
+
+
+
+
+        if tache_parent_id is None:
+            # 考虑到需要过滤到主工程环节
+
+            tache_entity = [tache_entity for tache_entity in self.get_all_tache_entities()
+                              if not tache_entity.model_id.model_name == 'cowin_project.sub_payment_app_form'][0]
+            tache_parent_id = tache_entity.id
 
 
         description = kwargs.get('description')

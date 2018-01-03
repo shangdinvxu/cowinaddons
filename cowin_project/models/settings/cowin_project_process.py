@@ -36,7 +36,8 @@ class Cowin_project_process(models.Model):
         # asc_by_show_orders = self.env['cowin_project.process_stage'].search([('process_id', '=', self.id),
         #               ('prev_or_post_investment', '=', prev_or_post_investment)], order='show_order')
 
-        asc_by_show_orders = self.stage_ids.filtered(lambda s: s.prev_or_post_investment == prev_or_post_investment).sorted('show_order')
+        # asc_by_show_orders = self.stage_ids.filtered(lambda s: s.prev_or_post_investment == prev_or_post_investment).sorted('show_order')
+        asc_by_show_orders = self.stage_ids.filtered(lambda s: s.prev_or_post_investment == prev_or_post_investment)
         for stage in asc_by_show_orders:
             tmp_stage = {}
             tmp_stage['id'] = stage.id
@@ -194,6 +195,16 @@ class Cowin_project_process(models.Model):
                             tache_in_pro.write({
                                 'parent_id': target.id
                             })
+
+                    order_parent_name = tache_in_meta['order_parent_id']
+
+                    for target in taches_res:
+                        if target.name == order_parent_name:
+                            tache_in_pro.write({
+                                'order_parent_id': target.id,
+                            })
+
+
 
         # 对依环节进行排序操作!!!
         taches_res[0].set_depency_order_by_sub_tache()

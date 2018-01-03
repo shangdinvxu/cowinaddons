@@ -35,6 +35,7 @@
             <field name="name">项目立项</field>
             <field name="stage_id" eval="ref('init_process_stage_2')"/>
             <field name="parent_id" eval="ref('init_process_stage_1_tache_1')"/>
+            <field name="order_parent_id" eval="ref('init_process_stage_1_tache_1')"/>
             <field name="description">说明：业务总监填写立项申请表，上传立项资料</field>
             <field name="model_id" eval="ref('init_custom_model_2')"/>
         </record>
@@ -43,6 +44,7 @@
             <field name="name">立项意见书</field>
             <field name="stage_id" eval="ref('init_process_stage_2')"/>
             <field name="parent_id" eval="ref('init_process_stage_2_tache_1')"/>
+            <field name="order_parent_id" eval="ref('init_process_stage_2_tache_1')"/>
             <field name="description">说明：立项通过后项目项目合伙人、业务总监、管理合伙人出具</field>
             <field name="model_id" eval="ref('init_custom_model_3')"/>
         </record>
@@ -57,6 +59,7 @@
             <field name="name">尽调拜访记录</field>
             <field name="stage_id" eval="ref('init_process_stage_3')"/>
             <field name="parent_id" eval="ref('init_process_stage_2_tache_2')"/>
+            <field name="order_parent_id" eval="ref('init_process_stage_2_tache_2')"/>
             <field name="description">说明：投资经理对项目进行尽职调查，撰写与项目相关的拜访记录</field>
             <field name="model_id" eval="ref('init_custom_model_4')"/>
         </record>
@@ -65,6 +68,7 @@
             <field name="name">尽调报告</field>
             <field name="stage_id" eval="ref('init_process_stage_3')"/>
             <field name="parent_id" eval="ref('init_process_stage_3_tache_1')"/>
+            <field name="order_parent_id" eval="ref('init_process_stage_3_tache_1')"/>
             <field name="description">说明：客观记录所有信息，包括受访人基本情况、与项目方关系、正负面评价</field>
             <field name="model_id" eval="ref('init_custom_model_5')"/>
         </record>
@@ -79,6 +83,7 @@
             <field name="name">投资决策申请</field>
             <field name="stage_id" eval="ref('init_process_stage_4')"/>
             <field name="parent_id" eval="ref('init_process_stage_3_tache_2')"/>
+            <field name="order_parent_id" eval="ref('init_process_stage_3_tache_2')"/>
             <field name="description">说明：发起投资决策申请，上传项目相关投资资料（可行性研究报告、投资条款或方案设计）</field>
             <field name="model_id" eval="ref('init_custom_model_6')"/>
         </record>
@@ -87,6 +92,7 @@
             <field name="name">投资决策委员会会议纪要</field>
             <field name="stage_id" eval="ref('init_process_stage_4')"/>
             <field name="parent_id" eval="ref('init_process_stage_4_tache_1')"/>
+            <field name="order_parent_id" eval="ref('init_process_stage_4_tache_1')"/>
             <field name="description">说明：业务总监召集会议，项目小组负责会议记录</field>
             <field name="model_id" eval="ref('init_custom_model_7')"/>
         </record>
@@ -95,6 +101,7 @@
             <field name="name">投委会会议表决票</field>
             <field name="stage_id" eval="ref('init_process_stage_4')"/>
             <field name="parent_id" eval="ref('init_process_stage_4_tache_2')"/>
+            <field name="order_parent_id" eval="ref('init_process_stage_4_tache_2')"/>
             <field name="description">说明：提交后需项目合伙人复核确认</field>
             <field name="model_id" eval="ref('init_custom_model_8')"/>
         </record>
@@ -103,6 +110,7 @@
             <field name="name">投资决策委员会决议</field>
             <field name="stage_id" eval="ref('init_process_stage_4')"/>
             <field name="parent_id" eval="ref('init_process_stage_4_tache_3')"/>
+            <field name="order_parent_id" eval="ref('init_process_stage_4_tache_3')"/>
             <field name="description">说明：发起表决申请，投委会委员表决，系统统计表决结果</field>
             <field name="model_id" eval="ref('init_custom_model_9')"/>
         </record>
@@ -111,6 +119,7 @@
             <field name="name">董事/监事任免书</field>
             <field name="stage_id" eval="ref('init_process_stage_4')"/>
             <field name="parent_id" eval="ref('init_process_stage_4_tache_4')"/>
+            <field name="order_parent_id" eval="ref('init_process_stage_4_tache_4')"/>
             <field name="description">说明：投委会主席根据表决结果签署投资委员会决议</field>
             <field name="model_id" eval="ref('init_custom_model_10')"/>
         </record>
@@ -125,6 +134,7 @@
             <field name="name">投资合同</field>
             <field name="stage_id" eval="ref('init_process_stage_5')"/>
             <field name="parent_id" eval="ref('init_process_stage_4_tache_5')"/>
+            <field name="order_parent_id" eval="ref('init_process_stage_4_tache_5')"/>
             <field name="description">说明：与投资相关的法律文件，包括：投资合同/协议、相关补充协议、股权转让协议、被投公司章程、
                 委派书、其他具有法律效率的文件
             </field>
@@ -142,6 +152,7 @@
             <field name="name">项目出资申请表</field>
             <field name="stage_id" eval="ref('init_process_stage_6')"/>
             <field name="parent_id" eval="ref('init_process_stage_5_tache_1')"/>
+            <field name="order_parent_id" eval="ref('init_process_stage_5_tache_1')"/>
             <field name="description">说明：投资经理填写项目付款申请表等所有出资材料（《项目付款申请表》、
                 《项目直接出资文件审批流程表》或《项目委托贷款文件审批流程表》）
             </field>
@@ -152,6 +163,7 @@
             <field name="name">项目委托贷款申请表</field>
             <field name="stage_id" eval="ref('init_process_stage_6')"/>
             <field name="parent_id" eval="ref('init_process_stage_6_tache_1')"/>
+            <field name="order_parent_id" eval="ref('init_process_stage_6_tache_1')"/>
             <field name="description">说明：财务出资完成后，通知相关投资经理和公司</field>
             <field name="model_id" eval="ref('init_custom_model_13')"/>
         </record>
@@ -160,6 +172,7 @@
             <field name="name">付款申请表</field>
             <field name="stage_id" eval="ref('init_process_stage_6')"/>
             <field name="parent_id" eval="ref('init_process_stage_6_tache_2')"/>
+            <field name="order_parent_id" eval="ref('init_process_stage_6_tache_2')"/>
             <field name="description">说明：财务出资完成后，通知相关投资经理和公司</field>
             <field name="model_id" eval="ref('init_custom_model_14')"/>
         </record>
@@ -174,6 +187,7 @@
             <field name="name">项目资料归档</field>
             <field name="stage_id" eval="ref('init_process_stage_7')"/>
             <field name="parent_id" eval="ref('init_process_stage_6_tache_3')"/>
+            <field name="order_parent_id" eval="ref('init_process_stage_6_tache_3')"/>
             <field name="description">
                 说明：项目小组临时保存所有项目资料，并填制项目资料清单。投资经理根据清单上内容将所缺资料及时补充完整，
                 并提交项目合伙人，项目合伙人每月对投资经理提交的资料情况进行检查，直至所有资料收完为止，基金投后管理专员负责监督落实。

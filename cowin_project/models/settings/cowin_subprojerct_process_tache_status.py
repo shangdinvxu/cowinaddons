@@ -16,6 +16,10 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
     tache_id = fields.Many2one('cowin_project.process_tache', string=u'环节', ondelete="restrict")
 
     parent_id = fields.Many2one('cowin_project.subproject_process_tache')
+
+    # 排序链表
+    order_parent_id = fields.Many2one(_name, string=u'排序链表')
+
     # sub_project_id  = fields.Many2one('cowin_project.cowin_subproject', string=u'字工程名')
     meta_sub_project_id = fields.Many2one('cowin_project.meat_sub_project', string=u'元子工程实例', ondelete="cascade")
 
