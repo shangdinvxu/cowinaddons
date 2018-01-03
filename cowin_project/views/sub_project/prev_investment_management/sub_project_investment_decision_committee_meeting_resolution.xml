@@ -10,34 +10,35 @@
             <field name="name">cowin_project.sub_invest_decision_committee_res form</field>
             <field name="model">cowin_project.sub_invest_decision_committee_res</field>
             <field name="arch" type="xml">
-                <form string="Fiscal year">
-                    <group>
+                <form string="Fiscal year" create="false" edit="false">
+                    <sheet>
+                        <group>
 
-                        <field name="name"/>
-                        <field name="project_number"/>
-                        <field name="invest_manager_id"/>
-                        <field name="voting_committee"/>
-                        <field name="outcome_of_the_voting_committee"/>
-                        <!--投资基金-->
-                        <field name="foundation_id"/>
-                        <field name="the_amount_of_investment"/>
-                        <field name="ownership_interest"/>
-                        <field name="round_financing_id"/>
-                        <field name="the_amount_of_financing"/>
+                            <field name="name"/>
+                            <field name="project_number"/>
+                            <field name="invest_manager_id"/>
+                            <field name="voting_committee"/>
+                            <field name="outcome_of_the_voting_committee"/>
+                            <!--投资基金-->
+                            <field name="foundation_id"/>
+                            <field name="the_amount_of_investment"/>
+                            <field name="ownership_interest"/>
+                            <field name="round_financing_id"/>
+                            <field name="the_amount_of_financing"/>
 
-                        <!---->
-                        <field name="round_financing_and_Foundation_ids">
-                            <tree string="轮次基金名称"  delete="false">
-                                <field name="name"/>
-                            </tree>
-                        </field>
+                            <!---->
+                            <field name="round_financing_and_Foundation_ids">
+                                <tree string="轮次基金名称"  delete="false">
+                                    <field name="name"/>
+                                </tree>
+                            </field>
 
-                        <field name="trustee"/>
-                        <field name="supervisor"/>
-                        <field name="amount_of_entrusted_loan"/>
-                        <field name="chairman_of_investment_decision_committee"/>
-                    </group>
-
+                            <field name="trustee"/>
+                            <field name="supervisor"/>
+                            <field name="amount_of_entrusted_loan"/>
+                            <field name="chairman_of_investment_decision_committee"/>
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>

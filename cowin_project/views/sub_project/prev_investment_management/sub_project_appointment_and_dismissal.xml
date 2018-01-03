@@ -9,27 +9,28 @@
             <field name="name">cowin_project.sub_appointment_and_dismissal form</field>
             <field name="model">cowin_project.sub_appointment_and_dismissal</field>
             <field name="arch" type="xml">
-                <form string="Fiscal year">
-                    <group>
-                        <field name="name"/>
-                        <field name="project_number"/>
-                        <field name="invest_manager_id"/>
-                    </group>
+                <form string="Fiscal year" create="false" edit="false">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="project_number"/>
+                            <field name="invest_manager_id"/>
+                        </group>
 
-                    <group>
-                        <field name="trustee"/>
-                        <field name="appointment_time_begin_trustee"/>
-                        <field name="appointment_time_end_trustee"/>
-                        <field name="Tenure_trustee"/>
-                    </group>
+                        <group>
+                            <field name="trustee"/>
+                            <field name="appointment_time_begin_trustee"/>
+                            <field name="appointment_time_end_trustee"/>
+                            <field name="Tenure_trustee"/>
+                        </group>
 
-                    <group>
-                        <field name="supervisor"/>
-                        <field name="appointment_time_begin_supervisor"/>
-                        <field name="appointment_time_endr_supervisor"/>
-                        <field name="Tenure_supervisor"/>
-                    </group>
-
+                        <group>
+                            <field name="supervisor"/>
+                            <field name="appointment_time_begin_supervisor"/>
+                            <field name="appointment_time_endr_supervisor"/>
+                            <field name="Tenure_supervisor"/>
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>

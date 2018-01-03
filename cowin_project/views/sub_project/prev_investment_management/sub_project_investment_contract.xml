@@ -11,14 +11,15 @@
             <field name="name">cowin_project.sub_invest_contract form</field>
             <field name="model">cowin_project.sub_invest_contract</field>
             <field name="arch" type="xml">
-                <form string="Fiscal year">
-                    <group>
+                <form string="Fiscal year" create="false" edit="false">
+                    <sheet>
+                        <group>
 
-                        <field name="contract_no"/>
-                        <field name="title"/>
-                        <field name="main_contents"/>
-                    </group>
-
+                            <field name="contract_no"/>
+                            <field name="title"/>
+                            <field name="main_contents"/>
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>

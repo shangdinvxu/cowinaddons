@@ -8,26 +8,27 @@
             <field name="name">cowin_project.sub_opinion_book form</field>
             <field name="model">cowin_project.sub_opinion_book</field>
             <field name="arch" type="xml">
-                <form string="Fiscal year">
-                    <group>
+                <form string="Fiscal year" create="false" edit="false">
+                    <sheet>
+                        <group>
 
-                        <field name="name"/>
-                        <field name="project_number"/>
-                        <field name="invest_manager_id"/>
-                        <field name="date_of_project"/>
-                        <!--投资基金-->
-                        <field name="foundation_id"/>
-                        <field name="the_amount_of_investment"/>
-                        <field name="ownership_interest"/>
-                        <field name="round_financing_id"/>
-                        <field name="the_amount_of_financing"/>
-                        <!---->
-                        <field name="project_mumbers"/>
-                        <!--<field name="partner_opinion"/>-->
-                        <!--<field name="business_director_option"/>-->
-                        <!--<field name="policy_making_committee"/>-->
-                    </group>
-
+                            <field name="name"/>
+                            <field name="project_number"/>
+                            <field name="invest_manager_id"/>
+                            <field name="date_of_project"/>
+                            <!--投资基金-->
+                            <field name="foundation_id"/>
+                            <field name="the_amount_of_investment"/>
+                            <field name="ownership_interest"/>
+                            <field name="round_financing_id"/>
+                            <field name="the_amount_of_financing"/>
+                            <!---->
+                            <field name="project_mumbers"/>
+                            <!--<field name="partner_opinion"/>-->
+                            <!--<field name="business_director_option"/>-->
+                            <!--<field name="policy_making_committee"/>-->
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>

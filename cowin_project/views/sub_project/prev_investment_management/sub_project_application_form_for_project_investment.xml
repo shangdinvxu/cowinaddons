@@ -9,24 +9,25 @@
             <field name="name">cowin_project.sub_app_form_pro_investment form</field>
             <field name="model">cowin_project.sub_app_form_pro_investment</field>
             <field name="arch" type="xml">
-                <form string="Fiscal year">
-                    <group>
+                <form string="Fiscal year" create="false" edit="false">
+                    <sheet>
+                        <group>
 
-                        <field name="name"/>
-                        <field name="project_number"/>
-                        <field name="invest_manager_id"/>
-                        <field name="date_of_application"/>
-                        <!--投资基金-->
-                        <field name="foundation_id"/>
-                        <field name="the_amount_of_investment"/>
-                        <field name="ownership_interest"/>
-                        <field name="round_financing_id"/>
-                        <field name="the_amount_of_financing"/>
-                        <!---->
-                        <field name="list_of_examination_and_approval_documents" widget="many2many_binary"/>
+                            <field name="name"/>
+                            <field name="project_number"/>
+                            <field name="invest_manager_id"/>
+                            <field name="date_of_application"/>
+                            <!--投资基金-->
+                            <field name="foundation_id"/>
+                            <field name="the_amount_of_investment"/>
+                            <field name="ownership_interest"/>
+                            <field name="round_financing_id"/>
+                            <field name="the_amount_of_financing"/>
+                            <!---->
+                            <field name="list_of_examination_and_approval_documents" widget="many2many_binary"/>
 
-                    </group>
-
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>

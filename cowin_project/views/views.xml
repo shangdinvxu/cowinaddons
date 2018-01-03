@@ -282,11 +282,11 @@
             <field name="name">coowin_project.process.form</field>
             <field name="model">cowin_project.cowin_project</field>
             <field name="arch" type="xml">
-                <form string="Fiscal year">
-                    <div class="cowin_process_form_wrap">
+                <form string="Fiscal year" create="false" edit="false">
+                    <sheet>
                         <group>
                             <field name="name"/>
-                            <field name="image" widget="image"/>
+                            <field name="image" widget="image" class="oe_avatar" options="{'size': [90, 90]}" />
                             <field name="project_source"/>
                             <field name="project_source_note"/>
                             <field name="round_financing"/>
@@ -306,7 +306,7 @@
                             <field name="attachment_ids" widget="many2many_binary"/>
                             <field name="attachment_note"/>
                         </group>
-                    </div>
+                    </sheet>
                 </form>
             </field>
         </record>

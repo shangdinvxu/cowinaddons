@@ -8,25 +8,25 @@
             <field name="name">cowin_project.sub_call_up_record form</field>
             <field name="model">cowin_project.sub_call_up_record</field>
             <field name="arch" type="xml">
-                <form string="Fiscal year">
-                    <group>
-
-                        <field name="name"/>
-                        <field name="project_number"/>
-                        <field name="invest_manager_id"/>
-                        <field name="visit_date"/>
-                        <field name="customer_type"/>
-                        <field name="customer_name"/>
-                        <field name="customer_position"/>
-                        <field name="customer_contract"/>
-                        <field name="customer_email"/>
-                        <field name="customer_company_name"/>
-                        <field name="customer_relation_investment"/>
-                        <field name="customer_relation_value"/>
-                        <field name="customer_relation_opinion"/>
-                        <field name="recommended_visit_object"/>
-                    </group>
-
+                <form string="Fiscal year" create="false" edit="false">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="project_number"/>
+                            <field name="invest_manager_id"/>
+                            <field name="visit_date"/>
+                            <field name="customer_type"/>
+                            <field name="customer_name"/>
+                            <field name="customer_position"/>
+                            <field name="customer_contract"/>
+                            <field name="customer_email"/>
+                            <field name="customer_company_name"/>
+                            <field name="customer_relation_investment"/>
+                            <field name="customer_relation_value"/>
+                            <field name="customer_relation_opinion"/>
+                            <field name="recommended_visit_object"/>
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>
