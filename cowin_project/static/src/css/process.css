@@ -475,3 +475,24 @@
 .o_kanban_view .fa-lg{
     color: #A1A1A1;
 }
+
+#process_record{
+    padding-top: 10px;
+}
+#process_record .record_item_wrap{
+    width: 90%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+#process_record .record_item_wrap .fa{
+    float: left;
+    font-size: 28px;
+    margin-top: 12px;
+}
+#process_record .record_item_wrap .record_item{
+    background-color: rgba(242, 242, 242, 1);
+    padding: 10px;
+    overflow: hidden;
+    float: right;
+    width: 95%;
+}

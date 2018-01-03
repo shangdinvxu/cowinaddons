@@ -43,6 +43,8 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     .call("rpc_get_operation_record",[self.id])
                     .then(function (result) {
                         console.log(result);
+                        $('#process_record').html('');
+                        $('#process_record').append(QWeb.render('operate_records_tmpl', {result: result}))
                     })
         },
         add_new_tache_func:function (e) {

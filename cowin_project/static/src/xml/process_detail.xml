@@ -278,4 +278,35 @@
             </div>
         </div>
     </t>
+
+    <!--操作记录-->
+    <t t-name="operate_records_tmpl">
+        <t t-foreach="result.operation_records" t-as="item">
+            <div class="record_item_wrap">
+                <span class="fa fa-user"></span>
+                <div class="record_item">
+                    <div style="overflow:hidden;">
+                        <span style="float:left;"><t t-esc="item.body.approval_roel_person"/></span>
+                        <span style="float:right;"><t t-esc="item.body.operation_time"/></span>
+                    </div>
+                    <div>
+                        <span>
+                            <t t-if="item.body.operation==1">
+                                提交
+                            </t>
+                             <t t-if="item.body.operation==2">
+                                查看
+                            </t>
+                             <t t-if="item.body.operation==3">
+                                修改
+                            </t>
+                             <t t-if="item.body.operation==4">
+                                拒绝
+                            </t>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
 </templates>
