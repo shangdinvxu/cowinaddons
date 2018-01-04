@@ -8,11 +8,11 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
     var Model = require('web.Model');
     var Widget = require('web.Widget');
     var View = require('web.View');
+    var common = require('web.form_common');
     var QWeb = core.qweb;
     var ControlPanelMixin = require('web.ControlPanelMixin');
     var ControlPanel = require('web.ControlPanel');
     var Dialog = require('web.Dialog');
-    var ControlPanelMixin = require('web.ControlPanelMixin');
     var SearchView = require('web.SearchView');
     var data = require('web.data');
     var pyeval = require('web.pyeval');
@@ -75,18 +75,32 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
                 }
             }
 
-            var action = {
-                view_type: 'form',
-                view_mode: 'form',
-                views: [[false, 'form']],
-                res_model: self.tache_arr[parseInt(tache_index)].model_name,
-                res_id: self.tache_arr[tache_index].res_id,
-                name: self.tache_arr[tache_index].name,
-                type: 'ir.actions.act_window',
-                context: context,
-                target:'new'
-            }
-            self.do_action(action)
+            // var action = {
+            //     view_type: 'form',
+            //     view_mode: 'form',
+            //     views: [[false, 'form']],
+            //     res_model: self.tache_arr[parseInt(tache_index)].model_name,
+            //     res_id: self.tache_arr[tache_index].res_id,
+            //     name: self.tache_arr[tache_index].name,
+            //     type: 'ir.actions.act_window',
+            //     context: context,
+            //     target:'new',
+            //     flags: {'form': {'action_buttons': true, 'options': {'mode': 'view'}}}
+            // }
+            // self.do_action(action)
+
+
+             var pop = new common.FormViewDialog(self, {
+                    res_model: self.tache_arr[parseInt(tache_index)].model_name,
+                    res_id: self.tache_arr[tache_index].res_id,
+                    context: context,
+                    title: 'ssssss',
+                    // view_id: view_id,
+                    readonly:true
+                }).open();
+
+
+
         },
         //查看审核页面
         view_approval_func:function (e) {

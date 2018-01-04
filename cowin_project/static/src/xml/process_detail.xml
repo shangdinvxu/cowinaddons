@@ -200,7 +200,7 @@
         <t t-if="result.is_admin==true">
             <div class="btns_wrap">
                 <div class="confirm_project_team_setting">保存</div>
-                <div class="cancel_project_team_setting">取消</div>
+                <!--<div class="cancel_project_team_setting">取消</div>-->
             </div>
         </t>
 
