@@ -1250,7 +1250,12 @@ class Cowin_project(models.Model):
 
     def rpc_get_operation_record(self):
 
-
+        # selection_info = [
+        #     {'operation': u'提交'},]
+        #     {'operation': u'提交'},]
+        #     {'operation': u'提交'},]
+        #     {'operation': u'提交'},]
+        #     {'operation': u'提交'},]
         ids = []
         model_name = u''
         for meta_sub_project_entity in self.meta_sub_project_ids:

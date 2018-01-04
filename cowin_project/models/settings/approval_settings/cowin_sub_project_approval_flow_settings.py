@@ -70,26 +70,29 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         tmp2[u'approval_role_name'] = approval_role_name
         tmp2[u'approval_roel_person'] = approval_roel_person
         tmp2[u'operation_time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time() + 8 * 3600))
-        tmp2[u'operation'] = ''
+        tmp2[u'operation'] = u''
 
         approval_sum = u'%s: %s' % ( approval_role_name, approval_roel_person)
 
         if (prevstatus, newstatus) == (1, 2):
             print(u'(1, 2) aciton...')
-            tmp2[u'operation'] = 1
+            # tmp2[u'operation'] = 1
+            tmp2[u'operation'] = u'提交'
             # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
             self.message_post(json.dumps(tmp2))
             self.prev_status = self.status = newstatus
         elif (prevstatus, newstatus) == (1, 4):
             print(u'(1, 4) aciton...')
-            tmp2[u'operation'] = 1
+            # tmp2[u'operation'] = 1
+            tmp2[u'operation'] = u'提交'
             # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
             self.message_post(json.dumps(tmp2))
             self.prev_status = self.status = newstatus
             self.sub_project_tache_id.trigger_next_subtache()
         elif (prevstatus, newstatus) == (2, 2):
             print(u'(2, 2) acion...')
-            tmp2[u'operation'] = 2
+            # tmp2[u'operation'] = 2
+            tmp2[u'operation'] = u'同意'
             # tmp += u'审核结果: 同意'
             # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
             self.message_post(json.dumps(tmp2))
@@ -98,13 +101,15 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             self.sub_project_tache_id.write({
                 'is_launch_again': True,
             })
-            tmp2[u'operation'] = 3
+            # tmp2[u'operation'] = 3
+            tmp2[u'operation'] = u'暂缓'
             # tmp += u'审核结果: 暂缓'
             # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
             self.message_post(json.dumps(tmp2))
             self.prev_status = self.status = 1
         elif (prevstatus, newstatus) == (2, 4):
-            tmp2[u'operation'] = 2
+            # tmp2[u'operation'] = 2
+            tmp2[u'operation'] = u'同意'
             self.prev_status = self.status = newstatus
             # tmp += u'审核结果: 同意'
             # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
@@ -112,7 +117,8 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             self.sub_project_tache_id.trigger_next_subtache()
         elif (prevstatus, newstatus) == (2, 5):
             self.prev_status = self.status = newstatus
-            tmp2[u'operation'] = 5
+            # tmp2[u'operation'] = 5
+            tmp2[u'operation'] = u'拒绝'
             # tmp += u'审核结果: 拒绝'
             # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
             self.message_post(json.dumps(tmp2))
