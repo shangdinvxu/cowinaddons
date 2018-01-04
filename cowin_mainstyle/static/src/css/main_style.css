@@ -214,3 +214,17 @@ a.oe_menu_toggler { background-color: transparent !important; }
 .body_login .o_database_list{
     background-color: white!important;
 }
+
+
+.dropdown-menu a[data-menu*="documentation"]{
+    display: none;
+}
+.dropdown-menu a[data-menu*="support"]{
+    display: none;
+}
+.dropdown-menu li[class*="divider"]{
+    display: none;
+}
+.dropdown-menu a[data-menu*="account"]{
+    display: none;
+}

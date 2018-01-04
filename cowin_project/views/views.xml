@@ -311,7 +311,7 @@
             <field name="name">coowin_project.process.form</field>
             <field name="model">cowin_project.cowin_project</field>
             <field name="arch" type="xml">
-                <form string="Fiscal year" create="false" edit="false">
+                <form string="Fiscal year" create="false" edit="false" delete="false">
                     <sheet>
                         <group>
                             <group>

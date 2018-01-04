@@ -1,0 +1,72 @@
+<odoo>
+    <template id="report_invest_decision_apply">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-xs-offset-5">
+                                <h1 style="">投资决策申请
+                                </h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div style="width:1px;height:100%;border-left:1px solid #F2F2F2;position:absolute;left:30%;top:0"></div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">名称：</span><span class="col-xs-8" t-field="o.name"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">项目编号：</span><span class="col-xs-8" t-field="o.project_number"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">本公司的投资角色：</span><span class="col-xs-8" t-field="o.company_investment_role"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">决策文件清单：</span>
+                                    <span class="col-xs-8">
+                                        <t t-foreach="o.decision_file_list" t-as="item">
+                                            <span class="" t-field="item.name"></span>
+                                        </t>
+                                    </span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">投资决策委员会召开时间：</span><span class="col-xs-8" t-field="o.investment_decision_Committee_held_time"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">基金：</span><span class="col-xs-8" t-field="o.foundation_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">本次投资金额：</span><span class="col-xs-8" t-field="o.the_amount_of_investment"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">股份比例：</span><span class="col-xs-8" t-field="o.ownership_interest"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">轮次：</span><span class="col-xs-8" t-field="o.round_financing_id"></span>
+                                </div>
+                                <div style="overflow:hidden">
+                                    <span class="col-xs-4">本次融资额：</span><span class="col-xs-8" t-field="o.the_amount_of_financing"></span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_invest_decision_apply"
+        string="投资决策申请"
+        model="cowin_project.sub_invest_decision_app"
+        report_type="qweb-pdf"
+        name="cowin_project.report_invest_decision_apply"
+        file="cowin_project.report_invest_decision_apply"
+    />
+</odoo>
