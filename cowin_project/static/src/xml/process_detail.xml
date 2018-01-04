@@ -291,7 +291,8 @@
                     </div>
                     <div>
                         <span style="color:#949494">
-                            <t t-esc="item.body.operation"/>
+                            <t t-esc="item.body.operation"/>【<t t-esc="item.body.sub_project_name"/>/<t t-esc="item.body.round_financing_name"/>/<t t-esc="item.body.foundation_name"/> 】
+                            <t t-esc="item.body.sub_tache_name"/>
                         </span>
                     </div>
                 </div>

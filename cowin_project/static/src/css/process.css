@@ -483,6 +483,7 @@
     width: 90%;
     margin: 0 auto;
     overflow: hidden;
+    margin-bottom: 10px;
 }
 #process_record .record_item_wrap .fa{
     float: left;
