@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
 import json
-
+from odoo.tools.mail import html_sanitize, html2plaintext
 import time
 
-
+from odoo import SUPERUSER_ID
 class Cowin_sub_project_approval_flow_settings(models.Model):
     _inherit = ['mail.thread']
 
@@ -24,6 +24,9 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
     status = fields.Selection([(1, u'发起'), (2, u'审核中'), (3, u'暂缓(从新发起)'), (4, u'同意'), (5, u'拒绝')],
                      string=u'审核状态', default=1)
     prev_status = fields.Integer(default=1)
+
+    # 通道使用,发送通知消息
+    channel_id = fields.Many2one('mail.channel', string=u'发送消息通知的通道', ondelete="cascade")
 
     action = {(1, 2): u'发起', (2, 2): u'审核', (2, 3): u'暂缓', (1, 4): u'同意', (2, 4): u'同意', (2, 5): u'拒绝'}
 
@@ -46,6 +49,115 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
     # 构建子环节和子审批实体一对一的关系
     sub_project_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
+
+    def get_all_message(self):
+        message_entities = self.env['mail.message'].search([('subject', '=', 'approval_flow_setting'), ('res_id', '=', self.id), ('model', '=', self._name)])
+        message_infos = message_entities.mapped(lambda m: html2plaintext(m.body))
+
+        return message_infos
+
+
+
+
+    def send_all_message(self): # 发送通知消息!!!
+
+        rels = self.current_approval_flow_node_id.operation_role_id.sub_meta_pro_approval_settings_role_rel \
+               & self.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel
+
+        user_entities = set([rel_entity.employee_id.user_id for rel_entity in rels])
+        # user_entities.add()
+        partner_ids = list(map(lambda user: user.partner_id.id, user_entities))
+        id = self.env['res.users'].search([('id', '=', 1)]).partner_id.id
+        partner_ids.append(id)
+
+
+        if not self.channel_id:
+            self.channel_id = self.channel_id.create({
+            'name': u'私有通道%s %s' % (self.sub_project_tache_id.name, self.sub_project_tache_id.id),
+            # 'channel_partner_ids': [(6, 0, partner_ids)],
+            "public": "public",
+            # 'channel_type': 'chat',
+            })
+
+        self.channel_id.write({
+            'channel_partner_ids': [(6, 0, partner_ids)],
+        })
+        # self.channel_id.channel_invite(partner_ids)
+
+
+        # 指定主题为审批消息
+        self.channel_id.message_post(u'请您注意查看审核操作!!!', message_type='comment', subtype='mail.mt_comment')
+
+
+    def send_next_approval_flow_settings_node_msg(self, status=2):
+        sub_project_name = self.meta_sub_project_id.sub_project_ids[0].name
+        round_financing_name = self.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id.name
+        foundation_name = self.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id.name
+
+        sub_project_name = sub_project_name if sub_project_name else u''
+        round_financing_name = round_financing_name if round_financing_name else u'暂无轮次'
+        foundation_name = foundation_name if foundation_name else u'暂无基金'
+
+        prev = self.current_approval_flow_node_id
+        next = self.current_approval_flow_node_id.parent_id
+
+        # approval_role_name = self.current_approval_flow_node_id.operation_role_id.name
+        approval_role_name = next.operation_role_id.name
+
+        # tmp = u'/'.join([sub_project_name, foundation_name, round_financing_name])
+
+        # approval_roel_person = self.env.user.employee_ids[0].name
+
+        info_first = u'%s/%s/%s\n' % (sub_project_name, round_financing_name, foundation_name)
+
+        tmp2 = {}
+        tmp2[u'sub_project_name'] = sub_project_name
+        tmp2[u'round_financing_name'] = round_financing_name
+        tmp2[u'foundation_name'] = foundation_name
+        tmp2[u'approval_role_name'] = approval_role_name
+        # tmp2[u'approval_roel_person'] = approval_roel_person
+        tmp2[u'operation_time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time() + 8 * 3600))
+        tmp2[u'operation'] = u''
+        tmp2[u'sub_tache_name'] = self.sub_project_tache_id.name
+
+
+
+        if status == 2: # 待审批
+            tmp2[u'operation'] = u'待审批'
+
+            info = info_first + u'您有一项[%s] 待处理' % self.sub_project_tache_id.name
+
+        elif status == 3:
+            info = info_first + u'您发起的[%s] 已暂缓' % self.sub_project_tache_id.name
+        elif status == 4:
+            info = info_first + u'您发起的[%s] 已审批通过' % self.sub_project_tache_id.name
+        elif status == 5:
+            info = info_first + u'您发起的[%s] 已拒绝' % self.sub_project_tache_id.name
+
+        else:
+            tmp2[u'operation'] = u''
+
+        approval_roles = next.operation_role_id
+
+        # 或得到当前的用户
+        rel_entities = self.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel & approval_roles.sub_meta_pro_approval_settings_role_rel
+
+        partner_ids = list(map(lambda rel: rel.employee_id.user_id.partner_id.id, rel_entities))
+        id = self.env['res.users'].search([('id', '=', 1)]).partner_id.id
+        partner_ids.append(id)
+
+        self.current_approval_flow_node_id = prev
+
+        self.channel_id.write({
+            'channel_partner_ids': [(6, 0, partner_ids)],
+        })
+        # self.channel_id.channel_invite(partner_ids)
+
+        # 指定主题为审批消息
+        # self.channel_id.message_post(u'请您注意查看审核操作!!!', subject=u'approval_flow_setting')
+        # self.channel_id.message_post(json.dumps(tmp2), message_type='comment', subtype='mail.mt_comment')
+        self.channel_id.message_post(info, message_type='comment', subtype='mail.mt_comment')
+
     # 改变状态的操作!!!
     def process_action(self):
         prevstatus, newstatus = self.prev_status, self.status
@@ -58,8 +170,8 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         foundation_name = foundation_name if foundation_name else u'暂无基金'
         approval_role_name = self.current_approval_flow_node_id.operation_role_id.name
 
-        tmp = u'/'.join([sub_project_name, foundation_name, round_financing_name])
-        tmp = u'[ ' + tmp + u' ] ' + self.sub_project_tache_id.name
+        # tmp = u'/'.join([sub_project_name, foundation_name, round_financing_name])
+        # tmp = u'[ ' + tmp + u' ] ' + self.sub_project_tache_id.name
 
         approval_roel_person = self.env.user.employee_ids[0].name
 
@@ -73,7 +185,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         tmp2[u'operation'] = u''
         tmp2[u'sub_tache_name'] = self.sub_project_tache_id.name
 
-        approval_sum = u'%s: %s' % ( approval_role_name, approval_roel_person)
+        # approval_sum = u'%s: %s' % ( approval_role_name, approval_roel_person)
 
         if (prevstatus, newstatus) == (1, 2):
             print(u'(1, 2) aciton...')
@@ -81,6 +193,8 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             tmp2[u'operation'] = u'提交'
             # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
             self.message_post(json.dumps(tmp2))
+            # self.send_all_message()
+            self.send_next_approval_flow_settings_node_msg(status=2)
             self.prev_status = self.status = newstatus
         elif (prevstatus, newstatus) == (1, 4):
             print(u'(1, 4) aciton...')
@@ -89,6 +203,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
             self.message_post(json.dumps(tmp2))
             self.prev_status = self.status = newstatus
+            self.send_next_approval_flow_settings_node_msg(status=4)
             self.sub_project_tache_id.trigger_next_subtache()
         elif (prevstatus, newstatus) == (2, 2):
             print(u'(2, 2) acion...')
@@ -97,6 +212,8 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             # tmp += u'审核结果: 同意'
             # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
             self.message_post(json.dumps(tmp2))
+            # self.send_all_message()
+            self.send_next_approval_flow_settings_node_msg(status=2)
             self.prev_status = self.status = newstatus
         elif (prevstatus, newstatus) == (2, 3):
             self.sub_project_tache_id.write({
@@ -107,6 +224,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             # tmp += u'审核结果: 暂缓'
             # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
             self.message_post(json.dumps(tmp2))
+            self.send_next_approval_flow_settings_node_msg(status=3)
             self.prev_status = self.status = 1
         elif (prevstatus, newstatus) == (2, 4):
             # tmp2[u'operation'] = 2
@@ -115,6 +233,8 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             # tmp += u'审核结果: 同意'
             # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
             self.message_post(json.dumps(tmp2))
+            self.send_next_approval_flow_settings_node_msg(status=4)
+
             self.sub_project_tache_id.trigger_next_subtache()
         elif (prevstatus, newstatus) == (2, 5):
             self.prev_status = self.status = newstatus
@@ -123,6 +243,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             # tmp += u'审核结果: 拒绝'
             # self.message_post(u'%s 发起了 %s' % (approval_sum, tmp))
             self.message_post(json.dumps(tmp2))
+            self.send_next_approval_flow_settings_node_msg(status=5)
 
         else:
             pass

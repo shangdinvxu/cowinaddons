@@ -879,12 +879,27 @@ class Cowin_project(models.Model):
     def rpc_save_permission_configuration(self, **kwargs):
         meta_sub_project_infos = kwargs.get('meta_sub_project_infos')
 
+
+        for meta_sub_project_info in meta_sub_project_infos:
+            meta_sub_project_info[u'is_current_exists'] = False  # 我们之前的数据在前端复制数据的时候,会提前把数据写入,可能有些数据我们并不需要在之后的操作
+
         for meta_sub_project_entity in self.meta_sub_project_ids:
 
             for meta_sub_project_info in meta_sub_project_infos:
                 if meta_sub_project_info['meta_sub_pro_id'] == meta_sub_project_entity.id:
                     self._save_permission_configuration(meta_sub_project_entity, meta_sub_project_info)
+                    meta_sub_project_info[u'is_current_exists'] = True
                     break
+
+
+        # 删除可能之前删除的子工程配置的数据
+        for meta_sub_project_entity in self.meta_sub_project_ids:
+            for meta_sub_project_info in meta_sub_project_infos:
+                if meta_sub_project_info['meta_sub_pro_id'] == meta_sub_project_entity.id:
+                    if meta_sub_project_info['is_current_exists'] == False:
+                        # self._save_permission_configuration(meta_sub_project_entity, meta_sub_project_info)
+                        meta_sub_project_entity.unlink()
+                        break
 
         return self.rpc_get_permission_configuration()
 
@@ -958,8 +973,11 @@ class Cowin_project(models.Model):
         # current_meta_sub_pro_entity = self.meta_sub_project_ids.browse(current_meta_sub_pro_id)
         copy_meta_sub_pro_entity = self.meta_sub_project_ids.browse(copy_meta_sub_pro_id)
 
+        # return copy_meta_sub_pro_entity.copy_data()
+
         copy_rel_entities = copy_meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel
 
+        res = []
         for c_rel_entity in copy_rel_entities:
             c_rel_entity.create({
                 'meta_sub_project_id': current_meta_sub_pro_id,
@@ -967,9 +985,19 @@ class Cowin_project(models.Model):
                 'employee_id': c_rel_entity.employee_id.id,
             })
 
+            # t = c_rel_entity.copy_data({
+            #     'meta_sub_project_id': current_meta_sub_pro_id,
+            #     'approval_role_id': c_rel_entity.approval_role_id.id,
+            #     'employee_id': c_rel_entity.employee_id.id,
+            # })
+            #
+            #
+            # res.append(t[0])
 
 
 
+
+        # return {'current_meta_sub_pro_copy': res}
 
         return self.rpc_get_permission_configuration()
 

@@ -72,6 +72,31 @@ class Cowin_project_subproject_investment_decision_application(models.Model):
         #             'is_unlocked': True,
         #         })
 
+
+        # 发送投资决策通知!!!
+        for rel_entity in self.subproject_id.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel:
+            pass
+
+
+        partner_ids = [rel_entity.approval_role.employee_id.user_id.partner_id.id for rel_entity in self.subproject_id.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel
+             if rel_entity.approval_role.name == u'投资决策委员会']
+        channel_entity = self.env['mail.channel'].create({
+            'name': u'投决策申请通道 %s' % self.id,
+            "public": "public",
+        })
+
+        sub_project_name = self.subproject_id.meta_sub_project_id.sub_project_ids[0].name
+        round_financing_name = self.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id.name
+        foundation_name = self.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id.name
+
+        sub_project_name = sub_project_name if sub_project_name else u''
+        round_financing_name = round_financing_name if round_financing_name else u'暂无轮次'
+        foundation_name = foundation_name if foundation_name else u'暂无基金'
+
+        info_first = u'%s/%s/%s\n' % (sub_project_name, round_financing_name, foundation_name)
+        channel_entity.message_post(info_first + u'您有一项[投资决策申请]待审批',
+                    message_type = 'comment', subtype = 'mail.mt_comment')
+
         return res
 
 
