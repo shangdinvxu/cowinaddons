@@ -286,23 +286,12 @@
                 <span class="fa fa-user"></span>
                 <div class="record_item">
                     <div style="overflow:hidden;">
-                        <span style="float:left;"><t t-esc="item.body.approval_roel_person"/></span>
-                        <span style="float:right;"><t t-esc="item.body.operation_time"/></span>
+                        <span style="float:left;font-size:16px;font-weight:bold;"><t t-esc="item.body.approval_roel_person"/></span>
+                        <span style="float:right;color:#949494;"><t t-esc="item.body.operation_time"/></span>
                     </div>
                     <div>
-                        <span>
-                            <t t-if="item.body.operation==1">
-                                提交
-                            </t>
-                             <t t-if="item.body.operation==2">
-                                查看
-                            </t>
-                             <t t-if="item.body.operation==3">
-                                修改
-                            </t>
-                             <t t-if="item.body.operation==4">
-                                拒绝
-                            </t>
+                        <span style="color:#949494">
+                            <t t-esc="item.body.operation"/>
                         </span>
                     </div>
                 </div>
