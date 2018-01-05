@@ -97,6 +97,7 @@
                     <span>【
                         <t t-if="obj.approval_status.status_id==-1">
                             同意
+
                         </t>
                         <t t-esc="obj.approval_status.status_name"/>
                         】
