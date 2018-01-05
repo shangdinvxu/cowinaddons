@@ -833,10 +833,10 @@ class Cowin_project(models.Model):
             'is_unlocked': True,
         })
 
-        revered_to_list = to_do_list[::-1]
+        revered_to_list = to_do_list
 
         # 默认构建依赖关系
-        for i, sub_tache_entity in enumerate(revered_to_list):
+        for i, sub_tache_entity in enumerate(revered_to_list[:-1]):
             sub_tache_entity.write({
                 'parent_id': revered_to_list[i+1].id,
                 'order_parent_id': revered_to_list[i+1].id,
