@@ -353,7 +353,22 @@ class Cowin_project(models.Model):
 
             for sub_tache_entity in sub_tache_entities:
                 if sub_tache_entity.tache_id.stage_id.id == stage_info['id']:
+
                     tache_info = {}
+
+                    brother_sub_tache_entities = meta_sub_project_entity.sub_tache_ids & sub_tache_entity.tache_id.tache_status_ids
+                    once_or_more = False
+                    if len(brother_sub_tache_entities) == 1:
+                        once_or_more = brother_sub_tache_entities.once_or_more
+
+                    elif len(brother_sub_tache_entities) > 1 and sub_tache_entity == brother_sub_tache_entities[0]:
+                        if brother_sub_tache_entities[-1].sub_pro_approval_flow_settings_ids.is_success():
+                            once_or_more = brother_sub_tache_entities[0].once_or_more
+
+                            tache_info['once_or_more'] = once_or_more
+
+
+
                     tache_info['id'] = sub_tache_entity.tache_id.id
                     tache_info['sub_tache_id'] = sub_tache_entity.id
 
@@ -366,7 +381,8 @@ class Cowin_project(models.Model):
                     # tmp_tache['is_unlocked'] = tache.is_unlocked
                     tache_info['description'] = sub_tache_entity.tache_id.description
                     tache_info['state'] = sub_tache_entity.tache_id.state
-                    tache_info['once_or_more'] = sub_tache_entity.once_or_more
+                    # tache_info['once_or_more'] = sub_tache_entity.once_or_more
+
                     tache_info['view_or_launch'] = sub_tache_entity.view_or_launch
                     tache_info['is_launch_again'] = sub_tache_entity.is_launch_again
                     tache_info['res_id'] = sub_tache_entity.res_id
