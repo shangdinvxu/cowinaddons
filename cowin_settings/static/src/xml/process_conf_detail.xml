@@ -7,10 +7,10 @@
                 <h2><t t-esc="result.name"/></h2>
             </div>
             <div class="button_wrap">
-                <div class="new_group_button">
-                    <span class="fa fa-plus"></span>
-                    新建分组
-                </div>
+                <!--<div class="new_group_button">-->
+                    <!--<span class="fa fa-plus"></span>-->
+                    <!--新建分组-->
+                <!--</div>-->
                 <!--<div class="new_link_button">-->
                     <!--<span class="fa fa-plus"></span>-->
                     <!--新增环节-->
@@ -45,7 +45,7 @@
                                 <span class="fa fa-folder-o"></span>
                                 <span class="group_name"><t t-esc="item.name"/> </span>
                                 <span class="fa fa-edit trans"></span>
-                                <span class="fa fa-trash-o trans group_delete"></span>
+                                <!--<span class="fa fa-trash-o group_delete"></span>-->
                             </td>
                             <td></td><td></td><td></td><td></td>
                         </tr>
@@ -157,7 +157,7 @@
                 </div>
                 <div class="create_input_wrap">当前环节: <input class="current_tache" type="text"/></div>
                 <div class="edit_tache_input_wrap">所属分组:
-                    <select class="form-control">
+                    <select class="form-control" disabled="disabled">
                         <t t-foreach="result.stage_ids" t-as="item">
                             <option t-att-data-id="item.id"><t t-esc="item.name"/></option>
                         </t>

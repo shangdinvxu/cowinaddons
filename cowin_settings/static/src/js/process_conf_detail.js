@@ -56,6 +56,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
             var self = this;
+            console.log('sssssssssssss')
             self.edit_group_id = $(target).parents('tr').attr('data-id');
             $(".edit_group").show();
             $('.edit_group_input').val($(target).parents('td').find('.group_name').text())

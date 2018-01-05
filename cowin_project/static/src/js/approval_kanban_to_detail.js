@@ -153,13 +153,27 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
                 },
                 'prev_or_post_investment': true,
             };
-            return new Model("cowin_project.cowin_project")
+            if(approval_result==false){
+                Dialog.alert(this, _t("不同意将终止本次项目投资，确定终止?"), {
+                    confirm_callback: function() {
+                        return new Model("cowin_project.cowin_project")
+                            .call("rpc_save_approval_flow_info", [parseInt(self.id)],data)
+                            .then(function (result) {
+                                console.log(result);
+                                $('#process_data').html('');
+                                $('#process_data').append(QWeb.render('process_info', {result: result}))
+                            })
+                    },
+                });
+            }else {
+                return new Model("cowin_project.cowin_project")
                     .call("rpc_save_approval_flow_info", [parseInt(self.id)],data)
                     .then(function (result) {
                         console.log(result);
                         $('#process_data').html('');
                         $('#process_data').append(QWeb.render('process_info', {result: result}))
                     })
+            }
         },
         //到审核页面
         to_approval_func:function (e) {
@@ -170,7 +184,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
             sub_approval_flow_settings_id = $(target).parents('.process_data_item_line').attr('data-sub-approval-id');
             sub_tache_id = $(target).parents('.process_data_item_line').attr('data-sub-tache-id');
             approval_tache_index = $(target).parents('.process_data_item_line').attr('tache-index');
-            console.log(self.tache_arr)
+            // console.log(self.tache_arr)
             var data = {
                 "tache":{
                     "meta_sub_project_id":parseInt(meta_sub_project_id),
