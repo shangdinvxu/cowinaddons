@@ -835,6 +835,7 @@ class Cowin_project(models.Model):
 
         revered_to_list = to_do_list
 
+
         # 默认构建依赖关系
         for i, sub_tache_entity in enumerate(revered_to_list[:-1]):
             sub_tache_entity.write({

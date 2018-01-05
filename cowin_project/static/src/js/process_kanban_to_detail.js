@@ -60,6 +60,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                 }
             }else {
                 var data = {
+
                     'sub_tache_id':self.tache_arr[parseInt(tache_index)].sub_tache_id,
                     'meta_sub_project_id':self.tache_arr[parseInt(tache_index)].meta_sub_project_id
                 }
