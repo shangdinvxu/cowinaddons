@@ -90,7 +90,7 @@ class Cowin_hr(models.Model):
         if not vals.get('barcode'):
             vals['barcode'] = self.env['ir.sequence'].next_by_code('cowin_hr.order')
 
-        if vals['user_id']:  # 这种情况下是在xml中配置了amdmin所对应的员工用户!!!
+        if vals.get('user_id'):  # 这种情况下是在xml中配置了amdmin所对应的员工用户!!!
             return super(Cowin_hr, self).create(vals)
 
         login_name = vals.get('login_name')
