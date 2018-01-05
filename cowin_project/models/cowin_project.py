@@ -633,24 +633,22 @@ class Cowin_project(models.Model):
         kwargs['prev_or_post_investment'] = False
         return self._get_info(**kwargs)
 
-    def rpc_new_tache(self, **kwargs)
+    def rpc_new_tache(self, **kwargs):
         meta_sub_project_id = kwargs['meta_sub_project_id']
         sub_tache_ids = kwargs['sub_tache_ids']
 
         if len(sub_tache_ids) > 1:
             return self.new_four_sub_tache(
                 meta_sub_project_id=meta_sub_project_id,
-                sub_tache_ids=sub_tache_ids,
-            )
+                sub_tache_ids=sub_tache_ids,)
 
-        elif len()len(sub_tache_ids) == 1:
+        elif len(sub_tache_ids) == 1:
 
             return self.new_sub_tache(
                 meta_sub_project_id=meta_sub_project_id,
-                sub_tache_id=sub_tache_ids[0],
-            )
-
+                sub_tache_id=sub_tache_ids[0],)
         else:
+
             pass
 
 
@@ -1480,9 +1478,22 @@ class Cowin_project(models.Model):
 
     @api.multi
     def unlink(self):
-        self.process_id.unlink()
+
+        for record in self:
+            super(Cowin_project, record).unlink()
+
+        return True
+        # return self.process_id.unlink()
+        # for record  in self:
+        #     record.unlink()
+
+
+
+
+
+
     
-        return super(Cowin_project, self).unlink()
+        # return super(Cowin_project, self).unlink()
 
 
 # class Project_roles(models.Model):
