@@ -85,9 +85,9 @@ class Cowin_project_subproject_investment_decision_application(models.Model):
             "public": "public",
         })
 
-        sub_project_name = self.subproject_id.meta_sub_project_id.sub_project_ids[0].name
-        round_financing_name = self.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id.name
-        foundation_name = self.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id.name
+        sub_project_name = res.subproject_id.meta_sub_project_id.sub_project_ids[0].name
+        round_financing_name = res.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id.name
+        foundation_name = res.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id.name
 
         sub_project_name = sub_project_name if sub_project_name else u''
         round_financing_name = round_financing_name if round_financing_name else u'暂无轮次'
