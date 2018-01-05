@@ -1480,6 +1480,7 @@ class Cowin_project(models.Model):
     def unlink(self):
 
         for record in self:
+            record.process_id.unlink()
             super(Cowin_project, record).unlink()
 
         return True
