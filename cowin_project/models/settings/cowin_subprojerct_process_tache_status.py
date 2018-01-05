@@ -85,43 +85,43 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
 
     # 重新设定依赖写入的问题
-    def set_depency_order_by_sub_tache(self):
-
-        # 找到主工程的环节
-
-        # if len(self) > 1:
-        #     this = self[0]
-
-        this = self[0] if len(self) > 1 else self
-
-        base_tache_entity = [tache_entity for tache_entity in this.meta_sub_project_id.project_id.process_id.get_all_tache_entities()
-                             if tache_entity.model_id.model_name == this.meta_sub_project_id.project_id._name
-                             ][0]
-
-
-        count = itertools.count(1)
-        base_sub_tache_entity = [entity for entity in this.meta_sub_project_id.sub_tache_ids \
-                                                            if entity.tache_id.parent_id == base_tache_entity][0]
-        base_sub_tache_entity.write({
-            'order': count.next(),
-        })
-
-        current_sub_tache_entity = base_sub_tache_entity
-
-        a = set()
-        while current_sub_tache_entity:
-            if current_sub_tache_entity in a:
-                break
-
-            for sub_tache_entity in this.meta_sub_project_id.sub_tache_ids:
-                if sub_tache_entity == current_sub_tache_entity:
-                    a.add(sub_tache_entity)
-                    continue
-                if sub_tache_entity.parent_id == current_sub_tache_entity:
-                    a.add(current_sub_tache_entity)
-                    sub_tache_entity.write({'order': count.next()})
-                    current_sub_tache_entity = sub_tache_entity
-
-
-
-        return 'kk'
+    # def set_depency_order_by_sub_tache(self):
+    #
+    #     # 找到主工程的环节
+    #
+    #     # if len(self) > 1:
+    #     #     this = self[0]
+    #
+    #     this = self[0] if len(self) > 1 else self
+    #
+    #     base_tache_entity = [tache_entity for tache_entity in this.meta_sub_project_id.project_id.process_id.get_all_tache_entities()
+    #                          if tache_entity.model_id.model_name == this.meta_sub_project_id.project_id._name
+    #                          ][0]
+    #
+    #
+    #     count = itertools.count(1)
+    #     base_sub_tache_entity = [entity for entity in this.meta_sub_project_id.sub_tache_ids \
+    #                                                         if entity.tache_id.parent_id == base_tache_entity][0]
+    #     base_sub_tache_entity.write({
+    #         'order': count.next(),
+    #     })
+    #
+    #     current_sub_tache_entity = base_sub_tache_entity
+    #
+    #     a = set()
+    #     while current_sub_tache_entity:
+    #         if current_sub_tache_entity in a:
+    #             break
+    #
+    #         for sub_tache_entity in this.meta_sub_project_id.sub_tache_ids:
+    #             if sub_tache_entity == current_sub_tache_entity:
+    #                 a.add(sub_tache_entity)
+    #                 continue
+    #             if sub_tache_entity.parent_id == current_sub_tache_entity:
+    #                 a.add(current_sub_tache_entity)
+    #                 sub_tache_entity.write({'order': count.next()})
+    #                 current_sub_tache_entity = sub_tache_entity
+    #
+    #
+    #
+    #     return 'kk'

@@ -618,7 +618,7 @@ class Cowin_project(models.Model):
 
 
     # 新增子环节
-    def new_sub_tache(self, **kwargs):
+    def new_sub_tache(self, length=1, **kwargs):
 
         meta_sub_project_id = kwargs['meta_sub_project_id']
         current_sub_tache_id = kwargs['sub_tache_id']
@@ -631,75 +631,126 @@ class Cowin_project(models.Model):
         # 获取当前子环节所有的兄弟环节
         brother_sub_tache_entities = meta_sub_project_entity.sub_tache_ids & current_tache_entity.tache_status_ids
 
-        brother_sub_tache_entities = brother_sub_tache_entities.sorted('index')
+        # brother_sub_tache_entities = brother_sub_tache_entities
 
+        index = len(brother_sub_tache_entities) + 1
         is_last = True
-        for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
-            if sub_tache_e.parent_id == sub_tache_entity:
-                # 如果数据已经解锁的话,向前端报错,不能有这样的情况产生
-                if sub_tache_e.is_unlocked:
-                    raise UserError(u'被依赖的环节已经接解锁!!!')
-                # index = brother_sub_tache_entities[-1].index + 1
-
 
 
         for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
-
-            if sub_tache_e.parent_id == brother_sub_tache_entities[-1]:
+            if sub_tache_e.parent_id == current_sub_tache_id:
                 is_last = False
-                # 如果数据已经解锁的话,向前端报错,不能有这样的情况产生
-                # if sub_tache_e.is_unlocked:
-                #     raise UserError(u'依赖的环节已经接解锁!!!')
-                index = brother_sub_tache_entities[-1].index + 1
+                if length == 1:
+                    # 新增子环节
 
-                # 新增子环节
-                new_sub_tache_entity = brother_sub_tache_entities.create({
-                    'name': brother_sub_tache_entities[0].name + ' ' + str(index),
-                    'meta_sub_project_id': sub_tache_entity.meta_sub_project_id.id,
-                    'tache_id': sub_tache_entity.tache_id.id,
-                    'parent_id': brother_sub_tache_entities[-1].id,
-                    'index': index,
-                })
+                    new_sub_tache_entity = brother_sub_tache_entities.create({
+                        'name': brother_sub_tache_entities[0].name + ' ' + str(index),
+                        'meta_sub_project_id': brother_sub_tache_entities[-1].meta_sub_project_id.id,
+                        'tache_id': brother_sub_tache_entities[-1].tache_id.id,
+                        'order_parent_id': brother_sub_tache_entities[-1].id,
+                        'parent_id': current_sub_tache_id[-1].id,
+                    })
 
-                sub_tache_e.write({
-                    'parent_id': new_sub_tache_entity.id,
-                })
+                    sub_tache_e.write({
+                        'order_parent_id': new_sub_tache_entity.id,
+                    })
 
-                # 还需要新增子审批实体
+                    # 还需要新增子审批实体
 
-                new_sub_tache_entity.sub_pro_approval_flow_settings_ids.create({
-                    'sub_project_tache_id': new_sub_tache_entity.id,
-                    'meta_sub_project_id': meta_sub_project_entity.id,
-                    # 理论上主环节中只有一份主审批流实体
-                    'approval_flow_settings_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.id,
-                    # 默认就指向第一个位置!!!
-                    'current_approval_flow_node_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.
+                    new_sub_tache_entity.sub_pro_approval_flow_settings_ids.create({
+                        'sub_project_tache_id': new_sub_tache_entity.id,
+                        'meta_sub_project_id': meta_sub_project_entity.id,
+                        # 理论上主环节中只有一份主审批流实体
+                        'approval_flow_settings_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.id,
+                        # 默认就指向第一个位置!!!
+                        'current_approval_flow_node_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.
                             approval_flow_setting_node_ids.sorted('order')[0].id,
-                })
+                    })
+                elif length == 4:
+                    pass
 
-
-
-
-
-
-                # 每次都需要调用这个方法
-                meta_sub_project_entity.sub_tache_ids.set_depency_order_by_sub_tache()
-
-                break
-
+                else:
+                    pass
 
         if is_last:
-            index = brother_sub_tache_entities[-1].index + 1
+            # index = brother_sub_tache_entities[-1].index + 1
             brother_sub_tache_entities.create({
-                'name': brother_sub_tache_entities[-1].name + ' ' + str(index),
-                'meta_sub_project_id': sub_tache_entity.meta_sub_project_id.id,
-                'tache_id': sub_tache_entity.tache_id.id,
-                'parent_id': sub_tache_entity.id,
-                'index': index,
-            })
+                        'name': brother_sub_tache_entities[0].name + ' ' + str(index),
+                        'meta_sub_project_id': brother_sub_tache_entities[-1].meta_sub_project_id.id,
+                        'tache_id': brother_sub_tache_entities[-1].tache_id.id,
+                        'order_parent_id': brother_sub_tache_entities[-1].id,
+                        'parent_id': brother_sub_tache_entities[-1].id,
+                    })
 
-            meta_sub_project_entity.sub_tache_ids.set_depency_order_by_sub_tache()
 
+        # is_last = True
+        # for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
+        #     if sub_tache_e.parent_id == sub_tache_entity:
+        #         # 如果数据已经解锁的话,向前端报错,不能有这样的情况产生
+        #         if sub_tache_e.is_unlocked:
+        #             raise UserError(u'被依赖的环节已经接解锁!!!')
+        #         # index = brother_sub_tache_entities[-1].index + 1
+        #
+        #
+        #
+        # for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
+        #
+        #     if sub_tache_e.order_parent_id == brother_sub_tache_entities[-1]:
+        #         is_last = False
+        #         # 如果数据已经解锁的话,向前端报错,不能有这样的情况产生
+        #         # if sub_tache_e.is_unlocked:
+        #         #     raise UserError(u'依赖的环节已经接解锁!!!')
+        #         index = brother_sub_tache_entities[-1].index + 1
+        #
+        #         # 新增子环节
+        #         new_sub_tache_entity = brother_sub_tache_entities.create({
+        #             'name': brother_sub_tache_entities[0].name + ' ' + str(index),
+        #             'meta_sub_project_id': sub_tache_entity.meta_sub_project_id.id,
+        #             # 'tache_id': sub_tache_entity.tache_id.id,
+        #             'order_parent_id': brother_sub_tache_entities[-1].id,
+        #             'parent_id': brother_sub_tache_entities[-1].id,
+        #             'index': index,
+        #         })
+        #
+        #         sub_tache_e.write({
+        #             'parent_id': new_sub_tache_entity.id,
+        #         })
+        #
+        #         # 还需要新增子审批实体
+        #
+        #         new_sub_tache_entity.sub_pro_approval_flow_settings_ids.create({
+        #             'sub_project_tache_id': new_sub_tache_entity.id,
+        #             'meta_sub_project_id': meta_sub_project_entity.id,
+        #             # 理论上主环节中只有一份主审批流实体
+        #             'approval_flow_settings_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.id,
+        #             # 默认就指向第一个位置!!!
+        #             'current_approval_flow_node_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.
+        #                     approval_flow_setting_node_ids.sorted('order')[0].id,
+        #         })
+        #
+        #
+        #
+        #
+        #
+        #
+        #         # 每次都需要调用这个方法
+        #         # meta_sub_project_entity.sub_tache_ids.set_depency_order_by_sub_tache()
+        #
+        #         break
+        #
+        #
+        # if is_last:
+        #     index = brother_sub_tache_entities[-1].index + 1
+        #     brother_sub_tache_entities.create({
+        #         'name': brother_sub_tache_entities[-1].name + ' ' + str(index),
+        #         'meta_sub_project_id': sub_tache_entity.meta_sub_project_id.id,
+        #         'tache_id': sub_tache_entity.tache_id.id,
+        #         'parent_id': sub_tache_entity.id,
+        #         'index': index,
+        #     })
+        #
+        #     # meta_sub_project_entity.sub_tache_ids.set_depency_order_by_sub_tache()
+        #
 
         return self._get_info()
 

@@ -86,6 +86,12 @@ class Meat_sub_project(models.Model):
                              if tache_entity.model_id.model_name == project_entity._name
                              ][0]
 
+        # 提前对排序依赖进行设定依赖的操作!!!
+        tmp = list(meta_sub_project.sub_tache_ids[::-1])
+        for index, sub_tache_entity in enumerate(tmp[:-1]):
+            sub_tache_entity.order_parent_id = tmp[index + 1].id
+
+
         for sub_tache_entity in meta_sub_project.sub_tache_ids:
 
             # 拿到主环节实体
@@ -125,13 +131,14 @@ class Meat_sub_project(models.Model):
 
             # 写入依赖条件
             sub_tache_entity.write({
-                'parent_id': target_sub_tache_entity.id
+                'parent_id': target_sub_tache_entity.id,
+                # 'order_parent_id': target_sub_tache_entity.id
             })
 
 
 
         # 要写入依赖的顺序 order , 目前只能在这个地方进行数据的写入
-        meta_sub_project.sub_tache_ids.set_depency_order_by_sub_tache()
+        # meta_sub_project.sub_tache_ids.set_depency_order_by_sub_tache()
 
 
         #
@@ -178,4 +185,26 @@ class Meat_sub_project(models.Model):
 
         # return self.sub_tache_ids.search([()])
 
-        return self.sub_tache_ids.search([('meta_sub_project_id', '=', self.id)], order='order,index')
+        sub_tache_entities = self.sub_tache_ids
+
+        sub_tache_ids = set([sub_tache_entity.id for  sub_tache_entity in sub_tache_entities])
+        order_parent_ids = set([sub_tache_entity.order_parent_id.id for sub_tache_entity in sub_tache_entities])
+
+        end_tache_id = (sub_tache_ids - order_parent_ids).pop()
+
+
+        end_tache_entity = sub_tache_entities.browse(end_tache_id)
+
+        res = []
+        current = end_tache_entity
+        while current:
+            res.append(current)
+            current = current.order_parent_id
+
+
+
+
+
+
+        # return self.sub_tache_ids.search([('meta_sub_project_id', '=', self.id)], order='order,index')
+        return res[::-1]

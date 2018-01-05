@@ -74,8 +74,8 @@ class Cowin_project_subproject_investment_decision_application(models.Model):
 
 
         # 发送投资决策通知!!!
-        for rel_entity in self.subproject_id.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel:
-            pass
+        # for rel_entity in self.subproject_id.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel:
+        #     pass
 
 
         partner_ids = [rel_entity.approval_role.employee_id.user_id.partner_id.id for rel_entity in self.subproject_id.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel

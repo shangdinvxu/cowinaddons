@@ -196,18 +196,20 @@ class Cowin_project_process(models.Model):
                                 'parent_id': target.id
                             })
 
-                    order_parent_name = tache_in_meta['order_parent_id']
+                    # 主环节不需要做顺序验证的操作!!!
 
-                    for target in taches_res:
-                        if target.name == order_parent_name:
-                            tache_in_pro.write({
-                                'order_parent_id': target.id,
-                            })
+                    # order_parent_name = tache_in_meta['order_parent_id']
+                    #
+                    # for target in taches_res:
+                    #     if target.name == order_parent_name:
+                    #         tache_in_pro.write({
+                    #             'order_parent_id': target.id,
+                    #         })
 
 
 
         # 对依环节进行排序操作!!!
-        taches_res[0].set_depency_order_by_sub_tache()
+        # taches_res[0].set_depency_order_by_sub_tache()
 
         return process
 

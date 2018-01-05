@@ -10,7 +10,7 @@ class Cowin_project_process_tache(models.Model):
     parent_id = fields.Many2one('cowin_project.process_tache', string=u'解锁条件')
 
     # 排序链表
-    order_parent_id = fields.Many2one(_name, string=u'排序链表')
+    # order_parent_id = fields.Many2one(_name, string=u'排序链表')
 
     tache_status_ids = fields.One2many('cowin_project.subproject_process_tache', 'tache_id', '各个子工程的环节配置信息')
 
@@ -117,40 +117,40 @@ class Cowin_project_process_tache(models.Model):
 
 
     # 重新设定依赖写入的问题
-    def set_depency_order_by_sub_tache(self):
-
-        this = self[0] if len(self) > 1 else self
-
-        base_tache_entity = [tache_entity for tache_entity in this.stage_id.process_id.get_all_tache_entities()
-                             if tache_entity.model_id.model_name == this.stage_id.process_id.project_ids._name]
-        # if not base_tache_entity:
-        #     # 这里的逻辑在于主环节的第一个还没有创建!!!
-        #     return res
-
-        base_tache_entity = base_tache_entity[0]
-
-        count = itertools.count(1)
-
-        base_tache_entity.write({
-            'order': count.next(),
-        })
-
-        current_tache_entity = base_tache_entity
-
-        a = set()
-        while current_tache_entity:
-            if current_tache_entity in a:
-                break
-
-            for tache_entity in this.stage_id.process_id.get_all_tache_entities():
-                if tache_entity == current_tache_entity:
-                    a.add(tache_entity)
-                    # 考虑到最初的一种情况!!!
-                    continue
-
-                if tache_entity.parent_id == current_tache_entity:
-                    a.add(tache_entity)
-                    tache_entity.write({'order': count.next()})
-                    print u'方法调用了多少次!!!'
-                    current_tache_entity = tache_entity
+    # def set_depency_order_by_sub_tache(self):
+    #
+    #     this = self[0] if len(self) > 1 else self
+    #
+    #     base_tache_entity = [tache_entity for tache_entity in this.stage_id.process_id.get_all_tache_entities()
+    #                          if tache_entity.model_id.model_name == this.stage_id.process_id.project_ids._name]
+    #     # if not base_tache_entity:
+    #     #     # 这里的逻辑在于主环节的第一个还没有创建!!!
+    #     #     return res
+    #
+    #     base_tache_entity = base_tache_entity[0]
+    #
+    #     count = itertools.count(1)
+    #
+    #     base_tache_entity.write({
+    #         'order': count.next(),
+    #     })
+    #
+    #     current_tache_entity = base_tache_entity
+    #
+    #     a = set()
+    #     while current_tache_entity:
+    #         if current_tache_entity in a:
+    #             break
+    #
+    #         for tache_entity in this.stage_id.process_id.get_all_tache_entities():
+    #             if tache_entity == current_tache_entity:
+    #                 a.add(tache_entity)
+    #                 # 考虑到最初的一种情况!!!
+    #                 continue
+    #
+    #             if tache_entity.parent_id == current_tache_entity:
+    #                 a.add(tache_entity)
+    #                 tache_entity.write({'order': count.next()})
+    #                 print u'方法调用了多少次!!!'
+    #                 current_tache_entity = tache_entity
 
