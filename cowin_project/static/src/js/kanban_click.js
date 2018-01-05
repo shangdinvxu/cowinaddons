@@ -44,7 +44,7 @@ KanbanRecord.include({
                 }
                 var action = {
                     type: 'ir.actions.client',
-                    name: '项目流程',
+                    name: '项目流程详细',
                     tag: 'process_kanban_to_detail',
                     // id: this.record.id.raw_value,
                     active_id:this.record.id.raw_value,
