@@ -357,9 +357,10 @@ class Cowin_project(models.Model):
                     tache_info = {}
 
                     brother_sub_tache_entities = meta_sub_project_entity.sub_tache_ids & sub_tache_entity.tache_id.tache_status_ids
-                    once_or_more = False
+
                     if len(brother_sub_tache_entities) == 1:
                         once_or_more = brother_sub_tache_entities.once_or_more
+                        tache_info['once_or_more'] = once_or_more
 
                     elif len(brother_sub_tache_entities) > 1 and sub_tache_entity == brother_sub_tache_entities[0]:
                         if brother_sub_tache_entities[-1].sub_pro_approval_flow_settings_ids.is_success():
@@ -633,8 +634,8 @@ class Cowin_project(models.Model):
         return self._get_info(**kwargs)
 
 
-    # 新增子环节
-    def new_sub_tache(self, length=1, **kwargs):
+    # 新增(一个)子环节
+    def new_sub_tache(self, **kwargs):
 
         meta_sub_project_id = kwargs['meta_sub_project_id']
         current_sub_tache_id = kwargs['sub_tache_id']
@@ -655,43 +656,25 @@ class Cowin_project(models.Model):
 
         for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
 
-            if sub_tache_e.parent_id == sub_tache_entity:
+            if sub_tache_e.order_parent_id == sub_tache_entity:
                 is_last = False
-                if length == 1:
                     # 新增子环节
 
-                    new_sub_tache_entity = brother_sub_tache_entities.create({
-                        'name': brother_sub_tache_entities[0].name + ' ' + str(index),
-                        'meta_sub_project_id': brother_sub_tache_entities[-1].meta_sub_project_id.id,
-                        'tache_id': brother_sub_tache_entities[-1].tache_id.id,
-                        'order_parent_id': brother_sub_tache_entities[-1].id,
-                        'parent_id': brother_sub_tache_entities[0].id,
-                        'is_unlocked': True,
-                    })
+                new_sub_tache_entity = brother_sub_tache_entities.create({
+                    'name': brother_sub_tache_entities[0].name + ' ' + str(index),
+                    'meta_sub_project_id': brother_sub_tache_entities[-1].meta_sub_project_id.id,
+                    'tache_id': brother_sub_tache_entities[-1].tache_id.id,
+                    'order_parent_id': brother_sub_tache_entities[-1].id,
+                    'parent_id': brother_sub_tache_entities[0].id,
+                    'is_unlocked': True,
+                })
 
-                    sub_tache_e.write({
-                        'order_parent_id': new_sub_tache_entity.id,
-                    })
-                    #
-                    # # 还需要新增子审批实体
-                    #
-                    # new_sub_tache_entity.sub_pro_approval_flow_settings_ids.create({
-                    #     'sub_project_tache_id': new_sub_tache_entity.id,
-                    #     'meta_sub_project_id': meta_sub_project_entity.id,
-                    #     # 理论上主环节中只有一份主审批流实体
-                    #     'approval_flow_settings_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.id,
-                    #     # 默认就指向第一个位置!!!
-                    #     'current_approval_flow_node_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.
-                    #         approval_flow_setting_node_ids.sorted('order')[0].id,
-                    # })
-                elif length == 4:
-                    pass
-
-                else:
-                    pass
+                sub_tache_e.write({
+                    'order_parent_id': new_sub_tache_entity.id,
+                })
 
 
-                break
+                # break
 
         if is_last:
             # index = brother_sub_tache_entities[-1].index + 1
@@ -774,6 +757,93 @@ class Cowin_project(models.Model):
         #
         #     # meta_sub_project_entity.sub_tache_ids.set_depency_order_by_sub_tache()
         #
+
+
+    def new_four_sub_tache(self, **kwargs):
+        meta_sub_project_id = kwargs['meta_sub_project_id']
+        sub_tache_ids = kwargs['sub_tache_ids']
+
+        meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
+
+        to_do_list = []
+
+
+        # 拿出当前最后的一个依赖的子环节实体
+        current_last_sub_tache_entity = None
+
+
+        for current_sub_tache_id in sub_tache_ids:
+
+            sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(current_sub_tache_id)
+            current_tache_entity = sub_tache_entity.tache_id
+
+
+            # 获取当前子环节所有的兄弟环节
+            brother_sub_tache_entities = meta_sub_project_entity.sub_tache_ids & current_tache_entity.tache_status_ids
+
+            # 拿出最后的一个依赖
+            if current_sub_tache_id == sub_tache_ids[-1]:
+                current_last_sub_tache_entity = brother_sub_tache_entities[-1]
+            # brother_sub_tache_entities = brother_sub_tache_entities
+
+            index = len(brother_sub_tache_entities) + 1
+
+            new_sub_tache_entity = brother_sub_tache_entities.create({
+                'name': brother_sub_tache_entities[0].name + ' ' + str(index),
+                'meta_sub_project_id': brother_sub_tache_entities[-1].meta_sub_project_id.id,
+                'tache_id': brother_sub_tache_entities[-1].tache_id.id,
+                # 'order_parent_id': brother_sub_tache_entities[-1].id,
+                # 'parent_id': brother_sub_tache_entities[0].id,
+                # 'is_unlocked': True,
+            })
+
+            # sub_tache_e.write({
+            #     'order_parent_id': new_sub_tache_entity.id,
+            # })
+
+            to_do_list.append(new_sub_tache_entity)
+
+
+        # 默认情况下第一个需要解锁
+        to_do_list[0].write({
+            'is_unlocked': True,
+        })
+
+        revered_to_list = to_do_list[::-1]
+
+        # 默认构建依赖关系
+        for i, sub_tache_entity in enumerate(revered_to_list):
+            sub_tache_entity.write({
+                'parent_id': revered_to_list[i+1].id,
+                'order_parent_id': revered_to_list[i+1].id,
+            })
+
+
+
+        to_do_list[0].write({
+            'parent_id': current_last_sub_tache_entity.id,
+            'order_parent_id': current_last_sub_tache_entity.id,
+        })
+
+
+
+
+
+
+        for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
+
+            if sub_tache_e.order_parent_id == current_last_sub_tache_entity:
+                sub_tache_e.write({
+                    'order_parent_id': to_do_list[-1].id,
+                })
+
+
+
+
+
+        return self.rpc_get_info(meta_project_id=meta_sub_project_id)
+
+
 
 
 
