@@ -153,13 +153,27 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
                 },
                 'prev_or_post_investment': true,
             };
-            return new Model("cowin_project.cowin_project")
+            if(approval_result==false){
+                Dialog.alert(this, _t("不同意将终止本次项目投资，确定终止?"), {
+                    confirm_callback: function() {
+                        return new Model("cowin_project.cowin_project")
+                            .call("rpc_save_approval_flow_info", [parseInt(self.id)],data)
+                            .then(function (result) {
+                                console.log(result);
+                                $('#process_data').html('');
+                                $('#process_data').append(QWeb.render('process_info', {result: result}))
+                            })
+                    },
+                });
+            }else {
+                return new Model("cowin_project.cowin_project")
                     .call("rpc_save_approval_flow_info", [parseInt(self.id)],data)
                     .then(function (result) {
                         console.log(result);
                         $('#process_data').html('');
                         $('#process_data').append(QWeb.render('process_info', {result: result}))
                     })
+            }
         },
         //到审核页面
         to_approval_func:function (e) {
