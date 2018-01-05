@@ -59,6 +59,12 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                         .then(function (result) {
                             result.no_initate = self.no_initate
                             console.log(result);
+                            self.tache_arr=[];
+                            result.process.forEach(function (value) {
+                                value.tache_ids.forEach(function (model) {
+                                    self.tache_arr.push(model)
+                                });
+                            });
                             $('.process_data_main_wrap').html('');
                             $('.process_data_main_wrap').append(QWeb.render('process_info_right_tmpl', {result: result}));
                         })
