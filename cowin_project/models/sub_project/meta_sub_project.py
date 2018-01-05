@@ -58,6 +58,7 @@ class Meat_sub_project(models.Model):
                 'name': tache_entity.name,
                 'tache_id': tache_entity.id,
                 'meta_sub_project_id': meta_sub_project.id,
+                'once_or_more': tache_entity.once_or_more,
             })
 
 

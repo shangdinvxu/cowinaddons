@@ -29,7 +29,7 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
     res_id = fields.Integer(string=u'该环节对应该实例另一个字段model_id中的一个实例')
     view_or_launch = fields.Boolean(string=u'发起或者创建', default=False)
 
-
+    once_or_more = fields.Boolean(string=u'是否发起多次', default=False)
     sub_pro_approval_flow_settings_ids = fields.One2many('cowin_project.sub_approval_flow_settings', 'sub_project_tache_id', string=u'子审批实体')
 
     order = fields.Integer()

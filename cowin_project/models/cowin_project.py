@@ -366,7 +366,7 @@ class Cowin_project(models.Model):
                     # tmp_tache['is_unlocked'] = tache.is_unlocked
                     tache_info['description'] = sub_tache_entity.tache_id.description
                     tache_info['state'] = sub_tache_entity.tache_id.state
-                    tache_info['once_or_more'] = sub_tache_entity.tache_id.once_or_more
+                    tache_info['once_or_more'] = sub_tache_entity.once_or_more
                     tache_info['view_or_launch'] = sub_tache_entity.view_or_launch
                     tache_info['is_launch_again'] = sub_tache_entity.is_launch_again
                     tache_info['res_id'] = sub_tache_entity.res_id
@@ -638,7 +638,8 @@ class Cowin_project(models.Model):
 
 
         for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
-            if sub_tache_e.parent_id == current_sub_tache_id:
+
+            if sub_tache_e.parent_id == sub_tache_entity:
                 is_last = False
                 if length == 1:
                     # 新增子环节
@@ -648,7 +649,8 @@ class Cowin_project(models.Model):
                         'meta_sub_project_id': brother_sub_tache_entities[-1].meta_sub_project_id.id,
                         'tache_id': brother_sub_tache_entities[-1].tache_id.id,
                         'order_parent_id': brother_sub_tache_entities[-1].id,
-                        'parent_id': current_sub_tache_id[-1].id,
+                        'parent_id': brother_sub_tache_entities[0].id,
+                        'is_unlocked': True,
                     })
 
                     sub_tache_e.write({
@@ -672,6 +674,9 @@ class Cowin_project(models.Model):
                 else:
                     pass
 
+
+                break
+
         if is_last:
             # index = brother_sub_tache_entities[-1].index + 1
             brother_sub_tache_entities.create({
@@ -680,9 +685,11 @@ class Cowin_project(models.Model):
                         'tache_id': brother_sub_tache_entities[-1].tache_id.id,
                         'order_parent_id': brother_sub_tache_entities[-1].id,
                         'parent_id': brother_sub_tache_entities[-1].id,
+                        'is_unlocked': True,
                     })
 
-
+        return self.rpc_get_info(meta_project_id=meta_sub_project_id)
+        # return self._get_info()
         # is_last = True
         # for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
         #     if sub_tache_e.parent_id == sub_tache_entity:
@@ -752,7 +759,7 @@ class Cowin_project(models.Model):
         #     # meta_sub_project_entity.sub_tache_ids.set_depency_order_by_sub_tache()
         #
 
-        return self._get_info()
+
 
 
 
