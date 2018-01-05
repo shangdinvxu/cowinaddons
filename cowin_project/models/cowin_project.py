@@ -656,18 +656,18 @@ class Cowin_project(models.Model):
                     sub_tache_e.write({
                         'order_parent_id': new_sub_tache_entity.id,
                     })
-
-                    # 还需要新增子审批实体
-
-                    new_sub_tache_entity.sub_pro_approval_flow_settings_ids.create({
-                        'sub_project_tache_id': new_sub_tache_entity.id,
-                        'meta_sub_project_id': meta_sub_project_entity.id,
-                        # 理论上主环节中只有一份主审批流实体
-                        'approval_flow_settings_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.id,
-                        # 默认就指向第一个位置!!!
-                        'current_approval_flow_node_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.
-                            approval_flow_setting_node_ids.sorted('order')[0].id,
-                    })
+                    #
+                    # # 还需要新增子审批实体
+                    #
+                    # new_sub_tache_entity.sub_pro_approval_flow_settings_ids.create({
+                    #     'sub_project_tache_id': new_sub_tache_entity.id,
+                    #     'meta_sub_project_id': meta_sub_project_entity.id,
+                    #     # 理论上主环节中只有一份主审批流实体
+                    #     'approval_flow_settings_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.id,
+                    #     # 默认就指向第一个位置!!!
+                    #     'current_approval_flow_node_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.
+                    #         approval_flow_setting_node_ids.sorted('order')[0].id,
+                    # })
                 elif length == 4:
                     pass
 
@@ -1366,7 +1366,11 @@ class Cowin_project(models.Model):
         return {'operation_records': filter(lambda x: x['body'], res_entity)}
 
 
-
+    @api.multi
+    def unlink(self):
+        self.process_id.unlink()
+    
+        return super(Cowin_project, self).unlink()
 
 
 # class Project_roles(models.Model):

@@ -35,8 +35,8 @@ class Cowin_settings_process(models.Model):
 
         # 需要新的排序
         # asc_by_show_orders = sorted(self.stage_ids, key=lambda stage: stage.show_order)
-        asc_by_show_orders = self.env['cowin_settings.process_stage'].search([('process_id', '=', self.id)],
-                                                                             order='show_order asc')
+        # asc_by_show_orders = self.env['cowin_settings.process_stage'].search([('process_id', '=', self.id)],
+        #                                                                      order='show_order asc')
 
         asc_by_show_orders = self.stage_ids.sorted('show_order')
 

@@ -33,6 +33,7 @@
         'security/sub_project/ir.model.access.csv',
         'security/sub_project/prev_investment_management/ir.model.access.csv',
         'security/sub_project/post_investment_management/ir.model.access.csv',
+        'views/init_channel.xml',
         'views/views.xml',
         'views/templates.xml',
 

@@ -65,33 +65,29 @@ class Meat_sub_project(models.Model):
 
 
 
-
-
-
-
-            # 2 创建子流程配置实体
-            res = meta_sub_project.sub_approval_flow_settings_ids.create({
-                'sub_project_tache_id': sub_tache_entity.id,
-                'meta_sub_project_id': meta_sub_project.id,
-                # 理论上主环节中只有一份主审批流实体
-                'approval_flow_settings_id': tache_entity.approval_flow_settings_ids.id,
-                # 默认就指向第一个位置!!!
-                'current_approval_flow_node_id': tache_entity.approval_flow_settings_ids.
-                        approval_flow_setting_node_ids.sorted('order')[0].id,
-            })
-
-            # 每个子审批节点创建一条通道
-            channel_entity = self.env['mail.channel'].create({
-                'name': u'子审批通道:%s' %  res.id,
-                # 'channel_partner_ids': [(6, 0, partner_ids)],
-                "public": "public",
-                # 'channel_type': 'chat',
-            })
-
-            # 写入通道数据
-            res.write({
-                'channel_id': channel_entity.id,
-            })
+            # # 2 创建子流程配置实体
+            # res = meta_sub_project.sub_approval_flow_settings_ids.create({
+            #     'sub_project_tache_id': sub_tache_entity.id,
+            #     'meta_sub_project_id': meta_sub_project.id,
+            #     # 理论上主环节中只有一份主审批流实体
+            #     'approval_flow_settings_id': tache_entity.approval_flow_settings_ids.id,
+            #     # 默认就指向第一个位置!!!
+            #     'current_approval_flow_node_id': tache_entity.approval_flow_settings_ids.
+            #             approval_flow_setting_node_ids.sorted('order')[0].id,
+            # })
+            #
+            # # 每个子审批节点创建一条通道
+            # channel_entity = self.env['mail.channel'].create({
+            #     'name': u'子审批通道:%s' %  res.id,
+            #     # 'channel_partner_ids': [(6, 0, partner_ids)],
+            #     "public": "public",
+            #     # 'channel_type': 'chat',
+            # })
+            #
+            # # 写入通道数据
+            # res.write({
+            #     'channel_id': channel_entity.id,
+            # })
 
         # 子环节与子审批流之间构建一对一的联系 依赖, 方便后面的数据做处理
         # for sub_tache_entity in meta_sub_project.sub_tache_ids:

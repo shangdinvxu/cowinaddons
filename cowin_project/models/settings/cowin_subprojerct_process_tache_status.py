@@ -39,6 +39,41 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
     is_launch_again = fields.Boolean(string=u'是否重新发起', default=False)
 
+
+
+    @api.model
+    def create(self, vals):
+        # 在子审批流中创建子审批审批实体和自审批通道!!!
+        res = super(Cowin_subprojerct_prcess_tache_status, self).create(vals)
+
+        # 1 创建子流程配置实体
+        res2 = res.sub_pro_approval_flow_settings_ids.create({
+            'sub_project_tache_id': res.id,
+            'meta_sub_project_id': res.meta_sub_project_id.id,
+            # 理论上主环节中只有一份主审批流实体
+            'approval_flow_settings_id': res.tache_id.approval_flow_settings_ids.id,
+            # 默认就指向第一个位置!!!
+            'current_approval_flow_node_id': res.tache_id.approval_flow_settings_ids.
+                approval_flow_setting_node_ids.sorted('order')[0].id,
+        })
+
+        # # 每个子审批节点创建一条通道
+        # channel_entity = self.env['mail.channel'].create({
+        #     'name': u'子审批通道:%s' % res2.id,
+        #     "public": "public",
+        # })
+        #
+        # # 写入通道数据
+        # res2.write({
+        #     'channel_id': channel_entity.id,
+        # })
+
+        return res
+
+
+
+
+
     def get_tache(self):
         return self.tache_id
 
@@ -57,30 +92,30 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
 
 
-    def check_or_not_next_sub_tache(self):
-        if self.sub_pro_approval_flow_settings_ids.update_final_approval_flow_settings_status_and_node():
-            # 当前子审批实体状态设置为4
-            # self.sub_pro_approval_flow_settings_ids.status = 4
-            # self.sub_pro_approval_flow_settings_ids.write({
-            #         'status': 4,
-            #     })
-
-            # self.sub_pro_approval_flow_settings_ids.update_final_approval_flow_settings_status_and_node()
-            for sub_tache_entity in self.meta_sub_project_id.sub_tache_ids:
-                # 这个操作只会去触发下一个子环节的解锁,如果解锁则不需要再次解锁
-                if sub_tache_entity.parent_id == self and not sub_tache_entity.is_unlocked:
-                                    sub_tache_entity.write({
-                                        'is_unlocked': True,
-                                        })
-
-                                    # 触发下面的所有的依赖于该环节的解锁!!!
-                                    # break
-
-        else:
-            # 调整审核状态
-
-            # 更新子审批实体的状态
-            self.sub_pro_approval_flow_settings_ids.update_approval_flow_settings_status_and_node()
+    # def check_or_not_next_sub_tache(self):
+    #     if self.sub_pro_approval_flow_settings_ids.update_final_approval_flow_settings_status_and_node():
+    #         # 当前子审批实体状态设置为4
+    #         # self.sub_pro_approval_flow_settings_ids.status = 4
+    #         # self.sub_pro_approval_flow_settings_ids.write({
+    #         #         'status': 4,
+    #         #     })
+    #
+    #         # self.sub_pro_approval_flow_settings_ids.update_final_approval_flow_settings_status_and_node()
+    #         for sub_tache_entity in self.meta_sub_project_id.sub_tache_ids:
+    #             # 这个操作只会去触发下一个子环节的解锁,如果解锁则不需要再次解锁
+    #             if sub_tache_entity.parent_id == self and not sub_tache_entity.is_unlocked:
+    #                                 sub_tache_entity.write({
+    #                                     'is_unlocked': True,
+    #                                     })
+    #
+    #                                 # 触发下面的所有的依赖于该环节的解锁!!!
+    #                                 # break
+    #
+    #     else:
+    #         # 调整审核状态
+    #
+    #         # 更新子审批实体的状态
+    #         self.sub_pro_approval_flow_settings_ids.update_approval_flow_settings_status_and_node()
 
 
 

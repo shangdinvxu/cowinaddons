@@ -26,7 +26,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
     prev_status = fields.Integer(default=1)
 
     # 通道使用,发送通知消息
-    channel_id = fields.Many2one('mail.channel', string=u'发送消息通知的通道', ondelete="cascade")
+    # channel_id = fields.Many2one('mail.channel', string=u'发送消息通知的通道')
 
     action = {(1, 2): u'发起', (2, 2): u'审核', (2, 3): u'暂缓', (1, 4): u'同意', (2, 4): u'同意', (2, 5): u'拒绝'}
 
@@ -55,6 +55,18 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         message_infos = message_entities.mapped(lambda m: html2plaintext(m.body))
 
         return message_infos
+
+    @api.multi
+    def unlink(self):
+
+        # self.channel_id.unlink()
+        # print(u'子通道是否删除!!!')
+        
+
+        return super(Cowin_sub_project_approval_flow_settings, self).unlink()
+
+
+
 
 
 
@@ -145,12 +157,18 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         self.current_approval_flow_node_id = prev
 
-        self.channel_id.write({
-            'channel_partner_ids': [(6, 0, partner_ids)],
+        channel_entity = self.env.ref('cowin_project.init_project_mail_channel')
+
+        channel_entity.write({
+            'channel_partner_ids': [(4, partner_id) for partner_id in partner_ids],
         })
 
+        # self.channel_id.write({
+        #     'channel_partner_ids': [(6, 0, partner_ids)],
+        # })
+
         # 指定主题为审批消息
-        self.channel_id.message_post(info, message_type='comment', subtype='mail.mt_comment')
+        channel_entity.message_post(info, message_type='comment', subtype='mail.mt_comment')
 
     # 改变状态的操作!!!
     def process_action(self):
