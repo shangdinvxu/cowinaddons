@@ -184,7 +184,7 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
             sub_approval_flow_settings_id = $(target).parents('.process_data_item_line').attr('data-sub-approval-id');
             sub_tache_id = $(target).parents('.process_data_item_line').attr('data-sub-tache-id');
             approval_tache_index = $(target).parents('.process_data_item_line').attr('tache-index');
-            // console.log(self.tache_arr)
+            console.log(self.tache_arr)
             var data = {
                 "tache":{
                     "meta_sub_project_id":parseInt(meta_sub_project_id),
