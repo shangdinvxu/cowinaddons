@@ -633,6 +633,32 @@ class Cowin_project(models.Model):
         kwargs['prev_or_post_investment'] = False
         return self._get_info(**kwargs)
 
+    def rpc_new_tache(self, **kwargs)
+        meta_sub_project_id = kwargs['meta_sub_project_id']
+        sub_tache_ids = kwargs['sub_tache_ids']
+
+        if len(sub_tache_ids) > 1:
+            return self.new_four_sub_tache(
+                meta_sub_project_id=meta_sub_project_id,
+                sub_tache_ids=sub_tache_ids,
+            )
+
+        elif len()len(sub_tache_ids) == 1:
+
+            return self.new_sub_tache(
+                meta_sub_project_id=meta_sub_project_id,
+                sub_tache_id=sub_tache_ids[0],
+            )
+
+        else:
+            pass
+
+
+
+
+
+
+
 
     # 新增(一个)子环节
     def new_sub_tache(self, **kwargs):
@@ -743,7 +769,7 @@ class Cowin_project(models.Model):
         #         # meta_sub_project_entity.sub_tache_ids.set_depency_order_by_sub_tache()
         #
         #         break
-        #
+
         #
         # if is_last:
         #     index = brother_sub_tache_entities[-1].index + 1
