@@ -680,7 +680,8 @@ class Cowin_project(models.Model):
 
         for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
 
-            if sub_tache_e.order_parent_id == sub_tache_entity:
+            if sub_tache_e.parent_id == sub_tache_entity:
+
                 is_last = False
                     # 新增子环节
 
@@ -697,8 +698,8 @@ class Cowin_project(models.Model):
                     'order_parent_id': new_sub_tache_entity.id,
                 })
 
+                break
 
-                # break
 
         if is_last:
             # index = brother_sub_tache_entities[-1].index + 1
@@ -833,7 +834,14 @@ class Cowin_project(models.Model):
             'is_unlocked': True,
         })
 
-        revered_to_list = to_do_list
+        # 默认情况下,把第新增条件隐藏
+        to_do_list[-1].write({
+            'once_or_more': False,
+        })
+
+        # 列表逆序,数据写入依赖条件
+        revered_to_list = to_do_list[::-1]
+
 
 
         # 默认构建依赖关系
@@ -852,10 +860,12 @@ class Cowin_project(models.Model):
 
 
 
+        remain_tachetities = set(meta_sub_project_entity.sub_tache_ids) - set(to_do_list)
 
 
 
-        for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
+
+        for sub_tache_e in remain_tachetities:
 
             if sub_tache_e.order_parent_id == current_last_sub_tache_entity:
                 sub_tache_e.write({
@@ -888,46 +898,6 @@ class Cowin_project(models.Model):
         return sub_approval_flow_settings_entity.get_all_sub_aproval_flow_settings_records()
 
 
-    # 保存发起人信息
-    # 触发审批节点
-    def rpc_save__launch_edit_operation_records(self, **kwargs):
-        tache_info = kwargs.get('tache')
-        meta_sub_project_id = tache_info['meta_sub_project_id']
-        sub_approval_flow_settings_id = tache_info['sub_approval_flow_settings_id']
-        meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
-        sub_approval_flow_settings_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(
-            sub_approval_flow_settings_id)
-        prev_or_post_investment = kwargs['prev_or_post_investment']
-
-        sub_approval_flow_settings_entity.update_current_approval_flow_node()
-
-        # if sub_approval_flow_settings_entity.is_success():
-        #     # 触发下一个环节
-        #     current_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(tache_info['sub_tache_id'])
-        #     for sub_tache_entity in meta_sub_project_entity.get_sub_taches():
-        #         if sub_tache_entity.parent_id == current_sub_tache_entity:
-        #             sub_tache_entity.write({
-        #                 'is_unlocked': True,
-        #                 # 'status': 2,
-        #             })
-        #
-        #
-        #             # 在触发下一个子环节过程中,还需要触发下一个子环节所对应的子审批节点信息
-        #
-        #             sub_approval_flow_settings_entity_next = sub_tache_entity.sub_pro_approval_flow_settings_ids
-        #
-        #             sub_approval_flow_settings_entity_next.write({
-        #                 'status': 1,
-        #             })
-        #
-        #             break
-
-
-
-
-
-
-        return self._get_info(meta_project_id=meta_sub_project_id, prev_or_post_investment=prev_or_post_investment)
 
 
 
@@ -1046,16 +1016,23 @@ class Cowin_project(models.Model):
 
     # 保存权限配置数据
     def rpc_save_permission_configuration(self, **kwargs):
+
         meta_sub_project_infos = kwargs.get('meta_sub_project_infos')
 
 
         for meta_sub_project_info in meta_sub_project_infos:
             meta_sub_project_info[u'is_current_exists'] = False  # 我们之前的数据在前端复制数据的时候,会提前把数据写入,可能有些数据我们并不需要在之后的操作
 
+        # meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
+        # self._save_permission_configuration(meta_sub_project_entity, meta_sub_project_info)
+
+
+
         for meta_sub_project_entity in self.meta_sub_project_ids:
 
             for meta_sub_project_info in meta_sub_project_infos:
-                if meta_sub_project_info['meta_sub_pro_id'] == meta_sub_project_entity.id:
+                if meta_sub_project_info[u'meta_sub_pro_id'] == meta_sub_project_entity.id:
+
                     self._save_permission_configuration(meta_sub_project_entity, meta_sub_project_info)
                     meta_sub_project_info[u'is_current_exists'] = True
                     break
@@ -1064,13 +1041,15 @@ class Cowin_project(models.Model):
         # 删除可能之前删除的子工程配置的数据
         for meta_sub_project_entity in self.meta_sub_project_ids:
             for meta_sub_project_info in meta_sub_project_infos:
-                if meta_sub_project_info['meta_sub_pro_id'] == meta_sub_project_entity.id:
-                    if meta_sub_project_info['is_current_exists'] == False:
+                if meta_sub_project_info[u'meta_sub_pro_id'] == meta_sub_project_entity.id:
+                    if meta_sub_project_info[u'is_current_exists'] == False:
                         # self._save_permission_configuration(meta_sub_project_entity, meta_sub_project_info)
                         meta_sub_project_entity.unlink()
                         break
-
+        #
         return self.rpc_get_permission_configuration()
+
+
 
     def _save_permission_configuration(self, meta_sub_project_entity, meta_sub_project_info):
 
@@ -1078,8 +1057,9 @@ class Cowin_project(models.Model):
 
         current_rel_info_ids = set((rel.approval_role_id.id, rel.employee_id.id) for rel in current_rel_entities)
         target_rel_info_ids = set((approval_role_info['approval_role_id'], employee_info['employee_id'])
-                                  for approval_role_info in meta_sub_project_info['approval_role_infos']
-                                  for employee_info in approval_role_info['employee_infos'])
+                                     for approval_role_info in meta_sub_project_info['approval_role_infos']
+                                     for employee_info in approval_role_info['employee_infos'])
+
 
         todoremove_ids = current_rel_info_ids - target_rel_info_ids
         todoadd_ids = target_rel_info_ids - current_rel_info_ids
@@ -1130,10 +1110,12 @@ class Cowin_project(models.Model):
 
         return res
 
+
     def rpc_copy_permission_configuration(self, **kwargs):
 
         current_meta_sub_pro_id = kwargs['current_meta_sub_pro_id']
         copy_meta_sub_pro_id = kwargs['copy_meta_sub_pro_id']
+
 
         # current_meta_sub_pro_entity = self.meta_sub_project_ids.browse(current_meta_sub_pro_id)
         copy_meta_sub_pro_entity = self.meta_sub_project_ids.browse(copy_meta_sub_pro_id)
@@ -1146,7 +1128,8 @@ class Cowin_project(models.Model):
         for c_rel_entity in copy_rel_entities:
             t = c_rel_entity.create({
                 'meta_sub_project_id': current_meta_sub_pro_id,
-                'approval_role_id': c_rel_entity.approval_role_id.id,
+                'approval_role_id':c_rel_entity.approval_role_id.id,
+
                 'employee_id': c_rel_entity.employee_id.id,
             })
 
@@ -1161,9 +1144,12 @@ class Cowin_project(models.Model):
             #
             # res.append(t[0])
 
-        # return {'current_meta_sub_pro_copy': res}
+
+
+
 
         result = self.rpc_get_permission_configuration()
+        # 前端数据的需要的临时的操作!!!
 
         for i in res:
             i.unlink()
