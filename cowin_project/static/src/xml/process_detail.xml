@@ -97,6 +97,7 @@
                     <span>【
                         <t t-if="obj.approval_status.status_id==-1">
                             同意
+
                         </t>
                         <t t-esc="obj.approval_status.status_name"/>
                         】
@@ -173,8 +174,11 @@
             <div class="process_data_item_line header_line" t-att-meta_sub_pro_id="item.meta_sub_pro_id">
                 <span class="fa fa-user"></span>
                 <span><t t-esc="item.foundation_for_rund_financing_info"/> </span>
-                <t t-if="result.is_admin==true">
+                <t t-if="edit==true">
                     <span class="copy_this_setting">复制已有配置</span>
+                </t>
+                <t t-if="result.is_admin==true">
+                    <span class="manage_team_edit">编辑</span>
                 </t>
             </div>
             <div class="detail_lines_wrap" t-att-meta_sub_pro_id="item.meta_sub_pro_id">
@@ -186,9 +190,10 @@
                             <t t-call="names_tmpl">
                                 <t t-set="is_admin" t-value="result.is_admin"></t>
                                 <t t-set="result" t-value="obj.employee_infos"></t>
+                                <t t-set="edit" t-value="edit"></t>
                             </t>
 
-                            <t t-if="result.is_admin==true">
+                            <t t-if="edit==true">
                                 <span class="add_new_role">新增</span>
                             </t>
                         </div>
@@ -197,10 +202,10 @@
             </div>
         </t>
 
-        <t t-if="result.is_admin==true">
+        <t t-if="edit==true">
             <div class="btns_wrap">
                 <div class="confirm_project_team_setting">保存</div>
-                <!--<div class="cancel_project_team_setting">取消</div>-->
+                <div class="cancel_project_team_setting">取消</div>
             </div>
         </t>
 
@@ -232,12 +237,26 @@
             </div>
         </div>
     </t>
+
+    <!--项目管理团队编辑页面-->
+    <t t-name="manage_team_edit_page">
+        <div class="manage_team_edit_wrap">
+            <div class="modal-backdrop  in"></div>
+            <div class="add_new_content">
+                <t t-call="project_manage_team_tmp">
+                    <t t-set="is_admin" t-value="result.is_admin"></t>
+                    <t t-set="result" t-value="result"></t>
+                </t>
+            </div>
+        </div>
+    </t>
+
     <!--内部-->
     <t t-name="names_tmpl">
         <t t-foreach="result" t-as="item">
             <span class="member_name" t-att-employee_id="item.employee_id">
                 <t t-esc="item.name"/>
-                <t t-if="is_admin==true">
+                <t t-if="edit==true">
                     <span class="fa fa-close"></span>
                 </t>
             </span>

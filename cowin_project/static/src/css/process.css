@@ -497,3 +497,7 @@
     float: right;
     width: 95%;
 }
+
+.manage_team_edit_wrap{
+    /*display: none;*/
+}
