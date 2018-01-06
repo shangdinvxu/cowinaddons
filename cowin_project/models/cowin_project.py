@@ -363,6 +363,7 @@ class Cowin_project(models.Model):
                         tache_info['once_or_more'] = once_or_more
 
                     elif len(brother_sub_tache_entities) > 1 and sub_tache_entity == brother_sub_tache_entities[0]:
+                        # 判断最后的新增的审批节点是否通过!!!
                         if brother_sub_tache_entities[-1].sub_pro_approval_flow_settings_ids.is_success():
                             once_or_more = brother_sub_tache_entities[0].once_or_more
 
@@ -680,7 +681,7 @@ class Cowin_project(models.Model):
 
         for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
 
-            if sub_tache_e.order_parent_id == sub_tache_entity:
+            if sub_tache_e.parent_id == sub_tache_entity:
                 is_last = False
                     # 新增子环节
 
@@ -698,7 +699,7 @@ class Cowin_project(models.Model):
                 })
 
 
-                # break
+                break
 
         if is_last:
             # index = brother_sub_tache_entities[-1].index + 1
@@ -833,7 +834,13 @@ class Cowin_project(models.Model):
             'is_unlocked': True,
         })
 
-        revered_to_list = to_do_list
+        # 默认情况下,把第新增条件隐藏
+        to_do_list[-1].write({
+            'once_or_more': False,
+        })
+
+        # 列表逆序,数据写入依赖条件
+        revered_to_list = to_do_list[::-1]
 
         # 默认构建依赖关系
         for i, sub_tache_entity in enumerate(revered_to_list[:-1]):
@@ -851,15 +858,19 @@ class Cowin_project(models.Model):
 
 
 
+        remain_tachetities = set(meta_sub_project_entity.sub_tache_ids) - set(to_do_list)
 
 
 
-        for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
+
+        for sub_tache_e in remain_tachetities:
 
             if sub_tache_e.order_parent_id == current_last_sub_tache_entity:
                 sub_tache_e.write({
                     'order_parent_id': to_do_list[-1].id,
                 })
+
+
 
 
 
@@ -889,44 +900,44 @@ class Cowin_project(models.Model):
 
     # 保存发起人信息
     # 触发审批节点
-    def rpc_save__launch_edit_operation_records(self, **kwargs):
-        tache_info = kwargs.get('tache')
-        meta_sub_project_id = tache_info['meta_sub_project_id']
-        sub_approval_flow_settings_id = tache_info['sub_approval_flow_settings_id']
-        meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
-        sub_approval_flow_settings_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(
-            sub_approval_flow_settings_id)
-        prev_or_post_investment = kwargs['prev_or_post_investment']
-
-        sub_approval_flow_settings_entity.update_current_approval_flow_node()
-
-        # if sub_approval_flow_settings_entity.is_success():
-        #     # 触发下一个环节
-        #     current_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(tache_info['sub_tache_id'])
-        #     for sub_tache_entity in meta_sub_project_entity.get_sub_taches():
-        #         if sub_tache_entity.parent_id == current_sub_tache_entity:
-        #             sub_tache_entity.write({
-        #                 'is_unlocked': True,
-        #                 # 'status': 2,
-        #             })
-        #
-        #
-        #             # 在触发下一个子环节过程中,还需要触发下一个子环节所对应的子审批节点信息
-        #
-        #             sub_approval_flow_settings_entity_next = sub_tache_entity.sub_pro_approval_flow_settings_ids
-        #
-        #             sub_approval_flow_settings_entity_next.write({
-        #                 'status': 1,
-        #             })
-        #
-        #             break
-
-
-
-
-
-
-        return self._get_info(meta_project_id=meta_sub_project_id, prev_or_post_investment=prev_or_post_investment)
+    # def rpc_save__launch_edit_operation_records(self, **kwargs):
+    #     tache_info = kwargs.get('tache')
+    #     meta_sub_project_id = tache_info['meta_sub_project_id']
+    #     sub_approval_flow_settings_id = tache_info['sub_approval_flow_settings_id']
+    #     meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
+    #     sub_approval_flow_settings_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(
+    #         sub_approval_flow_settings_id)
+    #     prev_or_post_investment = kwargs['prev_or_post_investment']
+    #
+    #     sub_approval_flow_settings_entity.update_current_approval_flow_node()
+    #
+    #     # if sub_approval_flow_settings_entity.is_success():
+    #     #     # 触发下一个环节
+    #     #     current_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(tache_info['sub_tache_id'])
+    #     #     for sub_tache_entity in meta_sub_project_entity.get_sub_taches():
+    #     #         if sub_tache_entity.parent_id == current_sub_tache_entity:
+    #     #             sub_tache_entity.write({
+    #     #                 'is_unlocked': True,
+    #     #                 # 'status': 2,
+    #     #             })
+    #     #
+    #     #
+    #     #             # 在触发下一个子环节过程中,还需要触发下一个子环节所对应的子审批节点信息
+    #     #
+    #     #             sub_approval_flow_settings_entity_next = sub_tache_entity.sub_pro_approval_flow_settings_ids
+    #     #
+    #     #             sub_approval_flow_settings_entity_next.write({
+    #     #                 'status': 1,
+    #     #             })
+    #     #
+    #     #             break
+    #
+    #
+    #
+    #
+    #
+    #
+    #     return self._get_info(meta_project_id=meta_sub_project_id, prev_or_post_investment=prev_or_post_investment)
 
 
 
@@ -1045,16 +1056,27 @@ class Cowin_project(models.Model):
 
     # 保存权限配置数据
     def rpc_save_permission_configuration(self, **kwargs):
+        # meta_sub_project_infos = kwargs.get('meta_sub_project_infos')
         meta_sub_project_infos = kwargs.get('meta_sub_project_infos')
+
+        # meta_sub_project_id = kwargs['meta_sub_project_id']
 
 
         for meta_sub_project_info in meta_sub_project_infos:
             meta_sub_project_info[u'is_current_exists'] = False  # 我们之前的数据在前端复制数据的时候,会提前把数据写入,可能有些数据我们并不需要在之后的操作
 
+        # meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
+        # self._save_permission_configuration(meta_sub_project_entity, meta_sub_project_info)
+
+
+
+
+
+
         for meta_sub_project_entity in self.meta_sub_project_ids:
 
             for meta_sub_project_info in meta_sub_project_infos:
-                if meta_sub_project_info['meta_sub_pro_id'] == meta_sub_project_entity.id:
+                if meta_sub_project_info[u'meta_sub_pro_id'] == meta_sub_project_entity.id:
                     self._save_permission_configuration(meta_sub_project_entity, meta_sub_project_info)
                     meta_sub_project_info[u'is_current_exists'] = True
                     break
@@ -1063,12 +1085,12 @@ class Cowin_project(models.Model):
         # 删除可能之前删除的子工程配置的数据
         for meta_sub_project_entity in self.meta_sub_project_ids:
             for meta_sub_project_info in meta_sub_project_infos:
-                if meta_sub_project_info['meta_sub_pro_id'] == meta_sub_project_entity.id:
-                    if meta_sub_project_info['is_current_exists'] == False:
+                if meta_sub_project_info[u'meta_sub_pro_id'] == meta_sub_project_entity.id:
+                    if meta_sub_project_info[u'is_current_exists'] == False:
                         # self._save_permission_configuration(meta_sub_project_entity, meta_sub_project_info)
                         meta_sub_project_entity.unlink()
                         break
-
+        #
         return self.rpc_get_permission_configuration()
 
 
@@ -1087,12 +1109,17 @@ class Cowin_project(models.Model):
         todoremove_ids = current_rel_info_ids - target_rel_info_ids
         todoadd_ids = target_rel_info_ids - current_rel_info_ids
 
-        for tuple_id in todoremove_ids:
+        # tuple_id ( approval_role_id, employee_id)
 
-            for rel_entity in current_rel_entities:
-                if rel_entity.approval_role_id.id == tuple_id[0] and rel_entity.employee_id.id == tuple_id[1]:
-                    rel_entity.unlink()
-                    break
+        res = current_rel_entities.filtered(lambda rel: (rel.approval_role_id.id, rel.employee_id.id) in todoremove_ids)
+        res.unlink()
+
+        # for tuple_id in todoremove_ids:
+        #
+        #     for rel_entity in current_rel_entities:
+        #         if rel_entity.approval_role_id.id == tuple_id[0] and rel_entity.employee_id.id == tuple_id[1]:
+        #             rel_entity.unlink()
+        #             break
 
 
         for tuple_id in todoadd_ids:
