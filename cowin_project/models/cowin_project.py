@@ -1174,11 +1174,13 @@ class Cowin_project(models.Model):
 
         res = []
         for c_rel_entity in copy_rel_entities:
-            c_rel_entity.create({
+            t = c_rel_entity.create({
                 'meta_sub_project_id': current_meta_sub_pro_id,
                 'approval_role_id':c_rel_entity.approval_role_id.id,
                 'employee_id': c_rel_entity.employee_id.id,
             })
+
+            res.append(t)
 
             # t = c_rel_entity.copy_data({
             #     'meta_sub_project_id': current_meta_sub_pro_id,
@@ -1194,7 +1196,12 @@ class Cowin_project(models.Model):
 
         # return {'current_meta_sub_pro_copy': res}
 
-        return self.rpc_get_permission_configuration()
+        result = self.rpc_get_permission_configuration()
+        # 前端数据的需要的临时的操作!!!
+        for i in res:
+            i.unlink()
+
+        return result
 
 
 
