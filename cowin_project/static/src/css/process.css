@@ -501,3 +501,7 @@
 .manage_team_edit_wrap{
     /*display: none;*/
 }
+.manage_team_edit{
+    cursor: pointer;
+    margin-left: 15px;
+}
