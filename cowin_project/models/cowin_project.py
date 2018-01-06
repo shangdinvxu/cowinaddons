@@ -1072,28 +1072,29 @@ class Cowin_project(models.Model):
 
         return self.rpc_get_permission_configuration()
 
-
-
     def _save_permission_configuration(self, meta_sub_project_entity, meta_sub_project_info):
-
-
 
         current_rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel
 
         current_rel_info_ids = set((rel.approval_role_id.id, rel.employee_id.id) for rel in current_rel_entities)
         target_rel_info_ids = set((approval_role_info['approval_role_id'], employee_info['employee_id'])
-                                     for approval_role_info in meta_sub_project_info['approval_role_infos']
-                                     for employee_info in approval_role_info['employee_infos'])
+                                  for approval_role_info in meta_sub_project_info['approval_role_infos']
+                                  for employee_info in approval_role_info['employee_infos'])
 
         todoremove_ids = current_rel_info_ids - target_rel_info_ids
         todoadd_ids = target_rel_info_ids - current_rel_info_ids
 
-        for tuple_id in todoremove_ids:
+        # tuple_id ( approval_role_id, employee_id)
 
-            for rel_entity in current_rel_entities:
-                if rel_entity.approval_role_id.id == tuple_id[0] and rel_entity.employee_id.id == tuple_id[1]:
-                    rel_entity.unlink()
-                    break
+        res = current_rel_entities.filtered(lambda rel: (rel.approval_role_id.id, rel.employee_id.id) in todoremove_ids)
+        res.unlink()
+
+        # for tuple_id in todoremove_ids:
+        #
+        #     for rel_entity in current_rel_entities:
+        #         if rel_entity.approval_role_id.id == tuple_id[0] and rel_entity.employee_id.id == tuple_id[1]:
+        #             rel_entity.unlink()
+        #             break
 
 
         for tuple_id in todoadd_ids:
@@ -1102,7 +1103,6 @@ class Cowin_project(models.Model):
                 'approval_role_id': tuple_id[0],
                 'employee_id': tuple_id[1],
             })
-
 
     # 复制已有的配置,所有的主工程下面的子工程
 
@@ -1130,14 +1130,10 @@ class Cowin_project(models.Model):
 
         return res
 
-
-
-
     def rpc_copy_permission_configuration(self, **kwargs):
 
         current_meta_sub_pro_id = kwargs['current_meta_sub_pro_id']
         copy_meta_sub_pro_id = kwargs['copy_meta_sub_pro_id']
-
 
         # current_meta_sub_pro_entity = self.meta_sub_project_ids.browse(current_meta_sub_pro_id)
         copy_meta_sub_pro_entity = self.meta_sub_project_ids.browse(copy_meta_sub_pro_id)
@@ -1148,11 +1144,13 @@ class Cowin_project(models.Model):
 
         res = []
         for c_rel_entity in copy_rel_entities:
-            c_rel_entity.create({
+            t = c_rel_entity.create({
                 'meta_sub_project_id': current_meta_sub_pro_id,
-                'approval_role_id':c_rel_entity.approval_role_id.id,
+                'approval_role_id': c_rel_entity.approval_role_id.id,
                 'employee_id': c_rel_entity.employee_id.id,
             })
+
+            res.append(t)
 
             # t = c_rel_entity.copy_data({
             #     'meta_sub_project_id': current_meta_sub_pro_id,
@@ -1163,15 +1161,14 @@ class Cowin_project(models.Model):
             #
             # res.append(t[0])
 
-
-
-
         # return {'current_meta_sub_pro_copy': res}
 
-        return self.rpc_get_permission_configuration()
+        result = self.rpc_get_permission_configuration()
 
+        for i in res:
+            i.unlink()
 
-
+        return result
 
 
     @api.model
