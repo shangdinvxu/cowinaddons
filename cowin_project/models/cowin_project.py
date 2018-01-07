@@ -1474,10 +1474,38 @@ class Cowin_project(models.Model):
 
 
 
+    # 每次发起之前,需要请求之前的数据!!!
+    def rpc_prev_launch(self, **kwargs):
+
+        sub_tache_id = kwargs['sub_tache_id']
+        meta_sub_project_id = kwargs['meta_sub_project_id']
+
+        meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
+        sub_tache_entity = meta_sub_project_entity.browse(sub_tache_id)
+
+
+        if not sub_tache_entity.parent_id: # 说明此子环节是项目立项
+            pass
 
 
 
-    
+    def rpc_test_cowin_project(self):
+
+        return {
+            'name': self.name,
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': False,
+            'res_id': self.id,
+            'target': 'new',
+            'context': {'default_name': 'kkkkk'},
+        }
+
+
+
+
         # return super(Cowin_project, self).unlink()
 
 

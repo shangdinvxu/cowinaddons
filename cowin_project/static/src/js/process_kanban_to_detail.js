@@ -402,7 +402,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                 type: 'ir.actions.act_window',
                 name: self.tache_arr[tache_index].name,
                 target:'new'
-            }
+            };
             self.do_action(action);
             
             // ajax监听事件 用以刷新页面
