@@ -162,7 +162,7 @@ class Cowin_project_subproject(models.Model):
 
         meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
 
-        tem = meta_sub_project_entity.project_id.copyt_data()[0]
+        tem = meta_sub_project_entity.project_id.copy_data()[0]
 
         for k, v in tem.iteritems():
             nk = 'default_' + k
@@ -173,6 +173,7 @@ class Cowin_project_subproject(models.Model):
             'name': self.name,
             'type': 'ir.actions.act_window',
             'res_model': self._name,
+            'views': [[False, 'form']],
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': False,
