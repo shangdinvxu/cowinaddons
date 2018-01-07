@@ -368,6 +368,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             return new Model("cowin_project.cowin_project")
                     .call("rpc_load_and_return_action", [parseInt(self.id)],{'tache_info':self.tache_arr[tache_index]})
                     .then(function (result) {
+                        result.context['tache'] = self.tache_arr[tache_index];
                         console.log(result)
                         self.do_action(result);
                     })
