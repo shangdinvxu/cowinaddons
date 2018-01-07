@@ -44,21 +44,42 @@ class Cowin_project_subproject(models.Model):
 
 
     # ----------  投资基金
-    round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation', string=u'基金轮次')
+    round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation', string=u'基金轮次实体')
 
-    round_financing_id = fields.Many2one('cowin_common.round_financing',
-                                         related='round_financing_and_foundation_id.round_financing_id', string=u'轮次')
+    round_financing_id = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
+    foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金名称')
+    the_amount_of_financing = fields.Float(string=u'本次融资金额')
+    the_amount_of_investment = fields.Float(string=u'本次投资金额')
+    ownership_interest = fields.Integer(string=u'股份比例')
 
-    foundation_id = fields.Many2one('cowin_foundation.cowin_foudation',
-                                    related='round_financing_and_foundation_id.foundation_id', string=u'基金')
+    compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
 
-    the_amount_of_financing = fields.Float(
-                                        related='round_financing_and_foundation_id.the_amount_of_financing', string=u'本次融资额')
+    @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment', 'ownership_interest')
+    def _compute_value(self):
+        for rec in self:
+            rec.round_financing_and_foundation_id.round_financing_id = rec.round_financing_id
+            rec.round_financing_and_foundation_id.foundation_id = rec.foundation_id
+            rec.round_financing_and_foundation_id.the_amount_of_financing = rec.the_amount_of_financing
+            rec.round_financing_and_foundation_id.the_amount_of_investment = rec.the_amount_of_investment
+            rec.round_financing_and_foundation_id.ownership_interest = rec.ownership_interest
 
-    the_amount_of_investment = fields.Float(
-                                    related='round_financing_and_foundation_id.the_amount_of_investment', string=u'本次投资金额')
-    ownership_interest = fields.Integer(
-                            related='round_financing_and_foundation_id.ownership_interest',string=u'股份比例')
+
+
+
+
+    # round_financing_id = fields.Many2one('cowin_common.round_financing',
+    #                                      related='round_financing_and_foundation_id.round_financing_id', string=u'融资轮次')
+
+    # foundation_id = fields.Many2one('cowin_foundation.cowin_foudation',
+    #                                 related='round_financing_and_foundation_id.foundation_id', string=u'基金名称')
+
+    # the_amount_of_financing = fields.Float(
+    #                                     related='round_financing_and_foundation_id.the_amount_of_financing', string=u'本次融资额')
+
+    # the_amount_of_investment = fields.Float(
+    #                                 related='round_financing_and_foundation_id.the_amount_of_investment', string=u'本次投资金额')
+    # ownership_interest = fields.Integer(
+    #                         related='round_financing_and_foundation_id.ownership_interest',string=u'股份比例')
     # ---------------
 
 

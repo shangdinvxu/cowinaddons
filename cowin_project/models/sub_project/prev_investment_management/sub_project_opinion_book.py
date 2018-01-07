@@ -93,4 +93,30 @@ class Cowin_project_subproject_opinion_book(models.Model):
 
 
 
+    def load_and_return_action(self, **kwargs):
+        tache_info = kwargs['tache_info']
+        # tache_info = self._context['tache']
+        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
 
+        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+
+        sub_project_entity = meta_sub_project_entity.sub_project_ids[0] # 获取子工程实体
+
+        # tem = meta_sub_project_entity.project_id.copy_data()[0]
+        tem = sub_project_entity.read(['name', 'project_number', 'invest_manager_id'])
+
+
+
+
+        return {
+            'name': self.name,
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'views': [[False, 'form']],
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': False,
+            'res_id': self.id,
+            'target': 'new',
+            'context': tem,
+        }
