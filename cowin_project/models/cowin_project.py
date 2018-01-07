@@ -1474,18 +1474,27 @@ class Cowin_project(models.Model):
 
 
 
-    # 每次发起之前,需要请求之前的数据!!!
-    def rpc_prev_launch(self, **kwargs):
+    # 每次发起之前,需要请求之前的数据,业务需求的原因,需要把之前老的数据填充到新建的实体之中!!!
+    def rpc_load_and_return_action(self, **kwargs):
 
-        sub_tache_id = kwargs['sub_tache_id']
-        meta_sub_project_id = kwargs['meta_sub_project_id']
+        tache_info = kwargs['tache_info']
+
+
+        sub_tache_id = tache_info['sub_tache_id']
+        meta_sub_project_id = tache_info['meta_sub_project_id']
 
         meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
         sub_tache_entity = meta_sub_project_entity.browse(sub_tache_id)
 
 
-        if not sub_tache_entity.parent_id: # 说明此子环节是项目立项
-            pass
+
+        res_id = sub_tache_entity.model_id.res_id
+
+        model_name = sub_tache_entity.model_id.model_name
+
+        return self.env[model_name].browse(res_id).load_and_return_action(**kwargs)
+
+
 
 
 
@@ -1498,7 +1507,7 @@ class Cowin_project(models.Model):
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': False,
-            'res_id': self.id,
+            # 'res_id': self.id,
             'target': 'new',
             'context': {'default_name': 'kkkkk'},
         }

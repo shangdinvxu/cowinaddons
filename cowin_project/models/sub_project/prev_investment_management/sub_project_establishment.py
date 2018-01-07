@@ -154,3 +154,32 @@ class Cowin_project_subproject(models.Model):
 
 
 
+
+    def load_and_return_action(self, **kwargs):
+        tache_info = kwargs['tache_info']
+        # tache_info = self._context['tache']
+        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+
+        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+
+        tem = meta_sub_project_entity.project_id.copyt_data()[0]
+
+        for k, v in tem.iteritems():
+            nk = 'default_' + k
+            tem[nk] = tem.pop(k)
+
+
+        return {
+            'name': self.name,
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': False,
+            'res_id': self.id,
+            'target': 'new',
+            'context': tem,
+        }
+
+
+
