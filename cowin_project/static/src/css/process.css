@@ -505,3 +505,7 @@
     cursor: pointer;
     margin-left: 15px;
 }
+#project_process_container{
+    overflow: hidden;
+    margin-bottom: 100px;
+}
