@@ -31,6 +31,45 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
             'click .initiate':'initiate_func',
             'click .view_tache':'view_tache_func',
             'click .manage_team_btn':'manage_team_fun',
+            'click .button_wrap .add_new_tache':'add_new_tache_func',
+        },
+        //环节增加
+        add_new_tache_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            var tache_index = $(target).parents('.detail_line').attr('tache-index');
+            if($(target).parents('.detail_line').find('.tache_name_').text()=='投资退出申请书'){
+                tache_index = parseInt(tache_index);
+                var data = {
+                    'sub_tache_ids':[self.tache_arr[tache_index].sub_tache_id,self.tache_arr[tache_index+1].sub_tache_id,self.tache_arr[tache_index+2].sub_tache_id,self.tache_arr[tache_index+3].sub_tache_id],
+                    'meta_sub_project_id':self.tache_arr[parseInt(tache_index)].meta_sub_project_id
+                }
+            }else {
+                var data = {
+                    'sub_tache_ids':[self.tache_arr[parseInt(tache_index)].sub_tache_id],
+                    'meta_sub_project_id':self.tache_arr[parseInt(tache_index)].meta_sub_project_id
+                }
+            }
+
+            Dialog.confirm(this, _t("确定增加这条环节?"), {
+                confirm_callback: function() {
+                    return new Model("cowin_project.cowin_project")
+                        .call("rpc_get_post_info",[[self.id]],data)
+                        .then(function (result) {
+                            result.no_initate = self.no_initate
+                            console.log(result);
+                            self.tache_arr=[];
+                            result.process.forEach(function (value) {
+                                value.tache_ids.forEach(function (model) {
+                                    self.tache_arr.push(model)
+                                });
+                            });
+                            $('.process_data_main_wrap').html('');
+                            $('.process_data_main_wrap').append(QWeb.render('process_info_right_tmpl', {result: result}));
+                        })
+                },
+            });
         },
         //项目管理团队
         manage_team_fun:function () {
