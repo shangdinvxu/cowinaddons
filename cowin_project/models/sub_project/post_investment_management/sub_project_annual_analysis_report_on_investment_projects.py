@@ -96,7 +96,7 @@ class sub_project_annual_analysis_report_on_investment_projects(models.Model):
         target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
 
         vals['subproject_id'] = sub_project_id
-        res = super(sub_project_quarterly_analysis_report_on_investment_projects, self).create(vals)
+        res = super(sub_project_annual_analysis_report_on_investment_projects, self).create(vals)
 
         res._compute_value()  # 写入----> 轮次基金实体
         target_sub_tache_entity.write({

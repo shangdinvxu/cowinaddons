@@ -53,8 +53,7 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
             # 理论上主环节中只有一份主审批流实体
             'approval_flow_settings_id': res.tache_id.approval_flow_settings_ids.id,
             # 默认就指向第一个位置!!!
-            'current_approval_flow_node_id': res.tache_id.approval_flow_settings_ids.
-                approval_flow_setting_node_ids.sorted('order')[0].id,
+            'current_approval_flow_node_id': res.tache_id.approval_flow_settings_ids.approval_flow_setting_node_ids.sorted('order')[0].id,
         })
 
         # # 每个子审批节点创建一条通道
