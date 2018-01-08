@@ -11,19 +11,19 @@
                 <form string="Fiscal year" create="false" edit="false" delete="false">
                     <sheet>
                         <group>
-                            <field name="name"/>
-                            <field name="project_number"/>
-                            <field name="invest_manager_id"/>
-                            <field name="visit_date"/>
-                            <field name="customer_type"/>
-                            <field name="customer_name"/>
-                            <field name="customer_position"/>
-                            <field name="customer_contract"/>
-                            <field name="customer_email"/>
-                            <field name="customer_company_name"/>
-                            <field name="customer_relation_investment"/>
-                            <field name="customer_relation_value"/>
-                            <field name="customer_relation_opinion"/>
+                            <field name="name" readonly="1"/>
+                            <field name="project_number" readonly="1"/>
+                            <field name="invest_manager_id" readonly="1"/>
+                            <field name="visit_date" required="1"/>
+                            <field name="customer_type" required="1"/>
+                            <field name="customer_name" required="1"/>
+                            <field name="customer_position" required="1"/>
+                            <field name="customer_contract" required="1"/>
+                            <field name="customer_email" required="1"/>
+                            <field name="customer_company_name" required="1"/>
+                            <field name="customer_relation_investment" required="1"/>
+                            <field name="customer_relation_value" required="1"/>
+                            <field name="customer_relation_opinion" required="1"/>
                             <field name="recommended_visit_object"/>
                         </group>
                     </sheet>

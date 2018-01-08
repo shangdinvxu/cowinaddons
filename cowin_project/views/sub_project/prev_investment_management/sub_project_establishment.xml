@@ -10,24 +10,24 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="name"/>
+                                <field name="name" required="1"/>
                                 <field name="image" widget="image" class="oe_avatar" options="{'size': [90, 90]}"/>
-                                <field name="project_number"/>
-                                <field name="project_source"/>
-                                <field name="project_source_note"/>
-                                <field name="invest_manager_id"/>
-                                <field name="project_company_profile"/>
-                                <field name="project_appraisal"/>
+                                <field name="project_number" required="1"/>
+                                <field name="project_source" required="1"/>
+                                <field name="project_source_note" required="1"/>
+                                <field name="invest_manager_id" required="1"/>
+                                <field name="project_company_profile" required="1"/>
+                                <field name="project_appraisal" required="1"/>
                                 <field name="project_note"/>
-                                <field name="industry"/>
-                                <field name="stage"/>
-                                <field name="production"/>
-                                <field name="registered_address"/>
-                                <field name="peration_place"/>
-                                <field name="founding_time"/>
-                                <field name="contract_person"/>
-                                <field name="contract_phone"/>
-                                <field name="contract_email"/>
+                                <field name="industry" required="1"/>
+                                <field name="stage" required="1"/>
+                                <field name="production" required="1"/>
+                                <field name="registered_address" required="1"/>
+                                <field name="peration_place" required="1"/>
+                                <field name="founding_time" required="1"/>
+                                <field name="contract_person" required="1"/>
+                                <field name="contract_phone" required="1"/>
+                                <field name="contract_email" required="1"/>
                                 <field name="attachment_ids"  widget="many2many_binary"/>
                                 <field name="attachment_note"/>
                             </group>
@@ -35,11 +35,11 @@
 
                             <group>
                                  <!--投资基金-->
-                                <field name="foundation_id"/>
-                                <field name="the_amount_of_investment"/>
-                                <field name="ownership_interest"/>
-                                <field name="round_financing_id"/>
-                                <field name="the_amount_of_financing"/>
+                                <field name="foundation_id" required="1"/>
+                                <field name="the_amount_of_investment" required="1"/>
+                                <field name="ownership_interest" required="1"/>
+                                <field name="round_financing_id" required="1"/>
+                                <field name="the_amount_of_financing" required="1"/>
                                 <!---->
                             </group>
                         </group>
