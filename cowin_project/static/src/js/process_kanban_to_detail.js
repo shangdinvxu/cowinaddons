@@ -55,6 +55,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                         $('#process_record').append(QWeb.render('operate_records_tmpl', {result: result}))
                     })
         },
+        //环节增加
         add_new_tache_func:function (e) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
