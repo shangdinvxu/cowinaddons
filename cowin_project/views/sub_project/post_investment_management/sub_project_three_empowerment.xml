@@ -12,7 +12,8 @@
 
                         <field name="name"/>
                         <field name="topic_for_discussion"/>
-                        <field name="managing_partner"/>
+                        <field name="invest_manager_ids"/>
+                        <field name="managing_partner_ids"/>
 
 
                         <!--投资基金-->

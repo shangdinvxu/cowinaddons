@@ -16,7 +16,8 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
 
     name = fields.Char(string=u"项目名称")
     project_number = fields.Char(string=u'项目编号')
-    invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
+    # invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
+    invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
 
     voting_committee = fields.Date(string=u'投决会日期')
     outcome_of_the_voting_committee = fields.Char(string=u'投决会结果')
@@ -73,7 +74,7 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
     trustee_id = fields.Many2one('hr.employee', string=u'董事')
     supervisor_id = fields.Many2one('hr.employee', string=u'监事')
     amount_of_entrusted_loan = fields.Float(string=u'委托贷款金额')
-    chairman_of_investment_decision_committee = fields.Many2one('hr.employee', string=u'投资决策委员会主席')
+    chairman_of_investment_decision_committee_ids = fields.Many2many('hr.employee', string=u'投资决策委员会主席')
 
     @api.model
     def create(self, vals):
@@ -217,6 +218,16 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
             else:
                 res[nk] = v
 
+        # 默认的投资经理的数据我们需要去自定义添加
+        invest_manager_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资经理')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & invest_manager_entity.sub_meta_pro_approval_settings_role_rel
+
+        res['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+
+        chairman_of_investment_decision_committee_entity = self.env['cowin_common.approval_role'].search(
+            [('name', '=', u'投资决策委员会主席')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & chairman_of_investment_decision_committee_entity.sub_meta_pro_approval_settings_role_rel
+        res['default_chairman_of_investment_decision_committee_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
 
         return {

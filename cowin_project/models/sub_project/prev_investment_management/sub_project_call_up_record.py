@@ -21,7 +21,9 @@ class Cowin_project_subproject_call_up_record(models.Model):
 
     name = fields.Char(string=u"项目名称")
     project_number = fields.Char(string=u'项目编号')
-    invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
+    # invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
+    invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
+
 
     visit_date = fields.Date(string=u'拜访日期')
 
@@ -136,6 +138,12 @@ class Cowin_project_subproject_call_up_record(models.Model):
                 res[nk] = v[0]
             else:
                 res[nk] = v
+
+        # 默认的投资经理的数据我们需要去自定义添加
+        invest_manager_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资经理')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & invest_manager_entity.sub_meta_pro_approval_settings_role_rel
+
+        res['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
         return {
             'name': self._name,

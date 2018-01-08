@@ -147,8 +147,7 @@ class sub_project_summary_of_the_three_meeting_of_the_item_company(models.Model)
             else:
                 res[nk] = v
 
-
-
+        res['default_reporter'] = self.env.user.employee_ids[0].id
         return {
             'name': self._name,
             'type': 'ir.actions.act_window',

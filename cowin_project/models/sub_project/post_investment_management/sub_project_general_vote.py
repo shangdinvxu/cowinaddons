@@ -140,8 +140,7 @@ class sub_project_general_vote(models.Model):
             else:
                 res[nk] = v
 
-
-
+        res['default_reporter'] = self.env.user.employee_ids[0].id
         return {
             'name': self._name,
             'type': 'ir.actions.act_window',

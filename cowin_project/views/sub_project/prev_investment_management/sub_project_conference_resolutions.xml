@@ -13,11 +13,13 @@
                         <group>
                             <field name="name"/>
                             <field name="project_number"/>
-                            <field name="invest_manager_id"/>
+                            <!--<field name="invest_manager_id"/>-->
+                            <field name="invest_manager_ids"/>
                             <field name="voting_committee"/>
                             <field name="members_of_voting_committee_ids"/>
                             <field name="voting_opinion"/>
-                            <field name="voter"/>
+                            <field name="voter_id"/>
+                            <!--<field name="voter"/>-->
                         </group>
                     </sheet>
                 </form>

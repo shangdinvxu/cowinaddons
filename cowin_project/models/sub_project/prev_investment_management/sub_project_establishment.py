@@ -41,6 +41,7 @@ class Cowin_project_subproject(models.Model):
     project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')], string=u'项目来源')
     project_source_note = fields.Char(string=u'项目来源备注')
     invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
+    invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
 
 
 
@@ -205,6 +206,13 @@ class Cowin_project_subproject(models.Model):
                 res[nk] = v[0]
             else:
                 res[nk] = v
+
+
+        # 默认的投资经理的数据我们需要去自定义添加
+        invest_manager_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资经理')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & invest_manager_entity.sub_meta_pro_approval_settings_role_rel
+
+        res['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
         return {
             'name': self._name,

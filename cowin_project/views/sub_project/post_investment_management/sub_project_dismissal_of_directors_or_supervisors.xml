@@ -12,7 +12,7 @@
                     <group>
 
                         <field name="name"/>
-                        <field name="invest_manager_id"/>
+                        <field name="reporter"/>
                         <field name="trustee_id"/>
                         <field name="appointment_time_begin_trustee"/>
                         <field name="appointment_time_end_trustee"/>

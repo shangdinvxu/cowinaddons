@@ -158,7 +158,7 @@ class sub_project_application_for_investment_withdrawal(models.Model):
             else:
                 res[nk] = v
 
-
+        res['default_reporter'] = self.env.user.employee_ids[0].id
         return {
             'name': self._name,
             'type': 'ir.actions.act_window',

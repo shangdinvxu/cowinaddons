@@ -13,7 +13,8 @@
 
                         <field name="name"/>
                         <field name="project_number"/>
-                        <field name="invest_manager_id"/>
+                        <field name="invest_manager_ids"/>
+                        <!--<field name="invest_manager_id"/>-->
 
 
                         <!--投资基金-->
@@ -27,7 +28,8 @@
                         <field name="conference_date"/>
                         <field name="conference_recorder"/>
                         <field name="checker"/>
-                        <field name="investment_decision_committee"/>
+                        <!--<field name="investment_decision_committee"/>-->
+                        <field name="members_of_voting_committee_ids"/>
                         <field name="conference_highlights"/>
 
                     </group>

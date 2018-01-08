@@ -14,12 +14,14 @@
 
                             <field name="name" readonly="1"/>
                             <field name="project_number" readonly="1"/>
-                            <field name="invest_manager_id" readonly="1"/>
+                            <!--<field name="invest_manager_id" readonly="1"/>-->
+                            <field name="invest_manager_ids" readonly="1"/>
 
                             <field name="voting_committee_date" required="1"/>
                             <field name="conference_recorder" required="1"/>
                             <field name="checker" required="1"/>
-                            <field name="investment_decision_committee" readonly="1"/>
+                            <!--<field name="investment_decision_committee" readonly="1"/>-->
+                            <field name="investment_decision_committee_ids" readonly="1"/>
                             <field name="conference_highlights" required="1"/>
                         </group>
                     </sheet>

@@ -15,7 +15,8 @@
                                 <field name="project_number" required="1"/>
                                 <field name="project_source" required="1"/>
                                 <field name="project_source_note" required="1"/>
-                                <field name="invest_manager_id" required="1"/>
+                                <!--<field name="invest_manager_id" required="1"/>-->
+                                <field name="invest_manager_ids" required="1"/>
                                 <field name="project_company_profile" required="1"/>
                                 <field name="project_appraisal" required="1"/>
                                 <field name="project_note"/>

@@ -13,7 +13,8 @@ class sub_project_project_exit_vote(models.Model):
 
     name = fields.Char(related='subproject_id.name', string=u"项目名称")
     project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
-    invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
+    # invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
+    invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
 
     # ----------  投资基金
     round_financing_id = fields.Many2one('cowin_common.round_financing',
@@ -32,7 +33,8 @@ class sub_project_project_exit_vote(models.Model):
     # ---------------
 
     conference_date = fields.Date(string=u'会议日期')
-    investment_decision_committee = fields.Many2many('hr.employee', string=u'投资决策委员')
+    # investment_decision_committee = fields.Many2many('hr.employee', string=u'投资决策委员')
+    members_of_voting_committee_ids = fields.Many2many('hr.employee', string=u'投资决策委员')
     voting_result = fields.Boolean(string=u'表决结果')
     voting_opinion = fields.Text(string=u'表决意见')
     voter = fields.Many2one('hr.employee', string=u'表决人')
@@ -131,6 +133,15 @@ class sub_project_project_exit_vote(models.Model):
             else:
                 res[nk] = v
 
+        # 默认的投资经理的数据我们需要去自定义添加
+        invest_manager_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资经理')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & invest_manager_entity.sub_meta_pro_approval_settings_role_rel
+        res['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+
+        investment_decision_committee_entity = self.env['cowin_common.approval_role'].search(
+            [('name', '=', u'投资决策委员')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & investment_decision_committee_entity.sub_meta_pro_approval_settings_role_rel
+        res['default_members_of_voting_committee_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
         return {
             'name': self._name,

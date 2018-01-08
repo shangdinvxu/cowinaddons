@@ -17,7 +17,8 @@ class sub_project_project_exit_resolution(models.Model):
 
     name = fields.Char(string=u"项目名称")
     project_number = fields.Char(string=u'项目编号')
-    invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
+    # invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
+    invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
 
     project_exit_date = fields.Date(string=u'项目退出会议日期')
 
@@ -54,7 +55,8 @@ class sub_project_project_exit_resolution(models.Model):
     withdrawal_ratio = fields.Float(string=u'退出比例')
     exit_plan = fields.Text(string=u'退出方案')
 
-    chairman_of_investment_decision_committee = fields.Many2one('hr.employee', string=u'投资决策委员会主席')
+    # chairman_of_investment_decision_committee = fields.Many2one('hr.employee', string=u'投资决策委员会主席')
+    chairman_of_investment_decision_committee_ids = fields.Many2many('hr.employee', string=u'投资决策委员会主席')
 
 
 
@@ -151,7 +153,17 @@ class sub_project_project_exit_resolution(models.Model):
             else:
                 res[nk] = v
 
+        # 默认的投资经理的数据我们需要去自定义添加
+        invest_manager_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资经理')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & invest_manager_entity.sub_meta_pro_approval_settings_role_rel
 
+        res['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+
+        chairman_of_investment_decision_committee_entity = self.env['cowin_common.approval_role'].search(
+            [('name', '=', u'投资决策委员会主席')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & chairman_of_investment_decision_committee_entity.sub_meta_pro_approval_settings_role_rel
+        res['default_chairman_of_investment_decision_committee_ids'] = [
+            (6, 0, [rel.employee_id.id for rel in rel_entities])]
 
         return {
             'name': self._name,

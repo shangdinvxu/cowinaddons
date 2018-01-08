@@ -13,7 +13,8 @@
 
                         <field name="name"/>
                         <field name="project_number"/>
-                        <field name="invest_manager_id"/>
+                        <!--<field name="invest_manager_id"/>-->
+                        <field name="invest_manager_ids"/>
                         <field name="project_exit_date"/>
                         <field name="result"/>
 
@@ -27,7 +28,8 @@
                         <field name="withdrawal_amount"/>
                         <field name="withdrawal_ratio"/>
                         <field name="exit_plan"/>
-                        <field name="chairman_of_investment_decision_committee"/>
+                        <!--<field name="chairman_of_investment_decision_committee"/>-->
+                        <field name="chairman_of_investment_decision_committee_ids"/>
 
 
                     </group>

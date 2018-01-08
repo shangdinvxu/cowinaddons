@@ -17,8 +17,7 @@ class sub_project_dismissal_of_directors_or_supervisors(models.Model):
 
     name = fields.Char(string=u"项目名称")
     project_number = fields.Char(string=u'项目编号')
-    invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
-
+    reporter = fields.Many2one('hr.employee', string=u'报告人')
 
     # ----- 解职对象
     trustee_id = fields.Many2one('hr.employee', string=u'董事')
@@ -163,6 +162,7 @@ class sub_project_dismissal_of_directors_or_supervisors(models.Model):
             else:
                 res[nk] = v
 
+        res['default_reporter'] = self.env.user.employee_ids[0].id
 
         return {
             'name': self._name,

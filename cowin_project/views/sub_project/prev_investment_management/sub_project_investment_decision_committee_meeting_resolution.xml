@@ -16,7 +16,9 @@
 
                             <field name="name" readonly="1"/>
                             <field name="project_number" readonly="1"/>
-                            <field name="invest_manager_id" readonly="1"/>
+                            <!--<field name="invest_manager_id" readonly="1"/>-->
+                            <field name="invest_manager_ids" readonly="1"/>
+
                             <field name="voting_committee" readonly="1"/>
                             <field name="outcome_of_the_voting_committee" readonly="1"/>
                             <!--投资基金-->
@@ -28,15 +30,15 @@
 
                             <!---->
                             <field name="round_financing_and_Foundation_ids">
-                                <tree string="轮次基金名称"  delete="false">
-                                    <field name="name"/>
-                                </tree>
+                                <!--<tree string="轮次基金名称"  delete="false">-->
+                                    <!--<field name="name"/>-->
+                                <!--</tree>-->
                             </field>
 
                             <field name="trustee_id" required="1"/>
                             <field name="supervisor_id" required="1"/>
                             <field name="amount_of_entrusted_loan" required="1"/>
-                            <field name="chairman_of_investment_decision_committee" readonly="1"/>
+                            <field name="chairman_of_investment_decision_committee_ids" readonly="1"/>
                         </group>
                     </sheet>
                 </form>

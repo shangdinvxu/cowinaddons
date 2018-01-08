@@ -179,7 +179,7 @@ class sub_project_annual_analysis_report_on_investment_projects(models.Model):
                 res[nk] = v
 
         res['default_investment_phase'] = res['default_stage']
-
+        res['default_reporter'] = self.env.user.employee_ids[0].id
         return {
             'name': self._name,
             'type': 'ir.actions.act_window',

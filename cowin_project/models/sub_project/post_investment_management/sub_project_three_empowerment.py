@@ -14,11 +14,13 @@ class sub_project_three_empowerment(models.Model):
     name = fields.Char(string=u"项目名称")
 
 
-    invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
+    # invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
+    invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
 
     topic_for_discussion = fields.Text(string=u'议题')
 
-    managing_partner = fields.Many2one('hr.employee', string=u'管理合伙人')
+    # managing_partner = fields.Many2one('hr.employee', string=u'管理合伙人')
+    managing_partner_ids = fields.Many2many('hr.employee', string=u'管理合伙人')
 
     # ----------  投资基金
     round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation',
@@ -138,7 +140,17 @@ class sub_project_three_empowerment(models.Model):
             else:
                 res[nk] = v
 
+        # 默认的投资经理的数据我们需要去自定义添加
+        invest_manager_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资经理')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & invest_manager_entity.sub_meta_pro_approval_settings_role_rel
 
+        res['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+
+
+        managing_partner_ids_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'管理合伙人')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & managing_partner_ids_entity.sub_meta_pro_approval_settings_role_rel
+
+        res['default_managing_partner_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
         return {
             'name': self._name,

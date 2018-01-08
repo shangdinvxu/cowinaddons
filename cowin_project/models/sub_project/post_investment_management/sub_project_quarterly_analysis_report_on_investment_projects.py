@@ -171,6 +171,8 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
 
         res['default_investment_phase'] = res['default_stage']
 
+        res['default_reporter'] = self.env.user.employee_ids[0].id
+
 
         return {
             # 'name': self._name,

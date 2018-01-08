@@ -16,8 +16,10 @@
                             <group>
                                 <field name="name" readonly="1"/>
                                 <field name="project_number" readonly="1"/>
-                                <field name="invest_manager_id" readonly="1"/>
-                                <field name="engagement_partner_id" readonly="1"/>
+                                <!--<field name="invest_manager_id" readonly="1"/>-->
+                                <field name="invest_manager_ids" readonly="1"/>
+                                <!--<field name="engagement_partner_id" readonly="1"/>-->
+                                <field name="engagement_partner_ids" readonly="1"/>
                                 <field name="investment_decision_process_information" widget="many2many_binary" required="1"/>
                                 <field name="relevant_legal_documents_and_materials" widget="many2many_binary" required="1"/>
                                 <field name="government_approval_materials" widget="many2many_binary" required="1"/>

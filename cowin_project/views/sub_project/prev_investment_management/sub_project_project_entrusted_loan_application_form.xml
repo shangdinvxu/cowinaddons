@@ -16,7 +16,8 @@
                             <group>
                                 <field name="name" readonly="1"/>
                                 <field name="project_number" readonly="1"/>
-                                <field name="invest_manager_id" readonly="1"/>
+                                <!--<field name="invest_manager_id" readonly="1"/>-->
+                                <field name="invest_manager_ids" readonly="1"/>
                                 <field name="date_of_application" readonly="1"/>
                             </group>
                             <group>

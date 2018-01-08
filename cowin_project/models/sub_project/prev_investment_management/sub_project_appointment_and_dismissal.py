@@ -42,7 +42,7 @@ class Cowin_project_subproject_appointment_and_dismissal(models.Model):
 
     #------
 
-    managing_partner = fields.Many2one('hr.employee', string=u'管理合伙人')
+    managing_partner_ids = fields.Many2many('hr.employee', string=u'管理合伙人')
 
     @api.model
     def create(self, vals):
@@ -152,7 +152,21 @@ class Cowin_project_subproject_appointment_and_dismissal(models.Model):
             else:
                 res[nk] = v
 
+        # 默认的投资经理的数据我们需要去自定义添加
+        invest_manager_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资经理')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & invest_manager_entity.sub_meta_pro_approval_settings_role_rel
 
+        res['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+
+        investment_decision_committee_entity = self.env['cowin_common.approval_role'].search(
+            [('name', '=', u'投资决策委员')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & investment_decision_committee_entity.sub_meta_pro_approval_settings_role_rel
+        res['default_investment_decision_committee_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+
+        managing_partner_ids_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'管理合伙人')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & managing_partner_ids_entity.sub_meta_pro_approval_settings_role_rel
+
+        res['default_managing_partner_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
         return {
             'name': self._name,

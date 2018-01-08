@@ -18,7 +18,9 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
 
     name = fields.Char(string=u"项目名称")
     project_number = fields.Char(string=u'项目编号')
-    invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
+    # invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
+    invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
+
 
     # ----------  投资基金
     round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation',
@@ -49,7 +51,8 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
     conference_date = fields.Date(string=u'会议日期')
     conference_recorder = fields.Many2one('hr.employee', string=u'会议记录人')
     checker = fields.Many2one('hr.employee', string=u'复核人')
-    investment_decision_committee = fields.Many2many('hr.employee', string=u'投资决策委员')
+    # investment_decision_committee = fields.Many2many('hr.employee', string=u'投资决策委员')
+    members_of_voting_committee_ids = fields.Many2many('hr.employee', string=u'投资决策委员')
 
     conference_highlights = fields.Text(string=u'会议要点')
 
@@ -146,6 +149,15 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
                 res[nk] = v[0]
             else:
                 res[nk] = v
+
+        # 默认的投资经理的数据我们需要去自定义添加
+        invest_manager_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资经理')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & invest_manager_entity.sub_meta_pro_approval_settings_role_rel
+        res['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+
+        investment_decision_committee_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资决策委员')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & investment_decision_committee_entity.sub_meta_pro_approval_settings_role_rel
+        res['default_members_of_voting_committee_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
 
         return {
