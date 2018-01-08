@@ -88,3 +88,59 @@ class sub_project_project_exit_vote(models.Model):
         target_sub_tache_entity.update_sub_approval_settings()
 
         return res
+
+
+
+    def load_and_return_action(self, **kwargs):
+        tache_info = kwargs['tache_info']
+        # tache_info = self._context['tache']
+        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+
+        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+
+        sub_project_entity = meta_sub_project_entity.sub_project_ids[0] # 获取子工程实体
+
+        # tem = meta_sub_project_entity.project_id.copy_data()[0]
+
+        res = {}
+
+
+        common_fileds = [
+            'round_financing_id',
+            'foundation_id',
+            'the_amount_of_financing',
+            'the_amount_of_investment',
+            'ownership_interest',
+        ]
+
+        tem = meta_sub_project_entity.round_financing_and_Foundation_ids[0].read(common_fileds)[0]
+        for k, v in tem.iteritems():
+            nk = 'default_' + k
+            if type(v) is tuple:
+                res[nk] = v[0]
+            else:
+                res[nk] = v
+
+        target_fileds = ['name', 'project_number', 'invest_manager_id']
+        # target_fileds = []
+        tem = sub_project_entity.read(target_fileds)[0]
+        for k, v in tem.iteritems():
+            nk = 'default_' + k
+            if type(v) is tuple:
+                res[nk] = v[0]
+            else:
+                res[nk] = v
+
+
+        return {
+            'name': self._name,
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'views': [[False, 'form']],
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': False,
+            'res_id': self.id,
+            'target': 'new',
+            'context': res,
+        }

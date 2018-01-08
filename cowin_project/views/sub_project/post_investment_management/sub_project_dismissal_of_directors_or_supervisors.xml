@@ -13,11 +13,11 @@
 
                         <field name="name"/>
                         <field name="invest_manager_id"/>
-                        <field name="trustee"/>
+                        <field name="trustee_id"/>
                         <field name="appointment_time_begin_trustee"/>
                         <field name="appointment_time_end_trustee"/>
                         <field name="Tenure_trustee"/>
-                        <field name="supervisor"/>
+                        <field name="supervisor_id"/>
                         <field name="appointment_time_begin_supervisor"/>
                         <field name="appointment_time_end_supervisor"/>
                         <field name="Tenure_supervisor"/>

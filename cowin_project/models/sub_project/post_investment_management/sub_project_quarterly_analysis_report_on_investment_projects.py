@@ -51,19 +51,21 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
 
     total_assets = fields.Float(string=u'总资产')
     gross_liabilities = fields.Float(string=u'总负债')
-    trustee = fields.Many2one('hr.employee', string=u'董事')
+    trustee_id = fields.Many2one('hr.employee', string=u'董事')
 
 
     compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
 
-    @api.depends('trustee', 'registered_address', 'product')
+    @api.depends('trustee_id', 'registered_address', 'product')
     def _compute_value(self):
         for rec in self:
-            rec.subproject_id.trustee = rec.trustee
+            rec.subproject_id.trustee_id = rec.trustee_id
             rec.subproject_id.registered_address = rec.registered_address
             rec.subproject_id.product = rec.product
 
     accounting_firm = fields.Char(string=u'会计事务所')
+    securities_trader = fields.Char(string=u'券商')
+
 
     IPOplan = fields.Text(string=u'IPO计划')
 
@@ -157,7 +159,7 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
                 res[nk] = v
 
 
-        target_fileds = ['name', 'project_number', 'registered_address', 'production', 'industry', 'founding_time', 'stage', 'trustee']
+        target_fileds = ['name', 'project_number', 'registered_address', 'production', 'industry', 'founding_time', 'stage', 'trustee_id']
 
         tem = sub_project_entity.read(target_fileds)[0]
         for k, v in tem.iteritems():
@@ -171,7 +173,8 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
 
 
         return {
-            'name': self._name,
+            # 'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[False, 'form']],

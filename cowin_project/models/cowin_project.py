@@ -305,8 +305,7 @@ class Cowin_project(models.Model):
             meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
 
 
-        sub_project_info = meta_sub_project_entity.sub_project_ids[0].copy_data()[0] if meta_sub_project_entity.sub_project_ids \
-                else {}
+        sub_project_info = meta_sub_project_entity.sub_project_ids[0].copy_data()[0] if meta_sub_project_entity.sub_project_ids else {}
 
 
 

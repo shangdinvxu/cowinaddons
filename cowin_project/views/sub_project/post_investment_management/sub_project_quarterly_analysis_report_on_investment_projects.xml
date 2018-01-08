@@ -35,8 +35,9 @@
                         <!---->
                         <field name="total_assets"/>
                         <field name="gross_liabilities"/>
-                        <field name="trustee"/>
+                        <field name="trustee_id"/>
                         <field name="accounting_firm"/>
+                        <field name="securities_trader"/>
                         <field name="IPOplan"/>
                         <field name="company_status"/>
                         <field name="industry_status"/>

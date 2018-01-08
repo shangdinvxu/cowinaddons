@@ -18,14 +18,14 @@
                         </group>
 
                         <group>
-                            <field name="trustee" required="1"/>
+                            <field name="trustee_id" required="1"/>
                             <field name="appointment_time_begin_trustee" required="1"/>
                             <field name="appointment_time_end_trustee" required="1"/>
                             <field name="Tenure_trustee" required="1"/>
                         </group>
 
                         <group>
-                            <field name="supervisor" required="1"/>
+                            <field name="supervisor_id" required="1"/>
                             <field name="appointment_time_begin_supervisor" required="1"/>
                             <field name="appointment_time_endr_supervisor" required="1"/>
                             <field name="Tenure_supervisor" required="1"/>

@@ -10,29 +10,41 @@ class Cowin_project_subproject_application_form_for_project_investment(models.Mo
 
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
 
-    name = fields.Char(related='subproject_id.name', string=u"项目名称")
-    project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
-    invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
+    # name = fields.Char(related='subproject_id.name', string=u"项目名称")
+    # project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
+    # invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
+
+    name = fields.Char(string=u"项目名称")
+    project_number = fields.Char(string=u'项目编号')
+    invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
 
     date_of_application = fields.Date(string=u'申请日期')
 
     # ----------  投资基金
-    round_financing_id = fields.Many2one('cowin_common.round_financing',
-                                         related='subproject_id.round_financing_id', string=u'轮次')
+    round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation',
+                                                        related='subproject_id.round_financing_and_foundation_id',
+                                                        string=u'基金轮次实体')
+    round_financing_id = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
+    foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金名称')
+    the_amount_of_financing = fields.Float(string=u'本次融资金额')
+    the_amount_of_investment = fields.Float(string=u'本次投资金额')
+    ownership_interest = fields.Integer(string=u'股份比例')
 
-    foundation_id = fields.Many2one('cowin_foundation.cowin_foudation',
-                                    related='subproject_id.foundation_id', string=u'基金')
-
-    the_amount_of_financing = fields.Float(
-        related='subproject_id.the_amount_of_financing', string=u'本次融资额')
-
-    the_amount_of_investment = fields.Float(
-        related='subproject_id.the_amount_of_investment', string=u'本次投资金额')
-    ownership_interest = fields.Integer(
-        related='subproject_id.ownership_interest', string=u'股份比例')
-    # ---------------
-
-
+    # ----------  投资基金
+    # round_financing_id = fields.Many2one('cowin_common.round_financing',
+    #                                      related='subproject_id.round_financing_id', string=u'轮次')
+    #
+    # foundation_id = fields.Many2one('cowin_foundation.cowin_foudation',
+    #                                 related='subproject_id.foundation_id', string=u'基金')
+    #
+    # the_amount_of_financing = fields.Float(
+    #     related='subproject_id.the_amount_of_financing', string=u'本次融资额')
+    #
+    # the_amount_of_investment = fields.Float(
+    #     related='subproject_id.the_amount_of_investment', string=u'本次投资金额')
+    # ownership_interest = fields.Integer(
+    #     related='subproject_id.ownership_interest', string=u'股份比例')
+    # --------------
 
     list_of_examination_and_approval_documents = fields.Many2many('ir.attachment', string=u'审批文件清单')
 

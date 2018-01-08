@@ -55,18 +55,18 @@
 
 
         # post_investment_management
-        # 'views/sub_project/post_investment_management/sub_project_annual_analysis_report_on_investment_projects.xml',
-        # 'views/sub_project/post_investment_management/sub_project_application_for_investment_withdrawal.xml',
-        # 'views/sub_project/post_investment_management/sub_project_dismissal_of_directors_or_supervisors.xml',
-        # 'views/sub_project/post_investment_management/sub_project_general_vote.xml',
-        # 'views/sub_project/post_investment_management/sub_project_project_exit_resolution.xml',
-        # 'views/sub_project/post_investment_management/sub_project_project_exit_vote.xml',
-        # 'views/sub_project/post_investment_management/sub_project_quarterly_analysis_report_on_investment_projects.xml',
-        # 'views/sub_project/post_investment_management/sub_project_report_on_major_matters.xml',
-        # 'views/sub_project/post_investment_management/sub_project_summary_of_the_project_withdrawal_from_the_meeting.xml',
-        # 'views/sub_project/post_investment_management/sub_project_summary_of_the_three_meeting_of_the_item_company.xml',
-        # 'views/sub_project/post_investment_management/sub_project_three_empowerment.xml',
-        # 'views/sub_project/post_investment_management/sub_project_vote_on_major_matters.xml',
+        'views/sub_project/post_investment_management/sub_project_quarterly_analysis_report_on_investment_projects.xml',
+        'views/sub_project/post_investment_management/sub_project_annual_analysis_report_on_investment_projects.xml',
+        'views/sub_project/post_investment_management/sub_project_report_on_major_matters.xml',
+        'views/sub_project/post_investment_management/sub_project_vote_on_major_matters.xml',
+        'views/sub_project/post_investment_management/sub_project_summary_of_the_three_meeting_of_the_item_company.xml',
+        'views/sub_project/post_investment_management/sub_project_three_empowerment.xml',
+        'views/sub_project/post_investment_management/sub_project_general_vote.xml',
+        'views/sub_project/post_investment_management/sub_project_dismissal_of_directors_or_supervisors.xml',
+        'views/sub_project/post_investment_management/sub_project_application_for_investment_withdrawal.xml',
+        'views/sub_project/post_investment_management/sub_project_summary_of_the_project_withdrawal_from_the_meeting.xml',
+        'views/sub_project/post_investment_management/sub_project_project_exit_vote.xml',
+        'views/sub_project/post_investment_management/sub_project_project_exit_resolution.xml',
 
 
 

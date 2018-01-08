@@ -34,7 +34,7 @@
                                     <span class="col-xs-4">任职年限：</span><span class="col-xs-8" t-field="o.Tenure_trustee"></span>
                                 </div>
                                 <div style="overflow:hidden">
-                                    <span class="col-xs-4">监事：</span><span class="col-xs-8" t-field="o.supervisor"></span>
+                                    <span class="col-xs-4">监事：</span><span class="col-xs-8" t-field="o.supervisor_id"></span>
                                 </div>
                                 <div style="overflow:hidden">
                                     <span class="col-xs-4">开始日期：</span><span class="col-xs-8" t-field="o.appointment_time_begin_supervisor"></span>

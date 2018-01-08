@@ -33,8 +33,8 @@
                                 </tree>
                             </field>
 
-                            <field name="trustee" required="1"/>
-                            <field name="supervisor" required="1"/>
+                            <field name="trustee_id" required="1"/>
+                            <field name="supervisor_id" required="1"/>
                             <field name="amount_of_entrusted_loan" required="1"/>
                             <field name="chairman_of_investment_decision_committee" readonly="1"/>
                         </group>

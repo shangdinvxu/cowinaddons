@@ -26,8 +26,8 @@
                         <field name="the_amount_of_financing"/>
                         <!---->
 
-                        <field name="trustee"/>
-                        <field name="supervisor"/>
+                        <field name="trustee_id"/>
+                        <field name="supervisor_id"/>
                         <field name="withdrawal_amount"/>
                         <field name="withdrawal_ratio"/>
                         <field name="decision_file_list" widget="many2many_binary"/>

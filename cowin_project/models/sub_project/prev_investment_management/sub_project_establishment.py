@@ -105,8 +105,8 @@ class Cowin_project_subproject(models.Model):
 
     # 投资决策委员会会议决议 这张字表需要使用该字段的一次影像!!!f
 
-    trustee = fields.Many2one('hr.employee', string=u'董事')
-    supervisor = fields.Many2one('hr.employee', string=u'监事')
+    trustee_id = fields.Many2one('hr.employee', string=u'董事')
+    supervisor_id = fields.Many2one('hr.employee', string=u'监事')
 
     # 投决会决议 这张表使用的该字段的一次影像!!!
     amount_of_entrusted_loan = fields.Float(string=u'委托贷款金额')

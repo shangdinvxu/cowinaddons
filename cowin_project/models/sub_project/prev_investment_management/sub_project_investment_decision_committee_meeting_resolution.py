@@ -35,7 +35,7 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
     compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
 
     @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment',
-                 'ownership_interest', 'trustee', 'supervisor', 'amount_of_entrusted_loan')
+                 'ownership_interest', 'trustee_id', 'supervisor_id', 'amount_of_entrusted_loan')
     def _compute_value(self):
         for rec in self:
             rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
@@ -44,8 +44,8 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
             rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
             rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
 
-            rec.subproject_id.trustee = rec.trustee
-            rec.subproject_id.supervisor = rec.supervisor
+            rec.subproject_id.trustee_id = rec.trustee_id
+            rec.subproject_id.supervisor_id = rec.supervisor_id
             rec.subproject_id.amount_of_entrusted_loan = rec.amount_of_entrusted_loan
 
     # round_financing_id = fields.Many2one('cowin_common.round_financing',
@@ -70,8 +70,8 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
                                                          string=u'添加基金')
 
 
-    trustee = fields.Many2one('hr.employee', string=u'董事')
-    supervisor = fields.Many2one('hr.employee', string=u'监事')
+    trustee_id = fields.Many2one('hr.employee', string=u'董事')
+    supervisor_id = fields.Many2one('hr.employee', string=u'监事')
     amount_of_entrusted_loan = fields.Float(string=u'委托贷款金额')
     chairman_of_investment_decision_committee = fields.Many2one('hr.employee', string=u'投资决策委员会主席')
 
