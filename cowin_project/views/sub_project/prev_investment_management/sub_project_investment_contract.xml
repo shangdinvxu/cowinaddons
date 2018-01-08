@@ -15,9 +15,9 @@
                     <sheet>
                         <group>
 
-                            <field name="contract_no"/>
-                            <field name="title"/>
-                            <field name="main_contents"/>
+                            <field name="contract_no" required="1"/>
+                            <field name="title" required="1"/>
+                            <field name="main_contents" required="1"/>
                         </group>
                     </sheet>
                 </form>

@@ -11,7 +11,7 @@
                 <form string="Fiscal year" create="false" edit="false" delete="false">
                     <sheet>
                         <group>
-                            <field name="dispatch_report" widget="many2many_binary"/>
+                            <field name="dispatch_report" widget="many2many_binary" required="1"/>
                             <field name="attachment_note"/>
                         </group>
                     </sheet>
