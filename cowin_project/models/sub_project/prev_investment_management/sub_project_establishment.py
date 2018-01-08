@@ -38,14 +38,15 @@ class Cowin_project_subproject(models.Model):
 
     name = fields.Char(string=u"项目名称")
     project_number = fields.Char(string=u'项目编号')
-    project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')], string=u'项目来源', required=True)
+    project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')], string=u'项目来源')
     project_source_note = fields.Char(string=u'项目来源备注')
     invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
 
 
-    # ----------  投资基金
-    round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation', string=u'基金轮次实体')
 
+    # ----------  投资基金
+    round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation',
+                                                        string=u'基金轮次实体')
     round_financing_id = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
     foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金名称')
     the_amount_of_financing = fields.Float(string=u'本次融资金额')
@@ -57,11 +58,11 @@ class Cowin_project_subproject(models.Model):
     @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment', 'ownership_interest')
     def _compute_value(self):
         for rec in self:
-            rec.round_financing_and_foundation_id.round_financing_id = rec.round_financing_id
-            rec.round_financing_and_foundation_id.foundation_id = rec.foundation_id
-            rec.round_financing_and_foundation_id.the_amount_of_financing = rec.the_amount_of_financing
-            rec.round_financing_and_foundation_id.the_amount_of_investment = rec.the_amount_of_investment
-            rec.round_financing_and_foundation_id.ownership_interest = rec.ownership_interest
+            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
+            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
+            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
+            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
+            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
 
 
 
@@ -102,6 +103,16 @@ class Cowin_project_subproject(models.Model):
     attachment_note = fields.Char(string=u'附件说明')
 
 
+    # 投资决策委员会会议决议 这张字表需要使用该字段的一次影像!!!
+
+    trustee = fields.Many2one('hr.employee', string=u'董事')
+    supervisor = fields.Many2one('hr.employee', string=u'监事')
+
+    # 投决会决议 这张表使用的该字段的一次影像!!!
+    amount_of_entrusted_loan = fields.Float(string=u'委托贷款金额')
+
+
+
     @api.model
     def create(self, vals):
 
@@ -126,6 +137,9 @@ class Cowin_project_subproject(models.Model):
 
 
         sub_project = super(Cowin_project_subproject, self).create(vals)
+        sub_project._compute_value() # 将数据写入到指定的位置!!!
+
+
         target_sub_tache_entity.write({
             'res_id': sub_project.id,
             'view_or_launch': True,
@@ -184,14 +198,16 @@ class Cowin_project_subproject(models.Model):
         meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
 
         tem = meta_sub_project_entity.project_id.copy_data()[0]
-
+        res = {}
         for k, v in tem.iteritems():
             nk = 'default_' + k
-            tem[nk] = tem.pop(k)
-
+            if type(v) is tuple:
+                res[nk] = v[0]
+            else:
+                res[nk] = v
 
         return {
-            'name': self.name,
+            'name': self._name,
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[False, 'form']],
@@ -200,7 +216,7 @@ class Cowin_project_subproject(models.Model):
             'view_id': False,
             'res_id': self.id,
             'target': 'new',
-            'context': tem,
+            'context': res,
         }
 
 

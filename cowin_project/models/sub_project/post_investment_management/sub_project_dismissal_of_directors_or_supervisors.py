@@ -10,7 +10,7 @@ class sub_project_dismissal_of_directors_or_supervisors(models.Model):
         董事／监事解聘书
     '''
 
-    subproject_id = fields.Many2one('cowin_project.cowin_subproject')
+    subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
 
     name = fields.Char(related='subproject_id.name', string=u"项目名称")
     invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')

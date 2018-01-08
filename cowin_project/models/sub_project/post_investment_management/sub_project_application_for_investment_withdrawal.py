@@ -9,7 +9,7 @@ class sub_project_application_for_investment_withdrawal(models.Model):
         投资退出申请书
     '''
 
-    subproject_id = fields.Many2one('cowin_project.cowin_subproject')
+    subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
 
     name = fields.Char(related='subproject_id.name', string=u"项目名称")
     reporter = fields.Many2one('hr.employee', string=u'报告人')

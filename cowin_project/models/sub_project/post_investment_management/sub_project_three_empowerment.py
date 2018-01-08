@@ -8,7 +8,7 @@ class sub_project_three_empowerment(models.Model):
         三会授权书 
     '''
 
-    subproject_id = fields.Many2one('cowin_project.cowin_subproject')
+    subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
 
     name = fields.Char(related='subproject_id.name', string=u"项目名称")
 

@@ -8,13 +8,15 @@ class Cowin_project_subproject_conference_resolutions(models.Model):
 
     _name = 'cowin_project.sub_conference_resolutions'
 
-    subproject_id = fields.Many2one('cowin_project.cowin_subproject')
+    subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
 
-    name = fields.Char(related='subproject_id.name', string=u"项目名称")
-    project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
-    invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
+    # name = fields.Char(related='subproject_id.name', string=u"项目名称")
+    # project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
+    # invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
 
-
+    name = fields.Char(string=u"项目名称")
+    project_number = fields.Char(string=u'项目编号')
+    invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
 
     voting_committee = fields.Date(string=u'投决会日期')
 
@@ -84,3 +86,43 @@ class Cowin_project_subproject_conference_resolutions(models.Model):
         target_sub_tache_entity.update_sub_approval_settings()
 
         return res
+
+    def load_and_return_action(self, **kwargs):
+        tache_info = kwargs['tache_info']
+        # tache_info = self._context['tache']
+        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+
+        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+
+        sub_project_entity = meta_sub_project_entity.sub_project_ids[0]  # 获取子工程实体
+
+        # tem = meta_sub_project_entity.project_id.copy_data()[0]
+
+        common_fileds = [
+        ]
+
+        common_fileds.extend(['name', 'project_number', 'invest_manager_id'])
+
+        tem = sub_project_entity.read(common_fileds)[0]
+
+        res = {}
+
+        for k, v in tem.iteritems():
+            nk = 'default_' + k
+            if type(v) is tuple:
+                res[nk] = v[0]
+            else:
+                res[nk] = v
+
+        return {
+            'name': self._name,
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'views': [[False, 'form']],
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': False,
+            'res_id': self.id,
+            'target': 'new',
+            'context': res,
+        }

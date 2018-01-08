@@ -10,7 +10,7 @@ class sub_project_vote_on_major_matters(models.Model):
 
     '''
 
-    subproject_id = fields.Many2one('cowin_project.cowin_subproject')
+    subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
 
     name = fields.Char(related='subproject_id.name', string=u"项目名称")
     project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')

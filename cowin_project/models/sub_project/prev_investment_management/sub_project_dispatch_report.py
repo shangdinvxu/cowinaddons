@@ -9,7 +9,7 @@ class Cowin_project_subproject_dispatch_report(models.Model):
 
     _name = 'cowin_project.subt_dispatch_report'
 
-    subproject_id = fields.Many2one('cowin_project.cowin_subproject')
+    subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
 
     dispatch_report = fields.Many2many('ir.attachment', string=u'尽调报告')
 
@@ -76,3 +76,37 @@ class Cowin_project_subproject_dispatch_report(models.Model):
         target_sub_tache_entity.update_sub_approval_settings()
 
         return res
+
+
+
+    def load_and_return_action(self, **kwargs):
+        tache_info = kwargs['tache_info']
+        # tache_info = self._context['tache']
+        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+
+        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+
+        sub_project_entity = meta_sub_project_entity.sub_project_ids[0]  # 获取子工程实体
+
+        # tem = meta_sub_project_entity.project_id.copy_data()[0]
+
+        common_fileds = []
+
+        common_fileds.extend([])
+
+
+        res = {}
+
+
+        return {
+            'name': self._name,
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'views': [[False, 'form']],
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': False,
+            'res_id': self.id,
+            'target': 'new',
+            'context': res,
+        }

@@ -9,7 +9,7 @@ class sub_project_project_exit_vote(models.Model):
         项目退出会议表决票
     '''
 
-    subproject_id = fields.Many2one('cowin_project.cowin_subproject')
+    subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
 
     name = fields.Char(related='subproject_id.name', string=u"项目名称")
     project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
