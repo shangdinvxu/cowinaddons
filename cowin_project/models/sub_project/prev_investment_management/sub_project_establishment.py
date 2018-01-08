@@ -103,7 +103,7 @@ class Cowin_project_subproject(models.Model):
     attachment_note = fields.Char(string=u'附件说明')
 
 
-    # 投资决策委员会会议决议 这张字表需要使用该字段的一次影像!!!
+    # 投资决策委员会会议决议 这张字表需要使用该字段的一次影像!!!f
 
     trustee = fields.Many2one('hr.employee', string=u'董事')
     supervisor = fields.Many2one('hr.employee', string=u'监事')
