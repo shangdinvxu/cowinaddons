@@ -9,30 +9,38 @@
             <field name="model">cowin_project.sub_dismissal_of_directs_or_supers</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year">
-                    <group>
-
-                        <field name="name"/>
-                        <field name="invest_manager_id"/>
-                        <field name="trustee_id"/>
-                        <field name="appointment_time_begin_trustee"/>
-                        <field name="appointment_time_end_trustee"/>
-                        <field name="Tenure_trustee"/>
-                        <field name="supervisor_id"/>
-                        <field name="appointment_time_begin_supervisor"/>
-                        <field name="appointment_time_end_supervisor"/>
-                        <field name="Tenure_supervisor"/>
-                        <field name="managing_partner"/>
-
-                        <!--投资基金-->
-                        <field name="foundation_id"/>
-                        <field name="the_amount_of_investment"/>
-                        <field name="ownership_interest"/>
-                        <field name="round_financing_id"/>
-                        <field name="the_amount_of_financing"/>
-                        <!---->
-
-                    </group>
-
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"  readonly="1"/>
+                                <field name="invest_manager_id"  readonly="1"/>
+                                <field name="managing_partner"  readonly="1"/>
+                            </group>
+                            <group>
+                                 <!--投资基金-->
+                                <field name="foundation_id" readonly="1"/>
+                                <field name="the_amount_of_investment" readonly="1"/>
+                                <field name="ownership_interest" readonly="1"/>
+                                <field name="round_financing_id" readonly="1"/>
+                                <field name="the_amount_of_financing" readonly="1"/>
+                                <!---->
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="trustee_id"/>
+                                <field name="appointment_time_begin_trustee"/>
+                                <field name="appointment_time_end_trustee"/>
+                                <field name="Tenure_trustee"/>
+                            </group>
+                            <group>
+                                <field name="supervisor_id"/>
+                                <field name="appointment_time_begin_supervisor"/>
+                                <field name="appointment_time_end_supervisor"/>
+                                <field name="Tenure_supervisor"/>
+                            </group>
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>

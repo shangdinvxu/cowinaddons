@@ -8,27 +8,27 @@
             <field name="model">cowin_project.sub_sum_of_the_three_meeting</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year">
-                    <group>
-
-                        <field name="name"/>
-                        <field name="project_number"/>
-                        <field name="reporter"/>
-                        <field name="filing_date"/>
-                        <field name="form_of_mettings"/>
-                        <field name="mettings_summary"/>
-
-
-                        <!--投资基金-->
-                        <field name="foundation_id"/>
-                        <field name="the_amount_of_investment"/>
-                        <field name="ownership_interest"/>
-                        <field name="round_financing_id"/>
-                        <field name="the_amount_of_financing"/>
-                        <!---->
-
-
-                    </group>
-
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="project_number" readonly="1"/>
+                                <field name="reporter" readonly="1"/>
+                                <field name="filing_date" readonly="1"/>
+                                <field name="form_of_mettings"/>
+                                <field name="mettings_summary"/>
+                            </group>
+                            <group>
+                                <!--投资基金-->
+                                <field name="foundation_id" readonly="1"/>
+                                <field name="the_amount_of_investment" readonly="1"/>
+                                <field name="ownership_interest" readonly="1"/>
+                                <field name="round_financing_id" readonly="1"/>
+                                <field name="the_amount_of_financing" readonly="1"/>
+                                <!---->
+                            </group>
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>

@@ -9,29 +9,29 @@
             <field name="model">cowin_project.sub_sum_pro_withdraw_from_meeting</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year">
-                    <group>
-
-                        <field name="name"/>
-                        <field name="project_number"/>
-                        <field name="invest_manager_id"/>
-
-
-                        <!--投资基金-->
-                        <field name="foundation_id"/>
-                        <field name="the_amount_of_investment"/>
-                        <field name="ownership_interest"/>
-                        <field name="round_financing_id"/>
-                        <field name="the_amount_of_financing"/>
-                        <!---->
-
-                        <field name="conference_date"/>
-                        <field name="conference_recorder"/>
-                        <field name="checker"/>
-                        <field name="investment_decision_committee"/>
-                        <field name="conference_highlights"/>
-
-                    </group>
-
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"  readonly="1"/>
+                                <field name="project_number"  readonly="1"/>
+                                <field name="invest_manager_id"  readonly="1"/>
+                                <field name="conference_date"/>
+                                <field name="conference_recorder"/>
+                                <field name="checker"/>
+                                <field name="investment_decision_committee"  readonly="1"/>
+                                <field name="conference_highlights"/>
+                            </group>
+                            <group>
+                                <!--投资基金-->
+                                <field name="foundation_id" readonly="1"/>
+                                <field name="the_amount_of_investment" readonly="1"/>
+                                <field name="ownership_interest" readonly="1"/>
+                                <field name="round_financing_id" readonly="1"/>
+                                <field name="the_amount_of_financing" readonly="1"/>
+                                <!---->
+                            </group>
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>
