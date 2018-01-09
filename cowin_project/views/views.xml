@@ -486,6 +486,8 @@
         <menuitem name="投后管理" id="cowin_project.menu_2" parent="cowin_project.menu_root"/>
         <menuitem name="项目查询" id="cowin_project.menu_3" parent="cowin_project.menu_root"
                   action="cowin_project.action_window"/>
+        <menuitem name="投票" id="cowin_project.menu_4" parent="cowin_project.menu_root"/>
+
         <!--<menuitem name="风险管理" id="cowin_project.menu_4" parent="cowin_project.menu_root"/>-->
         <!-- actions -->
         <menuitem name="项目流程" id="cowin_project.menu_11" parent="cowin_project.menu_1"
@@ -499,6 +501,12 @@
 
         <menuitem name="投后审批" id="cowin_project.menu_23" parent="cowin_project.menu_2"
                   action="action_follow_up_invest_approval"/>
+
+        <menuitem name="我的投票" id="cowin_project.menu_23" parent="cowin_project.menu_2"/>
+                  <!--action="action_follow_up_invest_approval"/>-->
+
+        <menuitem name="投票查询" id="cowin_project.menu_23" parent="cowin_project.menu_2"/>
+                  <!--action="action_follow_up_invest_approval"/>-->
 
     </data>
 </openerp>

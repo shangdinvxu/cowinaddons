@@ -170,7 +170,7 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
         to_remove = prev - after
 
         # 删除之前存在的新添加的基金轮次
-        for round_financing_and_Foundation in to_add:
+        for round_financing_and_Foundation in to_remove:
             round_financing_and_Foundation.meta_sub_project_id.unlink()
 
         # 接下来这条数据的作用在于对轮次基金实体中的meta_sub_project_id做关联对应
