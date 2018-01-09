@@ -633,7 +633,8 @@ class Cowin_project(models.Model):
         kwargs['prev_or_post_investment'] = False
         return self._get_info(**kwargs)
 
-    def rpc_new_tache(self, **kwargs):
+    # 投前新增
+    def rpc_new_tache_prev(self, **kwargs):
         meta_sub_project_id = kwargs['meta_sub_project_id']
         sub_tache_ids = kwargs['sub_tache_ids']
 
@@ -650,6 +651,170 @@ class Cowin_project(models.Model):
         else:
 
             pass
+
+
+
+    # 投后新增
+    def rpc_new_tache_post(self, **kwargs):
+        meta_sub_project_id = kwargs['meta_sub_project_id']
+        sub_tache_ids = kwargs['sub_tache_ids']
+
+        if len(sub_tache_ids) > 1:
+            return self.new_four_sub_tache_post(
+                meta_sub_project_id=meta_sub_project_id,
+                sub_tache_ids=sub_tache_ids,)
+
+        elif len(sub_tache_ids) == 1:
+
+            return self.new_sub_tache_post(
+                meta_sub_project_id=meta_sub_project_id,
+                sub_tache_id=sub_tache_ids[0],)
+        else:
+
+            pass
+
+    # 新增(一个)子环节
+    def new_sub_tache_post(self, **kwargs):
+
+        meta_sub_project_id = kwargs['meta_sub_project_id']
+        current_sub_tache_id = kwargs['sub_tache_id']
+
+        meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
+        sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(current_sub_tache_id)
+        current_tache_entity = sub_tache_entity.tache_id
+
+        # 获取当前子环节所有的兄弟环节
+        brother_sub_tache_entities = meta_sub_project_entity.sub_tache_ids & current_tache_entity.tache_status_ids
+
+        # brother_sub_tache_entities = brother_sub_tache_entities
+
+        index = len(brother_sub_tache_entities) + 1
+        is_last = True
+
+        for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
+
+            if sub_tache_e.parent_id == sub_tache_entity:
+                is_last = False
+                # 新增子环节
+
+                new_sub_tache_entity = brother_sub_tache_entities.create({
+                    'name': brother_sub_tache_entities[0].name + ' ' + str(index),
+                    'meta_sub_project_id': brother_sub_tache_entities[-1].meta_sub_project_id.id,
+                    'tache_id': brother_sub_tache_entities[-1].tache_id.id,
+                    'order_parent_id': brother_sub_tache_entities[-1].id,
+                    'parent_id': brother_sub_tache_entities[0].id,
+                    'is_unlocked': True,
+                })
+
+                sub_tache_e.write({
+                    'order_parent_id': new_sub_tache_entity.id,
+                })
+
+                break
+
+        if is_last:
+            # index = brother_sub_tache_entities[-1].index + 1
+            brother_sub_tache_entities.create({
+                'name': brother_sub_tache_entities[0].name + ' ' + str(index),
+                'meta_sub_project_id': brother_sub_tache_entities[-1].meta_sub_project_id.id,
+                'tache_id': brother_sub_tache_entities[-1].tache_id.id,
+                'order_parent_id': brother_sub_tache_entities[-1].id,
+                'parent_id': brother_sub_tache_entities[-1].id,
+                'is_unlocked': True,
+            })
+
+        return self.rpc_get_post_info(meta_project_id=meta_sub_project_id)
+
+
+    def new_four_sub_tache_post(self, **kwargs):
+        meta_sub_project_id = kwargs['meta_sub_project_id']
+        sub_tache_ids = kwargs['sub_tache_ids']
+
+        meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
+
+        to_do_list = []
+
+
+        # 拿出当前最后的一个依赖的子环节实体
+        current_last_sub_tache_entity = None
+
+
+        for current_sub_tache_id in sub_tache_ids:
+
+            sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(current_sub_tache_id)
+            current_tache_entity = sub_tache_entity.tache_id
+
+
+            # 获取当前子环节所有的兄弟环节
+            brother_sub_tache_entities = meta_sub_project_entity.sub_tache_ids & current_tache_entity.tache_status_ids
+
+            # 拿出最后的一个依赖
+            if current_sub_tache_id == sub_tache_ids[-1]:
+                current_last_sub_tache_entity = brother_sub_tache_entities[-1]
+            # brother_sub_tache_entities = brother_sub_tache_entities
+
+            index = len(brother_sub_tache_entities) + 1
+
+            new_sub_tache_entity = brother_sub_tache_entities.create({
+                'name': brother_sub_tache_entities[0].name + ' ' + str(index),
+                'meta_sub_project_id': brother_sub_tache_entities[-1].meta_sub_project_id.id,
+                'tache_id': brother_sub_tache_entities[-1].tache_id.id,
+                # 'order_parent_id': brother_sub_tache_entities[-1].id,
+                # 'parent_id': brother_sub_tache_entities[0].id,
+                # 'is_unlocked': True,
+            })
+
+            # sub_tache_e.write({
+            #     'order_parent_id': new_sub_tache_entity.id,
+            # })
+
+            to_do_list.append(new_sub_tache_entity)
+
+
+        # 默认情况下第一个需要解锁
+        to_do_list[0].write({
+            'is_unlocked': True,
+        })
+
+        # 默认情况下,把第新增条件隐藏
+        to_do_list[-1].write({
+            'once_or_more': False,
+        })
+
+        # 列表逆序,数据写入依赖条件
+        revered_to_list = to_do_list[::-1]
+
+
+
+        # 默认构建依赖关系
+        for i, sub_tache_entity in enumerate(revered_to_list[:-1]):
+            sub_tache_entity.write({
+                'parent_id': revered_to_list[i+1].id,
+                'order_parent_id': revered_to_list[i+1].id,
+            })
+
+
+
+        to_do_list[0].write({
+            'parent_id': current_last_sub_tache_entity.id,
+            'order_parent_id': current_last_sub_tache_entity.id,
+        })
+
+
+
+        remain_tachetities = set(meta_sub_project_entity.sub_tache_ids) - set(to_do_list)
+
+
+
+
+        for sub_tache_e in remain_tachetities:
+
+            if sub_tache_e.order_parent_id == current_last_sub_tache_entity:
+                sub_tache_e.write({
+                    'order_parent_id': to_do_list[-1].id,
+                })
+
+        return self.rpc_get_post_info(meta_project_id=meta_sub_project_id)
 
 
 
