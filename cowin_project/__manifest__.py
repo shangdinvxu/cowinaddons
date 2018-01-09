@@ -35,6 +35,7 @@
         'security/sub_project/post_investment_management/ir.model.access.csv',
         'views/init_channel.xml',
         'views/views.xml',
+        'views/init_vote.xml',
         'views/templates.xml',
 
         #  prev_investment_management
