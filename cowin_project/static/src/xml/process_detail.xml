@@ -109,7 +109,7 @@
                             </t>
                             <t t-if="obj.is_launch_again==false ">
                                 <t t-if="obj.view_or_launch==true">
-                                    <span class="view_tache"><a href="javascript:void(0)">查看</a></span>
+                                    <span class="view_tache"><a href="javascript:void(0)" style="color:#00B0DD">查看</a></span>
                                     <t t-if="obj.once_or_more==true">
                                         <span class="add_new_tache"><a href="javascript:void(0)">新增</a></span>
                                     </t>
@@ -119,7 +119,7 @@
                                 </t>
                             </t>
                             <t t-if="!obj.is_launch_again and obj.parent_id==false">
-                                <span class="view_tache"><a href="javascript:void(0)">查看</a></span>
+                                <span class="view_tache"><a href="javascript:void(0)" style="color:#00B0DD">查看</a></span>
                             </t>
                             <!--<t t-if="obj.view_or_launch==true">-->
                                 <!--<span class="view_tache"><a href="javascript:void(0)">查看</a></span>-->

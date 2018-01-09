@@ -248,7 +248,7 @@
     color: #00B0DD;
 }
 .process_data_main_wrap .process_data_item_line .button_wrap>span>a{
-    color: #00B0DD!important;
+    color: rgba(255, 102, 51, 1);
 }
 #process_tab_content .process_data_main_wrap .process_data_item_line .button_wrap span{
     position: initial;
