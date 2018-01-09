@@ -3,6 +3,23 @@
         <!--投资决策委员会会议表决票-->
         <!--投资决策委员会会议表决票的form视图-->
 
+        <record model="ir.ui.view" id="sub_project_conference_resolutions_list">
+            <field name="name">cowin_project.sub_conference_resolutions form</field>
+            <field name="model">cowin_project.sub_conference_resolutions</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" delete="false">
+                    <field name="name"/>
+                    <field name="project_number"/>
+                    <field name="foundation_id"/>
+                    <field name="round_financing_id"/>
+                    <field name="the_amount_of_investment"/>
+                    <field name="the_amount_of_financing"/>
+                    <field name="ownership_interest"/>
+                </tree>
+            </field>
+        </record>
+
+
 
         <record model="ir.ui.view" id="sub_project_conference_resolutions_form">
             <field name="name">cowin_project.sub_conference_resolutions form</field>
