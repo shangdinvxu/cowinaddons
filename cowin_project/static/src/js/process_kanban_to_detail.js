@@ -78,7 +78,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             Dialog.confirm(this, _t("确定增加这条环节?"), {
                 confirm_callback: function() {
                     return new Model("cowin_project.cowin_project")
-                        .call("rpc_new_tache",[[self.id]],data)
+                        .call("rpc_new_tache_prev",[[self.id]],data)
                         .then(function (result) {
                             result.no_initate = self.no_initate
                             console.log(result);

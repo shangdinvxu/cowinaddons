@@ -658,7 +658,7 @@ class Cowin_project(models.Model):
     def new_sub_tache(self, **kwargs):
 
         meta_sub_project_id = kwargs['meta_sub_project_id']
-        current_sub_tache_id = kwargs['sub_tache_id']
+        current_sub_tache_id = kwargs['sub_tache_ids']
 
         meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
         sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(current_sub_tache_id)
