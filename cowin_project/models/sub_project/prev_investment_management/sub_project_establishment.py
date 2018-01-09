@@ -98,7 +98,8 @@ class Cowin_project_subproject(models.Model):
     contract_phone = fields.Char(string=u'联系电话')
     contract_email = fields.Char(string=u'Email')
 
-    attachment_ids = fields.Many2many('ir.attachment', string=u"附件")
+    # attachment_ids = fields.Many2many('ir.attachment', string=u"附件")
+    attachment_ids = fields.Many2many('ir.attachment', 'cowin_subproject_attachment_rel', string=u"附件")
 
 
     attachment_note = fields.Char(string=u'附件说明')

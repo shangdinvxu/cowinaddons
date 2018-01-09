@@ -48,7 +48,8 @@ class Cowin_project_subproject_project_entrusted_loan_application_form(models.Mo
     #     related='subproject_id.ownership_interest', string=u'股份比例')
     # ---------------
 
-    list_of_examination_and_approval_documents = fields.Many2many('ir.attachment', string=u'审批文件清单')
+    # list_of_examination_and_approval_documents = fields.Many2many('ir.attachment', string=u'审批文件清单')
+    list_of_examination_and_approval_documents = fields.Many2many('ir.attachment', 'sub_entrusted_loan_app_form', string=u'审批文件清单')
 
     time_of_application_for_entrusted_loan = fields.Date(string=u'委托贷款申请时间')
     amount_of_application_for_entrusted_loan = fields.Float(string=u'委托贷款申请金额')

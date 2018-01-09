@@ -48,7 +48,8 @@ class Cowin_project_subproject_application_form_for_project_investment(models.Mo
     #     related='subproject_id.ownership_interest', string=u'股份比例')
     # --------------
 
-    list_of_examination_and_approval_documents = fields.Many2many('ir.attachment', string=u'审批文件清单')
+    # list_of_examination_and_approval_documents = fields.Many2many('ir.attachment', string=u'审批文件清单')
+    list_of_examination_and_approval_documents = fields.Many2many('ir.attachment', 'sub_app_form_pro_investment_attachment_rel', string=u'审批文件清单')
 
     @api.model
     def create(self, vals):

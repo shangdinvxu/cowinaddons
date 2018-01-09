@@ -65,7 +65,8 @@ class Cowin_project_subproject_investment_decision_application(models.Model):
     company_investment_role = fields.Selection([(1, u'单一投资人'), (2, u'主导投资人'), (3, u'跟投')],
                                                string=u'本公司的投资角色')
 
-    decision_file_list = fields.Many2many('ir.attachment', string=u'决策文件清单')
+    # decision_file_list = fields.Many2many('ir.attachment', string=u'决策文件清单')
+    decision_file_list = fields.Many2many('ir.attachment', 'sub_invest_decision_app_attachment_rel', string=u'决策文件清单')
 
     investment_decision_Committee_held_time = fields.Date(string=u'投资决策委员会召开时间')
 

@@ -54,11 +54,11 @@ class Cowin_project_subproject_project_data_archiving(models.Model):
 
 
 
-    investment_decision_process_information = fields.Many2many('ir.attachment', string=u'投资决策流程资料')
-    relevant_legal_documents_and_materials = fields.Many2many('ir.attachment', string=u'相关法律文件资料')
-    government_approval_materials = fields.Many2many('ir.attachment', string=u'政府审批资料')
-    payment_process_information = fields.Many2many('ir.attachment', string=u'付款流程资料')
-    business_change_data = fields.Many2many('ir.attachment', string=u'工商变更资料')
+    investment_decision_process_information = fields.Many2many('ir.attachment', 'investment_decision_process_information_attachment_rel', string=u'投资决策流程资料')
+    relevant_legal_documents_and_materials = fields.Many2many('ir.attachment', 'relevant_legal_documents_and_materials_attachment_rel', string=u'相关法律文件资料')
+    government_approval_materials = fields.Many2many('ir.attachment', 'government_approval_materials_attachment_rel', string=u'政府审批资料')
+    payment_process_information = fields.Many2many('ir.attachment', 'payment_process_information_attachment_rel', string=u'付款流程资料')
+    business_change_data = fields.Many2many('ir.attachment', 'business_change_data_attachment_rel', string=u'工商变更资料')
 
     @api.model
     def create(self, vals):

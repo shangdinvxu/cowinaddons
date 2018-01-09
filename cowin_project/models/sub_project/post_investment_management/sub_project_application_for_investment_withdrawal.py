@@ -60,7 +60,8 @@ class sub_project_application_for_investment_withdrawal(models.Model):
             rec.subproject_id.supervisor_id = rec.supervisor_id
             rec.subproject_id.trustee_id = rec.trustee_id
 
-    decision_file_list = fields.Many2many('ir.attachment', string=u'决策文件清单')
+    # decision_file_list = fields.Many2many('ir.attachment', string=u'决策文件清单')
+    decision_file_list = fields.Many2many('ir.attachment', 'sub_app_invest_withdrawal_attachment_rel', string=u'决策文件清单')
 
     exit_plan = fields.Text(string=u'退出方案')
 

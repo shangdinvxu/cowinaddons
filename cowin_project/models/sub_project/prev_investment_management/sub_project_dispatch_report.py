@@ -11,7 +11,7 @@ class Cowin_project_subproject_dispatch_report(models.Model):
 
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
 
-    dispatch_report = fields.Many2many('ir.attachment', string=u'尽调报告')
+    dispatch_report = fields.Many2many('ir.attachment', 'subt_dispatch_report_attachment_rel', string=u'尽调报告')
 
     attachment_note = fields.Char(string=u'附件说明')
 

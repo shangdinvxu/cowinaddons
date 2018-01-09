@@ -81,7 +81,8 @@ class Cowin_project(models.Model):
     contract_phone = fields.Char(string=u'联系电话')
     contract_email = fields.Char(string=u'Email')
 
-    attachment_ids = fields.Many2many('ir.attachment', string=u"附件")
+    # attachment_ids = fields.Many2many('ir.attachment', string=u"附件")
+    attachment_ids = fields.Many2many('ir.attachment', 'cowin_project_attachment_rel', string=u"附件")
 
     prev_or_post_investment = fields.Boolean(string=u'投前/投后', default=True)
 

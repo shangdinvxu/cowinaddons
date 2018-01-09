@@ -13,7 +13,7 @@
             <field name="name">项目合伙人</field>
         </record>
         <record id="init_approval_flow_operation_role_5" model="cowin_common.approval_role">
-            <field name="name">投资决策委员会</field>
+            <field name="name">投资决策委员</field>
         </record>
         <record id="init_approval_flow_operation_role_6" model="cowin_common.approval_role">
             <field name="name">风控总监</field>

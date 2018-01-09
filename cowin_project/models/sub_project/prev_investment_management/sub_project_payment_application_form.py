@@ -22,7 +22,8 @@ class Cowin_project_subproject_payment_application_form(models.Model):
     date_of_application = fields.Date(string=u'申请日期')
 
 
-    list_of_examination_and_approval_documents = fields.Many2many('ir.attachment', string=u'审批文件')
+    # list_of_examination_and_approval_documents = fields.Many2many('ir.attachment', string=u'审批文件')
+    list_of_examination_and_approval_documents = fields.Many2many('ir.attachment', 'sub_payment_app_form_attachment_rel', string=u'审批文件')
 
     monetary_unit = fields.Char(string=u'货币单位')
     the_payment_amount = fields.Float(string=u'本期付款金额')
