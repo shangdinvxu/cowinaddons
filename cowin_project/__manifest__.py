@@ -24,7 +24,6 @@
 
     # always loaded
     'data': [
-
         'security/project_security.xml',
         'security/ir.model.access.csv',
         'security/dependencies_many2many/ir.model.access.csv',
