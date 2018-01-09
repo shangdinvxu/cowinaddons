@@ -32,6 +32,18 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
             'click .view_tache':'view_tache_func',
             'click .manage_team_btn':'manage_team_fun',
             'click .button_wrap .add_new_tache':'add_new_tache_func',
+            'click .operate_records':'operate_records_func',
+        },
+        //操作记录
+        operate_records_func:function () {
+            var self = this;
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_get_operation_record",[self.id])
+                    .then(function (result) {
+                        console.log(result);
+                        $('#process_record').html('');
+                        $('#process_record').append(QWeb.render('operate_records_tmpl', {result: result}))
+                    })
         },
         //环节增加
         add_new_tache_func:function (e) {
