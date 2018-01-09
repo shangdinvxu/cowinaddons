@@ -154,56 +154,62 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
 
 
 
-    # @api.multi
-    # def write(self, vals):
-    #
-    #     # 获取之前得到的基金轮次
-    #     prev = set(self.round_financing_and_Foundation_ids)
-    #
-    #     result = super(Cowin_project_subproject_investment_decision_committee_meeting_resolution, self).write(vals)
-    #
-    #     # 获取之后得到的基金轮次
-    #     after = set(self.round_financing_and_Foundation_ids)
-    #
-    #
-    #     diffs = after - prev
-    #
-    #
-    #     # 接下来这条数据的作用在于对轮次基金实体中的meta_sub_project_id做关联对应
-    #     for round_financing_and_Foundation in diffs:
-    #         # 创建元子工程
-    #         meta_sub_project = self.env['cowin_project.meat_sub_project'].create({
-    #             'project_id': self.subproject_id.meta_sub_project_id.project_id.id,
-    #         })
-    #
-    #
-    #         round_financing_and_Foundation.write({
-    #             'meta_sub_project_id': meta_sub_project.id,
-    #         })
-    #
-    #
-    #
-    #     # 处理暂缓的情况!!!
-    #     tache_info = self._context['tache']
-    #
-    #     meta_sub_project_id = int(tache_info['meta_sub_project_id'])
-    #
-    #     # 校验meta_sub_project所对应的子工程只能有一份实体
-    #     meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
-    #
-    #     sub_tache_id = int(tache_info['sub_tache_id'])
-    #
-    #     target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
-    #
-    #     target_sub_tache_entity.write({
-    #         'is_launch_again': False,
-    #     })
-    #
-    #     # 判断 发起过程 是否需要触发下一个子环节
-    #     # target_sub_tache_entity.check_or_not_next_sub_tache()
-    #     target_sub_tache_entity.update_sub_approval_settings()
-    #
-    #     return result
+    @api.multi
+    def write(self, vals):
+
+        # 获取之前得到的基金轮次
+        prev = set(self.round_financing_and_Foundation_ids)
+
+        result = super(Cowin_project_subproject_investment_decision_committee_meeting_resolution, self).write(vals)
+
+        # 获取之后得到的基金轮次
+        after = set(self.round_financing_and_Foundation_ids)
+
+
+        to_add = after - prev
+        to_remove = prev - after
+
+        # 删除之前存在的新添加的基金轮次
+        for round_financing_and_Foundation in to_add:
+            round_financing_and_Foundation.meta_sub_project_id.unlink()
+
+        # 接下来这条数据的作用在于对轮次基金实体中的meta_sub_project_id做关联对应
+        for round_financing_and_Foundation in to_add:
+            # 创建元子工程
+            meta_sub_project = self.env['cowin_project.meat_sub_project'].create({
+                'project_id': self.subproject_id.meta_sub_project_id.project_id.id,
+            })
+
+
+            round_financing_and_Foundation.write({
+                'meta_sub_project_id': meta_sub_project.id,
+            })
+
+
+
+
+
+        # 处理暂缓的情况!!!
+        tache_info = self._context['tache']
+
+        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+
+        # 校验meta_sub_project所对应的子工程只能有一份实体
+        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+
+        sub_tache_id = int(tache_info['sub_tache_id'])
+
+        target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
+
+        target_sub_tache_entity.write({
+            'is_launch_again': False,
+        })
+
+        # 判断 发起过程 是否需要触发下一个子环节
+        # target_sub_tache_entity.check_or_not_next_sub_tache()
+        target_sub_tache_entity.update_sub_approval_settings()
+
+        return result
 
 
 

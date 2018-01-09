@@ -1651,7 +1651,7 @@ class Cowin_project(models.Model):
         sub_tache_id = tache_info['sub_tache_id']
         meta_sub_project_id = tache_info['meta_sub_project_id']
 
-        meta_sub_project_entity = self.meta_sub_project_ids.sub_tache_ids.browse(meta_sub_project_id)
+        meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
         sub_tache_entity = meta_sub_project_entity.browse(sub_tache_id)
 
 
