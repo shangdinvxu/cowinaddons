@@ -55,7 +55,7 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
             Dialog.confirm(this, _t("确定增加这条环节?"), {
                 confirm_callback: function() {
                     return new Model("cowin_project.cowin_project")
-                        .call("rpc_get_post_info",[[self.id]],data)
+                        .call("new_sub_tache_post",[[self.id]],data)
                         .then(function (result) {
                             result.no_initate = self.no_initate
                             console.log(result);
