@@ -19,7 +19,7 @@
                                     <span class="col-xs-4">项目编号：</span><span class="col-xs-8" t-field="o.project_number"></span>
                                 </div>
                                 <div style="overflow:hidden">
-                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_id"></span>
+                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_ids"></span>
                                 </div>
                                 <div style="overflow:hidden">
                                     <span class="col-xs-4">投决会日期：</span><span class="col-xs-8" t-field="o.voting_committee"></span>
@@ -53,7 +53,7 @@
                                     <span class="col-xs-4">委托贷款金额：</span><span class="col-xs-8" t-field="o.amount_of_entrusted_loan"></span>
                                 </div>
                                 <div style="overflow:hidden">
-                                    <span class="col-xs-4">投资决策委员会主席：</span><span class="col-xs-8" t-field="o.chairman_of_investment_decision_committee"></span>
+                                    <span class="col-xs-4">投资决策委员会主席：</span><span class="col-xs-8" t-field="o.chairman_of_investment_decision_committee_ids"></span>
                                 </div>
 
                             </div>

@@ -19,7 +19,7 @@
                                     <span class="col-xs-4">项目编号：</span><span class="col-xs-8" t-field="o.project_number"></span>
                                 </div>
                                 <div style="overflow:hidden">
-                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_id"></span>
+                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_ids"></span>
                                 </div>
                                 <div style="overflow:hidden">
                                     <span class="col-xs-4">申请日期：</span><span class="col-xs-8" t-field="o.date_of_application"></span>

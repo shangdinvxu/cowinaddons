@@ -19,7 +19,7 @@
                                     <span class="col-xs-4">项目编号：</span><span class="col-xs-8" t-field="o.project_number"></span>
                                 </div>
                                 <div style="overflow:hidden">
-                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_id"></span>
+                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_ids"></span>
                                 </div>
                                 <div style="overflow:hidden">
                                     <span class="col-xs-4">投决会日期：</span><span class="col-xs-8" t-field="o.voting_committee"></span>
@@ -36,7 +36,7 @@
                                     <span class="col-xs-4">表决意见：</span><span class="col-xs-8" t-field="o.voting_opinion"></span>
                                 </div>
                                 <div style="overflow:hidden">
-                                    <span class="col-xs-4">表决人：</span><span class="col-xs-8" t-field="o.voter"></span>
+                                    <span class="col-xs-4">表决人：</span><span class="col-xs-8" t-field="o.voter_id"></span>
                                 </div>
 
                             </div>
@@ -49,7 +49,7 @@
     </template>
 
     <report
-        id="action_report_setup_project_opinion"
+        id="action_report_conference_resolutions"
         string="投委会会议表决票"
         model="cowin_project.sub_conference_resolutions"
         report_type="qweb-pdf"

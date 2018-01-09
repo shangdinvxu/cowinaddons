@@ -19,7 +19,7 @@
                                     <span class="col-xs-4">项目编号：</span><span class="col-xs-8" t-field="o.project_number"></span>
                                 </div>
                                 <div style="overflow:hidden">
-                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_id"></span>
+                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_ids"></span>
                                 </div>
                                 <div style="overflow:hidden">
                                     <span class="col-xs-4">拜访日期：</span><span class="col-xs-8" t-field="o.visit_date"></span>
@@ -66,7 +66,7 @@
 
     <report
         id="action_report_search_visit_record"
-        string="立项意见书"
+        string="尽调拜访记录"
         model="cowin_project.sub_call_up_record"
         report_type="qweb-pdf"
         name="cowin_project.report_search_visit_record"

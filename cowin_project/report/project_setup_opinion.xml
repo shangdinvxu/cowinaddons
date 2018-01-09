@@ -19,7 +19,7 @@
                                     <span class="col-xs-4">项目编号：</span><span class="col-xs-8" t-field="o.project_number"></span>
                                 </div>
                                 <div style="overflow:hidden">
-                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_id"></span>
+                                    <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_ids"></span>
                                 </div>
                                 <div style="overflow:hidden">
                                     <span class="col-xs-4">立项日期：</span><span class="col-xs-8" t-field="o.date_of_project"></span>
@@ -41,15 +41,6 @@
                                 </div>
                                 <div style="overflow:hidden">
                                     <span class="col-xs-4">项目小组成员：</span><span class="col-xs-8" t-field="o.project_mumbers"></span>
-                                </div>
-                                <div style="overflow:hidden">
-                                    <span class="col-xs-4">项目合伙人表决意见：</span><span class="col-xs-8" t-field="o.partner_opinion"></span>
-                                </div>
-                                <div style="overflow:hidden">
-                                    <span class="col-xs-4">业务总监表决意见：</span><span class="col-xs-8" t-field="o.business_director_option"></span>
-                                </div>
-                                <div style="overflow:hidden">
-                                    <span class="col-xs-4">投资决策委员会意见：</span><span class="col-xs-8" t-field="o.policy_making_committee"></span>
                                 </div>
 
                             </div>

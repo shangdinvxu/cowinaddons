@@ -22,7 +22,7 @@
                                     <span class="col-xs-4">投资经理：</span><span class="col-xs-8" t-field="o.invest_manager_id"></span>
                                 </div>
                                 <div style="overflow:hidden">
-                                    <span class="col-xs-4">董事：</span><span class="col-xs-8" t-field="o.trustee"></span>
+                                    <span class="col-xs-4">董事：</span><span class="col-xs-8" t-field="o.trustee_id"></span>
                                 </div>
                                 <div style="overflow:hidden">
                                     <span class="col-xs-4">开始日期：</span><span class="col-xs-8" t-field="o.appointment_time_begin_trustee"></span>
