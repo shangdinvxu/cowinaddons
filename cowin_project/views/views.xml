@@ -456,14 +456,15 @@
 
 
         <!-- 我的投票 -->
-        <record model="ir.actions.act_window" id="sub_conference_resolutions_action_window">
-            <field name="name">我的投票</field>
-            <field name="res_model">cowin_project.sub_conference_resolutions</field>
-             <field name="view_ids"
-                   eval="[(5, 0, 0),
-                          (0, 0, {'view_mode': 'tree', 'view_id': ref('sub_project_conference_resolutions_list')})]"/>
-            <field name="view_mode">tree,form</field>
-        </record>
+        <!--<record model="ir.actions.act_window" id="sub_conference_resolutions_action_window">-->
+            <!--<field name="name">我的投票</field>-->
+            <!--<field name="res_model">cowin_project.sub_conference_resolutions</field>-->
+
+             <!--<field name="view_ids"-->
+                   <!--eval="[(5, 0, 0),-->
+                          <!--(0, 0, {'view_mode': 'tree', 'view_id': ref('sub_project_conference_resolutions_list')})]"/>-->
+            <!--<field name="view_mode">tree,form</field>-->
+        <!--</record>-->
 
         <!--开始为菜单构建用户组/角色-->
 
@@ -512,11 +513,11 @@
         <menuitem name="投后审批" id="cowin_project.menu_23" parent="cowin_project.menu_2"
                   action="action_follow_up_invest_approval"/>
 
-        <menuitem name="我的投票" id="cowin_project.menu_24" parent="cowin_project.menu_4"
-                  action="sub_conference_resolutions_action_window"/>
-
-        <menuitem name="投票查询" id="cowin_project.menu_25" parent="cowin_project.menu_4"
-                  action="sub_conference_resolutions_action_window"/>
-
+        <!--<menuitem name="我的投票" id="cowin_project.menu_24" parent="cowin_project.menu_4"-->
+                  <!--action="sub_conference_resolutions_action_window"/>-->
+<!---->
+        <!--<menuitem name="投票查询" id="cowin_project.menu_25" parent="cowin_project.menu_4"-->
+                  <!--action="sub_conference_resolutions_action_window"/>-->
+<!---->
     </data>
 </openerp>
