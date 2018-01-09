@@ -280,9 +280,9 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             }
 
             if($(target).parents('tr').attr('more') == 'true'){
-                $('.launch_more input').attr('checked',true)
+                $('.launch_more input').prop('checked',true)
             }else {
-                $('.launch_more input').attr('checked',false)
+                $('.launch_more input').prop('checked',false)
             }
             $('.current_tache').val($(target).parents('.operate_wrap').prevAll('.tache_name').html());
             $('.condition_wrap option').each(function () {

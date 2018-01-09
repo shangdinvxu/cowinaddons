@@ -503,7 +503,5 @@
         <menuitem name="投后审批" id="cowin_project.menu_23" parent="cowin_project.menu_2"
                   action="action_follow_up_invest_approval"/>
 
-
-
     </data>
 </openerp>

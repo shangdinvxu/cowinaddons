@@ -39,10 +39,16 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .manage_team_edit':'manage_team_edit_func'
         },
         //编辑项目管理团队
-        manage_team_edit_func:function () {
+        manage_team_edit_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
             var self = this;
+            var show_meta_sub_pro_id = $(target).parents('.header_line').attr('meta_sub_pro_id');
             $('.manage_team_edit_wrap').remove();
-            $('#process_data .process_data_main_wrap').append(QWeb.render('manage_team_edit_page', {result: self.manage_team_data,edit:true}))
+            $('#process_data .process_data_main_wrap').append(QWeb.render('manage_team_edit_page', {result: self.manage_team_data,edit:true}));
+            $('.manage_team_edit_wrap .add_new_content .header_line').hide();
+            $('.manage_team_edit_wrap .add_new_content .detail_lines_wrap').hide();
+            $('.manage_team_edit_wrap div[meta_sub_pro_id='+ parseInt(show_meta_sub_pro_id) +']').show()
         },
         //操作记录
         operate_records_func:function () {
@@ -100,14 +106,16 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             $('.copy_sel option:selected').each(function () {
                 self.copy_meta_sub_pro_id = parseInt($(this).attr('data-id'));
             })
-            console.log(self)
             return new Model("cowin_project.cowin_project")
                     .call("rpc_copy_permission_configuration",[[self.id]],{current_meta_sub_pro_id:self.current_meta_sub_pro_id,copy_meta_sub_pro_id:self.copy_meta_sub_pro_id})
                     .then(function (result) {
                         console.log(result);
                         $('.manage_team_edit_wrap .add_new_content').html('');
                         $('.manage_team_edit_wrap .add_new_content').append(QWeb.render('project_manage_team_tmp', {result: result,edit:true}));
-                        $('.copy_wrap').remove()
+                        $('.copy_wrap').remove();
+                        $('.manage_team_edit_wrap .add_new_content .header_line').hide();
+                        $('.manage_team_edit_wrap .add_new_content .detail_lines_wrap').hide();
+                        $('.manage_team_edit_wrap div[meta_sub_pro_id='+ parseInt(self.current_meta_sub_pro_id) +']').show();
                     })
         },
         //复制已有模板
