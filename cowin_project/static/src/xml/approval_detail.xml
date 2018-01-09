@@ -92,7 +92,7 @@
                             <span class="to_approval" style="color:red"><a href="javascript:void(0)">审核</a></span>
                         </t>
                         <t t-elif="obj.approval_status.approval_view_or_launch==false">
-                            <span class="view_approval"><a href="javascript:void(0)">查看</a></span>
+                            <span class="view_approval"><a href="javascript:void(0)" style="color:#00B0DD">查看</a></span>
                         </t>
                         <t t-else="">
 
