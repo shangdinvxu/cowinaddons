@@ -2,33 +2,34 @@
     <data>
 
 
-        <!--投资决策委员会会议表决票-->
-        <!--投资决策委员会会议表决票的tree视图-->
-        <record model="ir.ui.view" id="sub_project_prev_post_vote_poll_list">
-            <field name="name">cowin_project.prev_post_vote_poll form</field>
-            <field name="model">cowin_project.prev_post_vote_poll</field>
-            <field name="arch" type="xml">
-                <tree create="false" edit="false" delete="false">
-                    <field name="name"/>
-                    <field name="project_number"/>
-                    <field name="foundation_id"/>
-                    <field name="round_financing_id"/>
-                    <field name="the_amount_of_investment"/>
-                    <field name="the_amount_of_financing"/>
-                    <field name="ownership_interest"/>
-                </tree>
-            </field>
-        </record>
-
-
          <!-- 我的投票 -->
         <record model="ir.actions.act_window" id="sub_conference_resolutions_action_window">
             <field name="name">我的投票</field>
             <field name="res_model">cowin_project.prev_post_vote_poll</field>
-             <field name="view_ids"
+            <field name="view_ids"
                    eval="[(5, 0, 0),
-                          (0, 0, {'view_mode': 'tree', 'view_id': ref('cowin_project_prev_post_vote_poll_form')})]"/>
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('cowin_project_prev_post_vote_poll_list')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('cowin_project_prev_post_vote_poll_form')})]"/>
             <field name="view_mode">tree,form</field>
+            <!--从odoo的代码中可以看出,代码使用的是python源代码的写法-->
+            <field name="context">
+                {'vote_status': 1}
+            </field>
+        </record>
+
+
+         <record model="ir.actions.act_window" id="sub_conference_resolutions_action_window2">
+            <field name="name">我的投票2</field>
+            <field name="res_model">cowin_project.prev_post_vote_poll</field>
+            <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('cowin_project_prev_post_vote_poll_list')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('cowin_project_prev_post_vote_poll_form')})]"/>
+            <field name="view_mode">tree,form</field>
+            <!--从odoo的代码中可以看出,代码使用的是python源代码的写法-->
+            <field name="context">
+                {'vote_status': 2}
+            </field>
         </record>
 
 
@@ -36,7 +37,7 @@
                   action="sub_conference_resolutions_action_window"/>
 
         <menuitem name="投票查询" id="cowin_project.menu_25" parent="cowin_project.menu_4"
-                  action="sub_conference_resolutions_action_window"/>
+                  action="sub_conference_resolutions_action_window2"/>
 
     </data>
 

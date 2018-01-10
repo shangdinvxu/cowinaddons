@@ -77,7 +77,8 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
         return self.tache_id
 
     # 投资决策委员会会议表决票 有特殊的操作,业务有关联
-    def write_special_vote(self):
+    # 而且,投前/投后 通过prev_or_post_vote 来区分 prev_or_post_vote = True 代表投前
+    def write_special_vote(self, prev_or_post_vote=True):
         for sub_tache_entity in self.meta_sub_project_id.sub_tache_ids:
             # 这个操作只会去触发可能有多个子环节的解锁,如果解锁则不需要再次解锁
             if sub_tache_entity.order_parent_id == self and not sub_tache_entity.is_unlocked:
@@ -110,11 +111,12 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
                 # 创建投票实体  投决会日期
                 vals['voting_committee'] = meta_sub_project_entity.sub_project_ids[0].voting_committee
-                # vals['voter'] = self.env.user.employee_ids[0].id
+                vals['sub_prev_post_poll_status_id'] = e.id
+                vals['prev_or_post_vote'] = prev_or_post_vote
 
                 # 根据
                 for _ in c_entity_rels:
-                    e.prev_conference_resolutions_ids.create(vals)
+                    e.prev_post_conference_resolutions_ids.create(vals)
 
                 # 提前把需要生成的
 

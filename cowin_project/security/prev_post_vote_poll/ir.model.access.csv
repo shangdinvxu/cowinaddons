@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cowin_project_prev_post_vote_poll,cowin_project.prev_post_vote_poll,model_cowin_project_prev_post_vote_poll,,1,1,1,1

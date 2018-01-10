@@ -28,6 +28,9 @@ class Prev_post_vote_poll(models.Model):
     voter = fields.Many2one('hr.employee', string=u'表决人')
 
 
+    vote_status = fields.Selection([(1, u'进行中'), (2, u'已完成')], string=u'投票状态', default=1)
+
+
     # 用以判断是投前还是投后的字段
     prev_or_post_vote = fields.Boolean(string=u'投前/投后', default=True)
 
@@ -44,4 +47,13 @@ class Prev_post_vote_poll(models.Model):
 
 
 
+
+
+
+
+
+
+    def search(self, args, offset=0, limit=None, order=None, count=False):
+        print(u'..... ---->   context is %s' % self._context.get(u'vote_status'))
+        return super(Prev_post_vote_poll, self).search(args, offset, limit, order, count)
 

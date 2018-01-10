@@ -24,9 +24,12 @@
 
     # always loaded
     'data': [
+
+        # 数据之间初始化之间有依赖关系
         'security/project_security.xml',
         'security/ir.model.access.csv',
         'security/dependencies_many2many/ir.model.access.csv',
+        'security/prev_post_vote_poll/ir.model.access.csv',
         'security/settings/ir.model.access.csv',
         'security/settings/approval_settings/ir.model.access.csv',
         'security/sub_project/ir.model.access.csv',
@@ -36,8 +39,6 @@
         'views/views.xml',
         'views/init_vote.xml',
         'views/templates.xml',
-
-        # prev_post_vote_poll
         'views/prev_post_vote_poll/sub_project_prev_post_vote_poll.xml',
 
         #  prev_investment_management

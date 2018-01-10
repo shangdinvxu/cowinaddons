@@ -58,7 +58,7 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
         # target_sub_tache_entity.update_sub_approval_settings()
 
         # 投资决策委员会会议表决票 有特殊的操作,业务有关联
-        target_sub_tache_entity.write_special_vote()
+        target_sub_tache_entity.write_special_vote(prev_or_post_vote=True)
 
 
 
@@ -93,7 +93,7 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
         # 判断 发起过程 是否需要触发下一个子环节
         # target_sub_tache_entity.check_or_not_next_sub_tache()
         # target_sub_tache_entity.update_sub_approval_settings()
-        target_sub_tache_entity.write_special_vote()
+        target_sub_tache_entity.write_special_vote(prev_or_post_vote=True)
 
         return res
 

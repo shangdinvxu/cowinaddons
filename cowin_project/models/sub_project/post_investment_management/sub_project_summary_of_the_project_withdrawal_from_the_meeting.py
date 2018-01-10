@@ -81,7 +81,7 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
         # 判断 发起过程 是否需要触发下一个子环节
         # target_sub_tache_entity.check_or_not_next_sub_tache()
         # target_sub_tache_entity.update_sub_approval_settings()
-        target_sub_tache_entity.write_special_vote()
+        target_sub_tache_entity.write_special_vote(prev_or_post_vote=False)
 
 
         return res
@@ -107,7 +107,7 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
         # 判断 发起过程 是否需要触发下一个子环节
         # target_sub_tache_entity.check_or_not_next_sub_tache()
         # target_sub_tache_entity.update_sub_approval_settings()
-        target_sub_tache_entity.write_special_vote()
+        target_sub_tache_entity.write_special_vote(prev_or_post_vote=False)
 
 
         return res
