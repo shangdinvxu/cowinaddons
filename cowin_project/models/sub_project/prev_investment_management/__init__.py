@@ -5,7 +5,6 @@ import sub_project_appointment_and_dismissal
 import sub_project_call_up_record
 # import sub_project_conference_resolutions
 # import sub_project_prev_poll_status
-import sub_project_prev_poll_status
 import sub_project_dispatch_report
 import sub_project_establishment
 import sub_project_investment_contract

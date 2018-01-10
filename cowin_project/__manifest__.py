@@ -38,6 +38,7 @@
         'views/init_channel.xml',
         'views/views.xml',
         'views/prev_post_vote_poll/sub_project_prev_post_vote_poll.xml',
+        'views/prev_post_vote_poll/sub_project_prev_post_poll_status.xml',
 
         'views/init_vote.xml',
         'views/templates.xml',
@@ -47,8 +48,7 @@
         'views/sub_project/prev_investment_management/sub_project_appointment_and_dismissal.xml',
         'views/sub_project/prev_investment_management/sub_project_call_up_record.xml',
         # 'views/sub_project/prev_investment_management/sub_project_conference_resolutions.xml',
-        # 'views/sub_project/prev_investment_management/sub_project_prev_poll_status.xml',
-        'views/sub_project/prev_investment_management/sub_project_prev_poll_status.xml',
+        # 'views/sub_project/prev_investment_management/sub_project_prev_post_poll_status.xml',
         'views/sub_project/prev_investment_management/sub_project_dispatch_report.xml',
         'views/sub_project/prev_investment_management/sub_project_establishment.xml',
         'views/sub_project/prev_investment_management/sub_project_investment_contract.xml',
