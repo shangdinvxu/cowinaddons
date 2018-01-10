@@ -37,9 +37,10 @@
         'security/sub_project/post_investment_management/ir.model.access.csv',
         'views/init_channel.xml',
         'views/views.xml',
+        'views/prev_post_vote_poll/sub_project_prev_post_vote_poll.xml',
+
         'views/init_vote.xml',
         'views/templates.xml',
-        'views/prev_post_vote_poll/sub_project_prev_post_vote_poll.xml',
 
         #  prev_investment_management
         'views/sub_project/prev_investment_management/sub_project_application_form_for_project_investment.xml',
