@@ -138,7 +138,8 @@
             <field name="parent_id" eval="ref('init_post_process_stage_5_tache_2')"/>
             <field name="order_parent_id" eval="ref('init_post_process_stage_5_tache_2')"/>
             <field name="description"></field>
-            <field name="model_id" eval="ref('init_custom_model_26')"/>
+            <!--<field name="model_id" eval="ref('init_custom_model_26')"/>-->
+            <field name="model_id" eval="ref('init_custom_model_8')"/>
         </record>
 
         <record id="init_post_process_stage_5_tache_4" model="cowin_settings.process_tache">

@@ -30,8 +30,12 @@
             <field name="model_name">cowin_project.sub_sum_invest_decision_committee</field>
         </record>
 
+        <!--<record id="init_custom_model_8" model="cowin_settings.custome_model_data">-->
+            <!--<field name="model_name">cowin_project.sub_conference_resolutions</field>-->
+        <!--</record>-->
+
         <record id="init_custom_model_8" model="cowin_settings.custome_model_data">
-            <field name="model_name">cowin_project.sub_conference_resolutions</field>
+            <field name="model_name">cowin_project.sub_prev_post_poll_status</field>
         </record>
 
         <record id="init_custom_model_9" model="cowin_settings.custome_model_data">
@@ -103,9 +107,10 @@
         <record id="init_custom_model_25" model="cowin_settings.custome_model_data">
             <field name="model_name">cowin_project.sub_sum_pro_withdraw_from_meeting</field>
         </record>
-        <record id="init_custom_model_26" model="cowin_settings.custome_model_data">
-            <field name="model_name">cowin_project.sub_exit_vote</field>
-        </record>
+        <!--<record id="init_custom_model_26" model="cowin_settings.custome_model_data">-->
+            <!--&lt;!&ndash;<field name="model_name">cowin_project.sub_exit_vote</field>&ndash;&gt;-->
+            <!--<field name="model_name">cowin_project.sub_prev_post_poll_status</field>-->
+        <!--</record>-->
         <record id="init_custom_model_27" model="cowin_settings.custome_model_data">
             <field name="model_name">cowin_project.sub_project_exit_resolution</field>
         </record>

@@ -37,11 +37,16 @@
         'views/init_vote.xml',
         'views/templates.xml',
 
+        # prev_post_vote_poll
+        'views/prev_post_vote_poll/sub_project_prev_post_vote_poll.xml',
+
         #  prev_investment_management
         'views/sub_project/prev_investment_management/sub_project_application_form_for_project_investment.xml',
         'views/sub_project/prev_investment_management/sub_project_appointment_and_dismissal.xml',
         'views/sub_project/prev_investment_management/sub_project_call_up_record.xml',
-        'views/sub_project/prev_investment_management/sub_project_conference_resolutions.xml',
+        # 'views/sub_project/prev_investment_management/sub_project_conference_resolutions.xml',
+        # 'views/sub_project/prev_investment_management/sub_project_prev_poll_status.xml',
+        'views/sub_project/prev_investment_management/sub_project_prev_poll_status.xml',
         'views/sub_project/prev_investment_management/sub_project_dispatch_report.xml',
         'views/sub_project/prev_investment_management/sub_project_establishment.xml',
         'views/sub_project/prev_investment_management/sub_project_investment_contract.xml',
@@ -65,7 +70,7 @@
         'views/sub_project/post_investment_management/sub_project_dismissal_of_directors_or_supervisors.xml',
         'views/sub_project/post_investment_management/sub_project_application_for_investment_withdrawal.xml',
         'views/sub_project/post_investment_management/sub_project_summary_of_the_project_withdrawal_from_the_meeting.xml',
-        'views/sub_project/post_investment_management/sub_project_project_exit_vote.xml',
+        # 'views/sub_project/post_investment_management/sub_project_project_exit_vote.xml',
         'views/sub_project/post_investment_management/sub_project_project_exit_resolution.xml',
 
 

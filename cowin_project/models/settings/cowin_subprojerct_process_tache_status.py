@@ -76,6 +76,60 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
     def get_tache(self):
         return self.tache_id
 
+    # 投资决策委员会会议表决票 有特殊的操作,业务有关联
+    def write_special_vote(self):
+        for sub_tache_entity in self.meta_sub_project_id.sub_tache_ids:
+            # 这个操作只会去触发可能有多个子环节的解锁,如果解锁则不需要再次解锁
+            if sub_tache_entity.order_parent_id == self and not sub_tache_entity.is_unlocked:
+
+                name = self.meta_sub_project_id.sub_project_ids[0].name
+                project_number = self.meta_sub_project_id.sub_project_ids[0].project_number
+                meta_sub_project_entity = self.meta_sub_project_id
+                # 默认的投资经理的数据我们需要去自定义添加
+                vals = {
+                    'name': name,
+                    'project_number': project_number,
+                }
+
+                invest_manager_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资经理')])
+                rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & invest_manager_entity.sub_meta_pro_approval_settings_role_rel
+
+                vals['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+
+                investment_decision_committee_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资决策委员')])
+                rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & investment_decision_committee_entity.sub_meta_pro_approval_settings_role_rel
+                c_entity_rels = rel_entities
+                vals['default_investment_decision_committee_ids'] = [
+                    (6, 0, [rel.employee_id.id for rel in rel_entities])]
+
+                # 创建投票状态实体
+                model_name = sub_tache_entity.tache_id.model_id.model_name
+                e = self.env[model_name].create(vals)
+
+
+
+                # 创建投票实体  投决会日期
+                vals['voting_committee'] = meta_sub_project_entity.sub_project_ids[0].voting_committee
+                # vals['voter'] = self.env.user.employee_ids[0].id
+
+                # 根据
+                for _ in c_entity_rels:
+                    e.prev_conference_resolutions_ids.create(vals)
+
+                # 提前把需要生成的
+
+                sub_tache_entity.write({
+                    'is_unlocked': True,
+                    'res_id': e.id,
+                    'view_or_launch': True,
+                })
+
+                sub_tache_entity.sub_pro_approval_flow_settings_ids.write({
+                    'status': 4,
+                })
+
+
+
 
     def update_sub_approval_settings(self):  # 调用子审批流实体
         self.sub_pro_approval_flow_settings_ids.upate_status(2)

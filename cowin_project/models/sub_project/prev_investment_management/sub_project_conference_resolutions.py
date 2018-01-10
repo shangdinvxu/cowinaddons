@@ -8,7 +8,9 @@ class Cowin_project_subproject_conference_resolutions(models.Model):
 
     _name = 'cowin_project.sub_conference_resolutions'
 
-    subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
+    # subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
+
+    sub_prv_poll_status_id = fields.Many2one('cowin_project.sub_prv_poll_status', string=u'投票状态实体', ondelete="cascade")
 
     # name = fields.Char(related='subproject_id.name', string=u"项目名称")
     # project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')

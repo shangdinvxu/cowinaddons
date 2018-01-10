@@ -104,6 +104,10 @@ class Cowin_project_subproject(models.Model):
 
     attachment_note = fields.Char(string=u'附件说明')
 
+    # 投资决策委员会会议纪要 依赖的字段
+    voting_committee = fields.Date(string=u'投决会日期')
+
+
 
     # 投资决策委员会会议决议 这张字表需要使用该字段的一次影像!!!f
 

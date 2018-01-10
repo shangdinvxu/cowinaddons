@@ -1004,6 +1004,8 @@ class Cowin_project(models.Model):
             'once_or_more': False,
         })
 
+
+
         # 列表逆序,数据写入依赖条件
         revered_to_list = to_do_list[::-1]
 

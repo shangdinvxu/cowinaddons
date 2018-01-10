@@ -4,9 +4,9 @@
 
         <!--投资决策委员会会议表决票-->
         <!--投资决策委员会会议表决票的tree视图-->
-        <record model="ir.ui.view" id="sub_project_conference_resolutions_list">
-            <field name="name">cowin_project.sub_conference_resolutions form</field>
-            <field name="model">cowin_project.sub_conference_resolutions</field>
+        <record model="ir.ui.view" id="sub_project_prev_post_vote_poll_list">
+            <field name="name">cowin_project.prev_post_vote_poll form</field>
+            <field name="model">cowin_project.prev_post_vote_poll</field>
             <field name="arch" type="xml">
                 <tree create="false" edit="false" delete="false">
                     <field name="name"/>
@@ -24,10 +24,10 @@
          <!-- 我的投票 -->
         <record model="ir.actions.act_window" id="sub_conference_resolutions_action_window">
             <field name="name">我的投票</field>
-            <field name="res_model">cowin_project.sub_conference_resolutions</field>
+            <field name="res_model">cowin_project.prev_post_vote_poll</field>
              <field name="view_ids"
                    eval="[(5, 0, 0),
-                          (0, 0, {'view_mode': 'tree', 'view_id': ref('sub_project_conference_resolutions_list')})]"/>
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('cowin_project_prev_post_vote_poll_form')})]"/>
             <field name="view_mode">tree,form</field>
         </record>
 
