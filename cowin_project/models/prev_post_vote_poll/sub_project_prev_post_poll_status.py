@@ -16,6 +16,19 @@ class Prev_poll_status(models.Model):
 
     voting_statistics = fields.Float(string=u'投票统计')
 
+
+    compute_voting_statistics = fields.Char(compute='_compute_voting_statistics')
+
+    @api.depends('voting_statistics')
+    def _compute_voting_statistics(self):
+        # if self.voting_statistics > 4.5: # 触发下一个子环节
+        if self.voting_statistics > 4.5: # 触发下一个子环节
+            self.voting_status = True
+
+
+
+
+
     voting_result = fields.Char(string=u'投票结果')
 
     voting_status = fields.Boolean(string=u'是否完成')
@@ -69,26 +82,42 @@ class Prev_poll_status(models.Model):
 
 
 
+
+
     @api.multi
     def write(self, vals):
         res = super(Prev_poll_status, self).write(vals)
-        tache_info = self._context['tache']
 
-        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
 
-        # 校验meta_sub_project所对应的子工程只能有一份实体
-        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
 
-        sub_tache_id = int(tache_info['sub_tache_id'])
+        # 由于在投票状态之中,是通过compute计算字段做操作,所以 context中并不会传递tache数据
+        # 但是数据已经保存在了子环节中
+        sub_tache_e = self.subproject_id.meta_sub_project_id.sub_tache_ids.filtered(
+            lambda sub_tache: sub_tache.tache_id.model_id.model_name == self._name and sub_tache.res_id == self.id)
 
-        target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
+        # tache_info = self._context['tache']
+        #
+        # meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+        #
+        # # 校验meta_sub_project所对应的子工程只能有一份实体
+        # meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+        #
+        # sub_tache_id = int(tache_info['sub_tache_id'])
+        #
+        # target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
+        target_sub_tache_entity = sub_tache_e
 
-        target_sub_tache_entity.write({
-            'is_launch_again': False,
-        })
+        # 投票完成
+        if self.voting_status:
+            target_sub_tache_entity.write({
+                'is_launch_again': False,
+            })
 
-        # 判断 发起过程 是否需要触发下一个子环节
-        # target_sub_tache_entity.check_or_not_next_sub_tache()
+            # 判断 发起过程 是触发下一个子环节
+            # target_sub_tache_entity.check_or_not_next_sub_tache()
+            target_sub_tache_entity.trigger_next_subtache()
+
+        # 这种情况下,需要重新发起状态!!!
         target_sub_tache_entity.update_sub_approval_settings()
 
         return res

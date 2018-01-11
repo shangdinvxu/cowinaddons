@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
 import itertools
+from odoo.exceptions import UserError
+
 
 class Cowin_subprojerct_prcess_tache_status(models.Model):
     _name = 'cowin_project.subproject_process_tache'
@@ -95,13 +97,14 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
                 invest_manager_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资经理')])
                 rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & invest_manager_entity.sub_meta_pro_approval_settings_role_rel
 
-                vals['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+                # vals['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+                vals['invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
                 investment_decision_committee_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资决策委员')])
                 rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & investment_decision_committee_entity.sub_meta_pro_approval_settings_role_rel
                 c_entity_rels = rel_entities
-                vals['default_investment_decision_committee_ids'] = [
-                    (6, 0, [rel.employee_id.id for rel in rel_entities])]
+
+                vals['members_of_voting_committee_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
                 # 创建投票状态实体
                 model_name = sub_tache_entity.tache_id.model_id.model_name
@@ -126,9 +129,9 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
                     'view_or_launch': True,
                 })
 
-                sub_tache_entity.sub_pro_approval_flow_settings_ids.write({
-                    'status': 4,
-                })
+                # sub_tache_entity.sub_pro_approval_flow_settings_ids.write({
+                #     'status': 4,
+                # })
 
 
 

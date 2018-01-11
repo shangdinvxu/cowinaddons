@@ -28,7 +28,7 @@ class Prev_post_vote_poll(models.Model):
     voter = fields.Many2one('hr.employee', string=u'表决人')
 
 
-    vote_status = fields.Selection([(1, u'进行中'), (2, u'已完成')], string=u'投票状态', default=1)
+    vote_status = fields.Selection([(1, u'进行中'), (2, u'已完成')], string=u'投票状态', default=1, store=True)
 
 
     # 用以判断是投前还是投后的字段
@@ -36,7 +36,9 @@ class Prev_post_vote_poll(models.Model):
 
     # ---> 投前表决使用到的字段
     voting_committee = fields.Date(string=u'投决会日期')
-    voting_score = fields.Float(string=u'表决分数')
+    # voting_score = fields.Float(string=u'表决分数')
+    voting_score = fields.Selection([(1.0, 1.0), (1.5, 1.5), (2.0, 2.0), (2.5, 2.5), (3.0, 3.0),
+                                 (3.5, 3.5), (4.0, 4.0), (4.5, 4.5), (5.0, 5.0)], string=u'表决分数')
     voting_opinion = fields.Text(string=u'表决意见')
 
 
@@ -49,11 +51,16 @@ class Prev_post_vote_poll(models.Model):
 
 
 
+    @api.multi
+    def write(self, vals):
+        self.ensure_one()
+        # 投票完成状态
+        vals['vote_status'] = 2
+        res = super(Prev_post_vote_poll, self).write(vals)
 
-
-
-
-    def search(self, args, offset=0, limit=None, order=None, count=False):
-        print(u'..... ---->   context is %s' % self._context.get(u'vote_status'))
-        return super(Prev_post_vote_poll, self).search(args, offset, limit, order, count)
+        if self.prev_or_post_vote:  # 投前
+            self.sub_prev_post_poll_status_id.voting_statistics += float(self.voting_score)
+        else:                       # 投后
+            pass
+        return res
 

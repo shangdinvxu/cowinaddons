@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
     '''
@@ -47,6 +48,9 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
 
         vals['subproject_id'] = sub_project_id
         res = super(Cowin_project_subproject_sum_investment_decision_committee, self).create(vals)
+        if not res.investment_decision_committee_ids:
+            raise UserError(u'没有给投资决策委员配置员工信息, 以至于不能进行投票!!!')
+
         target_sub_tache_entity.write({
             'res_id': res.id,
             # 'is_unlocked': True,
@@ -75,6 +79,8 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
     @api.multi
     def write(self, vals):
         res = super(Cowin_project_subproject_sum_investment_decision_committee, self).write(vals)
+        if not res.investment_decision_committee_ids:
+            raise UserError(u'没有给投资决策委员配置员工信息, 以至于不能进行投票!!!')
         tache_info = self._context['tache']
 
         meta_sub_project_id = int(tache_info['meta_sub_project_id'])
