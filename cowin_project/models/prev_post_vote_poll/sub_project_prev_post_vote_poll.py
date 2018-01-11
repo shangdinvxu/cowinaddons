@@ -4,6 +4,8 @@ from odoo import models, fields, api
 
 class Prev_post_vote_poll(models.Model):
 
+    _inherit = 'ir.needaction_mixin'
+
     _name = 'cowin_project.prev_post_vote_poll'
 
     '''
@@ -67,8 +69,8 @@ class Prev_post_vote_poll(models.Model):
 
     @api.model
     def _needaction_domain_get(self):
-        if self._context.get('vote_status') == 1:
-            return [('vote_status', '=', 1)]
-        if self._context.get('vote_status') == 2:
-            return [('state', '=', 2)]
+        print(u'使用拦截器的概念的操作模型!!!')
+
+        return [('vote_status', '=', 1)]
+
 
