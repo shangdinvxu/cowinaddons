@@ -64,3 +64,11 @@ class Prev_post_vote_poll(models.Model):
             pass
         return res
 
+
+    @api.model
+    def _needaction_domain_get(self):
+        if self._context.get('vote_status') == 1:
+            return [('vote_status', '=', 1)]
+        if self._context.get('vote_status') == 2:
+            return [('state', '=', 2)]
+
