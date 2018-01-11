@@ -60,8 +60,10 @@ class Cowin_project(models.Model):
 
     # project_number = fields.Char(string=u'项目编号',
     #                              defualt=lambda self: self.env['ir.sequence'].next_by_code('cowin_project.order'))
-    project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')],
-                              string=u'项目来源')
+    # project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')],string=u'项目来源')
+    project_source = fields.Many2one('cowin_common.project_source', string=u'项目来源')
+
+
     project_source_note = fields.Char(string=u'项目来源备注')
     # invest_manager = fields.Many2one('hr.employee', string=u'投资经理')
 

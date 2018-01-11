@@ -13,6 +13,17 @@ class Cowin_Common(models.Model):
     ]
 
 
+#项目来源
+class Cowin_common_project_source(models.Model):
+    _name = 'cowin_common.project_source'
+
+    name = fields.Char(string=u'项目来源', required=True)
+
+    _sql_constraints = [
+            ('name_key', 'UNIQUE (name)', u'来源名不能够相同')
+        ]
+
+
 # 轮次model
 class Cowin_round_financing(models.Model):
     _name = 'cowin_common.round_financing'
