@@ -228,3 +228,9 @@ a.oe_menu_toggler { background-color: transparent !important; }
 .dropdown-menu a[data-menu*="account"]{
     display: none;
 }
+
+.o_web_client > .o_main .o_sub_menu .o_sub_menu_content .oe_secondary_submenu > li > a > .badge{
+    margin-top: 6px;
+    background-color: red;
+    color: white;
+}

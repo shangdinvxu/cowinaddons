@@ -3,6 +3,7 @@ from odoo import models, fields, api
 
 
 class Prev_post_vote_poll(models.Model):
+    _inherit = 'ir.needaction_mixin'
 
     _inherit = 'ir.needaction_mixin'
 
