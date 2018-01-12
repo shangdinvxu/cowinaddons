@@ -38,7 +38,8 @@ class Cowin_project_subproject(models.Model):
 
     name = fields.Char(string=u"项目名称")
     project_number = fields.Char(string=u'项目编号')
-    project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')], string=u'项目来源')
+    # project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')], string=u'项目来源')
+    project_source = fields.Many2one('cowin_common.project_source', string=u'项目来源')
     project_source_note = fields.Char(string=u'项目来源备注')
     invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
     invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')

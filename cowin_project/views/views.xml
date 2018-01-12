@@ -385,7 +385,7 @@
 
         <!--项目管理-项目流程-->
         <record model="ir.actions.act_window" id="action_project_process">
-            <field name="name">项目流程</field>
+            <field name="name">所有项目</field>
             <field name="res_model">cowin_project.cowin_project</field>
             <!--<field name="domain">[('create_uid', '=', uid)]</field>-->
             <field name="context">

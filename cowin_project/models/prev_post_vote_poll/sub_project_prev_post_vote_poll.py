@@ -4,6 +4,7 @@ from odoo import SUPERUSER_ID
 
 
 class Prev_post_vote_poll(models.Model):
+    _inherit = 'ir.needaction_mixin'
 
     _inherit = 'ir.needaction_mixin'
 
