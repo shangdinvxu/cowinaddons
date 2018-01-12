@@ -21,7 +21,7 @@ class Cowin_project_subproject_opinion_book(models.Model):
     name = fields.Char(string=u"项目名称")
     project_number = fields.Char(string=u'项目编号')
     # invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
-    invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
+    invest_manager_ids = fields.Many2many('hr.employee', 'sub_opinion_book_invest_manager_employee_rel', string=u'投资经理')
 
 
 
@@ -68,7 +68,7 @@ class Cowin_project_subproject_opinion_book(models.Model):
     #     related='subproject_id.ownership_interest', string=u'股份比例')
     # ---------------
 
-    project_mumbers = fields.Many2many('hr.employee', string=u'项目小组成员')
+    project_mumbers = fields.Many2many('hr.employee', 'sub_opinion_book_project_mumbers_employee_rel', string=u'项目小组成员')
 
 
 

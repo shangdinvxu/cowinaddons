@@ -15,9 +15,7 @@
 
             <field name="domain">[('vote_status', '=', 1)]</field>
 
-            <!--<field name="context">-->
-                <!--{'vote_status': 1}-->
-            <!--</field>-->
+            <field name="context">{'custom_filter': True}</field>
         </record>
 
 
@@ -27,7 +25,7 @@
             <field name="view_ids"
                    eval="[(5, 0, 0),
                           (0, 0, {'view_mode': 'tree', 'view_id': ref('cowin_project_prev_post_vote_poll_list')}),
-                          (0, 0, {'view_mode': 'form', 'view_id': ref('cowin_project_prev_post_vote_poll_form')})]"/>
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('cowin_project_prev_post_vote_poll_form2')})]"/>
             <field name="view_mode">tree,form</field>
             <!--从odoo的代码中可以看出,代码使用的是python源代码的写法-->
             <field name="domain">[('vote_status', '=', 2)]</field>

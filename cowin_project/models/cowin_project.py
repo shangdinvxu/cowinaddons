@@ -1633,6 +1633,8 @@ class Cowin_project(models.Model):
     def unlink(self):
 
         for record in self:
+            # 因为有通信模块的操作,所以需要指定在主工程中做删除
+
             record.process_id.unlink()
             super(Cowin_project, record).unlink()
 

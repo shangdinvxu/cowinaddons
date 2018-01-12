@@ -18,7 +18,7 @@ class sub_project_project_exit_resolution(models.Model):
     name = fields.Char(string=u"项目名称")
     project_number = fields.Char(string=u'项目编号')
     # invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
-    invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
+    invest_manager_ids = fields.Many2many('hr.employee', 'exit_resolution_invest_manager_employee_rel', string=u'投资经理')
 
     project_exit_date = fields.Date(string=u'项目退出会议日期')
 
@@ -56,7 +56,7 @@ class sub_project_project_exit_resolution(models.Model):
     exit_plan = fields.Text(string=u'退出方案')
 
     # chairman_of_investment_decision_committee = fields.Many2one('hr.employee', string=u'投资决策委员会主席')
-    chairman_of_investment_decision_committee_ids = fields.Many2many('hr.employee', string=u'投资决策委员会主席')
+    chairman_of_investment_decision_committee_ids = fields.Many2many('hr.employee', 'exit_resolution_chairman_of_investment_employee_rel', string=u'投资决策委员会主席')
 
 
 

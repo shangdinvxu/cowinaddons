@@ -56,14 +56,17 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         return message_infos
 
-    @api.multi
-    def unlink(self):
 
-        # self.channel_id.unlink()
-        # print(u'子通道是否删除!!!')
-        
 
-        return super(Cowin_sub_project_approval_flow_settings, self).unlink()
+    # @api.multi
+    # def unlink(self):
+    #     for rec in self:
+    #
+    #     # self.channel_id.unlink()
+    #     # print(u'子通道是否删除!!!')
+    #
+    #         super(Cowin_sub_project_approval_flow_settings, self).unlink()
+    #     return True
 
 
 
@@ -290,6 +293,11 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
     def is_success(self):
         return self.status == 4
+
+    def set_reject(self):
+        if self.is_reject():
+            return
+        self.status = 5
 
     def is_reject(self):
 

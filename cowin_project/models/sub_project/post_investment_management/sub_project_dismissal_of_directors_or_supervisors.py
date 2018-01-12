@@ -16,8 +16,8 @@ class sub_project_dismissal_of_directors_or_supervisors(models.Model):
     # invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
 
     name = fields.Char(string=u"项目名称")
-    project_number = fields.Char(string=u'项目编号')
-    reporter = fields.Many2one('hr.employee', string=u'报告人')
+    # project_number = fields.Char(string=u'项目编号')
+    invest_manager_ids = fields.Many2many('hr.employee', 'sub_dismissal_of_directs_or_supers_employee_rel', string=u'投资经理')
 
     # ----- 解职对象
     trustee_id = fields.Many2one('hr.employee', string=u'董事')
@@ -32,7 +32,7 @@ class sub_project_dismissal_of_directors_or_supervisors(models.Model):
 
     Tenure_supervisor = fields.Float(string=u'任职年限')
 
-    managing_partner = fields.Many2one('hr.employee', string=u'管理合伙人')
+    managing_partner_ids = fields.Many2many('hr.employee', 'sub_dismissal_of_directs_or_supers_employee_rel', string=u'管理合伙人')
 
     # ----------  投资基金
     round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation',

@@ -19,7 +19,7 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
     name = fields.Char(string=u"项目名称")
     project_number = fields.Char(string=u'项目编号')
     # invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
-    invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
+    invest_manager_ids = fields.Many2many('hr.employee', 'withdraw_from_meeting_invest_manager_employee_rel', string=u'投资经理')
 
 
     # ----------  投资基金
@@ -52,7 +52,7 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
     conference_recorder = fields.Many2one('hr.employee', string=u'会议记录人')
     checker = fields.Many2one('hr.employee', string=u'复核人')
     # investment_decision_committee = fields.Many2many('hr.employee', string=u'投资决策委员')
-    members_of_voting_committee_ids = fields.Many2many('hr.employee', string=u'投资决策委员')
+    members_of_voting_committee_ids = fields.Many2many('hr.employee', 'withdraw_from_meeting_members_of_voting_committee_employee_rel', string=u'投资决策委员')
 
     conference_highlights = fields.Text(string=u'会议要点')
 

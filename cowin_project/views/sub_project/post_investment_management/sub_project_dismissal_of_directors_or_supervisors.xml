@@ -12,7 +12,7 @@
                     <group>
 
                         <field name="name"/>
-                        <field name="reporter"/>
+                        <field name="invest_manager_ids"/>
                         <field name="trustee_id"/>
                         <field name="appointment_time_begin_trustee"/>
                         <field name="appointment_time_end_trustee"/>
@@ -21,7 +21,7 @@
                         <field name="appointment_time_begin_supervisor"/>
                         <field name="appointment_time_end_supervisor"/>
                         <field name="Tenure_supervisor"/>
-                        <field name="managing_partner"/>
+                        <field name="managing_partner_ids"/>
 
                         <!--投资基金-->
                         <field name="foundation_id"/>

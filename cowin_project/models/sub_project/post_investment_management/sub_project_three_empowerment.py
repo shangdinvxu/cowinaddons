@@ -15,12 +15,12 @@ class sub_project_three_empowerment(models.Model):
 
 
     # invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
-    invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
+    invest_manager_ids = fields.Many2many('hr.employee', 'sub_three_empowerment_invest_manager_employee_rel', string=u'投资经理')
 
     topic_for_discussion = fields.Text(string=u'议题')
 
     # managing_partner = fields.Many2one('hr.employee', string=u'管理合伙人')
-    managing_partner_ids = fields.Many2many('hr.employee', string=u'管理合伙人')
+    managing_partner_ids = fields.Many2many('hr.employee', 'sub_three_empowerment_managing_partner_employee_rel', string=u'管理合伙人')
 
     # ----------  投资基金
     round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation',

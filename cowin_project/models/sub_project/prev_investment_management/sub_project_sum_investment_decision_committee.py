@@ -15,7 +15,7 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
     # name = fields.Char(related='subproject_id.name', string=u"项目名称")
     # project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
     # invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
-    invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
+    invest_manager_ids = fields.Many2many('hr.employee', 'decision_committee_invest_manager_employee_rel', string=u'投资经理')
 
 
     name = fields.Char(string=u"项目名称")
@@ -26,7 +26,7 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
 
     conference_recorder = fields.Many2one('hr.employee', string=u'会议记录人')
     checker = fields.Many2one('hr.employee', string=u'复核人')
-    investment_decision_committee_ids = fields.Many2many('hr.employee', string=u'投资决策委员')
+    investment_decision_committee_ids = fields.Many2many('hr.employee', 'decision_committee_investment_decision_committee_employee_rel',  string=u'投资决策委员')
 
     conference_highlights = fields.Text(string=u'会议要点')
 
@@ -99,7 +99,10 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
         # 判断 发起过程 是否需要触发下一个子环节
         # target_sub_tache_entity.check_or_not_next_sub_tache()
         # target_sub_tache_entity.update_sub_approval_settings()
-        target_sub_tache_entity.write_special_vote(prev_or_post_vote=True)
+
+
+
+        # target_sub_tache_entity.write_special_vote(prev_or_post_vote=True)
 
         return res
 
@@ -117,7 +120,7 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
         common_fileds = [
         ]
 
-        common_fileds.extend(['name', 'project_number', 'invest_manager_id'])
+        common_fileds.extend(['name', 'project_number'])
 
         tem = sub_project_entity.read(common_fileds)[0]
 

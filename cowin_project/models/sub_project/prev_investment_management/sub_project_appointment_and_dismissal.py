@@ -11,9 +11,14 @@ class Cowin_project_subproject_appointment_and_dismissal(models.Model):
 
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
 
-    name = fields.Char(related='subproject_id.name', string=u"项目名称")
-    project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
-    invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
+    # name = fields.Char(related='subproject_id.name', string=u"项目名称")
+    # project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
+    # invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
+
+    name = fields.Char(string=u"项目名称")
+    project_number = fields.Char(string=u'项目编号')
+    # invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
+    invest_manager_ids = fields.Many2many('hr.employee', 'sub_appointment_and_dismissal_invest_manager_employee_rel', string=u'投资经理')
 
     #----- 任免对象
     trustee_id = fields.Many2one('hr.employee', string=u'董事')
@@ -42,7 +47,7 @@ class Cowin_project_subproject_appointment_and_dismissal(models.Model):
 
     #------
 
-    managing_partner_ids = fields.Many2many('hr.employee', string=u'管理合伙人')
+    managing_partner_ids = fields.Many2many('hr.employee', 'sub_appointment_and_dismissal_managing_partner_employee_rel', string=u'管理合伙人')
 
     @api.model
     def create(self, vals):

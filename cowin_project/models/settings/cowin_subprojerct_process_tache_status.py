@@ -110,6 +110,26 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
                 model_name = sub_tache_entity.tache_id.model_id.model_name
                 e = self.env[model_name].create(vals)
 
+                # 写入依赖的外键操作!!!
+                e.write({
+                    'subproject_id': meta_sub_project_entity.sub_project_ids[0].id,
+                })
+
+
+
+                # 解锁该子环节
+                sub_tache_entity.write({
+                    'is_unlocked': True,
+                    'res_id': e.id,
+                    'view_or_launch': True,
+                })
+
+                # 同时不再考虑该子环节中审批节点的问题
+                sub_tache_entity.sub_pro_approval_flow_settings_ids[0].write({
+                    'status': 4,
+                    'prev_status': 4,
+                })
+
 
 
                 # 创建投票实体  投决会日期
@@ -117,17 +137,35 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
                 vals['sub_prev_post_poll_status_id'] = e.id
                 vals['prev_or_post_vote'] = prev_or_post_vote
 
-                # 根据
-                for _ in c_entity_rels:
-                    e.prev_post_conference_resolutions_ids.create(vals)
+                # 初始化 各个投票实体
+                for rel_entity in c_entity_rels:
+                    poll_entity = e.prev_post_conference_resolutions_ids.create(vals)
+                    poll_entity.write({
+                        'voter': rel_entity.employee_id.id,
+
+                    })
+
+
+                #修改 投票状态实体 为投票状态
+                e.write({
+                    'voting_status': 1,
+                    'voting_result': u'还有%s人,没有投票' % (len(e.prev_post_conference_resolutions_ids)),
+                })
+
+
+                # 修改 投票实体  为投票状态
+                for poll_entity in e.prev_post_conference_resolutions_ids:
+                    poll_entity.write({
+                        'vote_status': 1,
+                    })
+
+
+
+
 
                 # 提前把需要生成的
 
-                sub_tache_entity.write({
-                    'is_unlocked': True,
-                    'res_id': e.id,
-                    'view_or_launch': True,
-                })
+
 
                 # sub_tache_entity.sub_pro_approval_flow_settings_ids.write({
                 #     'status': 4,
