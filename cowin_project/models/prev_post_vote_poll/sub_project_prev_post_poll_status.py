@@ -20,19 +20,22 @@ class Prev_poll_status(models.Model):
     # 用以判断是投前还是投后的字段
     prev_or_post_vote = fields.Boolean(string=u'投前/投后', default=True)
 
-    compute_voting_count = fields.Integer(compute='_compute_voting_statistics', store=True, default=0)
+    # compute_voting_count = fields.Integer(compute='_compute_voting_statistics', store=True, default=0)
+    compute_voting_count = fields.Integer(default=0, string=u'投票记录')
 
-    @api.depends('voting_statistics')
-    def _compute_voting_statistics(self):
-        # if self.voting_statistics > 4.5: # 触发下一个子环节
+
+    @api.multi
+    def compute_voting_statistics(self):
+        self.ensure_one()
         if self.voting_status == 2 or self.voting_status == 3:
             return
 
         self.compute_voting_count += 1
 
         if self.prev_or_post_vote:
-            if self.compute_voting_count == len(self.prev_post_conference_resolutions_ids):
-                if self.voting_statistics / len(self.prev_post_conference_resolutions_ids) >= 4.5:
+            if self.compute_voting_count == len(self.sudo().prev_post_conference_resolutions_ids):  # 这个是非常大意的地方,权限的问题,让代码变得走不下去!!!
+                tmp = self.voting_statistics = self.voting_statistics / len(self.prev_post_conference_resolutions_ids)
+                if tmp >= 4.5:
                     # 触发下一个子环节
                     # self.voting_status = 2
                     # self.voting_result = u'同意'
@@ -52,13 +55,14 @@ class Prev_poll_status(models.Model):
                     })
 
             else:
-                self.voting_result = u'还有%s人,没有投票' % (len(self.prev_post_conference_resolutions_ids) - self.compute_voting_count)
+                self.voting_result = u'还有%s人,没有投票' % (len(self.sudo().prev_post_conference_resolutions_ids) - self.compute_voting_count)
 
 
         else:
             # 投后状态
-            if self.compute_voting_count == len(self.prev_post_conference_resolutions_ids):
-                if self.voting_statistics / len(self.prev_post_conference_resolutions_ids) > 2.0 / 3:
+            if self.compute_voting_count == len(self.sudo().prev_post_conference_resolutions_ids):
+                tmp = self.voting_statistics = self.voting_statistics / len(self.sudo().prev_post_conference_resolutions_ids)
+                if tmp > 2.0 / 3:
                     # 触发下一个子环节
                     # self.voting_status = 2
                     # self.voting_result = u'同意'
@@ -77,7 +81,7 @@ class Prev_poll_status(models.Model):
                     })
 
             else:
-                self.voting_result = u'还有%s人,没有投票' % (len(self.prev_post_conference_resolutions_ids) - self.compute_voting_count)
+                self.voting_result = u'还有%s人,没有投票' % (len(self.sudo().prev_post_conference_resolutions_ids) - self.compute_voting_count)
 
 
 

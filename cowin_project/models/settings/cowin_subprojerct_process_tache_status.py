@@ -113,6 +113,7 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
                 # 写入依赖的外键操作!!!
                 e.write({
                     'subproject_id': meta_sub_project_entity.sub_project_ids[0].id,
+                    'prev_or_post_vote': prev_or_post_vote,
                 })
 
 

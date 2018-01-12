@@ -68,7 +68,7 @@ class Prev_post_vote_poll(models.Model):
 
     compute_voting_score = fields.Integer(string=u'计算字段', compute='_compute_voting_score')
 
-    @api.depends('voting_score', 'voting_result' )
+    @api.depends('voting_score', 'voting_result')
     def _compute_voting_score(self):  # 通过计算字段,来动态的修改
         for rec in self:
             # 投票完成!!!
@@ -88,22 +88,18 @@ class Prev_post_vote_poll(models.Model):
     def write(self, vals):
         self.ensure_one()
         # 投票完成状态
-        # vals['vote_status'] = 2
-
-
 
         # 投票中,方可进行投票
         if self.vote_status == 1:
-
-
             if self.prev_or_post_vote:  # 投前
                 voting_score = float(vals.get('voting_score', 0.0))
                 self.sub_prev_post_poll_status_id.voting_statistics += voting_score
+                self.sub_prev_post_poll_status_id.compute_voting_statistics()
             else:                       # 投后
                 voting_result = 1.0 if vals.get('voting_result') else 0.0
                 self.sub_prev_post_poll_status_id.voting_statistics += voting_result
+                self.sub_prev_post_poll_status_id.compute_voting_statistics()
 
-            # self.vote_status = 2
             vals['vote_status'] = 2
 
         res = super(Prev_post_vote_poll, self).write(vals)
