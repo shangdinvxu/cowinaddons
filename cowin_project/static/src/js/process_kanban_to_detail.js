@@ -196,7 +196,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     }
                 })
             })
-            $(add_sel_node).prepend(QWeb.render('names_tmpl', {result: render_names,is_admin:self.is_admin}));
+            $(add_sel_node).prepend(QWeb.render('names_tmpl', {result: render_names,is_admin:self.is_admin,edit:true}));
             self.hide_add_new_sels();
 
         },
@@ -378,6 +378,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     .call("rpc_load_and_return_action", [parseInt(self.id)],{'tache_info':self.tache_arr[tache_index]})
                     .then(function (result) {
                         result.context['tache'] = self.tache_arr[tache_index];
+                        result.target = 'current';
                         console.log(result)
                         self.do_action(result);
                     })
@@ -461,7 +462,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     }
                 })
             }
-            refresh_page(self,self.tache_arr[tache_index].model_name);
+            // refresh_page(self,self.tache_arr[tache_index].model_name);
         },
 
         init: function (parent, action, options) {
