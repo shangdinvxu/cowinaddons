@@ -98,7 +98,7 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
                     'voting_committee_date': voting_committee_date,
                 }
 
-                res = {}
+                res = vals
                 # res 目的在于把之前保存在轮次基金实体中的数据取出来,以供投票状态的使用操作!!!
                 common_fileds = [
                     'round_financing_id',
@@ -122,17 +122,18 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
 
 
+
                 invest_manager_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资经理')])
                 rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & invest_manager_entity.sub_meta_pro_approval_settings_role_rel
 
                 # vals['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
-                res['invest_manager_ids'] = vals['invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+                res['invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
                 investment_decision_committee_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资决策委员')])
                 rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & investment_decision_committee_entity.sub_meta_pro_approval_settings_role_rel
                 c_entity_rels = rel_entities
 
-                res['members_of_voting_committee_ids'] = vals['members_of_voting_committee_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+                res['members_of_voting_committee_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
                 # 创建投票状态实体
                 model_name = sub_tache_entity.tache_id.model_id.model_name
@@ -168,7 +169,7 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
                 # 初始化 各个投票实体
                 for rel_entity in c_entity_rels:
-                    poll_entity = e.prev_post_conference_resolutions_ids.create(vals)
+                    poll_entity = e.prev_post_conference_resolutions_ids.create(res)
                     poll_entity.write({
                         'voter': rel_entity.employee_id.id,
 
