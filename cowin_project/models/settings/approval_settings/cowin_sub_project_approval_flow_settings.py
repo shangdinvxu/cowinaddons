@@ -21,14 +21,15 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
     approval_flow_settings_id = fields.Many2one('cowin_project.approval_flow_settings', string=u'工程审批流', ondelete="restrict")
     meta_sub_project_id = fields.Many2one('cowin_project.meat_sub_project', string=u'元子工程实例', ondelete="cascade")
 
-    status = fields.Selection([(1, u'发起'), (2, u'审核中'), (3, u'暂缓(从新发起)'), (4, u'同意'), (5, u'拒绝')],
+    status = fields.Selection([(1, u'发起'), (2, u'审核中'), (3, u'暂缓(从新发起)'), (4, u'同意'), (5, u'拒绝'), (6, u'投票中'), (7, u'同意')],
                      string=u'审核状态', default=1)
     prev_status = fields.Integer(default=1)
 
     # 通道使用,发送通知消息
     # channel_id = fields.Many2one('mail.channel', string=u'发送消息通知的通道')
 
-    action = {(1, 2): u'发起', (2, 2): u'审核', (2, 3): u'暂缓', (1, 4): u'同意', (2, 4): u'同意', (2, 5): u'拒绝'}
+    action = {(1, 2): u'发起', (2, 2): u'审核', (2, 3): u'暂缓', (1, 4): u'同意', (2, 4): u'同意', (2, 5): u'拒绝',
+              (6, 7): u'投票同意', (6, 5): u'投票拒绝'}
 
     # is_putoff = fields.Boolean(string=u'是否暂缓', default=True)
 
@@ -56,52 +57,6 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         return message_infos
 
-
-
-    # @api.multi
-    # def unlink(self):
-    #     for rec in self:
-    #
-    #     # self.channel_id.unlink()
-    #     # print(u'子通道是否删除!!!')
-    #
-    #         super(Cowin_sub_project_approval_flow_settings, self).unlink()
-    #     return True
-
-
-
-
-
-
-
-    # def send_all_message(self): # 发送通知消息!!!
-    #
-    #     rels = self.current_approval_flow_node_id.operation_role_id.sub_meta_pro_approval_settings_role_rel \
-    #            & self.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel
-    #
-    #     user_entities = set([rel_entity.employee_id.user_id for rel_entity in rels])
-    #     # user_entities.add()
-    #     partner_ids = list(map(lambda user: user.partner_id.id, user_entities))
-    #     id = self.env['res.users'].search([('id', '=', 1)]).partner_id.id
-    #     partner_ids.append(id)
-    #
-    #
-    #     if not self.channel_id:
-    #         self.channel_id = self.channel_id.create({
-    #         'name': u'私有通道%s %s' % (self.sub_project_tache_id.name, self.sub_project_tache_id.id),
-    #         # 'channel_partner_ids': [(6, 0, partner_ids)],
-    #         "public": "public",
-    #         # 'channel_type': 'chat',
-    #         })
-    #
-    #     self.channel_id.write({
-    #         'channel_partner_ids': [(6, 0, partner_ids)],
-    #     })
-    #     # self.channel_id.channel_invite(partner_ids)
-    #
-    #
-    #     # 指定主题为审批消息
-    #     self.channel_id.message_post(u'请您注意查看审核操作!!!', message_type='comment', subtype='mail.mt_comment')
 
 
     def send_next_approval_flow_settings_node_msg(self, status=2):
@@ -132,7 +87,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         tmp2[u'operation'] = u''
         tmp2[u'sub_tache_name'] = self.sub_project_tache_id.name
 
-
+        info = u''
 
         if status == 2: # 待审批
             tmp2[u'operation'] = u'待审批'
@@ -211,7 +166,17 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             self.message_post(json.dumps(tmp2))
             self.prev_status = self.status = newstatus
             self.send_next_approval_flow_settings_node_msg(status=4)
-            self.sub_project_tache_id.trigger_next_subtache()
+            # self.sub_project_tache_id.trigger_next_subtache()
+
+            if self.sub_project_tache_id.tache_id.model_id.model_name == "cowin_project.sub_sum_invest_decision_committee":
+                self.sub_project_tache_id.write_special_vote(True)
+
+                # 项目退出会议纪要 有关联的表
+            elif self.sub_project_tache_id.tache_id.model_id.model_name == "cowin_project.sub_sum_pro_withdraw_from_meeting":
+                self.sub_project_tache_id.write_special_vote(False)
+            else:
+                self.sub_project_tache_id.trigger_next_subtache()
+
         elif (prevstatus, newstatus) == (2, 2):
             print(u'(2, 2) acion...')
             tmp2[u'operation'] = u'同意'
@@ -232,12 +197,37 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             self.message_post(json.dumps(tmp2))
             self.send_next_approval_flow_settings_node_msg(status=4)
 
-            self.sub_project_tache_id.trigger_next_subtache()
+            # self.sub_project_tache_id.trigger_next_subtache()
+
+            if self.sub_project_tache_id.tache_id.model_id.model_name == "cowin_project.sub_sum_invest_decision_committee":
+                self.sub_project_tache_id.write_special_vote(True)
+
+                # 项目退出会议纪要 有关联的表
+            elif self.sub_project_tache_id.tache_id.model_id.model_name == "cowin_project.sub_sum_pro_withdraw_from_meeting":
+                self.sub_project_tache_id.write_special_vote(False)
+            else:
+                self.sub_project_tache_id.trigger_next_subtache()
+
         elif (prevstatus, newstatus) == (2, 5):
             self.prev_status = self.status = newstatus
             tmp2[u'operation'] = u'拒绝'
             self.message_post(json.dumps(tmp2))
             self.send_next_approval_flow_settings_node_msg(status=5)
+
+        elif (prevstatus, newstatus) == (6, 7):
+            # 投票同意
+            self.prev_status = self.status = newstatus
+            tmp2[u'operation'] = u'投票同意'
+            self.message_post(json.dumps(tmp2))
+            self.send_next_approval_flow_settings_node_msg(status=7)
+            self.sub_project_tache_id.trigger_next_subtache()
+
+        elif (prevstatus, newstatus) == (6, 5):
+            # 投票同意
+            self.prev_status = self.status = newstatus
+            tmp2[u'operation'] = u'投票拒绝'
+            self.message_post(json.dumps(tmp2))
+            self.send_next_approval_flow_settings_node_msg(status=3)
 
         else:
             pass
@@ -271,6 +261,12 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         elif new_status == 5:
             self.status = 5
 
+        elif new_status == 6:
+            self.status = 6
+
+        elif new_status == 7:
+            self.status = 7
+
         else:
             pass
 
@@ -297,7 +293,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
     def set_reject(self):
         if self.is_reject():
             return
-        self.status = 5
+        self.upate_status(5)
 
     def is_reject(self):
 

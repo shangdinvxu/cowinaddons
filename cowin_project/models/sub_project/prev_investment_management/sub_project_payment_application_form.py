@@ -4,10 +4,14 @@ class Cowin_project_subproject_payment_application_form(models.Model):
     '''
         付款申请表
     '''
+    _inherit = 'cowin_project.base_status'
+
 
     _name = 'cowin_project.sub_payment_app_form'
 
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
+    sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
+
 
     # name = fields.Char(related='subproject_id.name', string=u"项目名称")
     # project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
@@ -84,6 +88,7 @@ class Cowin_project_subproject_payment_application_form(models.Model):
         target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
 
         vals['subproject_id'] = sub_project_id
+        vals['sub_tache_id'] = sub_tache_id
         res = super(Cowin_project_subproject_payment_application_form, self).create(vals)
         target_sub_tache_entity.write({
             'res_id': res.id,
@@ -110,24 +115,16 @@ class Cowin_project_subproject_payment_application_form(models.Model):
     @api.multi
     def write(self, vals):
         res = super(Cowin_project_subproject_payment_application_form, self).write(vals)
-        tache_info = self._context['tache']
+        target_sub_tache_entity = self.sub_tache_id
 
-        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+        if self.inner_or_outer_status == 1:
+            target_sub_tache_entity.write({
+                'is_launch_again': False,
+            })
 
-        # 校验meta_sub_project所对应的子工程只能有一份实体
-        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
-
-        sub_tache_id = int(tache_info['sub_tache_id'])
-
-        target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
-
-        target_sub_tache_entity.write({
-            'is_launch_again': False,
-        })
-
-        # 判断 发起过程 是否需要触发下一个子环节
-        # target_sub_tache_entity.check_or_not_next_sub_tache()
-        target_sub_tache_entity.update_sub_approval_settings()
+            # 判断 发起过程 是否需要触发下一个子环节
+            # target_sub_tache_entity.check_or_not_next_sub_tache()
+            target_sub_tache_entity.update_sub_approval_settings()
 
         return res
 

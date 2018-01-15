@@ -3,6 +3,8 @@ from odoo import models, fields, api
 
 
 class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Model):
+    _inherit = 'cowin_project.base_status'
+
     _name = 'cowin_project.sub_sum_pro_withdraw_from_meeting'
 
     '''
@@ -11,6 +13,8 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
     '''
 
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
+    sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
+
 
     # name = fields.Char(related='subproject_id.name', string=u"项目名称")
     # project_number = fields.Char(related='subproject_id.project_number', string=u'项目编号')
@@ -80,7 +84,15 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
         target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
 
         vals['subproject_id'] = sub_project_id
+        vals['sub_tache_id'] = sub_tache_id
+
         res = super(sub_project_summary_of_the_project_withdrawal_from_the_meeting, self).create(vals)
+
+        # 局部数据写入,用以避免与发起状态之间产生的操作!!!
+        res.subproject_id.write({
+            'inner_or_outer_status': 2,  # write方法 状态发生变化
+        })
+
         res.subproject_id.conference_date = res.conference_date
 
         target_sub_tache_entity.write({
@@ -90,9 +102,8 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
         })
 
         # 判断 发起过程 是否需要触发下一个子环节
-        # target_sub_tache_entity.check_or_not_next_sub_tache()
-        # target_sub_tache_entity.update_sub_approval_settings()
-        target_sub_tache_entity.write_special_vote(prev_or_post_vote=False)
+        target_sub_tache_entity.update_sub_approval_settings()
+
 
 
         return res
@@ -100,26 +111,16 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
     @api.multi
     def write(self, vals):
         res = super(sub_project_summary_of_the_project_withdrawal_from_the_meeting, self).write(vals)
-        tache_info = self._context['tache']
+        target_sub_tache_entity = self.sub_tache_id
 
-        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+        if self.inner_or_outer_status == 1:
+            target_sub_tache_entity.write({
+                'is_launch_again': False,
+            })
 
-        # 校验meta_sub_project所对应的子工程只能有一份实体
-        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
-
-        sub_tache_id = int(tache_info['sub_tache_id'])
-
-        target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
-
-        target_sub_tache_entity.write({
-            'is_launch_again': False,
-        })
-
-        # 判断 发起过程 是否需要触发下一个子环节
-        # target_sub_tache_entity.check_or_not_next_sub_tache()
-        # target_sub_tache_entity.update_sub_approval_settings()
-        # target_sub_tache_entity.write_special_vote(prev_or_post_vote=False)
-
+            # 判断 发起过程 是否需要触发下一个子环节
+            # target_sub_tache_entity.check_or_not_next_sub_tache()
+            target_sub_tache_entity.update_sub_approval_settings()
 
         return res
 

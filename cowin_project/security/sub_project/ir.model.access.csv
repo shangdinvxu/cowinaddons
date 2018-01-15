@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_cowin_project_meat_sub_project,cowin_project.meat_sub_project,model_cowin_project_meat_sub_project,,1,1,1,1
+access_cowin_project_base_status,cowin_project.base_status,model_cowin_project_base_status,,1,1,1,1

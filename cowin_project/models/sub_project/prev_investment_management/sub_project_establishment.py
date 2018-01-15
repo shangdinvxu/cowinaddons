@@ -8,6 +8,8 @@ from odoo.exceptions import UserError
 # 项目立项  构建小项目
 
 class Cowin_project_subproject(models.Model):
+    _inherit = 'cowin_project.base_status'
+
     _name = 'cowin_project.cowin_subproject'
 
     '''
@@ -23,6 +25,9 @@ class Cowin_project_subproject(models.Model):
     # 关联到settings中,把该字段看成配置选项的操作
     # project_id = fields.Many2one('cowin_project.cowin_project', ondelete="cascade")
     meta_sub_project_id = fields.Many2one('cowin_project.meat_sub_project', string=u'元子工程实例' , ondelete="cascade")
+
+    sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
+
 
     # # 这个字段仅仅是为了让程序设计更加的完备性!!!
     # subproject_id = fields.Many2one('cowin_project.cowin_subproject')
@@ -43,6 +48,7 @@ class Cowin_project_subproject(models.Model):
     project_source_note = fields.Char(string=u'项目来源备注')
     invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
     invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
+
 
 
 
@@ -143,18 +149,19 @@ class Cowin_project_subproject(models.Model):
             raise UserError(u'每个元子工程只能有一份实体!!!')
 
 
-
-
-        vals['meta_sub_project_id'] = meta_sub_project_id
-
         sub_tache_id = int(tache_info['sub_tache_id'])
-
-        target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
-
-
-
+        vals['meta_sub_project_id'] = meta_sub_project_id
+        vals['sub_tache_id'] = sub_tache_id
         sub_project = super(Cowin_project_subproject, self).create(vals)
-        sub_project._compute_value() # 将数据写入到指定的位置!!!
+        sub_project._compute_value()  # 将数据写入到指定的位置!!!
+
+        target_sub_tache_entity = sub_project.sub_tache_id
+        # target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
+
+
+
+        # sub_project = super(Cowin_project_subproject, self).create(vals)
+
 
 
         target_sub_tache_entity.write({
@@ -181,26 +188,19 @@ class Cowin_project_subproject(models.Model):
     @api.multi
     def write(self, vals):
         res = super(Cowin_project_subproject, self).write(vals)
-        tache_info = self._context['tache']
 
-        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+        target_sub_tache_entity = self.sub_tache_id
 
-        # 校验meta_sub_project所对应的子工程只能有一份实体
-        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
-        if len(meta_sub_project_entity.sub_project_ids) > 1:
-            raise UserError(u'每个元子工程只能有一份实体!!!')
+        if self.inner_or_outer_status == 1:
+            target_sub_tache_entity.write({
+                'is_launch_again': False,
+            })
 
-        sub_tache_id = int(tache_info['sub_tache_id'])
+            # 判断 发起过程 是否需要触发下一个子环节
+            # target_sub_tache_entity.check_or_not_next_sub_tache()
+            target_sub_tache_entity.update_sub_approval_settings()
 
-        target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
 
-        target_sub_tache_entity.write({
-            'is_launch_again': False,
-        })
-
-        # 判断 发起过程 是否需要触发下一个子环节
-        # target_sub_tache_entity.check_or_not_next_sub_tache()
-        target_sub_tache_entity.update_sub_approval_settings()
 
         return res
 

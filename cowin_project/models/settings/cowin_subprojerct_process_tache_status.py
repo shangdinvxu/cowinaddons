@@ -152,6 +152,7 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
                 e.write({
                     'subproject_id': meta_sub_project_entity.sub_project_ids[0].id,
                     'prev_or_post_vote': prev_or_post_vote,
+                    'sub_tache_id': sub_tache_entity.id,
                 })
 
 
@@ -165,8 +166,8 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
                 # 同时不再考虑该子环节中审批节点的问题
                 sub_tache_entity.sub_pro_approval_flow_settings_ids[0].write({
-                    'status': 4,
-                    'prev_status': 4,
+                    'status': 6,
+                    'prev_status': 6,
                 })
 
 
@@ -213,8 +214,8 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
 
 
-    def update_sub_approval_settings(self):  # 调用子审批流实体
-        self.sub_pro_approval_flow_settings_ids.upate_status(2)
+    def update_sub_approval_settings(self, status=2):  # 调用子审批流实体
+        self.sub_pro_approval_flow_settings_ids.upate_status(status)
 
     def trigger_next_subtache(self): # 只触发解锁条件
         for sub_tache_entity in self.meta_sub_project_id.sub_tache_ids:

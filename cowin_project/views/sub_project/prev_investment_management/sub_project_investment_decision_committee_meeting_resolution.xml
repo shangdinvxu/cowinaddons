@@ -39,6 +39,11 @@
                             <field name="supervisor_id" required="1"/>
                             <field name="amount_of_entrusted_loan" required="1"/>
                             <field name="chairman_of_investment_decision_committee_ids" readonly="1"/>
+
+                            <!-- 是否是最终决议!!! -->
+                            <field name="is_final_meeting_resolution" readonly="1"/>
+
+
                         </group>
                     </sheet>
                 </form>

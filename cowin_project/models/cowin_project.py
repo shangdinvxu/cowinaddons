@@ -465,7 +465,13 @@ class Cowin_project(models.Model):
                         info = u'拒绝'
                         approval_view_or_launch = False
 
+                    elif status == 6:
+                        info = u'投票中...'
+                        approval_view_or_launch = None
 
+                    elif status == 7:
+                        info = u'同意'
+                        approval_view_or_launch = None
                     else:
                         pass
 

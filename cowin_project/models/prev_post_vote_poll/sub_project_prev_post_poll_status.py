@@ -10,6 +10,8 @@ class Prev_poll_status(models.Model):
         投前/投后投资决策委员会会议表决结果
     '''
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', string=u'子工程实体', ondelete="cascade")
+    sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
+
 
     name = fields.Char(string=u"项目名称")
     project_number = fields.Char(string=u'项目编号')
@@ -41,6 +43,8 @@ class Prev_poll_status(models.Model):
                     # self.voting_status = 2
                     # self.voting_result = u'同意'
 
+                    # self.sub_tache_id.sub_pro_approval_flow_settings_ids.upate_status(4)
+
                     self.write({
                         'voting_status': 2,
                         'voting_result': u'同意',
@@ -54,6 +58,7 @@ class Prev_poll_status(models.Model):
                         'voting_status': 3,
                         'voting_result': u'拒绝',
                     })
+                    # self.sub_tache_id.sub_pro_approval_flow_settings_ids.upate_status(5)
 
             else:
                 self.voting_result = u'还有%s人,没有投票' % (len(self.sudo().prev_post_conference_resolutions_ids) - self.compute_voting_count)
@@ -71,6 +76,7 @@ class Prev_poll_status(models.Model):
                         'voting_status': 2,
                         'voting_result': u'同意',
                     })
+                    # self.sub_tache_id.sub_pro_approval_flow_settings_ids.upate_status(4)
                 else:
                     # 拒绝,不能继续往下面走
                     # self.voting_status = 3
@@ -80,6 +86,7 @@ class Prev_poll_status(models.Model):
                         'voting_status': 3,
                         'voting_result': u'拒绝',
                     })
+                    # self.sub_tache_id.sub_pro_approval_flow_settings_ids.upate_status(5)
 
             else:
                 self.voting_result = u'还有%s人,没有投票' % (len(self.sudo().prev_post_conference_resolutions_ids) - self.compute_voting_count)
@@ -106,10 +113,10 @@ class Prev_poll_status(models.Model):
 
     def get_rating_from_the_amount_of_investment(self):
 
-        if self.the_amount_of_investment <= 1000 * 1000 and self.the_amount_of_financing > 0:
+        if self.the_amount_of_investment <= 1000 * 10000 and self.the_amount_of_financing > 0:
             return (3.0, 5.0)
 
-        elif self.the_amount_of_financing > 1000 * 1000 and self.the_amount_of_financing <= 3000 * 1000:
+        elif self.the_amount_of_financing > 1000 * 10000 and self.the_amount_of_financing <= 5000 * 10000:
             return (4.0, 5.0)
 
         else:
@@ -119,38 +126,38 @@ class Prev_poll_status(models.Model):
 
     # @api.model
     # def create(self, vals):
-        # tache_info = self._context['tache']
-        #
-        # # sub_project_id = int(tache_info['sub_project_id'])
-        #
-        # sub_tache_id = int(tache_info['sub_tache_id'])
-        # meta_sub_project_id = int(tache_info['meta_sub_project_id'])
-        # meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
-        #
-        # sub_project_id = meta_sub_project_entity.sub_project_ids.id
-        #
-        # target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
-        #
-        # vals['subproject_id'] = sub_project_id
-        # res = super(Prev_poll_status, self).create(vals)
-        # target_sub_tache_entity.write({
-        #     'res_id': res.id,
-        #     # 'is_unlocked': True,
-        #     'view_or_launch': True,
-        # })
-
-        # 判断 发起过程 是否需要触发下一个子环节
-        # target_sub_tache_entity.check_or_not_next_sub_tache()
-        # target_sub_tache_entity.update_sub_approval_settings()
-
-        # 触发下一个依赖子环节处于解锁状态
-        # for current_sub_tache_entity in meta_sub_project_entity.sub_tache_ids:
-        #     if current_sub_tache_entity.parent_id == target_sub_tache_entity:
-        #         current_sub_tache_entity.write({
-        #             'is_unlocked': True,
-        #         })
-
-        # return res
+    #     tache_info = self._context['tache']
+    #
+    #     # sub_project_id = int(tache_info['sub_project_id'])
+    #
+    #     sub_tache_id = int(tache_info['sub_tache_id'])
+    #     meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+    #     meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+    #
+    #     sub_project_id = meta_sub_project_entity.sub_project_ids.id
+    #
+    #     target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
+    #
+    #     vals['subproject_id'] = sub_project_id
+    #     res = super(Prev_poll_status, self).create(vals)
+    #     target_sub_tache_entity.write({
+    #         'res_id': res.id,
+    #         # 'is_unlocked': True,
+    #         'view_or_launch': True,
+    #     })
+    #
+    #     #判断 发起过程 是否需要触发下一个子环节
+    #     target_sub_tache_entity.check_or_not_next_sub_tache()
+    #     target_sub_tache_entity.update_sub_approval_settings()
+    #
+    #     #触发下一个依赖子环节处于解锁状态
+    #     for current_sub_tache_entity in meta_sub_project_entity.sub_tache_ids:
+    #         if current_sub_tache_entity.parent_id == target_sub_tache_entity:
+    #             current_sub_tache_entity.write({
+    #                 'is_unlocked': True,
+    #             })
+    #
+    #     return res
 
 
 
@@ -161,11 +168,11 @@ class Prev_poll_status(models.Model):
 
         # 由于在投票状态之中,是通过compute计算字段做操作,所以 context中并不会传递tache数据
         # 但是数据已经保存在了子环节中
-        sub_tache_e = self.subproject_id.meta_sub_project_id.sub_tache_ids.filtered(
-            lambda sub_tache: sub_tache.tache_id.model_id.model_name == self._name and sub_tache.res_id == self.id)
+        # sub_tache_e = self.subproject_id.meta_sub_project_id.sub_tache_ids.filtered(
+        #     lambda sub_tache: sub_tache.tache_id.model_id.model_name == self._name and sub_tache.res_id == self.id)
 
 
-        target_sub_tache_entity = sub_tache_e
+        target_sub_tache_entity = self.sub_tache_id
 
         # 投票完成
         if self.voting_status == 2:
@@ -175,7 +182,9 @@ class Prev_poll_status(models.Model):
 
             # 判断 发起过程 是触发下一个子环节
             # target_sub_tache_entity.check_or_not_next_sub_tache()
-            target_sub_tache_entity.trigger_next_subtache()
+            # target_sub_tache_entity.trigger_next_subtache()
+            self.sub_tache_id.sub_pro_approval_flow_settings_ids.upate_status(7)
+
         elif self.voting_status == 3:
             # 不需要再做从新发起的状态!!!
             target_sub_tache_entity.sub_pro_approval_flow_settings_ids.set_reject()
