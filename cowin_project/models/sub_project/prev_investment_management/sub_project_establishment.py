@@ -120,6 +120,12 @@ class Cowin_project_subproject(models.Model):
 
 
 
+    # 投资决策委员会会议纪要 表中投决会日期的依赖的字段
+    voting_committee_date = fields.Date(string=u'投决会日期')
+
+
+
+
     @api.model
     def create(self, vals):
 

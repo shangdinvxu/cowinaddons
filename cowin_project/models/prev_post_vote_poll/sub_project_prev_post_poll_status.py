@@ -35,7 +35,8 @@ class Prev_poll_status(models.Model):
         if self.prev_or_post_vote:
             if self.compute_voting_count == len(self.sudo().prev_post_conference_resolutions_ids):  # 这个是非常大意的地方,权限的问题,让代码变得走不下去!!!
                 tmp = self.voting_statistics = self.voting_statistics / len(self.prev_post_conference_resolutions_ids)
-                if tmp >= 4.5:
+                low, high = self.get_rating_from_the_amount_of_investment()
+                if tmp >= low and tmp < high:
                     # 触发下一个子环节
                     # self.voting_status = 2
                     # self.voting_result = u'同意'
@@ -101,6 +102,19 @@ class Prev_poll_status(models.Model):
     the_amount_of_investment = fields.Float(string=u'本次投资金额')
     ownership_interest = fields.Integer(string=u'股份比例')
     # ----------
+
+
+    def get_rating_from_the_amount_of_investment(self):
+
+        if self.the_amount_of_investment <= 1000 * 1000 and self.the_amount_of_financing > 0:
+            return (3.0, 5.0)
+
+        elif self.the_amount_of_financing > 1000 * 1000 and self.the_amount_of_financing <= 3000 * 1000:
+            return (4.0, 5.0)
+
+        else:
+            return (4.5, 5.0)
+
 
 
     # @api.model
@@ -190,7 +204,9 @@ class Prev_poll_status(models.Model):
 
         common_fileds.extend(['name', 'project_number'])
 
-        tem = sub_project_entity.read(common_fileds)[0]
+        # tem = sub_project_entity.read(common_fileds)[0]
+        tem = meta_sub_project_entity.round_financing_and_Foundation_ids[0].read(common_fileds)[0]
+
 
         res = {}
 

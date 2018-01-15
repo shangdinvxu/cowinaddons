@@ -87,28 +87,56 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
                 name = self.meta_sub_project_id.sub_project_ids[0].name
                 project_number = self.meta_sub_project_id.sub_project_ids[0].project_number
+                voting_committee_date = self.meta_sub_project_id.sub_project_ids[0].voting_committee_date
+
+
                 meta_sub_project_entity = self.meta_sub_project_id
                 # 默认的投资经理的数据我们需要去自定义添加
                 vals = {
                     'name': name,
                     'project_number': project_number,
+                    'voting_committee_date': voting_committee_date,
                 }
+
+                res = {}
+                # res 目的在于把之前保存在轮次基金实体中的数据取出来,以供投票状态的使用操作!!!
+                common_fileds = [
+                    'round_financing_id',
+                    'foundation_id',
+                    'the_amount_of_financing',
+                    'the_amount_of_investment',
+                    'ownership_interest',
+                ]
+
+                # res = meta_sub_project_entity.round_financing_and_Foundation_ids[0].read(common_fileds)[0]
+
+                # res.update(vals)
+
+                tem = meta_sub_project_entity.round_financing_and_Foundation_ids[0].read(common_fileds)[0]
+                for k, v in tem.iteritems():
+                    nk = k
+                    if type(v) is tuple:
+                        res[nk] = v[0]
+                    else:
+                        res[nk] = v
+
+
 
                 invest_manager_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资经理')])
                 rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & invest_manager_entity.sub_meta_pro_approval_settings_role_rel
 
                 # vals['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
-                vals['invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+                res['invest_manager_ids'] = vals['invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
                 investment_decision_committee_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资决策委员')])
                 rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & investment_decision_committee_entity.sub_meta_pro_approval_settings_role_rel
                 c_entity_rels = rel_entities
 
-                vals['members_of_voting_committee_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+                res['members_of_voting_committee_ids'] = vals['members_of_voting_committee_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
                 # 创建投票状态实体
                 model_name = sub_tache_entity.tache_id.model_id.model_name
-                e = self.env[model_name].create(vals)
+                e = self.env[model_name].create(res)
 
                 # 写入依赖的外键操作!!!
                 e.write({

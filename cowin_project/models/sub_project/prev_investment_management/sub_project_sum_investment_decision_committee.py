@@ -24,6 +24,15 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
 
     voting_committee_date = fields.Date(string=u'投决会日期')
 
+    compute_voting_committee_date = fields.Char(compute=u'_compute_value')
+
+    @api.depends('voting_committee_date')
+    def _compute_value(self):
+        for rec in self:
+            rec.subproject_id.voting_committee_date = self.voting_committee_date
+
+
+
     conference_recorder = fields.Many2one('hr.employee', string=u'会议记录人')
     checker = fields.Many2one('hr.employee', string=u'复核人')
     investment_decision_committee_ids = fields.Many2many('hr.employee', 'decision_committee_investment_decision_committee_employee_rel',  string=u'投资决策委员')
