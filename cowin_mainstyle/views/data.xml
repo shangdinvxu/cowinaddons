@@ -36,5 +36,10 @@
          <field name="button_icon">fa fa-cny</field>
        </record>
 
+        <record id="cowin_project.menu_4" model="ir.ui.menu">
+         <field name="name">投票</field>
+         <field name="button_icon">fa fa-hand-paper-o</field>
+       </record>
+
 </data>
 </odoo>
