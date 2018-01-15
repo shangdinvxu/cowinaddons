@@ -25,10 +25,12 @@
             <field name="model">cowin_project.sub_prev_post_poll_status</field>
             <field name="arch" type="xml">
                 <form create="false" edit="false" delete="false">
-                    <group>
-                        <field name="voting_statistics" readonly="1"/>
-                        <field name="voting_result" readonly="1"/>
-                    </group>
+                    <sheet>
+                        <group>
+                            <field name="voting_statistics" readonly="1"/>
+                            <field name="voting_result" readonly="1"/>
+                        </group>
+                    </sheet>
                 </form>
 
             </field>

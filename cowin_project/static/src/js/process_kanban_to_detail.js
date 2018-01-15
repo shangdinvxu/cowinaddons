@@ -470,7 +470,6 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             this._super.apply(this, arguments);
             options = options || {};
             this.context = options.context || {};
-            console.log(action.params.no_initate)
 
             //项目查询界面的判断，没有发起按钮
             this.no_initate = action.params.no_initate;
