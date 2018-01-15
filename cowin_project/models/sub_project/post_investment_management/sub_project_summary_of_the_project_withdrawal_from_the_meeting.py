@@ -49,6 +49,15 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
     # ---------------
 
     conference_date = fields.Date(string=u'会议日期')
+    compute_conference_data = fields.Char(compute='_compute_conference_date')
+
+    @api.depends('conference_date')
+    def _compute_conference_date(self):
+        for rec in self:
+            rec.subproject_id.conference_date = rec.conference_date
+
+
+
     conference_recorder = fields.Many2one('hr.employee', string=u'会议记录人')
     checker = fields.Many2one('hr.employee', string=u'复核人')
     # investment_decision_committee = fields.Many2many('hr.employee', string=u'投资决策委员')
@@ -72,6 +81,8 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
 
         vals['subproject_id'] = sub_project_id
         res = super(sub_project_summary_of_the_project_withdrawal_from_the_meeting, self).create(vals)
+        res.subproject_id.conference_date = res.conference_date
+
         target_sub_tache_entity.write({
             'res_id': res.id,
             # 'is_unlocked': True,

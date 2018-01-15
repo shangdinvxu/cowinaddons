@@ -85,18 +85,27 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
             # 这个操作只会去触发可能有多个子环节的解锁,如果解锁则不需要再次解锁
             if sub_tache_entity.order_parent_id == self and not sub_tache_entity.is_unlocked:
 
+
+
                 name = self.meta_sub_project_id.sub_project_ids[0].name
                 project_number = self.meta_sub_project_id.sub_project_ids[0].project_number
-                voting_committee_date = self.meta_sub_project_id.sub_project_ids[0].voting_committee_date
 
-
-                meta_sub_project_entity = self.meta_sub_project_id
                 # 默认的投资经理的数据我们需要去自定义添加
                 vals = {
                     'name': name,
                     'project_number': project_number,
-                    'voting_committee_date': voting_committee_date,
                 }
+                if prev_or_post_vote:
+                    voting_committee_date = self.meta_sub_project_id.sub_project_ids[0].voting_committee_date
+                    vals['voting_committee_date'] = voting_committee_date
+
+                else:
+                    conference_date = self.meta_sub_project_id.sub_project_ids[0].conference_date
+                    vals['conference_date'] = conference_date
+
+
+                meta_sub_project_entity = self.meta_sub_project_id
+
 
                 res = vals
                 # res 目的在于把之前保存在轮次基金实体中的数据取出来,以供投票状态的使用操作!!!
