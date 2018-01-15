@@ -20,7 +20,7 @@ class Prev_post_vote_poll(models.Model):
     project_number = fields.Char(string=u'项目编号')
     invest_manager_ids = fields.Many2many('hr.employee', 'prev_post_vote_poll_invest_manager_employee_id', string=u'投资经理')
 
-    # ----------  投资基金
+    # # ----------  投资基金
 
     round_financing_id = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
     foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金名称')
@@ -39,7 +39,7 @@ class Prev_post_vote_poll(models.Model):
     prev_or_post_vote = fields.Boolean(string=u'投前/投后', default=True)
 
     # ---> 投前表决使用到的字段
-    voting_committee = fields.Date(string=u'投决会日期')
+    voting_committee_date = fields.Date(string=u'投决会日期')
     # voting_score = fields.Float(string=u'表决分数')
 
     # @api.model
