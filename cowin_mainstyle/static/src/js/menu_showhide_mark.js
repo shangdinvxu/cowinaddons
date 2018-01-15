@@ -54,13 +54,16 @@ odoo.define('web.menu_showhide_mark', function (require) {
             // Activate current menu item and show parents
             this.$secondary_menus.find('.active').removeClass('active');
             if ($main_menu !== $clicked_menu) {
-                console.log('sss')
                 $clicked_menu.parents().removeClass('o_hidden');
                 if ($clicked_menu.is('.oe_menu_toggler')) {
                     $clicked_menu.toggleClass('oe_menu_opened').siblings('.oe_secondary_submenu:first').toggleClass('o_hidden');
                 } else {
                     $clicked_menu.parent().addClass('active');
-                    $clicked_menu.parents('ul').eq(0).prev().toggleClass('oe_menu_opened')
+                    if($clicked_menu.parents('ul').eq(0).prev().hasClass('oe_menu_opened')){
+                        // console.log('sssss')
+                    }else {
+                        $clicked_menu.parents('ul').eq(0).prev().toggleClass('oe_menu_opened');
+                    }
                 }
             }
             // add a tooltip to cropped menu items
