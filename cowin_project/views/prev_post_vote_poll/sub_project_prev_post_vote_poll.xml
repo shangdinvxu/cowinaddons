@@ -109,7 +109,7 @@
                             <!---->
 
                             <field name="conference_date" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}"/>
-                            <field name="voting_result" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}"/>
+                            <field name="voting_result" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}" widget="radio"/>
 
                             <!--表决人信息-->
                             <field name="voter"/>
