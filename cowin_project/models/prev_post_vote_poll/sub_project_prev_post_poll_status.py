@@ -116,7 +116,7 @@ class Prev_poll_status(models.Model):
         if self.the_amount_of_investment <= 1000 * 10000 and self.the_amount_of_investment > 0:
             return (3.0, 5.0)
 
-        elif self.the_amount_of_investment > 1000 * 10000 and self.the_amount_of_investment <= 5000 * 10000:
+        elif self.the_amount_of_investment > 1000 * 10000 and self.the_amount_of_investment <= 3000 * 10000:
             return (4.0, 5.0)
 
         else:
