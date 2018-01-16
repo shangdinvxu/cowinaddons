@@ -218,10 +218,9 @@ class Meat_sub_project(models.Model):
             res.append(current)
             current = current.order_parent_id
 
-
-
-
-
-
         # return self.sub_tache_ids.search([('meta_sub_project_id', '=', self.id)], order='order,index')
         return res[::-1]
+
+
+
+

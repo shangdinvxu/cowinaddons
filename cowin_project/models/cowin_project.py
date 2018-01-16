@@ -1698,6 +1698,54 @@ class Cowin_project(models.Model):
 
 
 
+    # 获得联系人的信息!!!
+    def rpc_get_contract_info(self, **kwargs):
+        meta_sub_project_id = kwargs.get('meta_sub_project_id')
+
+        meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
+
+        sub_project_entity = meta_sub_project_entity.sub_project_ids[0]
+
+        contract_infos = []
+
+        related_sub_project = u'%s/%s/%s' % (
+            sub_project_entity.name,
+            sub_project_entity.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id.name,
+            sub_project_entity.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id.name)
+
+        contract_info = {
+            'contract_person': sub_project_entity.contract_person,
+            'contract_phone': sub_project_entity.contract_phone,
+            'contract_email': sub_project_entity.contract_email,
+            'related_sub_project': related_sub_project
+        }
+
+        contract_infos.append(contract_info)
+
+
+        call_up_records = self.env['cowin_project.sub_call_up_record'].sudo().search([('subproject_id', '=', sub_project_entity.id)])
+
+        for call_up_reco in call_up_records:
+            contract_infos.append({
+                'contract_person': call_up_reco.customer_name,
+                'contract_phone': call_up_reco.customer_contract,
+                'contract_email': call_up_reco.customer_email,
+                'related_sub_project': related_sub_project,
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         # return super(Cowin_project, self).unlink()
 
