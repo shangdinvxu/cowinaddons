@@ -93,11 +93,11 @@ class Prev_post_vote_poll(models.Model):
         if self.vote_status == 1:
             if self.prev_or_post_vote:  # 投前
                 voting_score = float(vals.get('voting_score', 0.0))
-                self.sub_prev_post_poll_status_id.voting_statistics += voting_score
+                self.sub_prev_post_poll_status_id.prev_voting_statistics += voting_score
                 self.sub_prev_post_poll_status_id.compute_voting_statistics()
             else:                       # 投后
                 voting_result = 1.0 if vals.get('voting_result') == 1 else 0.0
-                self.sub_prev_post_poll_status_id.voting_statistics += voting_result
+                self.sub_prev_post_poll_status_id.post_voting_statistics += voting_result
                 self.sub_prev_post_poll_status_id.compute_voting_statistics()
 
             vals['vote_status'] = 2

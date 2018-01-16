@@ -27,7 +27,12 @@
                 <form create="false" edit="false" delete="false">
                     <sheet>
                         <group>
-                            <field name="voting_statistics" readonly="1" widget="progressbar"/>
+                            <field name="prev_or_post_vote" attrs="{'invisible': True}"/>
+                            <!-- 投前统计  -->
+                            <field name="prev_voting_statistics" readonly="1" attrs="{'invisible': [('prev_or_post_vote','=', False)]}"/>
+
+                            <!--投后统计-->
+                            <field name="post_voting_statistics" readonly="1" attrs="{'invisible': [('prev_or_post_vote','=', True)]}" widget="progressbar" />
                             <field name="voting_result" readonly="1"/>
                         </group>
                     </sheet>

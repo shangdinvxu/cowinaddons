@@ -16,7 +16,8 @@ class Prev_poll_status(models.Model):
     name = fields.Char(string=u"项目名称")
     project_number = fields.Char(string=u'项目编号')
 
-    voting_statistics = fields.Float(string=u'投票统计')
+    prev_voting_statistics = fields.Float(string=u'投前投票统计')
+    post_voting_statistics = fields.Float(string=u'投后投票统计')
 
     voting_result = fields.Char(string=u'投票结果')
     # 用以判断是投前还是投后的字段
@@ -36,7 +37,7 @@ class Prev_poll_status(models.Model):
 
         if self.prev_or_post_vote:
             if self.compute_voting_count == len(self.sudo().prev_post_conference_resolutions_ids):  # 这个是非常大意的地方,权限的问题,让代码变得走不下去!!!
-                tmp = self.voting_statistics = self.voting_statistics / len(self.sudo().prev_post_conference_resolutions_ids)
+                tmp = self.prev_voting_statistics = self.prev_voting_statistics / len(self.sudo().prev_post_conference_resolutions_ids)
                 # self.voting_statistics  = tmp * 100
                 low, high = self.get_rating_from_the_amount_of_investment()
                 if tmp >= low and tmp < high:
@@ -68,8 +69,8 @@ class Prev_poll_status(models.Model):
         else:
             # 投后状态
             if self.compute_voting_count == len(self.sudo().prev_post_conference_resolutions_ids):
-                tmp = self.voting_statistics = self.voting_statistics / len(self.sudo().prev_post_conference_resolutions_ids)
-                self.voting_statistics = tmp * 100
+                tmp = self.post_voting_statistics = self.post_voting_statistics / len(self.sudo().prev_post_conference_resolutions_ids)
+                self.post_voting_statistics = tmp * 100
                 if tmp >= 2.0 / 3:
                     # 触发下一个子环节
                     # self.voting_status = 2
