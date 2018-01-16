@@ -27,7 +27,7 @@
                 <form create="false" edit="false" delete="false">
                     <sheet>
                         <group>
-                            <field name="voting_statistics" readonly="1"/>
+                            <field name="voting_statistics" readonly="1" widget="progressbar"/>
                             <field name="voting_result" readonly="1"/>
                         </group>
                     </sheet>

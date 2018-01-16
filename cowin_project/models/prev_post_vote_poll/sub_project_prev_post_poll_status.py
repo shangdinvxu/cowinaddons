@@ -37,6 +37,7 @@ class Prev_poll_status(models.Model):
         if self.prev_or_post_vote:
             if self.compute_voting_count == len(self.sudo().prev_post_conference_resolutions_ids):  # 这个是非常大意的地方,权限的问题,让代码变得走不下去!!!
                 tmp = self.voting_statistics = self.voting_statistics / len(self.sudo().prev_post_conference_resolutions_ids)
+                self.voting_statistics  = tmp * 100
                 low, high = self.get_rating_from_the_amount_of_investment()
                 if tmp >= low and tmp < high:
                     # 触发下一个子环节
@@ -68,6 +69,7 @@ class Prev_poll_status(models.Model):
             # 投后状态
             if self.compute_voting_count == len(self.sudo().prev_post_conference_resolutions_ids):
                 tmp = self.voting_statistics = self.voting_statistics / len(self.sudo().prev_post_conference_resolutions_ids)
+                self.voting_statistics = tmp * 100
                 if tmp >= 2.0 / 3:
                     # 触发下一个子环节
                     # self.voting_status = 2

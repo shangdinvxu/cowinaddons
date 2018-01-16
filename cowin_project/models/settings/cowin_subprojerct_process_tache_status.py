@@ -140,6 +140,12 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
                 investment_decision_committee_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资决策委员')])
                 rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & investment_decision_committee_entity.sub_meta_pro_approval_settings_role_rel
+
+                if not rel_entities:
+                    raise UserError(u'投资决策委员为空,不能进行投票!!!')
+
+
+
                 c_entity_rels = rel_entities
 
                 res['members_of_voting_committee_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
