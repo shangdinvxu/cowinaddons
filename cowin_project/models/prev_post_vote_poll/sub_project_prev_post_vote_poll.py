@@ -96,7 +96,7 @@ class Prev_post_vote_poll(models.Model):
                 self.sub_prev_post_poll_status_id.voting_statistics += voting_score
                 self.sub_prev_post_poll_status_id.compute_voting_statistics()
             else:                       # 投后
-                voting_result = 1.0 if vals.get('voting_result') else 0.0
+                voting_result = 1.0 if vals.get('voting_result') == 1 else 0.0
                 self.sub_prev_post_poll_status_id.voting_statistics += voting_result
                 self.sub_prev_post_poll_status_id.compute_voting_statistics()
 
