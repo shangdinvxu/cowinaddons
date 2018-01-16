@@ -1368,17 +1368,17 @@ class Cowin_project(models.Model):
             # # 接下来需要考虑属于每个工程的虚拟角色问题
             for entity in entities:
                 # 发起人所对应的角色
-                operation_role_entitis = set()
-                for stage_entity in entity.process_id.stage_ids:
-                    if stage_entity.prev_or_post_investment:
-                        # 投前
-                        for tache_entity in stage_entity.tache_ids:
-                            if tache_entity.model_id.model_name == self._name:
-                                continue
-                            # 把提交角色放入提取出来
-                            operation_role_entitis\
-                                .add(tache_entity.approval_flow_settings_ids.approval_flow_setting_node_ids[1].operation_role_id)
-
+                # operation_role_entitis = set()
+                # for stage_entity in entity.process_id.stage_ids:
+                #     if stage_entity.prev_or_post_investment:
+                #         # 投前
+                #         for tache_entity in stage_entity.tache_ids:
+                #             if tache_entity.model_id.model_name == self._name:
+                #                 continue
+                #             # 把提交角色放入提取出来
+                #             operation_role_entitis\
+                #                 .add(tache_entity.approval_flow_settings_ids.approval_flow_setting_node_ids[1].operation_role_id)
+                #
 
                 # 获得所有的发起人的角色之后,还需要依据元子工程过滤中该主工所有三张表之间依赖的实体
                 # 找到该主工程中,发起人所关联的employee
@@ -1387,12 +1387,14 @@ class Cowin_project(models.Model):
 
                 for meta_sub_pro_entity in entity.meta_sub_project_ids:
                     restrict_rels = meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel
-                    for role in operation_role_entitis:
-                        rel_entities = restrict_rels & role.sub_meta_pro_approval_settings_role_rel
+                    # for role in operation_role_entitis:
+                    #     rel_entities = restrict_rels & role.sub_meta_pro_approval_settings_role_rel
 
 
-                        for rel_entity in rel_entities:
-                            target_employ_entities.add(rel_entity.employee_id)
+                        # for rel_entity in rel_entities:
+                        #     target_employ_entities.add(rel_entity.employee_id)
+                    for rel in restrict_rels:
+                        target_employ_entities.add(rel.employee_id)
 
 
 
@@ -1476,17 +1478,17 @@ class Cowin_project(models.Model):
                 if entity.prev_or_post_investment:
                     continue
                 # 发起人所对应的角色
-                operation_role_entitis = set()
-                for stage_entity in entity.process_id.stage_ids:
-                    if not stage_entity.prev_or_post_investment:
-                        # 投前
-                        for tache_entity in stage_entity.tache_ids:
-                            if tache_entity.model_id.model_name == self._name:
-                                continue
-                            # 把提交角色放入提取出来
-                            operation_role_entitis \
-                                .add(tache_entity.approval_flow_settings_ids.approval_flow_setting_node_ids[
-                                         1].operation_role_id)
+                # operation_role_entitis = set()
+                # for stage_entity in entity.process_id.stage_ids:
+                #     if not stage_entity.prev_or_post_investment:
+                #         # 投前
+                #         for tache_entity in stage_entity.tache_ids:
+                #             if tache_entity.model_id.model_name == self._name:
+                #                 continue
+                #             # 把提交角色放入提取出来
+                #             operation_role_entitis \
+                #                 .add(tache_entity.approval_flow_settings_ids.approval_flow_setting_node_ids[
+                #                          1].operation_role_id)
 
                 # 获得所有的发起人的角色之后,还需要依据元子工程过滤中该主工所有三张表之间依赖的实体
                 # 找到该主工程中,发起人所关联的employee
@@ -1494,11 +1496,14 @@ class Cowin_project(models.Model):
 
                 for meta_sub_pro_entity in entity.meta_sub_project_ids:
                     restrict_rels = meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel
-                    for role in operation_role_entitis:
-                        rel_entities = restrict_rels & role.sub_meta_pro_approval_settings_role_rel
+                    # for role in operation_role_entitis:
+                    #     rel_entities = restrict_rels & role.sub_meta_pro_approval_settings_role_rel
 
-                        for rel_entity in rel_entities:
-                            target_employ_entities.add(rel_entity.employee_id)
+                        # for rel_entity in rel_entities:
+                        #     target_employ_entities.add(rel_entity.employee_id)
+                    for rel in restrict_rels:
+                        target_employ_entities.add(rel.employee_id)
+
 
                 # 当前用户所对应的employee
                 current_employee_entities = set(self.env.user.employee_ids)
