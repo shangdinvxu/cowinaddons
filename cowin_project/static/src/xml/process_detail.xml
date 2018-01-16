@@ -18,7 +18,7 @@
             <ul id="process_tab" class="nav nav-tabs">
                 <li><a href="#process_detail" data-toggle="tab">详情</a></li>
                 <li class="active"><a href="#process_data" data-toggle="tab">流程资料</a></li>
-                <li><a href="#process_contact" data-toggle="tab">联系人</a></li>
+                <li><a class="operate_contacts" href="#process_contact" data-toggle="tab">联系人</a></li>
                 <li><a class="operate_records" href="#process_record" data-toggle="tab">操作记录</a></li>
             </ul>
             <div id="process_tab_content" class="tab-content">
@@ -298,7 +298,7 @@
         </div>
     </t>
 
-    <!--操作记录-->
+    <!--tab 操作记录-->
     <t t-name="operate_records_tmpl">
         <t t-foreach="result.operation_records" t-as="item">
             <div class="record_item_wrap">
@@ -315,6 +315,18 @@
                         </span>
                     </div>
                 </div>
+            </div>
+        </t>
+    </t>
+
+    <!--tab 联系人-->
+    <t t-name="operate_contacts_templ">
+        <t t-foreach="result.contract_infos" t-as="item">
+            <div class="process_contact_wrap">
+                <div style="font-weight:bolder;font-size:18px;color:#000"><t t-esc="item.contract_person"/></div>
+                <div>联系电话：<t t-esc="item.contract_phone"/></div>
+                <div>邮箱：<t t-esc="item.contract_email"/></div>
+                <div>相关项目：<t t-esc="item.related_sub_project"/></div>
             </div>
         </t>
     </t>

@@ -509,3 +509,19 @@
     overflow: hidden;
     margin-bottom: 100px;
 }
+
+#process_contact{
+    padding: 15px;
+}
+#process_contact .process_contact_wrap{
+    display: inline-block;
+    margin: 8px;
+    padding: 8px;
+    min-width: 300px;
+    border-radius: 5px;
+    background-color: rgba(242, 242, 242, 1);
+}
+#process_contact .process_contact_wrap>div{
+    margin-bottom: 10px;
+    color: #999999;
+}

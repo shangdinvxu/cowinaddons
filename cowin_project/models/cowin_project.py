@@ -1705,8 +1705,12 @@ class Cowin_project(models.Model):
 
         for meta_sub_project_entity in self.meta_sub_project_ids:
 
-            sub_project_entity = meta_sub_project_entity.sub_project_ids[0]
+            sub_project_entity = meta_sub_project_entity.sub_project_ids
 
+            if not sub_project_entity:
+                continue
+
+            sub_project_entity = sub_project_entity[0]
 
 
             related_sub_project = u'%s/%s/%s' % (

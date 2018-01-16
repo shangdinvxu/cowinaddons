@@ -36,7 +36,18 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .confirm_copy':'confirm_copy_func',
             'click .button_wrap .add_new_tache':'add_new_tache_func',
             'click .operate_records':'operate_records_func',
-            'click .manage_team_edit':'manage_team_edit_func'
+            'click .manage_team_edit':'manage_team_edit_func',
+            'click .operate_contacts':'show_operate_contacts'
+        },
+        //联系人
+        show_operate_contacts:function () {
+            var self = this;
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_get_contract_info",[self.id])
+                    .then(function (result) {
+                        console.log(result);
+                        $('#process_contact').append(QWeb.render('operate_contacts_templ', {result: result}))
+                    })
         },
         //编辑项目管理团队
         manage_team_edit_func:function (e) {
