@@ -78,7 +78,7 @@ class Prev_post_vote_poll(models.Model):
 
     # 投后表决使用到的字段
     conference_date = fields.Date(string=u'会议日期')
-    voting_result = fields.Boolean(string=u'表决结果')
+    voting_result = fields.Selection([(1, u'同意'), (2, u'不同意')], string=u'表决结果', default=1)
 
 
 
