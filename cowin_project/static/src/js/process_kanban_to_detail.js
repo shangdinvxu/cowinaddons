@@ -46,6 +46,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     .call("rpc_get_contract_info",[self.id])
                     .then(function (result) {
                         console.log(result);
+                        $('#process_contact').html('');
                         $('#process_contact').append(QWeb.render('operate_contacts_templ', {result: result}))
                     })
         },
