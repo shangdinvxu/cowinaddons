@@ -68,7 +68,7 @@ class Prev_poll_status(models.Model):
             # 投后状态
             if self.compute_voting_count == len(self.sudo().prev_post_conference_resolutions_ids):
                 tmp = self.voting_statistics = self.voting_statistics / len(self.sudo().prev_post_conference_resolutions_ids)
-                if tmp > 2.0 / 3:
+                if tmp >= 2.0 / 3:
                     # 触发下一个子环节
                     # self.voting_status = 2
                     # self.voting_result = u'同意'

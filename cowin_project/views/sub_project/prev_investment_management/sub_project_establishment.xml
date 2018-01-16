@@ -13,7 +13,7 @@
                                 <field name="name" required="1"/>
                                 <field name="image" widget="image" class="oe_avatar" options="{'size': [90, 90]}"/>
                                 <field name="project_number" required="1"/>
-                                <field name="project_source" required="1"/>
+                                <field name="project_source" required="1" options='{"no_open":True}'/>
                                 <field name="project_source_note" required="1"/>
                                 <!--<field name="invest_manager_id" required="1"/>-->
                                 <field name="invest_manager_ids" readonly="1"/>
@@ -36,10 +36,10 @@
 
                             <group>
                                  <!--投资基金-->
-                                <field name="foundation_id" required="1"/>
+                                <field name="foundation_id" required="1" options='{"no_open":True}'/>
                                 <field name="the_amount_of_investment" required="1"/>
                                 <field name="ownership_interest" required="1"/>
-                                <field name="round_financing_id" required="1"/>
+                                <field name="round_financing_id" required="1" options='{"no_open":True}'/>
                                 <field name="the_amount_of_financing" required="1"/>
                                 <!---->
                             </group>
