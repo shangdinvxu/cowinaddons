@@ -8,7 +8,7 @@
             <field name="name">cowin_project.sub_sum_pro_withdraw_from_meeting form</field>
             <field name="model">cowin_project.sub_sum_pro_withdraw_from_meeting</field>
             <field name="arch" type="xml">
-                <form string="Fiscal year">
+                <form string="Fiscal year" create="false" edit="false" delete="false">
 
                     <sheet>
                         <group>
