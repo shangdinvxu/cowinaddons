@@ -7,7 +7,7 @@
             <field name="name">cowin_project.sub_sum_of_the_three_meeting form</field>
             <field name="model">cowin_project.sub_sum_of_the_three_meeting</field>
             <field name="arch" type="xml">
-                <form string="Fiscal year">
+                <form string="Fiscal year" create="false" edit="false" delete="false">
                     <sheet>
                         <group>
                             <group>

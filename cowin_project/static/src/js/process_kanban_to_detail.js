@@ -356,7 +356,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     .then(function (result) {
                         result.context['tache'] = self.tache_arr[tache_index];
                         result.target = 'current';
-                        console.log(result)
+                        console.log(result);
                         self.do_action(result);
                     })
         },
