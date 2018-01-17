@@ -248,7 +248,7 @@
     color: #00B0DD;
 }
 .process_data_main_wrap .process_data_item_line .button_wrap>span>a{
-    color: #00B0DD!important;
+    color: #00B0DD;
 }
 #process_tab_content .process_data_main_wrap .process_data_item_line .button_wrap span{
     position: initial;
@@ -524,4 +524,8 @@
 #process_contact .process_contact_wrap>div{
     margin-bottom: 10px;
     color: #999999;
+}
+
+.process_data_main_wrap .process_data_item_line .button_wrap>.add_new_tache>a,.process_data_main_wrap .process_data_item_line .button_wrap>.initiate>a,.process_data_main_wrap .process_data_item_line .button_wrap>.to_approval>a{
+    color:rgba(255, 102, 51, 1);
 }
