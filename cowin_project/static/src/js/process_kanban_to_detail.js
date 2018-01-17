@@ -79,7 +79,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             var target = e.target || e.srcElement;
             var self = this;
             var tache_index = $(target).parents('.detail_line').attr('tache-index');
-            if($(target).parents('.detail_line').find('.tache_name_').text()=='投资决策申请'){
+            if(self.tache_arr[tache_index].model_name=="cowin_project.sub_invest_decision_app"){
                 tache_index = parseInt(tache_index);
                 var data = {
                     'sub_tache_ids':[self.tache_arr[tache_index].sub_tache_id,self.tache_arr[tache_index+1].sub_tache_id,self.tache_arr[tache_index+2].sub_tache_id,self.tache_arr[tache_index+3].sub_tache_id],
