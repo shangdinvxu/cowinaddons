@@ -94,14 +94,19 @@
                 <div class="process_data_item_line detail_line" t-att-data-tache-id="obj.id" t-att-tache-index="tache_index">
                     <t t-set="tache_index" t-value="tache_index + 1"/>
                     <span class="tache_name_"><t t-esc="obj.name"/></span>
-                    <span>【
-                        <t t-if="obj.approval_status.status_id==-1">
-                            同意
 
-                        </t>
-                        <t t-esc="obj.approval_status.status_name"/>
-                        】
-                    </span>
+                    <t t-if="obj.approval_status.status_id==-1">
+                        <span>【同意】</span>
+                    </t>
+                    <t t-elif="obj.approval_status.status_id==5">
+                        <span style="color:red">【<t t-esc="obj.approval_status.status_name"/>】</span>
+                        <span class="gameover"><span class="fa fa-ban" style="color:red;margin-top:2px"></span>投资流程已终止</span>
+                    </t>
+                    <t t-else="">
+                        <span>【<t t-esc="obj.approval_status.status_name"/>】</span>
+                    </t>
+
+
                     <div class="button_wrap">
                         <t t-if="obj.is_unlocked==true">
                             <t t-if="obj.is_launch_again==true">

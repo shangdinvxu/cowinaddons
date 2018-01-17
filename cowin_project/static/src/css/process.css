@@ -529,3 +529,8 @@
 .process_data_main_wrap .process_data_item_line .button_wrap>.add_new_tache>a,.process_data_main_wrap .process_data_item_line .button_wrap>.initiate>a,.process_data_main_wrap .process_data_item_line .button_wrap>.to_approval>a{
     color:rgba(255, 102, 51, 1);
 }
+#process_tab_content .detail_line .gameover{
+    position: absolute;
+    right: 0px;
+    color: red!important;
+}
