@@ -128,6 +128,87 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         # 指定主题为审批消息
         channel_entity.message_post(info, message_type='comment', subtype='mail.mt_comment')
 
+
+    def process_buniess_logic(self):
+        # ---> 投前
+        # 投资决策申请 表名
+        investment_decision_application = 'cowin_project.sub_invest_decision_app'
+
+        # 投资决策委员会会议决议 表名
+        investment_decision_res = 'cowin_project.sub_invest_decision_committee_res'
+
+        # 投资决策委员会会议纪要 表名
+        investment_decision_sum = 'cowin_project.sub_sum_invest_decision_committee'
+
+        # ---> 投后
+        # 投资退出申请书 表名
+        investment_post_application = 'cowin_project.sub_app_invest_withdrawal'
+
+        # 项目退出会议纪要 表名
+        investment_post_sum = 'cowin_project.sub_sum_pro_withdraw_from_meeting'
+
+        # 项目退出决议 表名
+        investment_post_decision_res = 'cowin_project.sub_project_exit_resolution'
+
+        if self.sub_project_tache_id.tache_id.model_id.model_name == investment_decision_res:
+            # 投资决策委员会决议 需要开启 投资决策申请中子环节中的新增按钮
+            res_entities = self.sub_project_tache_id.meta_sub_project_id.sub_tache_ids.filtered(
+                lambda t: t.tache_id.model_id.model_name == investment_decision_application)
+
+            # 拿到第一个 投资退出申请书 实体, 开启其新增操作
+            res_entity = res_entities[0]
+
+            # last_entity = self.sub_project_tache_id.meta_sub_project_id.sub_tache_ids.filtered(
+            #     lambda e: e.tache_id.model_id.model_name == investment_decision_res and e.res_id == self.sub_project_tache_id.res_id)
+
+
+            last_entity = self.env[investment_decision_res].browse(self.sub_project_tache_id.res_id)
+            # 投资决策委员会会议决议  是否为为最终决议
+            if last_entity.is_final_meeting_resolution:
+
+                tmp = False
+            else:
+                tmp = True
+
+            res_entity.write({
+                'once_or_more': tmp
+            })
+
+
+
+        elif self.sub_project_tache_id.tache_id.model_id.model_name == investment_post_decision_res:
+            # 项目退出决议 需要开启 投资退出申请书中子环节中的新增按钮
+            res_entities = self.sub_project_tache_id.meta_sub_project_id.sub_tache_ids.filtered(
+                lambda t: t.tache_id.model_id.model_name == investment_post_application)
+
+            # 拿到第一个 投资退出申请书 实体, 开启其新增操作
+            res_entity = res_entities[0]
+
+            res_entity.write({
+                'once_or_more': True
+            })
+
+
+        # 投资决策委员会会议纪要 所关联的投票表
+        elif self.sub_project_tache_id.tache_id.model_id.model_name == investment_decision_sum:
+            self.sub_project_tache_id.write_special_vote(True)
+
+            # 项目退出会议纪要 有关联的表
+        elif self.sub_project_tache_id.tache_id.model_id.model_name == investment_post_sum:
+            self.sub_project_tache_id.write_special_vote(False)
+        else:
+            # 这种条件下,需要先依赖主环节重的 once_or_more
+            if self.sub_project_tache_id.tache_id.once_or_more:
+                tache_entities = self.meta_sub_project_id.sub_tache_ids & self.sub_project_tache_id.tache_id.tache_status_ids
+
+                head_tache_entity = tache_entities[0]
+
+                head_tache_entity.write({
+                    'once_or_more': True,
+                })
+            self.sub_project_tache_id.trigger_next_subtache()
+
+
     # 改变状态的操作!!!
     def process_action(self):
         prevstatus, newstatus = self.prev_status, self.status
@@ -166,16 +247,9 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             self.message_post(json.dumps(tmp2))
             self.prev_status = self.status = newstatus
             self.send_next_approval_flow_settings_node_msg(status=4)
-            # self.sub_project_tache_id.trigger_next_subtache()
 
-            if self.sub_project_tache_id.tache_id.model_id.model_name == "cowin_project.sub_sum_invest_decision_committee":
-                self.sub_project_tache_id.write_special_vote(True)
+            self.process_buniess_logic()
 
-                # 项目退出会议纪要 有关联的表
-            elif self.sub_project_tache_id.tache_id.model_id.model_name == "cowin_project.sub_sum_pro_withdraw_from_meeting":
-                self.sub_project_tache_id.write_special_vote(False)
-            else:
-                self.sub_project_tache_id.trigger_next_subtache()
 
         elif (prevstatus, newstatus) == (2, 2):
             print(u'(2, 2) acion...')
@@ -197,16 +271,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             self.message_post(json.dumps(tmp2))
             self.send_next_approval_flow_settings_node_msg(status=4)
 
-            # self.sub_project_tache_id.trigger_next_subtache()
-
-            if self.sub_project_tache_id.tache_id.model_id.model_name == "cowin_project.sub_sum_invest_decision_committee":
-                self.sub_project_tache_id.write_special_vote(True)
-
-                # 项目退出会议纪要 有关联的表
-            elif self.sub_project_tache_id.tache_id.model_id.model_name == "cowin_project.sub_sum_pro_withdraw_from_meeting":
-                self.sub_project_tache_id.write_special_vote(False)
-            else:
-                self.sub_project_tache_id.trigger_next_subtache()
+            self.process_buniess_logic()
 
         elif (prevstatus, newstatus) == (2, 5):
             self.prev_status = self.status = newstatus

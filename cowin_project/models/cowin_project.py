@@ -358,17 +358,17 @@ class Cowin_project(models.Model):
 
                     tache_info = {}
 
-                    brother_sub_tache_entities = meta_sub_project_entity.sub_tache_ids & sub_tache_entity.tache_id.tache_status_ids
-
-                    if len(brother_sub_tache_entities) == 1:
-                        once_or_more = brother_sub_tache_entities.once_or_more
-                        tache_info['once_or_more'] = once_or_more
-
-                    elif len(brother_sub_tache_entities) > 1 and sub_tache_entity == brother_sub_tache_entities[0]:
-                        if brother_sub_tache_entities[-1].sub_pro_approval_flow_settings_ids.is_success():
-                            once_or_more = brother_sub_tache_entities[0].once_or_more
-
-                            tache_info['once_or_more'] = once_or_more
+                    # brother_sub_tache_entities = meta_sub_project_entity.sub_tache_ids & sub_tache_entity.tache_id.tache_status_ids
+                    #
+                    # if len(brother_sub_tache_entities) == 1:
+                    #     once_or_more = brother_sub_tache_entities.once_or_more
+                    #     tache_info['once_or_more'] = once_or_more
+                    #
+                    # elif len(brother_sub_tache_entities) > 1 and sub_tache_entity == brother_sub_tache_entities[0]:
+                    #     if brother_sub_tache_entities[-1].sub_pro_approval_flow_settings_ids.is_success():
+                    #         once_or_more = brother_sub_tache_entities[0].once_or_more
+                    #
+                    #         tache_info['once_or_more'] = once_or_more
 
 
 
@@ -384,7 +384,7 @@ class Cowin_project(models.Model):
                     # tmp_tache['is_unlocked'] = tache.is_unlocked
                     tache_info['description'] = sub_tache_entity.tache_id.description
                     tache_info['state'] = sub_tache_entity.tache_id.state
-                    # tache_info['once_or_more'] = sub_tache_entity.once_or_more
+                    tache_info['once_or_more'] = sub_tache_entity.once_or_more
 
                     tache_info['view_or_launch'] = sub_tache_entity.view_or_launch
                     tache_info['is_launch_again'] = sub_tache_entity.is_launch_again
@@ -441,6 +441,8 @@ class Cowin_project(models.Model):
                         # 找出当前的审核人
                         name = target_sub_approval_flow_entity.current_approval_flow_node_id.operation_role_id.name
                         info = u'待%s审核' % name
+
+                        tache_info['once_or_more'] = False
                         # 当前用户是否属于某个角色!!!
                         if is_target_role:
                             # approval_view_or_launch = False
@@ -666,11 +668,17 @@ class Cowin_project(models.Model):
     def new_sub_tache(self, **kwargs):
 
         meta_sub_project_id = kwargs['meta_sub_project_id']
-        current_sub_tache_id = kwargs['sub_tache_ids']
+        current_sub_tache_id = kwargs['sub_tache_id']
 
         meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
         sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(current_sub_tache_id)
         current_tache_entity = sub_tache_entity.tache_id
+
+        # 新增子环节期间,把该子环节 on_or_more 属性设定为False
+
+        sub_tache_entity.write({
+            'once_or_more': False,
+        })
 
 
         # 获取当前子环节所有的兄弟环节
@@ -684,7 +692,7 @@ class Cowin_project(models.Model):
 
         for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
 
-            if sub_tache_e.parent_id == sub_tache_entity:
+            if sub_tache_e.order_parent_id == brother_sub_tache_entities[-1]:
 
                 is_last = False
                     # 新增子环节
@@ -694,7 +702,7 @@ class Cowin_project(models.Model):
                     'meta_sub_project_id': brother_sub_tache_entities[-1].meta_sub_project_id.id,
                     'tache_id': brother_sub_tache_entities[-1].tache_id.id,
                     'order_parent_id': brother_sub_tache_entities[-1].id,
-                    'parent_id': brother_sub_tache_entities[0].id,
+                    'parent_id': brother_sub_tache_entities[-1].id,
                     'is_unlocked': True,
                 })
 
@@ -717,76 +725,6 @@ class Cowin_project(models.Model):
                     })
 
         return self.rpc_get_info(meta_project_id=meta_sub_project_id)
-        # return self._get_info()
-        # is_last = True
-        # for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
-        #     if sub_tache_e.parent_id == sub_tache_entity:
-        #         # 如果数据已经解锁的话,向前端报错,不能有这样的情况产生
-        #         if sub_tache_e.is_unlocked:
-        #             raise UserError(u'被依赖的环节已经接解锁!!!')
-        #         # index = brother_sub_tache_entities[-1].index + 1
-        #
-        #
-        #
-        # for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
-        #
-        #     if sub_tache_e.order_parent_id == brother_sub_tache_entities[-1]:
-        #         is_last = False
-        #         # 如果数据已经解锁的话,向前端报错,不能有这样的情况产生
-        #         # if sub_tache_e.is_unlocked:
-        #         #     raise UserError(u'依赖的环节已经接解锁!!!')
-        #         index = brother_sub_tache_entities[-1].index + 1
-        #
-        #         # 新增子环节
-        #         new_sub_tache_entity = brother_sub_tache_entities.create({
-        #             'name': brother_sub_tache_entities[0].name + ' ' + str(index),
-        #             'meta_sub_project_id': sub_tache_entity.meta_sub_project_id.id,
-        #             # 'tache_id': sub_tache_entity.tache_id.id,
-        #             'order_parent_id': brother_sub_tache_entities[-1].id,
-        #             'parent_id': brother_sub_tache_entities[-1].id,
-        #             'index': index,
-        #         })
-        #
-        #         sub_tache_e.write({
-        #             'parent_id': new_sub_tache_entity.id,
-        #         })
-        #
-        #         # 还需要新增子审批实体
-        #
-        #         new_sub_tache_entity.sub_pro_approval_flow_settings_ids.create({
-        #             'sub_project_tache_id': new_sub_tache_entity.id,
-        #             'meta_sub_project_id': meta_sub_project_entity.id,
-        #             # 理论上主环节中只有一份主审批流实体
-        #             'approval_flow_settings_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.id,
-        #             # 默认就指向第一个位置!!!
-        #             'current_approval_flow_node_id': new_sub_tache_entity.tache_id.approval_flow_settings_ids.
-        #                     approval_flow_setting_node_ids.sorted('order')[0].id,
-        #         })
-        #
-        #
-        #
-        #
-        #
-        #
-        #         # 每次都需要调用这个方法
-        #         # meta_sub_project_entity.sub_tache_ids.set_depency_order_by_sub_tache()
-        #
-        #         break
-
-        #
-        # if is_last:
-        #     index = brother_sub_tache_entities[-1].index + 1
-        #     brother_sub_tache_entities.create({
-        #         'name': brother_sub_tache_entities[-1].name + ' ' + str(index),
-        #         'meta_sub_project_id': sub_tache_entity.meta_sub_project_id.id,
-        #         'tache_id': sub_tache_entity.tache_id.id,
-        #         'parent_id': sub_tache_entity.id,
-        #         'index': index,
-        #     })
-        #
-        #     # meta_sub_project_entity.sub_tache_ids.set_depency_order_by_sub_tache()
-        #
-
 
     def new_four_sub_tache(self, **kwargs):
         meta_sub_project_id = kwargs['meta_sub_project_id']
@@ -796,14 +734,18 @@ class Cowin_project(models.Model):
 
         to_do_list = []
 
+        sub_tache_entities = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_ids)
+
+        sub_tache_entities[0].write({
+            'once_or_more': False,
+        })
 
         # 拿出当前最后的一个依赖的子环节实体
         current_last_sub_tache_entity = None
 
+        for sub_tache_entity in sub_tache_entities:
 
-        for current_sub_tache_id in sub_tache_ids:
 
-            sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(current_sub_tache_id)
             current_tache_entity = sub_tache_entity.tache_id
 
 
@@ -811,8 +753,10 @@ class Cowin_project(models.Model):
             brother_sub_tache_entities = meta_sub_project_entity.sub_tache_ids & current_tache_entity.tache_status_ids
 
             # 拿出最后的一个依赖
-            if current_sub_tache_id == sub_tache_ids[-1]:
+            if sub_tache_entity == sub_tache_entities[-1]:
                 current_last_sub_tache_entity = brother_sub_tache_entities[-1]
+
+
             # brother_sub_tache_entities = brother_sub_tache_entities
 
             index = len(brother_sub_tache_entities) + 1
@@ -838,10 +782,10 @@ class Cowin_project(models.Model):
             'is_unlocked': True,
         })
 
-        # 默认情况下,把第新增条件隐藏
-        to_do_list[-1].write({
-            'once_or_more': False,
-        })
+        # # 默认情况下,把第新增条件隐藏
+        # to_do_list[0].write({
+        #     'once_or_more': False,
+        # })
 
         # 列表逆序,数据写入依赖条件
         revered_to_list = to_do_list[::-1]
@@ -912,19 +856,27 @@ class Cowin_project(models.Model):
 
         meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
         sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(current_sub_tache_id)
+
+        sub_tache_entity.write({
+            'once_or_more': False,
+        })
+
         current_tache_entity = sub_tache_entity.tache_id
 
         # 获取当前子环节所有的兄弟环节
         brother_sub_tache_entities = meta_sub_project_entity.sub_tache_ids & current_tache_entity.tache_status_ids
+        brother_sub_tache_entities.sorted('id')
 
         # brother_sub_tache_entities = brother_sub_tache_entities
 
         index = len(brother_sub_tache_entities) + 1
         is_last = True
 
+
+
         for sub_tache_e in meta_sub_project_entity.sub_tache_ids:
 
-            if sub_tache_e.parent_id == sub_tache_entity:
+            if sub_tache_e.order_parent_id == brother_sub_tache_entities[-1]:
                 is_last = False
                 # 新增子环节
 
@@ -933,7 +885,7 @@ class Cowin_project(models.Model):
                     'meta_sub_project_id': brother_sub_tache_entities[-1].meta_sub_project_id.id,
                     'tache_id': brother_sub_tache_entities[-1].tache_id.id,
                     'order_parent_id': brother_sub_tache_entities[-1].id,
-                    'parent_id': brother_sub_tache_entities[0].id,
+                    'parent_id': brother_sub_tache_entities[-1].id,
                     'is_unlocked': True,
                 })
 
@@ -942,6 +894,7 @@ class Cowin_project(models.Model):
                 })
 
                 break
+
 
         if is_last:
             # index = brother_sub_tache_entities[-1].index + 1
@@ -965,14 +918,17 @@ class Cowin_project(models.Model):
 
         to_do_list = []
 
-
+        sub_tache_entities = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_ids)
+        sub_tache_entities[0].write({
+            'once_or_more': False,
+        })
         # 拿出当前最后的一个依赖的子环节实体
         current_last_sub_tache_entity = None
 
 
-        for current_sub_tache_id in sub_tache_ids:
+        for sub_tache_entity in sub_tache_entities:
 
-            sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(current_sub_tache_id)
+            # sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(current_sub_tache_id)
             current_tache_entity = sub_tache_entity.tache_id
 
 
@@ -980,7 +936,7 @@ class Cowin_project(models.Model):
             brother_sub_tache_entities = meta_sub_project_entity.sub_tache_ids & current_tache_entity.tache_status_ids
 
             # 拿出最后的一个依赖
-            if current_sub_tache_id == sub_tache_ids[-1]:
+            if sub_tache_entity == sub_tache_entities[-1]:
                 current_last_sub_tache_entity = brother_sub_tache_entities[-1]
             # brother_sub_tache_entities = brother_sub_tache_entities
 
@@ -1008,9 +964,9 @@ class Cowin_project(models.Model):
         })
 
         # 默认情况下,把第新增条件隐藏
-        to_do_list[-1].write({
-            'once_or_more': False,
-        })
+        # to_do_list[-1].write({
+        #     'once_or_more': False,
+        # })
 
 
 
