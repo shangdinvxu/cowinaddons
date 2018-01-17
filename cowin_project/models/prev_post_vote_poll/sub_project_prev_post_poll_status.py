@@ -40,7 +40,7 @@ class Prev_poll_status(models.Model):
                 tmp = self.prev_voting_statistics = self.prev_voting_statistics / len(self.sudo().prev_post_conference_resolutions_ids)
                 # self.voting_statistics  = tmp * 100
                 low, high = self.get_rating_from_the_amount_of_investment()
-                if tmp >= low and tmp < high:
+                if tmp >= low and tmp <= high:
                     # 触发下一个子环节
                     # self.voting_status = 2
                     # self.voting_result = u'同意'
