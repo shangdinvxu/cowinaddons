@@ -218,7 +218,11 @@ class Cowin_project(models.Model):
         # 注意self为 空,即没需要的实体,空的实体
         meta_sub_project = self.meta_sub_project_ids.create({
             'project_id': project.id,
+            # 这类情况下,需要设定为可以使用的状态!!!
+            'is_on_use': True,
         })
+
+
 
         # #
         # self.env['cowin_project.round_financing_and_foundation'].create({
@@ -1736,6 +1740,10 @@ class Cowin_project(models.Model):
         res['default_meta_sub_project_id'] = meta_sub_pro_entity.id
         res['default_sub_tache_id'] = sub_tache_entity.id
 
+        for k, v in self.copy_data()[0].items():
+            kk = 'default_' + k
+            res[kk] = v
+
 
 
         self.whether_new_meta_sub_project_or_not = False
@@ -1748,10 +1756,16 @@ class Cowin_project(models.Model):
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': False,
-            'target': 'new',
+            'target': 'current',
             'context': res,
         }
 
+
+
+    @api.model
+    def unlink_blank_sub_project(self):
+        self.meta_sub_project_ids.search(
+            [('project_id', '=', self.id), ('is_on_use', '=', False)]).unlink()
 
 
 

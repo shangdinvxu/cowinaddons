@@ -34,11 +34,13 @@ class Meat_sub_project(models.Model):
 
     sub_meta_pro_approval_settings_role_rel = fields.One2many('cowin_project.meta_sub_appro_role_hr_em', 'meta_sub_project_id', string=u'虚拟角色与员工的关系')
 
+    is_on_use = fields.Boolean(string=u'是否属于使用状态', default=False)
+
 
 
     @api.model
     def create(self, vals, **kwargs):
-
+        #
         meta_sub_project = super(Meat_sub_project, self).create(vals)
 
         project_id = vals['project_id']
