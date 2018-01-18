@@ -1710,7 +1710,7 @@ class Cowin_project(models.Model):
 
 
 
-
+    # 新增 创建 基金轮次实体接口
     def rpc_new_found_round_entity(self, **kwargs):
 
         data_version = kwargs.get('data_version')
@@ -1728,6 +1728,10 @@ class Cowin_project(models.Model):
         meta_sub_pro_entity.round_financing_and_Foundation_ids.create({
             'meta_sub_project_id': meta_sub_pro_entity.id,
         })
+
+
+
+        self.whether_new_meta_sub_project_or_not = False
 
 
         return self.rpc_get_info()
