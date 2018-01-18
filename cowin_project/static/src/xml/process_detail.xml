@@ -52,6 +52,11 @@
                                         </t>
                                     </ul>
                                 </div>
+                                <t t-if="result.whether_new_meta_sub_project_or_not==true">
+                                    <div class="process_add_fun">
+                                        <span>新增基金</span>
+                                    </div>
+                                </t>
                             </t>
                         </div>
                         <div class="process_data_rounds">
