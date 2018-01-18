@@ -31,7 +31,31 @@ odoo.define('cowin_project.approval_after_invest_kanban_to_detail', function (re
             'click .to_approval':'to_approval_func',
             'click .approval_btn':'approval_btn_func',
             'click .view_approval':'view_approval_func',
-            'click .approval_body div':'view_approval_tache'
+            'click .approval_body div':'view_approval_tache',
+            'click .operate_contacts':'show_operate_contacts',
+            'click .operate_records':'operate_records_func',
+        },
+        //操作记录
+        operate_records_func:function () {
+            var self = this;
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_get_operation_record",[self.id])
+                    .then(function (result) {
+                        console.log(result);
+                        $('#process_record').html('');
+                        $('#process_record').append(QWeb.render('operate_records_tmpl', {result: result}))
+                    })
+        },
+        //联系人
+        show_operate_contacts:function () {
+            var self = this;
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_get_contract_info",[self.id])
+                    .then(function (result) {
+                        console.log(result);
+                        $('#process_contact').html('');
+                        $('#process_contact').append(QWeb.render('operate_contacts_templ', {result: result}))
+                    })
         },
         //查看审核的环节
         view_approval_tache:function () {
