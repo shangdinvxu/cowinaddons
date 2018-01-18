@@ -43,16 +43,14 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
          //新增基金
         process_add_fun:function () {
             var self = this;
-            self.tache_arr[1].project_id = self.id;
-            self.tache_arr[1].tache_id = 6173;
 
             //测试
             new Model("cowin_project.cowin_project")
-                    .call("rpc_load_and_return_action", [parseInt(self.id)],{'tache_info':self.tache_arr[1]})
+                    .call("rpc_new_found_round_entity", [parseInt(self.id)],{'data_version':self.data_version})
                     .then(function (result) {
-                        result.context['tache'] = self.tache_arr[1];
+                        // result.context['tache'] = self.tache_arr[1];
                         result.target = 'current';
-                        result.res_id = false;
+                        // result.res_id = false;
                         console.log(result);
                         self.do_action(result);
                     })
@@ -410,6 +408,9 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                         result.no_initate = self.no_initate
                         console.log(result);
                         self.pagedata = result;
+
+                        self.data_version = result.data_version;
+
                         //获取每个环节的model_name存入数组
                         result.process.forEach(function (value) {
                             value.tache_ids.forEach(function (model) {
