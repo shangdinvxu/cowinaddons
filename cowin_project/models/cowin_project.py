@@ -219,7 +219,7 @@ class Cowin_project(models.Model):
         meta_sub_project = self.meta_sub_project_ids.create({
             'project_id': project.id,
             # 这类情况下,需要设定为可以使用的状态!!!
-            'is_on_use': True,
+            # 'is_on_use': True,
         })
 
 
@@ -1726,24 +1726,15 @@ class Cowin_project(models.Model):
         # 数据版本增加
         self.data_version += 1
 
-        meta_sub_pro_entity = self.meta_sub_project_ids.create({
-            'project_id': self.id,
-        })
 
-        meta_sub_pro_entity.round_financing_and_Foundation_ids.create({
-            'meta_sub_project_id': meta_sub_pro_entity.id,
-        })
+        res = {'rpc_new_found_round_entity': True}
 
-        sub_tache_entity = meta_sub_pro_entity.sub_tache_ids.filtered(lambda e: e.tache_id.model_id.model_name == name)
-
-        res = {}
-        res['default_meta_sub_project_id'] = meta_sub_pro_entity.id
-        res['default_sub_tache_id'] = sub_tache_entity.id
-
-        for k, v in self.copy_data()[0].items():
-            kk = 'default_' + k
-            res[kk] = v
-
+        res = {
+            'rec_new_found_round_info': {
+                # 'rpc_new_found_round_entity': True,
+                'project_id': self.id,
+            }
+        }
 
 
         self.whether_new_meta_sub_project_or_not = False

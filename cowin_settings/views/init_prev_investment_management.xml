@@ -62,7 +62,7 @@
             <field name="order_parent_id" eval="ref('init_process_stage_2_tache_2')"/>
             <field name="description">说明：投资经理对项目进行尽职调查，撰写与项目相关的拜访记录</field>
             <field name="model_id" eval="ref('init_custom_model_4')"/>
-        </record>
+            <field name="once_or_more" eval="True"/>        </record>
 
         <record id="init_process_stage_3_tache_2" model="cowin_settings.process_tache">
             <field name="name">尽调报告</field>
@@ -86,6 +86,7 @@
             <field name="order_parent_id" eval="ref('init_process_stage_3_tache_2')"/>
             <field name="description">说明：发起投资决策申请，上传项目相关投资资料（可行性研究报告、投资条款或方案设计）</field>
             <field name="model_id" eval="ref('init_custom_model_6')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <record id="init_process_stage_4_tache_2" model="cowin_settings.process_tache">
@@ -95,6 +96,7 @@
             <field name="order_parent_id" eval="ref('init_process_stage_4_tache_1')"/>
             <field name="description">说明：业务总监召集会议，项目小组负责会议记录</field>
             <field name="model_id" eval="ref('init_custom_model_7')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <record id="init_process_stage_4_tache_3" model="cowin_settings.process_tache">
@@ -104,6 +106,7 @@
             <field name="order_parent_id" eval="ref('init_process_stage_4_tache_2')"/>
             <field name="description">说明：提交后需项目合伙人复核确认</field>
             <field name="model_id" eval="ref('init_custom_model_8')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <record id="init_process_stage_4_tache_4" model="cowin_settings.process_tache">
@@ -113,6 +116,7 @@
             <field name="order_parent_id" eval="ref('init_process_stage_4_tache_3')"/>
             <field name="description">说明：发起表决申请，投委会委员表决，系统统计表决结果</field>
             <field name="model_id" eval="ref('init_custom_model_9')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <record id="init_process_stage_4_tache_5" model="cowin_settings.process_tache">
@@ -122,6 +126,7 @@
             <field name="order_parent_id" eval="ref('init_process_stage_4_tache_4')"/>
             <field name="description">说明：投委会主席根据表决结果签署投资委员会决议</field>
             <field name="model_id" eval="ref('init_custom_model_10')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <!-- 1.5 合同审批-->
@@ -157,6 +162,8 @@
                 《项目直接出资文件审批流程表》或《项目委托贷款文件审批流程表》）
             </field>
             <field name="model_id" eval="ref('init_custom_model_12')"/>
+            <field name="once_or_more" eval="True"/>
+
         </record>
 
         <record id="init_process_stage_6_tache_2" model="cowin_settings.process_tache">
@@ -166,6 +173,8 @@
             <field name="order_parent_id" eval="ref('init_process_stage_6_tache_1')"/>
             <field name="description">说明：财务出资完成后，通知相关投资经理和公司</field>
             <field name="model_id" eval="ref('init_custom_model_13')"/>
+            <field name="once_or_more" eval="True"/>
+
         </record>
 
         <record id="init_process_stage_6_tache_3" model="cowin_settings.process_tache">
@@ -175,6 +184,7 @@
             <field name="order_parent_id" eval="ref('init_process_stage_6_tache_2')"/>
             <field name="description">说明：财务出资完成后，通知相关投资经理和公司</field>
             <field name="model_id" eval="ref('init_custom_model_14')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <!-- 1.7 项目资料归档-->
@@ -194,6 +204,7 @@
                 公司每年末根据具体项目的完成情况，将项目档案移交给基金投后管理专员归档。
             </field>
             <field name="model_id" eval="ref('init_custom_model_15')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
     </data>

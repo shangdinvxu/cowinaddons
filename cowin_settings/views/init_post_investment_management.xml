@@ -24,6 +24,7 @@
             <field name="order_parent_id" eval="ref('init_process_stage_7_tache_1')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_16')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <record id="init_post_process_stage_1_tache_2" model="cowin_settings.process_tache">
@@ -33,6 +34,7 @@
             <field name="order_parent_id" eval="ref('init_post_process_stage_1_tache_1')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_17')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <!-- 2.2 重大事项-->
@@ -48,6 +50,7 @@
             <field name="order_parent_id" eval="ref('init_post_process_stage_1_tache_2')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_18')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <record id="init_post_process_stage_2_tache_2" model="cowin_settings.process_tache">
@@ -57,6 +60,7 @@
             <field name="order_parent_id" eval="ref('init_post_process_stage_2_tache_1')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_19')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <!-- 2.3 三会-->
@@ -72,6 +76,7 @@
             <field name="order_parent_id" eval="ref('init_post_process_stage_2_tache_2')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_20')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <record id="init_post_process_stage_3_tache_2" model="cowin_settings.process_tache">
@@ -81,6 +86,7 @@
             <field name="order_parent_id" eval="ref('init_post_process_stage_3_tache_1')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_21')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
 
@@ -97,6 +103,7 @@
             <field name="order_parent_id" eval="ref('init_post_process_stage_3_tache_2')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_22')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <record id="init_post_process_stage_4_tache_2" model="cowin_settings.process_tache">
@@ -106,6 +113,7 @@
             <field name="order_parent_id" eval="ref('init_post_process_stage_4_tache_1')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_23')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <!-- 2.5 退出-->
@@ -121,6 +129,7 @@
             <field name="order_parent_id" eval="ref('init_post_process_stage_4_tache_2')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_24')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <record id="init_post_process_stage_5_tache_2" model="cowin_settings.process_tache">
@@ -130,6 +139,7 @@
             <field name="order_parent_id" eval="ref('init_post_process_stage_5_tache_1')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_25')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <record id="init_post_process_stage_5_tache_3" model="cowin_settings.process_tache">
@@ -140,6 +150,7 @@
             <field name="description"></field>
             <!--<field name="model_id" eval="ref('init_custom_model_26')"/>-->
             <field name="model_id" eval="ref('init_custom_model_8')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
         <record id="init_post_process_stage_5_tache_4" model="cowin_settings.process_tache">
@@ -149,6 +160,7 @@
             <field name="order_parent_id" eval="ref('init_post_process_stage_5_tache_3')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_27')"/>
+            <field name="once_or_more" eval="True"/>
         </record>
 
     </data>

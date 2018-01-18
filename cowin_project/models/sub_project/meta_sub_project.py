@@ -34,7 +34,7 @@ class Meat_sub_project(models.Model):
 
     sub_meta_pro_approval_settings_role_rel = fields.One2many('cowin_project.meta_sub_appro_role_hr_em', 'meta_sub_project_id', string=u'虚拟角色与员工的关系')
 
-    is_on_use = fields.Boolean(string=u'是否属于使用状态', default=False)
+    # is_on_use = fields.Boolean(string=u'是否属于使用状态', default=False)
 
 
 
@@ -49,11 +49,41 @@ class Meat_sub_project(models.Model):
 
         project_settings_entity = project_entity.process_id
 
+        # 投前
+        # 投资决策申请 表名
+        # investment_decision_application = 'cowin_project.sub_invest_decision_app'
+
+        pre_lists = [
+            'cowin_project.sub_invest_decision_app',
+            'cowin_project.sub_invest_decision_committee_res',
+            'cowin_project.sub_prev_post_poll_status',
+            'cowin_project.sub_invest_decision_committee_res',
+        ]
+
+        # 投后
+        # 投资退出申请书 表名
+        # investment_post_application = 'cowin_project.sub_app_invest_withdrawal'
+
+        post_list = [
+            'cowin_project.sub_app_invest_withdrawal',
+            'cowin_project.sub_sum_pro_withdraw_from_meeting',
+            'cowin_project.sub_project_exit_resolution',
+        ]
+
+        pre_lists.extend(post_list)
+        all = pre_lists
+
 
 
         for tache_entity in project_settings_entity.get_all_tache_entities():
             if tache_entity.model_id.model_name == project_entity._name:
                 continue
+
+            once_or_more = tache_entity.once_or_more
+
+            if tache_entity.model_id.model_name in all:
+                once_or_more = False
+
 
 
             # 1 创建子环节实体, 并且对自环节实体进行环节依赖的设定
@@ -61,7 +91,7 @@ class Meat_sub_project(models.Model):
                 'name': tache_entity.name,
                 'tache_id': tache_entity.id,
                 'meta_sub_project_id': meta_sub_project.id,
-                'once_or_more': tache_entity.once_or_more,
+                'once_or_more': once_or_more,
 
             })
 

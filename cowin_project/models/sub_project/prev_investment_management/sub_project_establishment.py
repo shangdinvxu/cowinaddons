@@ -133,6 +133,9 @@ class Cowin_project_subproject(models.Model):
     conference_date = fields.Date(string=u'会议日期')
 
 
+    def unlink_blank_sub_project(self):
+        self.meta_sub_project_id.search(
+            [('project_id', '=', self.meta_sub_project_id.project_id), ('is_on_use', '=', False)]).unlink()
 
 
 
@@ -141,6 +144,8 @@ class Cowin_project_subproject(models.Model):
     def create(self, vals):
 
         # 判断的理由在于前端界面新增基金时,不同的操作的接口
+
+        sub_project = None
         if self._context.get('tache'):
 
             tache_info = self._context['tache']
@@ -155,10 +160,50 @@ class Cowin_project_subproject(models.Model):
             sub_tache_id = int(tache_info['sub_tache_id'])
             vals['meta_sub_project_id'] = meta_sub_project_id
             vals['sub_tache_id'] = sub_tache_id
+
+            sub_project = super(Cowin_project_subproject, self).create(vals)
+
+        elif self._context.get('rec_new_found_round_info'):
+
+            # 前端界面新增的接口的操作使用案例
+
+            info = self._context['rec_new_found_round_info']
+
+            project_id = info['project_id']
+
+            name = 'cowin_project.cowin_subproject'
+
+            meta_sub_pro_entity = self.meta_sub_project_id.create({
+                'project_id': project_id,
+            })
+
+            meta_sub_pro_entity.round_financing_and_Foundation_ids.create({
+                'meta_sub_project_id': meta_sub_pro_entity.id,
+            })
+
+            sub_tache_entity = meta_sub_pro_entity.sub_tache_ids.filtered(
+                lambda e: e.tache_id.model_id.model_name == name)
+
+            vals['meta_sub_project_id'] = meta_sub_pro_entity.id
+            vals['sub_tache_id'] = sub_tache_entity.id
+
+
+
+            sub_project = super(Cowin_project_subproject, self).create(vals)
+            sub_tache_entity.write({
+                'res_id': sub_project.id,
+                'is_unlocked': True,
+            })
+
+        else:
+            raise UserError(u'创建子工程出错!!!')
+
             # sub_project = super(Cowin_project_subproject, self).create(vals)
 
         #  外部,不需要tache中内容的运行
-        sub_project = super(Cowin_project_subproject, self).create(vals)
+
+
+
 
         sub_project._compute_value()  # 将数据写入到指定的位置!!!
 
@@ -232,7 +277,7 @@ class Cowin_project_subproject(models.Model):
             'view_id': False,
             'res_id': self.id,
             'target': 'new',
-            'context': res,
+            # 'context': res,
         }
 
 
