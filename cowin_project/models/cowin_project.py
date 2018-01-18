@@ -106,6 +106,8 @@ class Cowin_project(models.Model):
     # # 投后 获取当期主工程所有的审批角色
     # post_approval_flow_role_ids = fields.Many2many('cowin_common.approval_role', string=u'投后审批角色')
 
+    whether_new_meta_sub_project_or_not = fields.Boolean(string=u'是否用于创建元子工程', default=False)
+
 
 
 

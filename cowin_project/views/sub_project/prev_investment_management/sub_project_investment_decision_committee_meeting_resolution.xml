@@ -41,7 +41,7 @@
                             <field name="chairman_of_investment_decision_committee_ids" readonly="1"/>
 
                             <!-- 是否是最终决议!!! -->
-                            <field name="is_final_meeting_resolution" readonly="1"/>
+                            <field name="is_final_meeting_resolution"/>
 
 
                         </group>

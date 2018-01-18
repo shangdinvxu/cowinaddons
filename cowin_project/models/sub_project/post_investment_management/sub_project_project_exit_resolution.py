@@ -90,11 +90,11 @@ class sub_project_project_exit_resolution(models.Model):
         target_sub_tache_entity.update_sub_approval_settings()
 
         # 来解锁投资决策申请环节新增操作!!!
-        meta_sub_project_entity.sub_tache_ids.search([(u'name', u'=', u'投资退出申请书')])
-        target = meta_sub_project_entity.sub_tache_ids.filtered(lambda sub: sub.name == u'投资退出申请书')
-        target.write({
-            'once_or_more': True,
-        })
+        # meta_sub_project_entity.sub_tache_ids.search([(u'name', u'=', u'投资退出申请书')])
+        # target = meta_sub_project_entity.sub_tache_ids.filtered(lambda sub: sub.name == u'投资退出申请书')
+        # target.write({
+        #     'once_or_more': True,
+        # })
 
         return res
 

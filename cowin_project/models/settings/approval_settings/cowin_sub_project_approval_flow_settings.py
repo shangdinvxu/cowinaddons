@@ -152,27 +152,33 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         if self.sub_project_tache_id.tache_id.model_id.model_name == investment_decision_res:
             # 投资决策委员会决议 需要开启 投资决策申请中子环节中的新增按钮
+
             res_entities = self.sub_project_tache_id.meta_sub_project_id.sub_tache_ids.filtered(
                 lambda t: t.tache_id.model_id.model_name == investment_decision_application)
 
             # 拿到第一个 投资退出申请书 实体, 开启其新增操作
             res_entity = res_entities[0]
 
-            # last_entity = self.sub_project_tache_id.meta_sub_project_id.sub_tache_ids.filtered(
-            #     lambda e: e.tache_id.model_id.model_name == investment_decision_res and e.res_id == self.sub_project_tache_id.res_id)
-
 
             last_entity = self.env[investment_decision_res].browse(self.sub_project_tache_id.res_id)
             # 投资决策委员会会议决议  是否为为最终决议
             if last_entity.is_final_meeting_resolution:
+                # 在为是最终决议的条件下,需要开启主工程 新增基金轮次实体接口
+                self.process_new_round_fund_entity()
 
-                tmp = False
+                # 需要把 投资决策申请子环节的新增按钮禁用!!!  默认我们去第一条即可
+                res_entity.write({
+                    'once_or_more': False,
+                })
             else:
-                tmp = True
+                res_entity.write({
+                    'once_or_more': True,
+                })
 
-            res_entity.write({
-                'once_or_more': tmp
-            })
+            # 触发下一个子环节!!!
+            self.sub_project_tache_id.trigger_next_subtache()
+
+
 
 
 
@@ -188,6 +194,9 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                 'once_or_more': True
             })
 
+            # 触发下一个子环节!!!
+            self.sub_project_tache_id.trigger_next_subtache()
+
 
         # 投资决策委员会会议纪要 所关联的投票表
         elif self.sub_project_tache_id.tache_id.model_id.model_name == investment_decision_sum:
@@ -197,7 +206,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         elif self.sub_project_tache_id.tache_id.model_id.model_name == investment_post_sum:
             self.sub_project_tache_id.write_special_vote(False)
         else:
-            # 这种条件下,需要先依赖主环节重的 once_or_more
+            # 这种条件下,需要先依赖主环节中的 once_or_more
             if self.sub_project_tache_id.tache_id.once_or_more:
                 tache_entities = self.meta_sub_project_id.sub_tache_ids & self.sub_project_tache_id.tache_id.tache_status_ids
 
@@ -222,6 +231,14 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             else:
                 pass
 
+    # 处理投资抉择委员会议决议表 拒绝的情况   即, 需要添加可以添加新的基金伦次实体
+    def process_new_round_fund_entity(self):
+        investment_decision_res = 'cowin_project.sub_invest_decision_committee_res'
+        if self.sub_project_tache_id.tache_id.model_id.model_name == investment_decision_res:
+            # 当前主工程新增的按钮变为可用状态
+            self.meta_sub_project_id.project_id.write({
+                'whether_new_meta_sub_project_or_not': True,
+            })
 
     # 改变状态的操作!!!
     def process_action(self):
@@ -295,6 +312,9 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
             # 设定所有的子环节 once_or_more 为False
             self.set_all_sub_tache_entities_once_or_more_to_false()
+
+            # 处理投资抉择委员会议决议表 拒绝的情况   即, 需要添加可以添加新的基金伦次实体
+            self.process_new_round_fund_entity()
 
         elif (prevstatus, newstatus) == (6, 7):
             # 投票同意

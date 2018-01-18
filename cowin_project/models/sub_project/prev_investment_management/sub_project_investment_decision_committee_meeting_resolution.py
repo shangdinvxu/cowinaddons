@@ -107,12 +107,14 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
         vals['sub_tache_id'] = sub_tache_id
         res = super(Cowin_project_subproject_investment_decision_committee_meeting_resolution, self).create(vals)
 
-        if res.is_final_meeting_resolution:
-            # 如果为最终决议的话,就不需要再显示新增按钮的操作!!!
-            target = meta_sub_project_entity.sub_tache_ids.filtered(lambda e: e.tache_id.model_id.model_name == u'投资决策申请').sorted('id')[0]
-            target.write({
-                'once_or_more': False,
-            })
+        # if res.is_final_meeting_resolution:
+        #
+        #     name = 'cowin_project.sub_invest_decision_app'
+        #     # 如果为最终决议的话,就不需要再显示新增按钮的操作!!!
+        #     target = meta_sub_project_entity.sub_tache_ids.filtered(lambda e: e.tache_id.model_id.model_name == name).sorted('id')[0]
+        #     target.write({
+        #         'once_or_more': False,
+        #     })
 
 
 
@@ -158,11 +160,11 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
         target_sub_tache_entity.update_sub_approval_settings()
 
         # 来解锁投资决策申请环节新增操作!!!
-        meta_sub_project_entity.sub_tache_ids.search([(u'name', u'=', u'投资决策申请')])
-        target = meta_sub_project_entity.sub_tache_ids.filtered(lambda sub: sub.name == u'投资决策申请')
-        target.write({
-            'once_or_more': True,
-        })
+        # meta_sub_project_entity.sub_tache_ids.search([(u'name', u'=', u'投资决策申请')])
+        # target = meta_sub_project_entity.sub_tache_ids.filtered(lambda sub: sub.name == u'投资决策申请')
+        # target.write({
+        #     'once_or_more': True,
+        # })
 
         # 触发下一个依赖子环节处于解锁状态
         # for current_sub_tache_entity in meta_sub_project_entity.sub_tache_ids:
