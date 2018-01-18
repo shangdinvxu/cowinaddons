@@ -277,7 +277,7 @@ class Cowin_project_subproject(models.Model):
             'view_id': False,
             'res_id': self.id,
             'target': 'new',
-            # 'context': res,
+            'context': res,
         }
 
 
