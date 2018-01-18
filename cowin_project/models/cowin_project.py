@@ -108,6 +108,10 @@ class Cowin_project(models.Model):
 
     whether_new_meta_sub_project_or_not = fields.Boolean(string=u'是否用于创建元子工程', default=False)
 
+    # 添加数据版本号,用来校验数据是否在存储的过程之中已经发生了变化
+    data_version = fields.Integer(string=u'数据版本号', default=0)
+
+
 
 
 
@@ -1700,6 +1704,33 @@ class Cowin_project(models.Model):
 
         return {'contract_infos': contract_infos}
 
+
+
+
+
+
+
+
+    def rpc_new_found_round_entity(self, **kwargs):
+
+        data_version = kwargs.get('data_version')
+
+        if data_version != self.data_version:
+            raise UserError(u'新的子工程实体已经被其他用户添加,请刷新界面!')
+
+        # 数据版本增加
+        self.data_version += 1
+
+        meta_sub_pro_entity = self.meta_sub_project_ids.create({
+            'project_id': self.id,
+        })
+
+        meta_sub_pro_entity.round_financing_and_Foundation_ids.create({
+            'meta_sub_project_id': meta_sub_pro_entity.id,
+        })
+
+
+        return self.rpc_get_info()
 
 
 
