@@ -534,3 +534,10 @@
     right: 0px;
     color: red!important;
 }
+.process_add_fun>span{
+    padding: 5px;
+    background-color: #00B0DD;
+    cursor: pointer;
+    color: white;
+    border-radius: 10px;
+}
