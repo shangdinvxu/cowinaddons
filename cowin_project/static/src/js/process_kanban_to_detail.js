@@ -37,7 +37,25 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .button_wrap .add_new_tache':'add_new_tache_func',
             'click .operate_records':'operate_records_func',
             'click .manage_team_edit':'manage_team_edit_func',
-            'click .operate_contacts':'show_operate_contacts'
+            'click .operate_contacts':'show_operate_contacts',
+            'click .process_add_fun':'process_add_fun'
+        },
+         //新增基金
+        process_add_fun:function () {
+            var self = this;
+            self.tache_arr[1].project_id = self.id;
+            self.tache_arr[1].tache_id = 6173;
+
+            //测试
+            new Model("cowin_project.cowin_project")
+                    .call("rpc_load_and_return_action", [parseInt(self.id)],{'tache_info':self.tache_arr[1]})
+                    .then(function (result) {
+                        result.context['tache'] = self.tache_arr[1];
+                        result.target = 'current';
+                        result.res_id = false;
+                        console.log(result);
+                        self.do_action(result);
+                    })
         },
         //联系人
         show_operate_contacts:function () {
