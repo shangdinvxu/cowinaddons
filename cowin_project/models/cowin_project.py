@@ -1762,8 +1762,7 @@ class Cowin_project(models.Model):
 
 
 
-    @api.model
-    def unlink_blank_sub_project(self):
+    def rpc_unlink_blank_sub_project(self):
         self.meta_sub_project_ids.search(
             [('project_id', '=', self.id), ('is_on_use', '=', False)]).unlink()
 
