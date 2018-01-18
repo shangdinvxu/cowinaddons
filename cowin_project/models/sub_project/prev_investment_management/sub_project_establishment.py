@@ -139,47 +139,38 @@ class Cowin_project_subproject(models.Model):
     @api.model
     def create(self, vals):
 
-        tache_info = self._context['tache']
+        # 判断的理由在于前端界面新增基金时,不同的操作的接口
+        if self._context.get('tache'):
 
-        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+            tache_info = self._context['tache']
 
-        # 校验meta_sub_project所对应的子工程只能有一份实体
-        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
-        if len(meta_sub_project_entity.sub_project_ids) > 1:
-            raise UserError(u'每个元子工程只能有一份实体!!!')
+            meta_sub_project_id = int(tache_info['meta_sub_project_id'])
 
+            # 校验meta_sub_project所对应的子工程只能有一份实体
+            meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+            if len(meta_sub_project_entity.sub_project_ids) > 1:
+                raise UserError(u'每个元子工程只能有一份实体!!!')
 
-        sub_tache_id = int(tache_info['sub_tache_id'])
-        vals['meta_sub_project_id'] = meta_sub_project_id
-        vals['sub_tache_id'] = sub_tache_id
+            sub_tache_id = int(tache_info['sub_tache_id'])
+            vals['meta_sub_project_id'] = meta_sub_project_id
+            vals['sub_tache_id'] = sub_tache_id
+            # sub_project = super(Cowin_project_subproject, self).create(vals)
+
+        #  外部,不需要tache中内容的运行
         sub_project = super(Cowin_project_subproject, self).create(vals)
+
         sub_project._compute_value()  # 将数据写入到指定的位置!!!
 
         target_sub_tache_entity = sub_project.sub_tache_id
-        # target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
-
-
-
-        # sub_project = super(Cowin_project_subproject, self).create(vals)
-
 
 
         target_sub_tache_entity.write({
             'res_id': sub_project.id,
             'view_or_launch': True,
         })
+
         # 判断 发起过程 是否需要触发下一个子环节
-        # target_sub_tache_entity.check_or_not_next_sub_tache()
-        # target_sub_tache_entity.check_or_not_next_sub_tache()
         target_sub_tache_entity.update_sub_approval_settings()
-
-
-        # # 触发下一个依赖子环节处于解锁状态
-        # for current_sub_tache_entity in meta_sub_project_entity.sub_tache_ids:
-        #     if current_sub_tache_entity.parent_id == target_sub_tache_entity:
-        #         current_sub_tache_entity.write({
-        #             'is_unlocked': True,
-        #         })
 
 
         return sub_project

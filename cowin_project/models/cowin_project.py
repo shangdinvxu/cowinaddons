@@ -1714,6 +1714,7 @@ class Cowin_project(models.Model):
     def rpc_new_found_round_entity(self, **kwargs):
 
         data_version = kwargs.get('data_version')
+        name = 'cowin_project.cowin_subproject'
 
         if data_version != self.data_version:
             raise UserError(u'新的子工程实体已经被其他用户添加,请刷新界面!')
@@ -1729,12 +1730,27 @@ class Cowin_project(models.Model):
             'meta_sub_project_id': meta_sub_pro_entity.id,
         })
 
+        sub_tache_entity = meta_sub_pro_entity.sub_tache_ids.filtered(lambda e: e.tache_id.model_id.model_name == name)
+
+        res = {}
+        res['default_meta_sub_project_id'] = meta_sub_pro_entity.id
+        res['default_sub_tache_id'] = sub_tache_entity.id
+
 
 
         self.whether_new_meta_sub_project_or_not = False
 
-
-        return self.rpc_get_info()
+        return {
+            'name': u'项目立项',
+            'type': 'ir.actions.act_window',
+            'res_model': name,
+            'views': [[False, 'form']],
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': False,
+            'target': 'new',
+            'context': res,
+        }
 
 
 
