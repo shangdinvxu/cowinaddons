@@ -175,7 +175,7 @@
                     </select>
                 </div>
                 <div class="launch_more">
-                    发起多次：<input type="checkbox"/>
+                    发起多次：<input type="checkbox" disabled="disabled"/>
                 </div>
                 <div class="edit_tache_desc">
                     环节说明：
