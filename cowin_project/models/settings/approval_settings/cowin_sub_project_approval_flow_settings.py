@@ -253,6 +253,8 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         self.approval_flow_count += 1
 
+
+
     # 改变状态的操作!!!
     def process_action(self):
         prevstatus, newstatus = self.prev_status, self.status
@@ -300,6 +302,9 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         elif (prevstatus, newstatus) == (2, 2):
             print(u'(2, 2) acion...')
             tmp2[u'operation'] = u'同意'
+
+            self.process_approval_flow_count()
+
             self.message_post(json.dumps(tmp2))
             self.send_next_approval_flow_settings_node_msg(status=2)
             self.prev_status = self.status = newstatus
@@ -476,6 +481,8 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             approval_flow_settings_record_info['approval_result'] = u'暂缓'
         else:
             pass
+
+        approval_flow_settings_record_info['approval_flow_count'] = self.approval_flow_count
 
         self.write({
             'sub_pro_approval_flow_settings_record_ids': [(0, 0, approval_flow_settings_record_info)]
