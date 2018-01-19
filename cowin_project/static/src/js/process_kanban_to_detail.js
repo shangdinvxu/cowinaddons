@@ -359,22 +359,47 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
         initiate_func:function (e) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
+            //是否重新发起
+            if($(target).hasClass('initiate')){
+                var launch_again = $(target).attr('again');
+            }else {
+                var launch_again = $(target).parents('.initiate').attr('again');
+            }
+
             var tache_index = $(target).parents('.process_data_item_line').attr('tache-index');
             var tache_id = parseInt($(target).parents('.process_data_item_line').attr('data-tache-id'));
             var self = this;
             self.tache_arr[tache_index].project_id = self.id;
             self.tache_arr[tache_index].tache_id = tache_id;
 
+            //重新发起走另外的方法
+            if(launch_again == 'true'){
+                var action = {
+                    name: "详细",
+                    type: 'ir.actions.act_window',
+                    res_model: self.tache_arr[tache_index].model_name,
+                    view_type: 'form',
+                    res_id: self.tache_arr[tache_index].res_id,
+                    view_mode: 'tree,form',
+                    views: [[false, 'form']],
+                    target: "current"
+                };
+                var options = {
+                    "initial_mode": "edit",
+                };
+                this.do_action(action, options);
+            }else {
+                // 测试
+                new Model("cowin_project.cowin_project")
+                        .call("rpc_load_and_return_action", [parseInt(self.id)],{'tache_info':self.tache_arr[tache_index]})
+                        .then(function (result) {
+                            result.context['tache'] = self.tache_arr[tache_index];
+                            result.target = 'current';
+                            console.log(result);
+                            self.do_action(result);
+                        })
+            }
 
-            //测试
-            new Model("cowin_project.cowin_project")
-                    .call("rpc_load_and_return_action", [parseInt(self.id)],{'tache_info':self.tache_arr[tache_index]})
-                    .then(function (result) {
-                        result.context['tache'] = self.tache_arr[tache_index];
-                        result.target = 'current';
-                        console.log(result);
-                        self.do_action(result);
-                    })
         },
 
         init: function (parent, action, options) {
