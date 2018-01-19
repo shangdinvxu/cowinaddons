@@ -831,6 +831,7 @@ class Cowin_project(models.Model):
             if sub_tache_e.order_parent_id == current_last_sub_tache_entity:
                 sub_tache_e.write({
                     'order_parent_id': to_do_list[-1].id,
+                    'parent_id': to_do_list[-1].id,
                 })
 
 
@@ -904,6 +905,7 @@ class Cowin_project(models.Model):
 
                 sub_tache_e.write({
                     'order_parent_id': new_sub_tache_entity.id,
+
                 })
 
                 break
@@ -1014,6 +1016,8 @@ class Cowin_project(models.Model):
             if sub_tache_e.order_parent_id == current_last_sub_tache_entity:
                 sub_tache_e.write({
                     'order_parent_id': to_do_list[-1].id,
+                    'parent_id': to_do_list[-1].id,
+
                 })
 
         return self.rpc_get_post_info(meta_project_id=meta_sub_project_id)

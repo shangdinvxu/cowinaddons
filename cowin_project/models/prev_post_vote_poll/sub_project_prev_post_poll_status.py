@@ -25,6 +25,7 @@ class Prev_poll_status(models.Model):
 
     # compute_voting_count = fields.Integer(compute='_compute_voting_statistics', store=True, default=0)
     compute_voting_count = fields.Integer(default=0, string=u'投票记录')
+    voting_voting_for_true = fields.Integer(default=0, string=u'同意的个数')
 
 
     @api.multi
@@ -68,9 +69,11 @@ class Prev_poll_status(models.Model):
 
         else:
             # 投后状态
+            tmp = 1.0 / len(self.sudo().prev_post_conference_resolutions_ids)
+            tmp = tmp * self.compute_voting_count
+            self.post_voting_statistics = tmp * 100
             if self.compute_voting_count == len(self.sudo().prev_post_conference_resolutions_ids):
-                tmp = self.post_voting_statistics = self.post_voting_statistics / len(self.sudo().prev_post_conference_resolutions_ids)
-                self.post_voting_statistics = tmp * 100
+
                 if tmp >= 2.0 / 3:
                     # 触发下一个子环节
                     # self.voting_status = 2
