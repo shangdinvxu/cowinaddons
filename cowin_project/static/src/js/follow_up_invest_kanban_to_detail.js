@@ -32,8 +32,111 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
             'click .view_tache':'view_tache_func',
             'click .manage_team_btn':'manage_team_fun',
             'click .button_wrap .add_new_tache':'add_new_tache_func',
+            'click .add_new_role':'show_add_new_sels',
             'click .operate_contacts':'show_operate_contacts',
             'click .operate_records':'operate_records_func',
+            'click .manage_team_edit':'manage_team_edit_func',
+            'click .confirm_project_team_setting':'confirm_project_team_setting_func',
+            'click .cancel_project_team_setting':'cancel_project_team_setting_func',
+            'click .member_name .fa':'del_member_func',
+            'click .copy_this_setting':'get_all_settings',
+            'click .confirm_copy':'confirm_copy_func',
+            'click .cancel_sel':'hide_add_new_sels',
+            'click .confirm_sel':'confirm_add_new_sels',
+        },
+        //确定员工选择
+        confirm_add_new_sels:function () {
+            var self = this;
+            var sel = [];
+            var render_names = []
+            $('.selectpicker option:selected').each(function () {
+                sel.push(parseInt($(this).attr('data-id')));
+            })
+            var add_sel_node = $(".manage_team_edit_wrap .detail_lines_wrap[meta_sub_pro_id="+ self.add_meta_sub_pro_id +"] .detail_line[approval_role_id="+ self.add_approval_role_id +"] .team_role_names_wrap");
+            $.each(sel,function (x,n) {
+                $.each(self.employee_infos,function (y,v) {
+                    if(n == v.employee_id){
+                        render_names.push(v)
+                    }
+                })
+            })
+            $(add_sel_node).prepend(QWeb.render('names_tmpl', {result: render_names,is_admin:self.is_admin,edit:true}));
+            self.hide_add_new_sels();
+
+        },
+        //关闭选择框
+        hide_add_new_sels:function () {
+             $('.add_new_wrap').hide();
+             $('.copy_wrap').hide();
+        },
+        //显示选择框
+        show_add_new_sels:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            self.add_approval_role_id = $(target).parents('.detail_line').attr('approval_role_id');
+            self.add_meta_sub_pro_id = $(target).parents('.detail_lines_wrap').attr('meta_sub_pro_id');
+
+            $('.add_new_body option').each(function () {
+               $(this)[0].selected = false;
+            });
+            $('.add_new_body .dropdown-menu li').each(function () {
+                $(this).attr('class','');
+            });
+            $('.add_new_body .filter-option').html('');
+
+            $('.add_new_wrap').show();
+        },
+        //确定复制配置
+        confirm_copy_func:function () {
+            var self = this;
+            $('.copy_sel option:selected').each(function () {
+                self.copy_meta_sub_pro_id = parseInt($(this).attr('data-id'));
+            })
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_copy_permission_configuration",[[self.id]],{current_meta_sub_pro_id:self.current_meta_sub_pro_id,copy_meta_sub_pro_id:self.copy_meta_sub_pro_id})
+                    .then(function (result) {
+                        console.log(result);
+                        $('.manage_team_edit_wrap .add_new_content').html('');
+                        $('.manage_team_edit_wrap .add_new_content').append(QWeb.render('project_manage_team_tmp', {result: result,edit:true}));
+                        $('.copy_wrap').remove();
+                        $('.manage_team_edit_wrap .add_new_content .header_line').hide();
+                        $('.manage_team_edit_wrap .add_new_content .detail_lines_wrap').hide();
+                        $('.manage_team_edit_wrap div[meta_sub_pro_id='+ parseInt(self.current_meta_sub_pro_id) +']').show();
+                    })
+        },
+        //复制已有模板
+        get_all_settings:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            self.current_meta_sub_pro_id = parseInt($(target).parents('.header_line').attr('meta_sub_pro_id'));
+            var self = this;
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_copy_all_permission_configuration",[[self.id]])
+                    .then(function (result) {
+                        console.log(result);
+                        $('.process_data_main_wrap').append(QWeb.render('copy_settings_tmpl', {result: result,current:self.current_meta_sub_pro_id}));
+                        $('.copy_settings_tmpl .add_new_content').show()
+                    })
+        },
+        //删除
+        del_member_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            $(target).parents('.member_name').remove()
+        },
+        //编辑项目管理团队
+        manage_team_edit_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            var show_meta_sub_pro_id = $(target).parents('.header_line').attr('meta_sub_pro_id');
+            $('.manage_team_edit_wrap').remove();
+            $('#process_data .process_data_main_wrap').append(QWeb.render('manage_team_edit_page', {result: self.manage_team_data,edit:true}));
+            $('.manage_team_edit_wrap .add_new_content .header_line').hide();
+            $('.manage_team_edit_wrap .add_new_content .detail_lines_wrap').hide();
+            $('.manage_team_edit_wrap div[meta_sub_pro_id='+ parseInt(show_meta_sub_pro_id) +']').show()
         },
         //操作记录
         operate_records_func:function () {
@@ -95,6 +198,46 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
                 },
             });
         },
+        //取消项目管理团队编辑设置
+        cancel_project_team_setting_func:function () {
+            $('.manage_team_edit_wrap').remove();
+        },
+        //保存项目管理团队设置
+        confirm_project_team_setting_func:function () {
+            var self = this;
+            $('.manage_team_edit_wrap .detail_lines_wrap').each(function (i) {
+                $(this).find('.detail_line').each(function (j) {
+                    self.meta_sub_project_infos[i].approval_role_infos[j].employee_infos = [];
+                    $(this).find('.member_name').each(function () {
+                        self.meta_sub_project_infos[i].approval_role_infos[j].employee_infos.push({'employee_id':parseInt($(this).attr('employee_id'))});
+                    })
+                })
+            })
+            console.log(self.meta_sub_project_infos);
+
+            return new Model("cowin_project.cowin_project")
+                    .call("rpc_save_permission_configuration", [[self.id]],{meta_sub_project_infos:self.meta_sub_project_infos})
+                    .then(function (result) {
+                        console.log(result);
+                        self.manage_team_data = result;
+                        self.employee_infos = result.employee_infos;
+                        self.is_admin = result.is_admin;
+                        self.meta_sub_project_infos = result.meta_sub_project_infos;
+
+                        if(result.default_is_full){
+                            if($('.no_perfect').length>0){
+                                $('.no_perfect').remove()
+                            }
+                        }else {
+                            if($('.no_perfect').length==0){
+                                $("<span class='no_perfect'>未完善</span>").insertBefore($('.manage_team_btn .fa'));
+                            }
+                        }
+                        $('.process_data_main_wrap').html('');
+                        $('.process_data_main_wrap').append(QWeb.render('project_manage_team_tmp', {result: result}));
+                        Dialog.confirm(this, _t("保存成功"), {});
+                    })
+        },
         //项目管理团队
         manage_team_fun:function () {
             var self = this;
@@ -105,6 +248,7 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
                     .call("rpc_get_permission_configuration", [[self.id]])
                     .then(function (result) {
                         console.log(result);
+                        self.manage_team_data = result;
                         self.employee_infos = result.employee_infos;
                         self.is_admin = result.is_admin;
                         self.meta_sub_project_infos = result.meta_sub_project_infos;
