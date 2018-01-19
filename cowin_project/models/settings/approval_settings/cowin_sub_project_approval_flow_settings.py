@@ -170,13 +170,15 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                 res_entity.write({
                     'once_or_more': False,
                 })
+
+                # 触发下一个子环节!!!
+                self.sub_project_tache_id.trigger_next_subtache()
+
             else:
                 res_entity.write({
                     'once_or_more': True,
                 })
 
-            # 触发下一个子环节!!!
-            self.sub_project_tache_id.trigger_next_subtache()
 
 
 

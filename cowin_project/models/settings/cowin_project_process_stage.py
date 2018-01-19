@@ -35,6 +35,30 @@ class Cowin_settings_process_stage(models.Model):
     def create_stage_info(self, meta_stage_info, process_id):
         stages = meta_stage_info['stage_ids']
 
+        # 投前
+        # 投资决策申请 表名
+        # investment_decision_application = 'cowin_project.sub_invest_decision_app'
+
+        pre_lists = [
+            'cowin_project.sub_invest_decision_app',
+            'cowin_project.sub_sum_invest_decision_committee',
+            'cowin_project.sub_prev_post_poll_status',
+            'cowin_project.sub_invest_decision_committee_res',
+        ]
+
+        # 投后
+        # 投资退出申请书 表名
+        # investment_post_application = 'cowin_project.sub_app_invest_withdrawal'
+
+        post_list = [
+            'cowin_project.sub_app_invest_withdrawal',
+            'cowin_project.sub_sum_pro_withdraw_from_meeting',
+            'cowin_project.sub_project_exit_resolution',
+        ]
+
+        pre_lists.extend(post_list)
+        all = pre_lists
+
         for stage in stages:
             new_stage = self.create({
                 'name': stage['name'],
@@ -48,5 +72,7 @@ class Cowin_settings_process_stage(models.Model):
                 # self.env['cowin_project.process_tache'].create_tache_info(tache, new_stage.id)
 
                 # 默认情况下,tache_ids也是只有一份数据
+                if tache['model_name'] in all:
+                    tache['once_or_more'] = False
                 new_stage.tache_ids.create_tache_info(tache, new_stage.id)
 

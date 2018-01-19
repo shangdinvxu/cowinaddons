@@ -53,25 +53,25 @@ class Meat_sub_project(models.Model):
         # 投资决策申请 表名
         # investment_decision_application = 'cowin_project.sub_invest_decision_app'
 
-        pre_lists = [
-            'cowin_project.sub_invest_decision_app',
-            'cowin_project.sub_invest_decision_committee_res',
-            'cowin_project.sub_prev_post_poll_status',
-            'cowin_project.sub_invest_decision_committee_res',
-        ]
-
-        # 投后
-        # 投资退出申请书 表名
-        # investment_post_application = 'cowin_project.sub_app_invest_withdrawal'
-
-        post_list = [
-            'cowin_project.sub_app_invest_withdrawal',
-            'cowin_project.sub_sum_pro_withdraw_from_meeting',
-            'cowin_project.sub_project_exit_resolution',
-        ]
-
-        pre_lists.extend(post_list)
-        all = pre_lists
+        # pre_lists = [
+        #     'cowin_project.sub_invest_decision_app',
+        #     'cowin_project.sub_invest_decision_committee_res',
+        #     'cowin_project.sub_prev_post_poll_status',
+        #     'cowin_project.sub_invest_decision_committee_res',
+        # ]
+        #
+        # # 投后
+        # # 投资退出申请书 表名
+        # # investment_post_application = 'cowin_project.sub_app_invest_withdrawal'
+        #
+        # post_list = [
+        #     'cowin_project.sub_app_invest_withdrawal',
+        #     'cowin_project.sub_sum_pro_withdraw_from_meeting',
+        #     'cowin_project.sub_project_exit_resolution',
+        # ]
+        #
+        # pre_lists.extend(post_list)
+        # all = pre_lists
 
 
 
@@ -80,10 +80,10 @@ class Meat_sub_project(models.Model):
                 continue
 
             once_or_more = tache_entity.once_or_more
-
-            if tache_entity.model_id.model_name in all:
-                once_or_more = False
-
+            #
+            # if tache_entity.model_id.model_name in all:
+            #     once_or_more = False
+            #
 
 
             # 1 创建子环节实体, 并且对自环节实体进行环节依赖的设定
