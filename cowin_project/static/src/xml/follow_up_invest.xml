@@ -133,4 +133,17 @@
             </t>
         </t>
     </t>
+
+    <!--项目管理团队编辑页面-->
+    <t t-name="manage_team_edit_page">
+        <div class="manage_team_edit_wrap">
+            <div class="modal-backdrop  in"></div>
+            <div class="add_new_content">
+                <t t-call="project_manage_team_tmp">
+                    <t t-set="is_admin" t-value="result.is_admin"></t>
+                    <t t-set="result" t-value="result"></t>
+                </t>
+            </div>
+        </div>
+    </t>
 </templates>
