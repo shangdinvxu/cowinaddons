@@ -1063,6 +1063,13 @@ class Cowin_project(models.Model):
         sub_approval_flow_settings_id = tache_info['sub_approval_flow_settings_id']
         meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
         sub_approval_flow_settings_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(sub_approval_flow_settings_id)
+
+        sub_approval_flow_settings_info = tache_info['sub_approval_flow_setting_info']
+        status_id = sub_approval_flow_settings_info['status_id']
+
+        if status_id != sub_approval_flow_settings_entity.status:
+            raise UserError(u'审批状态发生改变,请刷新界面!!!')
+
         prev_or_post_investment = kwargs['prev_or_post_investment']
 
 
@@ -1734,11 +1741,10 @@ class Cowin_project(models.Model):
         self.data_version += 1
 
 
-        res = {'rpc_new_found_round_entity': True}
+        # res = {'rpc_new_found_round_entity': True}
 
         res = {
             'rec_new_found_round_info': {
-                # 'rpc_new_found_round_entity': True,
                 'project_id': self.id,
             }
         }
@@ -1760,9 +1766,9 @@ class Cowin_project(models.Model):
 
 
 
-    def rpc_unlink_blank_sub_project(self):
-        self.meta_sub_project_ids.search(
-            [('project_id', '=', self.id), ('is_on_use', '=', False)]).unlink()
+    # def rpc_unlink_blank_sub_project(self):
+    #     self.meta_sub_project_ids.search(
+    #         [('project_id', '=', self.id), ('is_on_use', '=', False)]).unlink()
 
 
 

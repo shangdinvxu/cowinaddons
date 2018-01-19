@@ -4,6 +4,8 @@ import json
 from odoo.tools.mail import html_sanitize, html2plaintext
 import time
 
+from odoo.exceptions import UserError
+
 from odoo import SUPERUSER_ID
 class Cowin_sub_project_approval_flow_settings(models.Model):
     _inherit = ['mail.thread']
@@ -49,6 +51,9 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
     # 构建子环节和子审批实体一对一的关系
     sub_project_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
+
+    approval_flow_count = fields.Integer(string=u'审核次数', default=0, help=u'用以甄别当前审核的可能发生重新发起等操作,也是用来' +
+                                                                         u'解决多个用户同时审核的问题!!!')
 
 
     def get_all_message(self):
@@ -242,6 +247,12 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                 'whether_new_meta_sub_project_or_not': True,
             })
 
+
+
+    def process_approval_flow_count(self):
+
+        self.approval_flow_count += 1
+
     # 改变状态的操作!!!
     def process_action(self):
         prevstatus, newstatus = self.prev_status, self.status
@@ -295,6 +306,11 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                 'is_launch_again': True,
             })
             tmp2[u'operation'] = u'暂缓'
+
+            # self.approval_flow_count += 1
+            self.process_approval_flow_count()
+
+
             self.message_post(json.dumps(tmp2))
             self.send_next_approval_flow_settings_node_msg(status=3)
             self.prev_status = self.status = 1
@@ -437,13 +453,12 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         status = approval_flow_settings_record_info['approval_result']
         # current_approval_flow_node_id = approval_flow_settings_record_info['current_approval_flow_node_id']
 
-
         # 这种情况下代表着出现多次并行的操作的问题!!!
 
         if self.is_final_approval_flow_settings_status():
-            raise UserWarning(u'该审批已经被审核!!!')
+            raise UserError(u'该审批早已审核完成!!!')
 
-
+        approval_flow_settings_record_info['approval_flow_count'] = self.approval_flow_count
         if status == True:      # 同意
             status = 2
             approval_flow_settings_record_info['approval_result'] = u'同意'
@@ -456,10 +471,16 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         else:
             pass
 
-        self.upate_status(status)
-
         self.write({
             'sub_pro_approval_flow_settings_record_ids': [(0, 0, approval_flow_settings_record_info)]
         })
+
+        self.upate_status(status)
+
+
+
+
+
+
 
 

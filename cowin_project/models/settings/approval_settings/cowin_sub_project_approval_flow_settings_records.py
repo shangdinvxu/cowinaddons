@@ -25,6 +25,14 @@ class Cowin_sub_project_approval_flow_settings_records(models.Model):
 
 
 
+    approval_flow_count = fields.Integer(string=u'审核次数', default=0, help=u'用以甄别当前审核的可能发生重新发起等操作,也是用来' +
+                                                                         u'解决多个用户同时审核的问题!!!')
+
+    _sql_constraints = [
+        ('number_uniq', 'unique(sub_approval_settings_id, approval_flow_count, approval_role_id)', u'同一个角色只能审批一次!'),
+    ]
+
+
 
     # 保存审批历史记录
     def get_info(self):
