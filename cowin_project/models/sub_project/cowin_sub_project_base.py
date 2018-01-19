@@ -25,7 +25,9 @@ class Cowin_sub_project_base_status(models.Model):
             'view_id': False,
             'res_id': self.id,
             'target': 'new',
-            'flags': {'form': {'action_buttons': True, 'options': {'mode': 'edit'}}},
+            # 'flags': {'form': {'action_buttons': True, 'options': {'mode': 'edit'}}},
+
+            'flags': {'initial_mode': 'edit'},
 
         }
 
