@@ -471,6 +471,9 @@ class Cowin_project(models.Model):
                         info = u'同意'
                         approval_view_or_launch = False
 
+                        if not is_target_role:
+                            tache_info['once_or_more'] = False
+
 
                     elif status == 5:
                         # 拒绝
