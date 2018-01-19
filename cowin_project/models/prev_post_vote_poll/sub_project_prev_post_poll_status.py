@@ -70,7 +70,7 @@ class Prev_poll_status(models.Model):
         else:
             # 投后状态
             tmp = 1.0 / len(self.sudo().prev_post_conference_resolutions_ids)
-            tmp = tmp * self.compute_voting_count
+            tmp = tmp * self.voting_voting_for_true
             self.post_voting_statistics = tmp * 100
             if self.compute_voting_count == len(self.sudo().prev_post_conference_resolutions_ids):
 
