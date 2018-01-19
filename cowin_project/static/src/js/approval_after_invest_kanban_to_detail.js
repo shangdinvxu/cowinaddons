@@ -135,6 +135,9 @@ odoo.define('cowin_project.approval_after_invest_kanban_to_detail', function (re
                     "meta_sub_project_id":parseInt(meta_sub_project_id),
                     "sub_approval_flow_settings_id":parseInt(sub_approval_flow_settings_id),
                     'sub_tache_id': parseInt(sub_tache_id),
+                    'sub_approval_flow_settings_info':{
+                        'status_id':self.tache_arr[self.oper_index].approval_status.status_id
+                    }
                 },
                 'approval_flow_settings_record':{
                     'approval_result': approval_result,
@@ -159,6 +162,10 @@ odoo.define('cowin_project.approval_after_invest_kanban_to_detail', function (re
             sub_approval_flow_settings_id = $(target).parents('.process_data_item_line').attr('data-sub-approval-id');
             sub_tache_id = $(target).parents('.process_data_item_line').attr('data-sub-tache-id');
             approval_tache_index = $(target).parents('.process_data_item_line').attr('tache-index');
+
+            //记录操作的是第几个tache
+            self.oper_index = approval_tache_index
+
             var data = {
                 "tache":{
                     "meta_sub_project_id":parseInt(meta_sub_project_id),
