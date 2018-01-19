@@ -233,7 +233,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             else:
                 pass
 
-    # 处理投资抉择委员会议决议表 拒绝的情况   即, 需要添加可以添加新的基金伦次实体
+    # 处理投资抉择委员会议决议表 为最终决议 或者是 拒绝的情况   即, 需要添加可以添加新的基金伦次实体
     def process_new_round_fund_entity(self):
         investment_decision_res = 'cowin_project.sub_invest_decision_committee_res'
         if self.sub_project_tache_id.tache_id.model_id.model_name == investment_decision_res:

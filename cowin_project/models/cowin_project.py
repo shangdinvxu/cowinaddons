@@ -1737,7 +1737,7 @@ class Cowin_project(models.Model):
         }
 
 
-        self.whether_new_meta_sub_project_or_not = False
+        # self.whether_new_meta_sub_project_or_not = False
 
         return {
             'name': u'项目立项',

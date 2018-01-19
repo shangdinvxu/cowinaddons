@@ -145,7 +145,7 @@ class Cowin_project_subproject(models.Model):
 
         # 判断的理由在于前端界面新增基金时,不同的操作的接口
 
-        sub_project = None
+        sub_project_entity = None
         if self._context.get('tache'):
 
             tache_info = self._context['tache']
@@ -161,7 +161,7 @@ class Cowin_project_subproject(models.Model):
             vals['meta_sub_project_id'] = meta_sub_project_id
             vals['sub_tache_id'] = sub_tache_id
 
-            sub_project = super(Cowin_project_subproject, self).create(vals)
+            sub_project_entity = super(Cowin_project_subproject, self).create(vals)
 
         elif self._context.get('rec_new_found_round_info'):
 
@@ -177,6 +177,8 @@ class Cowin_project_subproject(models.Model):
                 'project_id': project_id,
             })
 
+
+
             meta_sub_pro_entity.round_financing_and_Foundation_ids.create({
                 'meta_sub_project_id': meta_sub_pro_entity.id,
             })
@@ -189,9 +191,13 @@ class Cowin_project_subproject(models.Model):
 
 
 
-            sub_project = super(Cowin_project_subproject, self).create(vals)
+            sub_project_entity = super(Cowin_project_subproject, self).create(vals)
+
+            sub_project_entity.meta_sub_project_id.project_id.write({
+                'whether_new_meta_sub_project_or_not': False,
+            })
             sub_tache_entity.write({
-                'res_id': sub_project.id,
+                'res_id': sub_project_entity.id,
                 'is_unlocked': True,
             })
 
@@ -205,13 +211,13 @@ class Cowin_project_subproject(models.Model):
 
 
 
-        sub_project._compute_value()  # 将数据写入到指定的位置!!!
+        sub_project_entity._compute_value()  # 将数据写入到指定的位置!!!
 
-        target_sub_tache_entity = sub_project.sub_tache_id
+        target_sub_tache_entity = sub_project_entity.sub_tache_id
 
 
         target_sub_tache_entity.write({
-            'res_id': sub_project.id,
+            'res_id': sub_project_entity.id,
             'view_or_launch': True,
         })
 
@@ -219,7 +225,7 @@ class Cowin_project_subproject(models.Model):
         target_sub_tache_entity.update_sub_approval_settings()
 
 
-        return sub_project
+        return sub_project_entity
 
 
     @api.multi
