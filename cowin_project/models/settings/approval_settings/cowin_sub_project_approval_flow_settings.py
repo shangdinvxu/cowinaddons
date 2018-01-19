@@ -291,6 +291,8 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             self.message_post(json.dumps(tmp2))
             self.prev_status = self.status = newstatus
             self.send_next_approval_flow_settings_node_msg(status=4)
+            # 增加校验操作
+            self.process_approval_flow_count()
 
             self.process_buniess_logic()
 
@@ -308,6 +310,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             tmp2[u'operation'] = u'暂缓'
 
             # self.approval_flow_count += 1
+            # 增加校验操作
             self.process_approval_flow_count()
 
 
@@ -319,8 +322,11 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             self.prev_status = self.status = newstatus
             self.message_post(json.dumps(tmp2))
             self.send_next_approval_flow_settings_node_msg(status=4)
+            # 增加校验操作
+            self.process_approval_flow_count()
 
             self.process_buniess_logic()
+
 
         elif (prevstatus, newstatus) == (2, 5):
             self.prev_status = self.status = newstatus

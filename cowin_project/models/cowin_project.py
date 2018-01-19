@@ -1064,7 +1064,7 @@ class Cowin_project(models.Model):
         meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
         sub_approval_flow_settings_entity = meta_sub_project_entity.sub_approval_flow_settings_ids.browse(sub_approval_flow_settings_id)
 
-        sub_approval_flow_settings_info = tache_info['sub_approval_flow_setting_info']
+        sub_approval_flow_settings_info = tache_info['sub_approval_flow_settings_info']
         status_id = sub_approval_flow_settings_info['status_id']
 
         if status_id != sub_approval_flow_settings_entity.status:
