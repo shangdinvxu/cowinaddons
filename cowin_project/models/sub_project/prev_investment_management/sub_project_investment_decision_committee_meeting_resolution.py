@@ -50,7 +50,7 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
             rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
             rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
             rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
-
+    #
             rec.subproject_id.trustee_id = rec.trustee_id
             rec.subproject_id.supervisor_id = rec.supervisor_id
             rec.subproject_id.amount_of_entrusted_loan = rec.amount_of_entrusted_loan
@@ -71,10 +71,10 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
     # ---------------
 
 
-
-    round_financing_and_Foundation_ids = fields.One2many('cowin_project.round_financing_and_foundation',
-                                                         'sub_invest_decision_committee_res_id',
-                                                         string=u'添加基金')
+    #
+    # round_financing_and_Foundation_ids = fields.One2many('cowin_project.round_financing_and_foundation',
+    #                                                      'sub_invest_decision_committee_res_id',
+    #                                                      string=u'添加基金')
 
 
     trustee_id = fields.Many2one('hr.employee', string=u'董事')
@@ -119,28 +119,28 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
 
 
         # 获得当前所有的基金轮次!!! (基金实体, 轮次实体)
-        current_f_F_entities = []
-        for meta_entity in meta_sub_project_entity.project_id.meta_sub_project_ids:
-
-            t = (meta_entity.round_financing_and_Foundation_ids[0].foundation_id, meta_entity.round_financing_and_Foundation_ids[0].round_financing_id)
-            current_f_F_entities.append(t)
-
-
-        # 可能添加多个子工程实体
-        for r_f_F_entity in res.round_financing_and_Foundation_ids:
-            t = (r_f_F_entity.foundation_id, r_f_F_entity.round_financing_id)
-            if t in current_f_F_entities:
-                raise UserError(u'已经有了其他的基金轮次')
-            # 关联到新的轮次基金实体
-            new_entity = meta_sub_project_entity.create({
-                'project_id': meta_sub_project_entity.project_id.id,
-            })
-
-
-            # 写入元子工程实体
-            r_f_F_entity.write({
-                'meta_sub_project_id': new_entity.id,
-            })
+        # current_f_F_entities = []
+        # for meta_entity in meta_sub_project_entity.project_id.meta_sub_project_ids:
+        #
+        #     t = (meta_entity.round_financing_and_Foundation_ids[0].foundation_id, meta_entity.round_financing_and_Foundation_ids[0].round_financing_id)
+        #     current_f_F_entities.append(t)
+        #
+        #
+        # # 可能添加多个子工程实体
+        # for r_f_F_entity in res.round_financing_and_Foundation_ids:
+        #     t = (r_f_F_entity.foundation_id, r_f_F_entity.round_financing_id)
+        #     if t in current_f_F_entities:
+        #         raise UserError(u'已经有了其他的基金轮次')
+        #     # 关联到新的轮次基金实体
+        #     new_entity = meta_sub_project_entity.create({
+        #         'project_id': meta_sub_project_entity.project_id.id,
+        #     })
+        #
+        #
+        #     # 写入元子工程实体
+        #     r_f_F_entity.write({
+        #         'meta_sub_project_id': new_entity.id,
+        #     })
 
 
 
@@ -182,7 +182,7 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
     def write(self, vals):
 
         # 获取之前得到的基金轮次
-        prev = set(self.round_financing_and_Foundation_ids)
+        # prev = set(self.round_financing_and_Foundation_ids)
 
         result = super(Cowin_project_subproject_investment_decision_committee_meeting_resolution, self).write(vals)
 
@@ -197,27 +197,27 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
             # target_sub_tache_entity.check_or_not_next_sub_tache()
 
             # 获取之后得到的基金轮次
-            after = set(self.round_financing_and_Foundation_ids)
+            # after = set(self.round_financing_and_Foundation_ids)
 
 
-            to_add = after - prev
-            to_remove = prev - after
-
-            # 删除之前存在的新添加的基金轮次
-            for round_financing_and_Foundation in to_remove:
-                round_financing_and_Foundation.meta_sub_project_id.unlink()
-
-            # 接下来这条数据的作用在于对轮次基金实体中的meta_sub_project_id做关联对应
-            for round_financing_and_Foundation in to_add:
-                # 创建元子工程
-                meta_sub_project = self.env['cowin_project.meat_sub_project'].create({
-                    'project_id': self.subproject_id.meta_sub_project_id.project_id.id,
-                })
-
-
-                round_financing_and_Foundation.write({
-                    'meta_sub_project_id': meta_sub_project.id,
-                })
+            # to_add = after - prev
+            # to_remove = prev - after
+            #
+            # # 删除之前存在的新添加的基金轮次
+            # for round_financing_and_Foundation in to_remove:
+            #     round_financing_and_Foundation.meta_sub_project_id.unlink()
+            #
+            # # 接下来这条数据的作用在于对轮次基金实体中的meta_sub_project_id做关联对应
+            # for round_financing_and_Foundation in to_add:
+            #     # 创建元子工程
+            #     meta_sub_project = self.env['cowin_project.meat_sub_project'].create({
+            #         'project_id': self.subproject_id.meta_sub_project_id.project_id.id,
+            #     })
+            #
+            #
+            #     round_financing_and_Foundation.write({
+            #         'meta_sub_project_id': meta_sub_project.id,
+            #     })
 
 
 
@@ -240,7 +240,6 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
             })
 
             # 判断 发起过程 是否需要触发下一个子环节
-            # target_sub_tache_entity.check_or_not_next_sub_tache()
             target_sub_tache_entity.update_sub_approval_settings()
 
         return result
