@@ -115,7 +115,7 @@
                     <div class="button_wrap">
                         <t t-if="obj.is_unlocked==true">
                             <t t-if="obj.is_launch_again==true">
-                                <span class="initiate"><a href="javascript:void(0)">重新发起</a></span>
+                                <span class="initiate" t-att-again="obj.is_launch_again"><a href="javascript:void(0)">重新发起</a></span>
                             </t>
                             <t t-if="obj.is_launch_again==false ">
                                 <t t-if="obj.view_or_launch==true">
@@ -125,7 +125,7 @@
                                     </t>
                                 </t>
                                 <t t-if="obj.view_or_launch==false">
-                                    <span class="initiate"><a href="javascript:void(0)">发起</a></span>
+                                    <span class="initiate" t-att-again="obj.is_launch_again"><a href="javascript:void(0)">发起</a></span>
                                 </t>
                             </t>
                             <t t-if="!obj.is_launch_again and obj.parent_id==false">
