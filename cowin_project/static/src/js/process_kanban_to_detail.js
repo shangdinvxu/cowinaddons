@@ -383,6 +383,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     view_mode: 'form',
                     views: [[false, 'form']],
                     target: "current",
+                    flags: {'initial_mode': 'edit'},
                 };
                 var options = {
                     // "view_mode": "edit",
@@ -390,17 +391,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                         "view_mode": "edit",
                     }
                 };
-                // this.do_action(action, options);
-
-
-              new Model("cowin_project.sub_opinion_book")
-                    .call("return_approval_flow_again_form", [self.tache_arr[tache_index].res_id])
-                    .then(function (result) {
-                        // result.context['tache'] = self.tache_arr[tache_index];
-                        result.target = 'current';
-                        console.log(result);
-                        self.do_action(result);
-                        })
+                this.do_action(action, options);
             }else {
                 // 测试
                 new Model("cowin_project.cowin_project")
