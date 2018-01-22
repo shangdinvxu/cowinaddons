@@ -30,7 +30,7 @@
             <!-- 使用前端自定义的form视图,直接进入可编辑的状态 -->
             <field name="arch" type="xml">
 
-                <form create="false" delete="false" js_class="form2">
+                <form create="false" delete="false" edit="false" js_class="form2">
                     <sheet>
                         <group>
                             <field name="name"/>

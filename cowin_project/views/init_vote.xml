@@ -59,14 +59,11 @@
         <menuitem name="我的投票" id="cowin_project.menu_24" parent="cowin_project.menu_4"
                                             action="sub_conference_resolutions_action_window"/>
 
-                  <!--action="sub_conference_resolutions_action_server"/>-->
 
 
         <menuitem name="投票查询" id="cowin_project.menu_25" parent="cowin_project.menu_4"
                   action="sub_conference_resolutions_action_window2"/>
-
-        <!--<menuitem name="投票查询_server" id="cowin_project.menu_26" parent="cowin_project.menu_4"-->
-                  <!--action="sub_conference_resolutions_action_server"/>-->
+        
 
     </data>
 
