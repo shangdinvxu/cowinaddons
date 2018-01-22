@@ -43,8 +43,9 @@
                   "type": "ir.actions.act_window",
                   "view_mode": "form",
                   "res_model": model._name,
-                  'views': [[False, 'list'], [False, 'form']],
+                  'views': [[False, 'tree'], [False, 'form']],
                   'flags': {'form': {'initial_mode': 'edit'}},
+                  'domain': [['vote_status', '=', 1]],
                 }
             </field>
         </record>
