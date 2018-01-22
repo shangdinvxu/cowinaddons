@@ -385,13 +385,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     target: "current",
                     flags: {'initial_mode': 'edit'},
                 };
-                var options = {
-                    // "view_mode": "edit",
-                    options: {
-                        "view_mode": "edit",
-                    }
-                };
-                this.do_action(action, options);
+                this.do_action(action);
             }else {
                 // 测试
                 new Model("cowin_project.cowin_project")

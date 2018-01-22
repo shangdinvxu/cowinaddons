@@ -34,12 +34,31 @@
             <!--</field>-->
         </record>
 
+        <record model="ir.actions.server" id="sub_conference_resolutions_action_server">
+            <field name="name">poll_vote server</field>
+            <field name="model_id" ref="model_cowin_project_prev_post_vote_poll"/>
+            <field name="code">
+                action = {
+                  'name': 'dd',
+                  "type": "ir.actions.act_window",
+                  "view_mode": "form",
+                  "res_model": model._name,
+                  'views': [[False, 'list'], [False, 'form']],
+                  'flags': {'form': {'initial_mode': 'edit'}},
+                }
+            </field>
+        </record>
+
 
         <menuitem name="我的投票" id="cowin_project.menu_24" parent="cowin_project.menu_4"
-                  action="sub_conference_resolutions_action_window"/>
+                  action="sub_conference_resolutions_action_server"/>
+                  <!--action="sub_conference_resolutions_action_window"/>-->
 
         <menuitem name="投票查询" id="cowin_project.menu_25" parent="cowin_project.menu_4"
                   action="sub_conference_resolutions_action_window2"/>
+
+        <!--<menuitem name="投票查询_server" id="cowin_project.menu_26" parent="cowin_project.menu_4"-->
+                  <!--action="sub_conference_resolutions_action_server"/>-->
 
     </data>
 
