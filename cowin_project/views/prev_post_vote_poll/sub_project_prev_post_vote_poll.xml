@@ -27,9 +27,10 @@
         <record id="cowin_project_prev_post_vote_poll_form" model="ir.ui.view">
             <field name="name">cowin_project.prev_post_vote_poll form</field>
             <field name="model">cowin_project.prev_post_vote_poll</field>
-
+            <!-- 使用前端自定义的form视图,直接进入可编辑的状态 -->
             <field name="arch" type="xml">
-                <form create="false" delete="false">
+
+                <form create="false" delete="false" js_class="form2">
                     <sheet>
                         <group>
                             <field name="name"/>

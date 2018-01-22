@@ -16,6 +16,10 @@
             <field name="domain">[('vote_status', '=', 1)]</field>
 
             <field name="context">{'custom_filter': True}</field>
+            <!--<field name="flags">{'form': {'initial_mode': 'edit'}}</field>-->
+            <!--<field name="flags">{'form': {'mode': 'edit'}}</field>-->
+            <field name="target">current</field>
+
         </record>
 
 
@@ -46,14 +50,17 @@
                   'views': [[False, 'tree'], [False, 'form']],
                   'flags': {'form': {'initial_mode': 'edit'}},
                   'domain': [['vote_status', '=', 1]],
+                  'context': {'custom_filter': True},
                 }
             </field>
         </record>
 
 
         <menuitem name="我的投票" id="cowin_project.menu_24" parent="cowin_project.menu_4"
-                  action="sub_conference_resolutions_action_server"/>
-                  <!--action="sub_conference_resolutions_action_window"/>-->
+                                            action="sub_conference_resolutions_action_window"/>
+
+                  <!--action="sub_conference_resolutions_action_server"/>-->
+
 
         <menuitem name="投票查询" id="cowin_project.menu_25" parent="cowin_project.menu_4"
                   action="sub_conference_resolutions_action_window2"/>

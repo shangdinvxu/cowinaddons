@@ -4,7 +4,7 @@ from odoo import SUPERUSER_ID
 
 
 class Prev_post_vote_poll(models.Model):
-    _inherit = 'ir.needaction_mixin'
+    # _inherit = 'ir.needaction_mixin'
 
     _inherit = 'ir.needaction_mixin'
 
@@ -124,7 +124,7 @@ class Prev_post_vote_poll(models.Model):
 
         if self.env.context.get('custom_filter'):
             if self.env.user.id != SUPERUSER_ID:
-            # 后天,自定义数据的操作!!!
+            # 后端,自定义数据的操作!!!
                 filter = ['voter', '=', self.env.user.employee_ids[0].id]
                 args.append(filter)
 
