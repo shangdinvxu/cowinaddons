@@ -9,6 +9,7 @@
                 <script type="text/javascript" src="/cowin_project/static/src/js/follow_up_invest_kanban_to_detail.js"/>
                 <script type="text/javascript" src="/cowin_project/static/src/js/approval_after_invest_kanban_to_detail.js"/>
                 <script type="text/javascript" src="/cowin_project/static/src/js/bread_click_over.js"/>
+                <script type="text/javascript" src="/cowin_project/static/src/js/form_edit.js"/>
                 <link rel="stylesheet" href="/cowin_project/static/src/css/process.css"/>
                 <link rel="stylesheet" href="/cowin_project/static/src/css/process_kanban.css"/>
             </xpath>
