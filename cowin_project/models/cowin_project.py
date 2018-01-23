@@ -1637,7 +1637,7 @@ class Cowin_project(models.Model):
         #     record.unlink()
 
 
-
+    # 查看按钮的显示类型
     def rpc_approval_view_action_action(self, **kwargs):
         tache_info = kwargs['tache_info']
 
