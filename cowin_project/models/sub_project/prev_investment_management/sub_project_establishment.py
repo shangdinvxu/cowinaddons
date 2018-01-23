@@ -267,7 +267,7 @@ class Cowin_project_subproject(models.Model):
 
     # 查看审核结果
     def approval_view_action_action(self):
-        view_id = self.env.ref['sub_project_establishment_form_no_button'].id
+        view_id = self.env.ref('cowin_project.sub_project_establishment_form_no_button').id
 
         return {
             'name': self._name,
@@ -282,6 +282,23 @@ class Cowin_project_subproject(models.Model):
         }
 
 
+
+    # 审核界面的操作
+
+    def approval_launch_action(self):
+        view_id = self.env.ref('cowin_project.sub_project_establishment_form').id
+
+        return {
+            'name': self._name,
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'views': [[view_id, 'form']],
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': False,
+            'res_id': self.id,
+            'target': 'current',
+        }
 
 
 
@@ -314,7 +331,7 @@ class Cowin_project_subproject(models.Model):
 
         res['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
-        view_id = self.env.ref['sub_project_establishment_form'].id
+        view_id = self.env.ref('cowin_project.sub_project_establishment_form_no_button').id
 
         return {
             'name': self._name,
