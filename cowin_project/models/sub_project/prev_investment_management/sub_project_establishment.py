@@ -266,7 +266,7 @@ class Cowin_project_subproject(models.Model):
 
 
     # 查看审核结果
-    def rpc_approval_view_action_action(self):
+    def approval_view_action_action(self):
         view_id = self.env.ref['sub_project_establishment_form_no_button'].id
 
         return {
