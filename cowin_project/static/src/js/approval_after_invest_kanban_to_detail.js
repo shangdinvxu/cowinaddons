@@ -102,20 +102,30 @@ odoo.define('cowin_project.approval_after_invest_kanban_to_detail', function (re
             sub_approval_flow_settings_id = $(target).parents('.process_data_item_line').attr('data-sub-approval-id');
             sub_tache_id = $(target).parents('.process_data_item_line').attr('data-sub-tache-id');
             approval_tache_index = $(target).parents('.process_data_item_line').attr('tache-index');
-            var data = {
-                "tache":{
-                    "meta_sub_project_id":parseInt(meta_sub_project_id),
-                    "sub_approval_flow_settings_id":parseInt(sub_approval_flow_settings_id)
-                }
-            };
 
-            return new Model("cowin_project.cowin_project")
-                    .call("rpc_get_approval_flow_info", [parseInt(self.id)],data)
-                    .then(function (result) {
-                        $('#process_data').html('')
-                        console.log(result);
-                        $('#process_data').append(QWeb.render('approval_page', {result: result,edit:false}))
-                    })
+
+            new Model("cowin_project.cowin_project")
+                        .call("rpc_approval_view_action_action", [parseInt(self.id)],{'tache_info':self.tache_arr[approval_tache_index]})
+                        .then(function (result) {
+                            console.log(result)
+                            self.do_action(result);
+                        })
+
+
+            // var data = {
+            //     "tache":{
+            //         "meta_sub_project_id":parseInt(meta_sub_project_id),
+            //         "sub_approval_flow_settings_id":parseInt(sub_approval_flow_settings_id)
+            //     }
+            // };
+            //
+            // return new Model("cowin_project.cowin_project")
+            //         .call("rpc_get_approval_flow_info", [parseInt(self.id)],data)
+            //         .then(function (result) {
+            //             $('#process_data').html('')
+            //             console.log(result);
+            //             $('#process_data').append(QWeb.render('approval_page', {result: result,edit:false}))
+            //         })
         },
         //审核同意、不同意
         approval_btn_func:function (e) {
