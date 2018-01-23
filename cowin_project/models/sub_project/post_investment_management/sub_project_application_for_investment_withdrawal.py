@@ -69,6 +69,11 @@ class sub_project_application_for_investment_withdrawal(models.Model):
 
     exit_plan = fields.Text(string=u'退出方案')
 
+    # 审批实体记录
+    sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
+                                                                'res_id', string=u'审批记录',
+                                                                domain=lambda self: [('res_model', '=', self._name)])
+
 
 
     @api.model

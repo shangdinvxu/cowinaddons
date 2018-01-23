@@ -69,6 +69,11 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
 
     conference_highlights = fields.Text(string=u'会议要点')
 
+    # 审批实体记录
+    sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
+                                                                'res_id', string=u'审批记录',
+                                                                domain=lambda self: [('res_model', '=', self._name)])
+
 
 
     @api.model

@@ -61,6 +61,11 @@ class sub_project_project_exit_resolution(models.Model):
     # chairman_of_investment_decision_committee = fields.Many2one('hr.employee', string=u'投资决策委员会主席')
     chairman_of_investment_decision_committee_ids = fields.Many2many('hr.employee', 'exit_resolution_chairman_of_investment_employee_rel', string=u'投资决策委员会主席')
 
+    # 审批实体记录
+    sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
+                                                                'res_id', string=u'审批记录',
+                                                                domain=lambda self: [('res_model', '=', self._name)])
+
 
 
     @api.model

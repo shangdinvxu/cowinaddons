@@ -44,6 +44,11 @@ class Cowin_project_subproject_opinion_book(models.Model):
     the_amount_of_investment = fields.Float(string=u'本次投资金额')
     ownership_interest = fields.Integer(string=u'股份比例')
 
+    # 审批实体记录
+    sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
+                                                                'res_id', string=u'审批记录',
+                                                                domain=lambda self: [('res_model', '=', self._name)])
+
     compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
 
     @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment',

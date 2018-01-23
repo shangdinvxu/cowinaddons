@@ -43,6 +43,11 @@ class sub_project_project_exit_vote(models.Model):
     voting_opinion = fields.Text(string=u'表决意见')
     voter = fields.Many2one('hr.employee', string=u'表决人')
 
+    # 审批实体记录
+    sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
+                                                                'res_id', string=u'审批记录',
+                                                                domain=lambda self: [('res_model', '=', self._name)])
+
 
 
     @api.model

@@ -47,6 +47,11 @@ class Cowin_project_subproject_call_up_record(models.Model):
     customer_relation_opinion = fields.Text(string=u'意见或建议')
     recommended_visit_object = fields.Char(string=u'其它推荐拜访对象')
 
+    # 审批实体记录
+    sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
+                                                                'res_id', string=u'审批记录',
+                                                                domain=lambda self: [('res_model', '=', self._name)])
+
 
     # round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation',
     #                                                     string=u'环节和基金整体')

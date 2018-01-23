@@ -42,6 +42,11 @@ class sub_project_summary_of_the_three_meeting_of_the_item_company(models.Model)
     the_amount_of_investment = fields.Float(string=u'本次投资金额')
     ownership_interest = fields.Integer(string=u'股份比例')
 
+    # 审批实体记录
+    sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
+                                                                'res_id', string=u'审批记录',
+                                                                domain=lambda self: [('res_model', '=', self._name)])
+
     # ----------  投资基金
     # round_financing_id = fields.Many2one('cowin_common.round_financing',
     #                                      related='subproject_id.round_financing_id', string=u'轮次')

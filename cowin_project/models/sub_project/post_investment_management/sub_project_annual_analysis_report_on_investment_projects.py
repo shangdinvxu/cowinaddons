@@ -89,6 +89,11 @@ class sub_project_annual_analysis_report_on_investment_projects(models.Model):
 
     industry_status = fields.Text(string=u'行业现状')
 
+    # 审批实体记录
+    sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
+                                                                'res_id', string=u'审批记录',
+                                                                domain=lambda self: [('res_model', '=', self._name)])
+
 
 
 

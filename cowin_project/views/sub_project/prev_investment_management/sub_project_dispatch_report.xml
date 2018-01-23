@@ -15,6 +15,20 @@
                             <field name="attachment_note"/>
                         </group>
 
+
+                        <group>
+
+                                <field name="sub_pro_approval_flow_settings_record_ids">
+                                       <tree >
+                                         <field name="approval_person_id" readonly="1" options='{"no_open":True}'/>
+                                         <field name="approval_role_id" readonly="1"/>
+                                         <field name="approval_result" readonly="1"/>
+                                         <field name="approval_opinion" readonly="1"/>
+                                       </tree>
+                                   </field>
+                            </group>
+
+
                         <group>
                             <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>
                         </group>
@@ -34,6 +48,20 @@
                             <field name="dispatch_report" widget="many2many_binary" required="1"/>
                             <field name="attachment_note"/>
                         </group>
+
+
+                        <group>
+
+                                <field name="sub_pro_approval_flow_settings_record_ids">
+                                       <tree >
+                                         <field name="approval_person_id" readonly="1" options='{"no_open":True}'/>
+                                         <field name="approval_role_id" readonly="1"/>
+                                         <field name="approval_result" readonly="1"/>
+                                         <field name="approval_opinion" readonly="1"/>
+                                       </tree>
+                                   </field>
+                            </group>
+
                     </sheet>
                 </form>
             </field>

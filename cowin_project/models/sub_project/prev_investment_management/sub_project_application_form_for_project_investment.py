@@ -56,6 +56,11 @@ class Cowin_project_subproject_application_form_for_project_investment(models.Mo
     # list_of_examination_and_approval_documents = fields.Many2many('ir.attachment', string=u'审批文件清单')
     list_of_examination_and_approval_documents = fields.Many2many('ir.attachment', 'sub_app_form_pro_investment_attachment_rel', string=u'审批文件清单')
 
+    # 审批实体记录
+    sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
+                                                                'res_id', string=u'审批记录',
+                                                                domain=lambda self: [('res_model', '=', self._name)])
+
     @api.model
     def create(self, vals):
 

@@ -72,6 +72,11 @@ class Cowin_project_subproject_project_entrusted_loan_application_form(models.Mo
     life_of_loan = fields.Float(string=u'借款期限')
     transfer_charge = fields.Float(string=u'手续费')
 
+    # 审批实体记录
+    sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
+                                                                'res_id', string=u'审批记录',
+                                                                domain=lambda self: [('res_model', '=', self._name)])
+
 
     @api.model
     def create(self, vals):

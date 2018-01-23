@@ -18,6 +18,11 @@ class Cowin_project_subproject_dispatch_report(models.Model):
 
     attachment_note = fields.Char(string=u'附件说明')
 
+    # 审批实体记录
+    sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
+                                                                'res_id', string=u'审批记录',
+                                                                domain=lambda self: [('res_model', '=', self._name)])
+
 
     @api.model
     def create(self, vals):

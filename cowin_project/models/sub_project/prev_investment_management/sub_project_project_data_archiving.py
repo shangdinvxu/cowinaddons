@@ -63,6 +63,11 @@ class Cowin_project_subproject_project_data_archiving(models.Model):
     payment_process_information = fields.Many2many('ir.attachment', 'payment_process_information_attachment_rel', string=u'付款流程资料')
     business_change_data = fields.Many2many('ir.attachment', 'business_change_data_attachment_rel', string=u'工商变更资料')
 
+    # 审批实体记录
+    sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
+                                                                'res_id', string=u'审批记录',
+                                                                domain=lambda self: [('res_model', '=', self._name)])
+
     @api.model
     def create(self, vals):
         tache_info = self._context['tache']
