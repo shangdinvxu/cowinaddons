@@ -4,7 +4,43 @@
 
         <!-- 投资决策申请-->
         <!--投资决策申请的form视图-->
-        <record model="ir.ui.view" id="sub_invest_decision_app">
+        <record model="ir.ui.view" id="sub_invest_decision_app_form">
+            <field name="name">cowin_project.sub_invest_decision_app form</field>
+            <field name="model">cowin_project.sub_invest_decision_app</field>
+            <field name="arch" type="xml">
+                <form string="Fiscal year" create="false" edit="false" delete="false">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="project_number" readonly="1"/>
+                                <!--<field name="invest_manager_id" readonly="1"/>-->
+                                <field name="invest_manager_ids" readonly="1"/>
+                                <field name="company_investment_role" readonly="1"/>
+                                <field name="decision_file_list" widget="many2many_binary"/>
+                                <field name="investment_decision_Committee_held_time"/>
+                            </group>
+                            <group>
+                                <!--投资基金-->
+                                <field name="foundation_id" readonly="1"/>
+                                <field name="the_amount_of_investment" required="1"/>
+                                <field name="ownership_interest" required="1"/>
+                                <field name="round_financing_id" readonly="1"/>
+                                <field name="the_amount_of_financing" required="1"/>
+                                <!---->
+                            </group>
+
+                            <group>
+                                <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+         <record model="ir.ui.view" id="sub_invest_decision_app_form_no_button">
             <field name="name">cowin_project.sub_invest_decision_app form</field>
             <field name="model">cowin_project.sub_invest_decision_app</field>
             <field name="arch" type="xml">
@@ -34,6 +70,7 @@
                 </form>
             </field>
         </record>
+
 
 
     </data>

@@ -38,8 +38,53 @@
                             <!-- 是否是最终决议!!! -->
                             <field name="is_final_meeting_resolution"/>
 
+                        <group>
+                            <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>
+                        </group>
 
                         </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="sub_invest_decision_committee_res_form_no_button">
+            <field name="name">cowin_project.sub_invest_decision_committee_res form</field>
+            <field name="model">cowin_project.sub_invest_decision_committee_res</field>
+            <field name="arch" type="xml">
+                <form string="Fiscal year" create="false" edit="false" delete="false">
+                    <sheet>
+                        <group>
+
+                            <field name="name" readonly="1"/>
+                            <field name="project_number" readonly="1"/>
+                            <!--<field name="invest_manager_id" readonly="1"/>-->
+                            <field name="invest_manager_ids" readonly="1"/>
+
+                            <field name="voting_committee" readonly="1"/>
+                            <field name="outcome_of_the_voting_committee" readonly="1"/>
+                            <!--投资基金-->
+                            <field name="foundation_id" readonly="1"/>
+                            <field name="the_amount_of_investment" required="1"/>
+                            <field name="ownership_interest" required="1"/>
+                            <field name="round_financing_id" readonly="1"/>
+                            <field name="the_amount_of_financing" required="1"/>
+
+                            <!---->
+
+                            <field name="trustee_id" required="1"/>
+                            <field name="supervisor_id" required="1"/>
+                            <field name="amount_of_entrusted_loan" required="1"/>
+                            <field name="chairman_of_investment_decision_committee_ids" readonly="1"/>
+
+                            <!-- 是否是最终决议!!! -->
+                            <field name="is_final_meeting_resolution"/>
+
+
+                        </group>
+
+
                     </sheet>
                 </form>
             </field>

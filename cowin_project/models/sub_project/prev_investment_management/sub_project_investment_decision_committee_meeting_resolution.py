@@ -181,10 +181,16 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
     @api.multi
     def write(self, vals):
 
-        # 获取之前得到的基金轮次
-        # prev = set(self.round_financing_and_Foundation_ids)
+        # 由于在前端界面中,冲写过前端想后端写入的方法,有空值的影响,所以,我们需要把该问题给过滤掉!!!
+        if not vals:
+            return True
 
         result = super(Cowin_project_subproject_investment_decision_committee_meeting_resolution, self).write(vals)
+
+        # button在当前的业务逻辑中当前属于审核状态, 分发之后的业务,业务逻辑不同
+        if self.button_status == 1 or self.button_status == 2:
+            return result
+
 
         target_sub_tache_entity = self.sub_tache_id
 
@@ -299,12 +305,14 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
         rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & chairman_of_investment_decision_committee_entity.sub_meta_pro_approval_settings_role_rel
         res['default_chairman_of_investment_decision_committee_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
+        t_name = self._name + '_form_no_button'
+        view_id = self.env.ref(t_name).id
 
         return {
             'name': self._name,
             'type': 'ir.actions.act_window',
             'res_model': self._name,
-            'views': [[False, 'form']],
+            'views': [[view_id, 'form']],
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': False,

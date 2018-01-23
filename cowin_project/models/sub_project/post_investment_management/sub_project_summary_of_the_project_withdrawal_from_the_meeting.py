@@ -110,7 +110,17 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
 
     @api.multi
     def write(self, vals):
+
+        # 由于在前端界面中,冲写过前端想后端写入的方法,有空值的影响,所以,我们需要把该问题给过滤掉!!!
+        if not vals:
+            return True
+
         res = super(sub_project_summary_of_the_project_withdrawal_from_the_meeting, self).write(vals)
+
+        # button在当前的业务逻辑中当前属于审核状态, 分发之后的业务,业务逻辑不同
+        if self.button_status == 1 or self.button_status == 2:
+            return res
+
         target_sub_tache_entity = self.sub_tache_id
 
         if self.inner_or_outer_status == 1:
@@ -175,12 +185,14 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
         rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & investment_decision_committee_entity.sub_meta_pro_approval_settings_role_rel
         res['default_members_of_voting_committee_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
+        t_name = self._name + '_form_no_button'
+        view_id = self.env.ref(t_name).id
 
         return {
             'name': self._name,
             'type': 'ir.actions.act_window',
             'res_model': self._name,
-            'views': [[False, 'form']],
+            'views': [[view_id, 'form']],
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': False,

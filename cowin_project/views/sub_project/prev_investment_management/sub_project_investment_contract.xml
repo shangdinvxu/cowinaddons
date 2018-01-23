@@ -7,7 +7,29 @@
 
 
            <!--投资合同的form视图-->
-        <record model="ir.ui.view" id="sub_project_invest_contract_form">
+        <record model="ir.ui.view" id="sub_invest_contract_form">
+            <field name="name">cowin_project.sub_invest_contract form</field>
+            <field name="model">cowin_project.sub_invest_contract</field>
+            <field name="arch" type="xml">
+                <form string="Fiscal year" create="false" edit="false" delete="false">
+                    <sheet>
+                        <group>
+
+                            <field name="contract_no" required="1"/>
+                            <field name="title" required="1"/>
+                            <field name="main_contents" required="1"/>
+                        </group>
+
+                        <group>
+                            <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="sub_invest_contract_form_no_button">
             <field name="name">cowin_project.sub_invest_contract form</field>
             <field name="model">cowin_project.sub_invest_contract</field>
             <field name="arch" type="xml">

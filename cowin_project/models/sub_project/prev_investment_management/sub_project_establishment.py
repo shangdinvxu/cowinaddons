@@ -236,18 +236,15 @@ class Cowin_project_subproject(models.Model):
 
     @api.multi
     def write(self, vals):
-
         # 由于在前端界面中,冲写过前端想后端写入的方法,有空值的影响,所以,我们需要把该问题给过滤掉!!!
         if not vals:
             return True
+
         res = super(Cowin_project_subproject, self).write(vals)
+
         # button在当前的业务逻辑中当前属于审核状态, 分发之后的业务,业务逻辑不同
-        if self.button_status == 1:
+        if self.button_status == 1 or self.button_status == 2:
             return res
-
-
-
-
 
         target_sub_tache_entity = self.sub_tache_id
 
@@ -263,48 +260,6 @@ class Cowin_project_subproject(models.Model):
 
 
         return res
-
-
-    # 查看审核结果
-    def approval_view_action_action(self):
-        view_id = self.env.ref('cowin_project.sub_project_establishment_form_no_button').id
-
-        return {
-            'name': self._name,
-            'type': 'ir.actions.act_window',
-            'res_model': self._name,
-            'views': [[view_id, 'form']],
-            'view_type': 'form',
-            'view_mode': 'form',
-            'view_id': False,
-            'res_id': self.id,
-            'target': 'current',
-        }
-
-
-
-    # 审核界面的操作
-
-    def approval_launch_action(self):
-        view_id = self.env.ref('cowin_project.sub_project_establishment_form').id
-
-        return {
-            'name': self._name,
-            'type': 'ir.actions.act_window',
-            'res_model': self._name,
-            'views': [[view_id, 'form']],
-            'view_type': 'form',
-            'view_mode': 'form',
-            'view_id': False,
-            'res_id': self.id,
-            'target': 'current',
-        }
-
-
-
-
-
-
 
 
 
@@ -331,7 +286,9 @@ class Cowin_project_subproject(models.Model):
 
         res['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
-        view_id = self.env.ref('cowin_project.sub_project_establishment_form_no_button').id
+
+        t_name = self._name + '_form_no_button'
+        view_id = self.env.ref(t_name).id
 
         return {
             'name': self._name,
@@ -347,12 +304,6 @@ class Cowin_project_subproject(models.Model):
         }
 
 
-
-
-
-
-    def button_kkkkk(self):
-        print(u'这样的测试,我们开始做不一样的特性!!!')
 
 
 

@@ -36,5 +36,42 @@
                 </form>
             </field>
         </record>
+
+        <record model="ir.ui.view" id="sub_sum_pro_withdraw_from_meeting_form_no_button">
+            <field name="name">cowin_project.sub_sum_pro_withdraw_from_meeting form</field>
+            <field name="model">cowin_project.sub_sum_pro_withdraw_from_meeting</field>
+            <field name="arch" type="xml">
+                <form string="Fiscal year" create="false" edit="false" delete="false">
+
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"  readonly="1"/>
+                                <field name="project_number"  readonly="1"/>
+                                <field name="invest_manager_ids"  readonly="1"/>
+                                <field name="conference_date"/>
+                                <field name="conference_recorder"/>
+                                <field name="checker"/>
+                                <field name="members_of_voting_committee_ids"  readonly="1"/>
+                                <field name="conference_highlights"/>
+                            </group>
+                            <group>
+                                <!--投资基金-->
+                                <field name="foundation_id" readonly="1"/>
+                                <field name="the_amount_of_investment" readonly="1"/>
+                                <field name="ownership_interest" readonly="1"/>
+                                <field name="round_financing_id" readonly="1"/>
+                                <field name="the_amount_of_financing" readonly="1"/>
+                                <!---->
+                            </group>
+
+                            <group>
+                                <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
     </data>
 </odoo>

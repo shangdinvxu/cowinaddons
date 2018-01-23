@@ -34,6 +34,43 @@
                                 <field name="the_amount_of_financing" readonly="1"/>
                                 <!---->
                             </group>
+
+                            <group>
+                                <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sub_app_invest_withdrawal_form_no_button">
+            <field name="name">cowin_project.sub_app_invest_withdrawal form</field>
+            <field name="model">cowin_project.sub_app_invest_withdrawal</field>
+            <field name="arch" type="xml">
+                <form string="Fiscal year"  create="false" edit="false" delete="false">
+                    <sheet>
+                        <group>
+                            <group>
+                                 <field name="name" readonly="1"/>
+                                <field name="reporter" readonly="1"/>
+                                <field name="report_date" readonly="1"/>
+                                <field name="trustee_id" readonly="1"/>
+                                <field name="supervisor_id" readonly="1"/>
+                                <field name="withdrawal_amount"/>
+                                <field name="withdrawal_ratio"/>
+                                <field name="decision_file_list" widget="many2many_binary"/>
+                                <field name="exit_plan"/>
+                            </group>
+                            <group>
+                                <!--投资基金-->
+                                <field name="foundation_id" readonly="1"/>
+                                <field name="the_amount_of_investment" readonly="1"/>
+                                <field name="ownership_interest" readonly="1"/>
+                                <field name="round_financing_id" readonly="1"/>
+                                <field name="the_amount_of_financing" readonly="1"/>
+                                <!---->
+                            </group>
                         </group>
                     </sheet>
                 </form>

@@ -45,10 +45,60 @@
                             <field name="company_status"/>
                             <field name="industry_status"/>
                         </group>
+
+                        <group>
+                            <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>
+                        </group>
                     </sheet>
                 </form>
             </field>
         </record>
+
+        <record model="ir.ui.view" id="sub_quarterly_analysis_report_form_no_button">
+            <field name="name">cowin_project.sub_quarterly_analysis_report form</field>
+            <field name="model">cowin_project.sub_quarterly_analysis_report</field>
+            <field name="arch" type="xml">
+                <form string="Fiscal year" create="false" edit="false" delete="false">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"  readonly="1"/>
+                                <field name="project_number"  readonly="1"/>
+                                <field name="reporter"  readonly="1"/>
+                                <field name="filing_date"  readonly="1"/>
+                                <field name="registered_address"/>
+                                <field name="chairman"/>
+                                <field name="general_manager"/>
+                                <field name="product"/>
+                                <field name="industry" readonly="1"/>
+                                <field name="founding_time" readonly="1"/>
+                                <field name="investment_phase" readonly="1"/>
+                                <field name="current_phase"/>
+                            </group>
+                            <group>
+                                <!--投资基金-->
+                                <field name="foundation_id" readonly="1"/>
+                                <field name="the_amount_of_investment" readonly="1"/>
+                                <field name="ownership_interest" readonly="1"/>
+                                <field name="round_financing_id" readonly="1"/>
+                                <field name="the_amount_of_financing" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="total_assets"/>
+                            <field name="gross_liabilities"/>
+                            <field name="trustee_id"/>
+                            <field name="accounting_firm"/>
+                            <field name="securities_trader"/>
+                            <field name="IPOplan"/>
+                            <field name="company_status"/>
+                            <field name="industry_status"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
 
     </data>
 </odoo>

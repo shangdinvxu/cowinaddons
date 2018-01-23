@@ -372,6 +372,9 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
             # 处理投资抉择委员会议决议表 拒绝的情况   即, 需要添加可以添加新的基金伦次实体
             self.process_new_round_fund_entity()
+
+
+            # 审批拒绝操作的时候,也是需要改变相应的模型的button的按钮的状态!!!
             self.process_button_status_on_res_model(5)
 
         elif (prevstatus, newstatus) == (6, 7):
@@ -417,14 +420,23 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             # if self.status != 2:
             #     raise UserWarning(u'未知的错误,审核环节不可能出现这类错误!!!')
             self.status = 2
+            # 该审核节点完成!!!
+            self.current_approval_flow_node_id.write({
+                'status': True,
+            })
             self.current_approval_flow_node_id = self.current_approval_flow_node_id.parent_id
-            # self.process_action()
+
+
             if not self.current_approval_flow_node_id.parent_id:
                 self.status = 4
 
         elif new_status == 3:
             # 暂缓
             self.status = 3
+            # 暂缓之后,所有的审批节点重置
+            self.approval_flow_settings_id.approval_flow_setting_node_ids.write({
+                'status': False,
+            })
             self.current_approval_flow_node_id = self.approval_flow_settings_id.approval_flow_setting_node_ids[1]
 
         elif new_status == 5:
@@ -499,6 +511,9 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         # current_approval_flow_node_id = approval_flow_settings_record_info['current_approval_flow_node_id']
 
         # 这种情况下代表着出现多次并行的操作的问题!!!
+
+
+
 
         if self.is_final_approval_flow_settings_status():
             raise UserError(u'该审批早已审核完成!!!')

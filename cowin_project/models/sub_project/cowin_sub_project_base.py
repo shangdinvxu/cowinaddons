@@ -19,7 +19,6 @@ class Cowin_sub_project_base_status(models.Model):
 
 
 
-
     def button_approval_flow_info(self, a, b, c):
 
         if self.button_status == 2:
@@ -52,6 +51,44 @@ class Cowin_sub_project_base_status(models.Model):
 
 
 
+    # 查看审核结果
+    def approval_view_action_action(self):
+        name = self._name + '_form_no_button'
+        # view_id = self.env.ref('cowin_project.sub_project_establishment_form_no_button').id
+        view_id = self.env.ref(name).id
+
+        return {
+            'name': self._name,
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'views': [[view_id, 'form']],
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': False,
+            'res_id': self.id,
+            'target': 'current',
+        }
+
+
+
+    # 审核界面的操作
+
+    def approval_launch_action(self):
+        name = self._name + '_form'
+        view_id = self.env.ref(name).id
+        # view_id = self.env.ref('cowin_project.sub_project_establishment_form').id
+
+        return {
+            'name': self._name,
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'views': [[view_id, 'form']],
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': False,
+            'res_id': self.id,
+            'target': 'current',
+        }
 
 
 

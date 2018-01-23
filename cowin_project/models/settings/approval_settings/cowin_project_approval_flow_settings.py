@@ -108,7 +108,7 @@ class Cowin_project_approval_flow_setting_node(models.Model):
     put_off = fields.Boolean(string=u'暂缓', default=False)
 
 
-    # state = fields.Boolean(default=False, string=u'当前节点是否已经操作过!!!')
+    state = fields.Boolean(default=False, string=u'当前节点是否已经操作过!!!')
 
 
     _sql_constraints = [

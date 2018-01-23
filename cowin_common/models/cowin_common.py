@@ -72,12 +72,40 @@ class Cowin_common_approval_flow_dialog(models.Model):
     approval_result = fields.Char(string=u'审批结果')
     approval_opinion = fields.Text(string=u'审批意见')
 
+    approval_flow_count = fields.Integer(string=u'用以和自审批实体做匹配,以便于审核过程中出现错误!!!')
+
 
     def process_approval_flow_info(self):
         sub_tache_entity = self.env[self.res_model].browse(self.res_id).sub_tache_id
 
         # 子流程配置实体
         sub_approval_flow_settings_entity = sub_tache_entity.sub_pro_approval_flow_settings_ids
+
+        res_1s = sub_approval_flow_settings_entity.current_approval_flow_node_id.operation_role_id.sub_meta_pro_approval_settings_role_rel
+
+        res_2s = sub_approval_flow_settings_entity.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel
+
+        is_target_user = False
+
+        for res_entity in res_2s & res_1s:
+            if res_entity.employee_id.user_id == self.env.user:
+                is_target_user = True
+
+            break
+
+
+        if not is_target_user:
+            if self.env.user.id == 1:
+                is_target_user = True
+
+
+        if not is_target_user:
+            raise UserError(u'该用户不具有审批资格,或许已经进入到下一个审批')
+
+
+
+
+
 
         approval_flow_settings_record_info = {
             # 理论上只会有一个员工  审批人
@@ -92,6 +120,9 @@ class Cowin_common_approval_flow_dialog(models.Model):
 
         }
         # 更新审批节点 拿到当前的子环节
+
+
+
         sub_approval_flow_settings_entity.save_approval_flow_info(approval_flow_settings_record_info)
 
 

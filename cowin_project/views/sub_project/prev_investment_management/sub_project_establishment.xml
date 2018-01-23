@@ -2,7 +2,7 @@
 <odoo>
     <data>
          <!--项目立项的form视图-->
-        <record model="ir.ui.view" id="sub_project_establishment_form">
+        <record model="ir.ui.view" id="cowin_subproject_form">
             <field name="name">cowin_project.cowin_subproject form</field>
             <field name="model">cowin_project.cowin_subproject</field>
             <field name="arch" type="xml">
@@ -55,8 +55,10 @@
 
                                 </field>
 
-                                <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>
+                            </group>
 
+                            <group>
+                                <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>
                             </group>
 
 
@@ -70,7 +72,7 @@
 
 
           <!--项目立项的form视图-->
-        <record model="ir.ui.view" id="sub_project_establishment_form_no_button">
+        <record model="ir.ui.view" id="cowin_subproject_form_no_button">
             <field name="name">cowin_project.cowin_subproject form</field>
             <field name="model">cowin_project.cowin_subproject</field>
             <field name="arch" type="xml">

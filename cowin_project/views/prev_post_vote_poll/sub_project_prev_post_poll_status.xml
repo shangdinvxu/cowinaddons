@@ -20,7 +20,7 @@
         </record>
 
         <!--投前/投后投资决策委员会会议表决结果的form视图-->
-        <record model="ir.ui.view" id="sub_prev_post_poll_status_form">
+        <record model="ir.ui.view" id="sub_prev_post_poll_status_form_no_button">
             <field name="name">cowin_project.sub_prev_post_poll_status form</field>
             <field name="model">cowin_project.sub_prev_post_poll_status</field>
             <field name="arch" type="xml">

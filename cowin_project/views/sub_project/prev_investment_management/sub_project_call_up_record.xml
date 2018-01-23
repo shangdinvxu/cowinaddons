@@ -27,6 +27,38 @@
                             <field name="customer_relation_opinion" required="1"/>
                             <field name="recommended_visit_object"/>
                         </group>
+                        <group>
+                            <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="sub_call_up_record_form_no_button">
+            <field name="name">cowin_project.sub_call_up_record form</field>
+            <field name="model">cowin_project.sub_call_up_record</field>
+            <field name="arch" type="xml">
+                <form string="Fiscal year" create="false" edit="false" delete="false">
+                    <sheet>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="project_number" readonly="1"/>
+                            <!--<field name="invest_manager_id" readonly="1"/>-->
+                            <field name="invest_manager_ids" readonly="1"/>
+                            <field name="visit_date" required="1"/>
+                            <field name="customer_type" required="1"/>
+                            <field name="customer_name" required="1"/>
+                            <field name="customer_position" required="1"/>
+                            <field name="customer_contract" required="1"/>
+                            <field name="customer_email" required="1"/>
+                            <field name="customer_company_name" required="1"/>
+                            <field name="customer_relation_investment" required="1"/>
+                            <field name="customer_relation_value" required="1"/>
+                            <field name="customer_relation_opinion" required="1"/>
+                            <field name="recommended_visit_object"/>
+                        </group>
                     </sheet>
                 </form>
             </field>
