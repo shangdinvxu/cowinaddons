@@ -1,59 +1,28 @@
 <odoo>
   <data>
-    <!-- explicit list view definition -->
-    <!--
-    <record model="ir.ui.view" id="cowin_common.list">
-      <field name="name">cowin_common list</field>
-      <field name="model">cowin_common.cowin_common</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
-        </tree>
-      </field>
-    </record>
-    -->
+      <!-- 审批需要的通用对话框 -->
+    <record id="cowin_common_approval_flow_dialog_form" model="ir.ui.view">
+        <field name="name">cowin_common.approval_flow_dialog form</field>
+        <field name="model">cowin_common.approval_flow_dialog</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false" delete="false">
+                <group>
+                    <!--<field name="approval_result"/>-->
+                    <field name="approval_opinion"/>
 
-    <!-- actions opening views on models -->
-    <!--
-    <record model="ir.actions.act_window" id="cowin_common.action_window">
-      <field name="name">cowin_common window</field>
-      <field name="res_model">cowin_common.cowin_common</field>
-      <field name="view_mode">tree,form</field>
-    </record>
-    -->
+                    <group>
+                        <button type="object" name="button_agree" string="同意"/>
+                        <button type="object" name="button_reject" string="拒绝"/>
+                        <button type="object" name="button_putoff" string="暂缓"/>
+                    </group>
+                </group>
+            </form>
+        </field>
 
-    <!-- server action to the one above -->
-    <!--
-    <record model="ir.actions.server" id="cowin_common.action_server">
-      <field name="name">cowin_common server</field>
-      <field name="model_id" ref="model_cowin_common_cowin_common"/>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": self._name,
-        }
-      </field>
     </record>
-    -->
 
-    <!-- Top menu item -->
-    <!--
-    <menuitem name="cowin_common" id="cowin_common.menu_root"/>
-    -->
-    <!-- menu categories -->
-    <!--
-    <menuitem name="Menu 1" id="cowin_common.menu_1" parent="cowin_common.menu_root"/>
-    <menuitem name="Menu 2" id="cowin_common.menu_2" parent="cowin_common.menu_root"/>
-    -->
-    <!-- actions -->
-    <!--
-    <menuitem name="List" id="cowin_common.menu_1_list" parent="cowin_common.menu_1"
-              action="cowin_common.action_window"/>
-    <menuitem name="Server to list" id="cowin_common" parent="cowin_common.menu_2"
-              action="cowin_common.action_server"/>
-    -->
+
+
+
   </data>
 </odoo>

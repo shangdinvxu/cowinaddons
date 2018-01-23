@@ -111,6 +111,12 @@ class Cowin_project_subproject(models.Model):
 
     attachment_note = fields.Char(string=u'附件说明')
 
+    # 审批实体记录
+    sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
+                                                                'res_id', string=u'审批记录',
+                                                                domain=lambda self: [('res_model', '=', self._name)])
+
+
     # 投资决策委员会会议纪要 依赖的字段
     voting_committee = fields.Date(string=u'投决会日期')
 
@@ -230,7 +236,18 @@ class Cowin_project_subproject(models.Model):
 
     @api.multi
     def write(self, vals):
+
+        # 由于在前端界面中,冲写过前端想后端写入的方法,有空值的影响,所以,我们需要把该问题给过滤掉!!!
+        if not vals:
+            return True
         res = super(Cowin_project_subproject, self).write(vals)
+        # button在当前的业务逻辑中当前属于审核状态, 分发之后的业务,业务逻辑不同
+        if self.button_status == 1:
+            return res
+
+
+
+
 
         target_sub_tache_entity = self.sub_tache_id
 
@@ -246,6 +263,30 @@ class Cowin_project_subproject(models.Model):
 
 
         return res
+
+
+    # 查看审核结果
+    def rpc_approval_view_action_action(self):
+        view_id = self.env.ref['sub_project_establishment_form_no_button'].id
+
+        return {
+            'name': self._name,
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'views': [[view_id, 'form']],
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': False,
+            'res_id': self.id,
+            'target': 'current',
+        }
+
+
+
+
+
+
+
 
 
 
@@ -273,11 +314,13 @@ class Cowin_project_subproject(models.Model):
 
         res['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
 
+        view_id = self.env.ref['sub_project_establishment_form'].id
+
         return {
             'name': self._name,
             'type': 'ir.actions.act_window',
             'res_model': self._name,
-            'views': [[False, 'form']],
+            'views': [[view_id, 'form']],
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': False,
@@ -285,6 +328,14 @@ class Cowin_project_subproject(models.Model):
             'target': 'new',
             'context': res,
         }
+
+
+
+
+
+
+    def button_kkkkk(self):
+        print(u'这样的测试,我们开始做不一样的特性!!!')
 
 
 
