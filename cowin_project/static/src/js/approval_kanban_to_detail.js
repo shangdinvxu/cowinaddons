@@ -214,24 +214,32 @@ odoo.define('cowin_project.approval_kanban_to_detail', function (require) {
             approval_tache_index = $(target).parents('.process_data_item_line').attr('tache-index');
 
             //记录操作的是第几个tache
-            self.oper_index = approval_tache_index
+            self.oper_index = approval_tache_index;
 
-            console.log(self.tache_arr)
-            var data = {
-                "tache":{
-                    "meta_sub_project_id":parseInt(meta_sub_project_id),
-                    "sub_approval_flow_settings_id":parseInt(sub_approval_flow_settings_id)
-                }
-            };
 
             return new Model("cowin_project.cowin_project")
-                    .call("rpc_get_approval_flow_info", [parseInt(self.id)],data)
+                    .call("rpc_approval_launch_action", [parseInt(self.id)],{'tache_info':self.tache_arr[approval_tache_index]})
                     .then(function (result) {
-                        $('#process_data').html('')
                         console.log(result);
-                        self.current_approval_flow_node_id = result.current_approval_flow_node_id;
-                        $('#process_data').append(QWeb.render('approval_page', {result: result,edit:true,tache: self.tache_arr[approval_tache_index].name}))
-                    })
+                        self.do_action(result);
+                    });
+
+
+            // var data = {
+            //     "tache":{
+            //         "meta_sub_project_id":parseInt(meta_sub_project_id),
+            //         "sub_approval_flow_settings_id":parseInt(sub_approval_flow_settings_id)
+            //     }
+            // };
+            //
+            // return new Model("cowin_project.cowin_project")
+            //         .call("rpc_get_approval_flow_info", [parseInt(self.id)],data)
+            //         .then(function (result) {
+            //             $('#process_data').html('')
+            //             console.log(result);
+            //             self.current_approval_flow_node_id = result.current_approval_flow_node_id;
+            //             $('#process_data').append(QWeb.render('approval_page', {result: result,edit:true,tache: self.tache_arr[approval_tache_index].name}))
+            //         })
 
         },
         //基金切换
