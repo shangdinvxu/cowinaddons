@@ -75,6 +75,9 @@ class Cowin_common_approval_flow_dialog(models.Model):
     approval_flow_count = fields.Integer(string=u'用以和自审批实体做匹配,以便于审核过程中出现错误!!!')
 
 
+    is_put_off = fields.Boolean(string=u'是否开启暂缓的标志!!!', default=True)
+
+
     def process_approval_flow_info(self):
         sub_tache_entity = self.env[self.res_model].browse(self.res_id).sub_tache_id
 
@@ -114,6 +117,8 @@ class Cowin_common_approval_flow_dialog(models.Model):
             'approval_role_id': sub_approval_flow_settings_entity.current_approval_flow_node_id.operation_role_id.id,
 
             'approval_result': self.approval_result,
+
+            'approval_opinion': self.approval_opinion,
 
             'res_model': self.res_model,
             'res_id': self.res_id,

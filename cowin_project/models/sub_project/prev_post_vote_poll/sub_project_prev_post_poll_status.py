@@ -65,6 +65,11 @@ class Prev_poll_status(models.Model):
                     })
                     # self.sub_tache_id.sub_pro_approval_flow_settings_ids.upate_status(5)
 
+                    # 把投票结果写入到子工程中
+                    self.subproject_id.write({
+                        'voting_result': self.voting_result,
+                    })
+
             else:
                 self.voting_result = u'还有%s人,没有投票' % (len(self.sudo().prev_post_conference_resolutions_ids) - self.compute_voting_count)
 
@@ -95,6 +100,11 @@ class Prev_poll_status(models.Model):
                         'voting_result': u'拒绝',
                     })
                     # self.sub_tache_id.sub_pro_approval_flow_settings_ids.upate_status(5)
+
+                    # 把投票结果写入到子工程中
+                    self.subproject_id.write({
+                        'voting_result': self.voting_result,
+                    })
 
             else:
                 self.voting_result = u'还有%s人,没有投票' % (len(self.sudo().prev_post_conference_resolutions_ids) - self.compute_voting_count)

@@ -25,7 +25,7 @@ class Cowin_project_subproject_application_form_for_project_investment(models.Mo
     invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
 
 
-    date_of_application = fields.Date(string=u'申请日期')
+    date_of_application = fields.Date(string=u'申请日期', default=fields.Date.today())
 
     # ----------  投资基金
     round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation',

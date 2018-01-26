@@ -24,7 +24,7 @@
                             <field name="round_financing_id" required="1" options='{"no_open":True}'/>
                             <field name="the_amount_of_financing" required="1"/>
                             <!---->
-                            <field name="project_mumbers" readonly="1"/>
+                            <field name="project_mumbers" readonly="1" required="1"/>
                             <!--<field name="partner_opinion"/>-->
                             <!--<field name="business_director_option"/>-->
                             <!--<field name="policy_making_committee"/>-->
@@ -71,7 +71,7 @@
                             <field name="round_financing_id" required="1" options='{"no_open":True}'/>
                             <field name="the_amount_of_financing" required="1"/>
                             <!---->
-                            <field name="project_mumbers" readonly="1"/>
+                            <field name="project_mumbers"/>
                             <!--<field name="partner_opinion"/>-->
                             <!--<field name="business_director_option"/>-->
                             <!--<field name="policy_making_committee"/>-->

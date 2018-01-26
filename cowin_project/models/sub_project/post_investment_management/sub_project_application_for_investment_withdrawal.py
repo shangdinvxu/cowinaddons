@@ -21,7 +21,7 @@ class sub_project_application_for_investment_withdrawal(models.Model):
 
     reporter = fields.Many2one('hr.employee', string=u'报告人')
 
-    report_date = fields.Date(string=u'报告日期')
+    report_date = fields.Date(string=u'报告日期', default=fields.Date.today())
 
     # ----------  投资基金
     round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation',

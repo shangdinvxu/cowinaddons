@@ -141,6 +141,12 @@ class Cowin_project_subproject(models.Model):
     conference_date = fields.Date(string=u'会议日期')
 
 
+    # 项目退出会议表决票 表中的会议结果需要依赖的字段
+    voting_result = fields.Char(string=u'投票结果')
+
+
+
+
     def unlink_blank_sub_project(self):
         self.meta_sub_project_id.search(
             [('project_id', '=', self.meta_sub_project_id.project_id), ('is_on_use', '=', False)]).unlink()

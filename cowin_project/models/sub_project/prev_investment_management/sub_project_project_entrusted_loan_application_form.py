@@ -22,7 +22,7 @@ class Cowin_project_subproject_project_entrusted_loan_application_form(models.Mo
     # invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
     invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
 
-    date_of_application = fields.Date(string=u'申请日期')
+    date_of_application = fields.Date(string=u'申请日期', default=fields.Date.today())
 
     # ----------  投资基金
 

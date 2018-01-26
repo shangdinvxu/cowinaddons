@@ -163,7 +163,7 @@ class sub_project_project_exit_resolution(models.Model):
                 res[nk] = v
 
 
-        target_fileds = ['name', 'project_number', 'invest_manager_id']
+        target_fileds = ['name', 'project_number', 'invest_manager_id', 'conference_date', 'voting_result']
 
         tem = sub_project_entity.read(target_fileds)[0]
         for k, v in tem.iteritems():

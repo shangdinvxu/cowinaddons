@@ -23,7 +23,7 @@ class Cowin_project_subproject_payment_application_form(models.Model):
     invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
 
 
-    date_of_application = fields.Date(string=u'申请日期')
+    date_of_application = fields.Date(string=u'申请日期', default=fields.Date.today())
 
 
     # list_of_examination_and_approval_documents = fields.Many2many('ir.attachment', string=u'审批文件')
