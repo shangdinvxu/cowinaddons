@@ -114,6 +114,7 @@ class Cowin_project_subproject_opinion_book(models.Model):
     def write(self, vals):
 
         # 重新发起的操作!!!需要鉴别数据
+        target_sub_tache_entity = self.sub_tache_id
         if self._context.get('is_launch_again'):
             target_sub_tache_entity.write({
                 'is_launch_again': False,
@@ -123,7 +124,7 @@ class Cowin_project_subproject_opinion_book(models.Model):
 
             target_sub_tache_entity.update_sub_approval_settings()
 
-        # 由于在前端界面中,重写过前端想后端写入的方法,有空值的影响,所以,我们需要把该问题给过滤掉!!!
+        # 由于在前端界面中,重写过前端想后端写入的方法,有空值的影响, 尤其是button的操作的影响,所以,我们需要把该问题给过滤掉!!!
         if not vals:
             return True
 
@@ -132,10 +133,6 @@ class Cowin_project_subproject_opinion_book(models.Model):
         # button在当前的业务逻辑中当前属于审核状态, 分发之后的业务,业务逻辑不同
         if self.button_status == 1 or self.button_status == 2:
             return res
-        target_sub_tache_entity = self.sub_tache_id
-
-
-
 
         return res
 
