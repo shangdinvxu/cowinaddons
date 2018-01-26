@@ -116,6 +116,8 @@ class Cowin_project_subproject(models.Model):
                                                                 'res_id', string=u'审批记录',
                                                                 domain=lambda self: [('res_model', '=', self._name)])
 
+    # 立项意见书 表中投决会日期的依赖的字段
+    date_of_project = fields.Date(string=u'立项日期')
 
     # 投资决策委员会会议纪要 依赖的字段
     voting_committee = fields.Date(string=u'投决会日期')

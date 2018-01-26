@@ -180,6 +180,12 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         # 项目退出决议 表名
         investment_post_decision_res = 'cowin_project.sub_project_exit_resolution'
 
+
+
+        # 项目立项 表名
+
+        cowin_project_cowin_subproject_name = 'cowin_project.cowin_subproject'
+
         if self.sub_project_tache_id.tache_id.model_id.model_name == investment_decision_res:
             # 投资决策委员会决议 需要开启 投资决策申请中子环节中的新增按钮
 
@@ -237,6 +243,15 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             # 项目退出会议纪要 有关联的表
         elif self.sub_project_tache_id.tache_id.model_id.model_name == investment_post_sum:
             self.sub_project_tache_id.write_special_vote(False)
+
+        elif self.sub_project_tache_id.tache_id.model_id.model_name == cowin_project_cowin_subproject_name:
+            # 项目立项 所需要的数据
+            res_id = self.sub_project_tache_id.res_id
+            self.env[cowin_project_cowin_subproject_name].browse(res_id).write({
+                'date_of_project': fields.Date.today(),
+            })
+
+            self.sub_project_tache_id.trigger_next_subtache()
         else:
             # 这种条件下,需要先依赖主环节中的 once_or_more
             if self.sub_project_tache_id.tache_id.once_or_more:

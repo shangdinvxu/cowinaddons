@@ -168,7 +168,7 @@ class Cowin_project_subproject_opinion_book(models.Model):
                 res[nk] = v
 
 
-        target_fileds = ['name', 'project_number', 'invest_manager_id']
+        target_fileds = ['name', 'project_number', 'invest_manager_id', 'date_of_project']
 
         tem = sub_project_entity.read(target_fileds)[0]
         for k, v in tem.iteritems():
