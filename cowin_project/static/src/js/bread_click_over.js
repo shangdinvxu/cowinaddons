@@ -47,6 +47,28 @@ odoo.define('linkloving_core.TreeView', function (require) {
                 }
                 self.clear_action_stack(self.action_stack.splice(self.action_stack.indexOf(action) + 0));
                 this.do_action(my_action);
+            }else if(action.action_descr.tag=='approval_kanban_to_detail'){
+                var my_action = {
+                    type: 'ir.actions.client',
+                    name: '项目审批',
+                    tag: 'approval_kanban_to_detail',
+                    // id: this.record.id.raw_value,
+                    active_id:action.action_descr.active_id,
+                    params:{'active_id':action.action_descr.active_id,action:'approval_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
+                }
+                self.clear_action_stack(self.action_stack.splice(self.action_stack.indexOf(action) + 0));
+                this.do_action(my_action);
+            }else if(action.action_descr.tag=='approval_after_invest_kanban_to_detail'){
+                var my_action = {
+                    type: 'ir.actions.client',
+                    name: '投后审批',
+                    tag: 'approval_after_invest_kanban_to_detail',
+                    // id: this.record.id.raw_value,
+                    active_id:action.action_descr.active_id,
+                    params:{'active_id':action.action_descr.active_id,action:'approval_after_invest_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
+                }
+                self.clear_action_stack(self.action_stack.splice(self.action_stack.indexOf(action) + 0));
+                this.do_action(my_action);
             }
             else {
                 return def.then(function() {
