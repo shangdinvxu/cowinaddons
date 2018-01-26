@@ -131,6 +131,16 @@ class Cowin_common_approval_flow_dialog(models.Model):
         sub_approval_flow_settings_entity.save_approval_flow_info(approval_flow_settings_record_info)
 
 
+        print(u'action 的数据的操作指南的应用的范围的理解!!!')
+
+        # 向前端界面返回ir.actions.client的使用情况!!!
+
+        # return {
+        #     "type": "ir.actions.client",
+        #     "tag": "process_kanban_to_detail"
+        # }
+
+
 
 
 
