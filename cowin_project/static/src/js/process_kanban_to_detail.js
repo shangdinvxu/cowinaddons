@@ -419,7 +419,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                             result.target = 'current';
                             console.log(result);
                             result.flags = {'initial_mode': 'edit'};
-                            result.context = {'is_launch_again':self.tache_arr[tache_index].is_launch_again}
+                            result.context.is_launch_again = self.tache_arr[tache_index].is_launch_again;
                             self.do_action(result);
                         })
             // }
