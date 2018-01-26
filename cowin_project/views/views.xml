@@ -29,11 +29,8 @@
                 <kanban class="project_process_kanban_wrap" delete="true" default_order="create_date desc">
                     <field name="name"/>
                     <field name="image" widget="image"/>
-                    <!--<field name="register_person"/>-->
-                    <!--<field name="project_number"/>-->
                     <field name="write_date"/>
-                    <!--<field name="invest_manager"/>-->
-                    <!--<field name="project_partner"/>-->
+                    <field name="is_admin_user"/>
                     <field name="registered_address"/>
                     <field name="peration_place"/>
                     <field name="contract_person"/>
@@ -93,11 +90,7 @@
                 <kanban class="project_process_kanban_wrap" create="false">
                     <field name="name"/>
                     <field name="image" widget="image"/>
-                    <!--<field name="register_person"/>-->
-                    <!--<field name="project_number"/>-->
                     <field name="write_date"/>
-                    <!--<field name="invest_manager"/>-->
-                    <!--<field name="project_partner"/>-->
                     <field name="registered_address"/>
                     <field name="peration_place"/>
                     <field name="contract_person"/>

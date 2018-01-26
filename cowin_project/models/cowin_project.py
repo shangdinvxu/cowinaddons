@@ -115,6 +115,21 @@ class Cowin_project(models.Model):
 
 
 
+    is_admin_user = fields.Boolean(string=u'是否是超级用户', compute='_compute_is_admin_user')
+
+
+    @api.multi
+    def _compute_is_admin_user(self):
+        print(u'改方法是否在访问的时候被执行!!! jjjjjjjjjjjjjjjjjjjjjjjj')
+
+        return self.env.user.id == SUPERUSER_ID
+
+
+
+
+
+
+
 
 
 
