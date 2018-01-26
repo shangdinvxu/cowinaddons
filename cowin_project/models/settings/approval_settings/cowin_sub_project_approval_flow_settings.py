@@ -136,14 +136,20 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
     # 处理关于审核中暂缓状态的操作!!!
     def process_put_off_staus(self):
-        model_name = self.sub_project_tache_id.tache_id.model_id.model_name
-        res_id = self.sub_project_tache_id.res_id
+        # model_name = self.sub_project_tache_id.tache_id.model_id.model_name
+        # res_id = self.sub_project_tache_id.res_id
+        #
+        # target_entity = self.env[model_name].browse(res_id)
+        #
+        # target_entity.write({
+        #     'inner_or_outer_status': 3,
+        # })
 
-        target_entity = self.env[model_name].browse(res_id)
-
-        target_entity.write({
-            'inner_or_outer_status': 1,
+        self.sub_project_tache_id.write({
+            'is_launch_again': True,
         })
+
+        self.status = self.prev_status = 1
 
 
 
@@ -349,7 +355,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             # 增加校验操作
             # self.process_approval_flow_count()
             self.process_button_status_on_res_model(4)
-            self.process_put_off_staus()
+
 
             self.process_buniess_logic()
 
@@ -364,21 +370,16 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             self.send_next_approval_flow_settings_node_msg(status=2)
             self.prev_status = self.status = newstatus
         elif (prevstatus, newstatus) == (2, 3):
-            self.sub_project_tache_id.write({
-                'is_launch_again': True,
-            })
             tmp2[u'operation'] = u'暂缓'
-
-            # self.approval_flow_count += 1
-            # 增加校验操作
-            # self.process_approval_flow_count()
-
+            self.process_put_off_staus()
 
             self.message_post(json.dumps(tmp2))
             self.send_next_approval_flow_settings_node_msg(status=3)
-            self.prev_status = self.status = 1
+            # self.prev_status = self.status = 1
 
             self.process_button_status_on_res_model(3)
+
+
         elif (prevstatus, newstatus) == (2, 4):
             tmp2[u'operation'] = u'同意'
             self.prev_status = self.status = newstatus

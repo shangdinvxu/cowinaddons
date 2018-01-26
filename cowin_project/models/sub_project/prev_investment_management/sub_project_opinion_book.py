@@ -113,7 +113,7 @@ class Cowin_project_subproject_opinion_book(models.Model):
     @api.multi
     def write(self, vals):
 
-        # 由于在前端界面中,冲写过前端想后端写入的方法,有空值的影响,所以,我们需要把该问题给过滤掉!!!
+        # 由于在前端界面中,重写过前端想后端写入的方法,有空值的影响,所以,我们需要把该问题给过滤掉!!!
         if not vals:
             return True
 
@@ -124,14 +124,15 @@ class Cowin_project_subproject_opinion_book(models.Model):
             return res
         target_sub_tache_entity = self.sub_tache_id
 
-        if self.inner_or_outer_status == 1:
+        if self._context.get('is_launch_again'):
             target_sub_tache_entity.write({
                 'is_launch_again': False,
             })
 
             # 判断 发起过程 是否需要触发下一个子环节
-            # target_sub_tache_entity.check_or_not_next_sub_tache()
+
             target_sub_tache_entity.update_sub_approval_settings()
+
         return res
 
 

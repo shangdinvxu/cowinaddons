@@ -28,6 +28,7 @@ class Cowin_sub_project_base_status(models.Model):
             self.button_status = 1
 
         is_put_off = self.sub_tache_id.sub_pro_approval_flow_settings_ids.current_approval_flow_node_id.put_off
+            # is_put_off = self.sub_tache_id.sub_pro_approval_flow_settings_ids.approval_flow_settings_id.put_off
 
         res = self.env['cowin_common.approval_flow_dialog'].create({
             'res_model': self._name,
