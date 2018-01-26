@@ -383,21 +383,34 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             self.tache_arr[tache_index].tache_id = tache_id;
 
             //重新发起走另外的方法
-            if(launch_again == 'true'){
-                var action = {
-                    name: "详细",
-                    type: 'ir.actions.act_window',
-                    res_model: self.tache_arr[tache_index].model_name,
-                    view_type: 'form',
-                    res_id: self.tache_arr[tache_index].res_id,
-                    view_mode: 'form',
-                    views: [[false, 'form']],
-                    target: "current",
-                    flags: {'initial_mode': 'edit'},
-                    context:{'is_launch_again':self.tache_arr[tache_index].is_launch_again}
-                };
-                this.do_action(action);
-            }else {
+            // if(launch_again == 'true'){
+            //     var action = {
+            //         name: "详细",
+            //         type: 'ir.actions.act_window',
+            //         res_model: self.tache_arr[tache_index].model_name,
+            //         view_type: 'form',
+            //         res_id: self.tache_arr[tache_index].res_id,
+            //         view_mode: 'form',
+            //         views: [[false, 'form']],
+            //         target: "current",
+            //         flags: {'initial_mode': 'edit'},
+            //         context:{'is_launch_again':self.tache_arr[tache_index].is_launch_again}
+            //     };
+            //     this.do_action(action);
+            // }else {
+
+                // var action = {
+                //     name: "详细",
+                //     type: 'ir.actions.act_window',
+                //     res_model: self.tache_arr[tache_index].model_name,
+                //     view_type: 'form',
+                //     res_id: self.tache_arr[tache_index].res_id,
+                //     view_mode: 'form',
+                //     views: [[false, 'form']],
+                //     target: "current",
+                //     flags: {'initial_mode': 'edit'},
+                //     context:{'is_launch_again':self.tache_arr[tache_index].is_launch_again}
+                // };
                 // 测试
                 new Model("cowin_project.cowin_project")
                         .call("rpc_load_and_return_action", [parseInt(self.id)],{'tache_info':self.tache_arr[tache_index]})
@@ -405,9 +418,11 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                             result.context['tache'] = self.tache_arr[tache_index];
                             result.target = 'current';
                             console.log(result);
+                            result.flags = {'initial_mode': 'edit'};
+                            result.context = {'is_launch_again':self.tache_arr[tache_index].is_launch_again}
                             self.do_action(result);
                         })
-            }
+            // }
 
         },
 

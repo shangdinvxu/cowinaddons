@@ -131,8 +131,8 @@ class Cowin_project_subproject_opinion_book(models.Model):
         res = super(Cowin_project_subproject_opinion_book, self).write(vals)
 
         # button在当前的业务逻辑中当前属于审核状态, 分发之后的业务,业务逻辑不同
-        if self.button_status == 1 or self.button_status == 2:
-            return res
+        # if self.button_status == 1 or self.button_status == 2:
+        #     return res
 
         return res
 

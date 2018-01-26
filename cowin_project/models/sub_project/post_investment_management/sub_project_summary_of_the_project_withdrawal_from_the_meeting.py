@@ -115,27 +115,23 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
 
     @api.multi
     def write(self, vals):
-
-        # 由于在前端界面中,冲写过前端想后端写入的方法,有空值的影响,所以,我们需要把该问题给过滤掉!!!
-        if not vals:
-            return True
-
-        res = super(sub_project_summary_of_the_project_withdrawal_from_the_meeting, self).write(vals)
-
-        # button在当前的业务逻辑中当前属于审核状态, 分发之后的业务,业务逻辑不同
-        if self.button_status == 1 or self.button_status == 2:
-            return res
-
+        # 重新发起的操作!!!需要鉴别数据
         target_sub_tache_entity = self.sub_tache_id
-
-        if self.inner_or_outer_status == 1:
+        if self._context.get('is_launch_again'):
             target_sub_tache_entity.write({
                 'is_launch_again': False,
             })
 
             # 判断 发起过程 是否需要触发下一个子环节
-            # target_sub_tache_entity.check_or_not_next_sub_tache()
+
             target_sub_tache_entity.update_sub_approval_settings()
+
+        # 由于在前端界面中,重写过前端想后端写入的方法,有空值的影响, 尤其是button的操作的影响,所以,我们需要把该问题给过滤掉!!!
+        if not vals:
+            return True
+
+
+        res = super(sub_project_summary_of_the_project_withdrawal_from_the_meeting, self).write(vals)
 
         return res
 
