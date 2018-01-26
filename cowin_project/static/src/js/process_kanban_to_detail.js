@@ -394,6 +394,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     views: [[false, 'form']],
                     target: "current",
                     flags: {'initial_mode': 'edit'},
+                    context:{'is_launch_again':self.tache_arr[tache_index].is_launch_again}
                 };
                 this.do_action(action);
             }else {
