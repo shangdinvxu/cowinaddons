@@ -134,7 +134,20 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         channel_entity.message_post(info, message_type='comment', subtype='mail.mt_comment')
 
 
+    # 处理关于审核中暂缓状态的操作!!!
+    def process_put_off_staus(self):
+        model_name = self.sub_project_tache_id.tache_id.model_id.model_name
+        res_id = self.sub_project_tache_id.res_id
 
+        target_entity = self.env[model_name].browse(res_id)
+
+        target_entity.write({
+            'inner_or_outer_status': 1,
+        })
+
+
+
+    # 暂缓状态中,关于button按钮状态变化的系列
     def process_button_status_on_res_model(self, status):
 
         model_name = self.sub_project_tache_id.tache_id.model_id.model_name
@@ -336,6 +349,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             # 增加校验操作
             # self.process_approval_flow_count()
             self.process_button_status_on_res_model(4)
+            self.process_put_off_staus()
 
             self.process_buniess_logic()
 
