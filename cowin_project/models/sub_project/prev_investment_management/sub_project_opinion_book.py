@@ -124,6 +124,8 @@ class Cowin_project_subproject_opinion_book(models.Model):
             return res
         target_sub_tache_entity = self.sub_tache_id
 
+
+        # 重新发起的操作!!!需要鉴别数据
         if self._context.get('is_launch_again'):
             target_sub_tache_entity.write({
                 'is_launch_again': False,
