@@ -152,8 +152,14 @@ class Cowin_hr(models.Model):
             if not self._check_emial_format(login_name_strip):
                 raise UserError(u'邮箱格式错误!!!')
 
-            if login_name_strip and not self.login_name == login_name_strip:
-                raise UserError(u'目前不支持用户角色改写!!!')
+            self.user_id.write({
+                'name': login_name_strip,
+                'login': login_name_strip,
+                'email': login_name_strip,
+            })
+
+            # if login_name_strip and not self.login_name == login_name_strip:
+            #     raise UserError(u'目前不支持用户角色改写!!!')
 
         res = super(Cowin_hr, self).write(vals)
         return res
