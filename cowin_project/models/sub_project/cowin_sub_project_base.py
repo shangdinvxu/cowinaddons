@@ -50,15 +50,9 @@ class Cowin_sub_project_base_status(models.Model):
         }
 
 
-
-
-
-
-
     # 查看审核结果
     def approval_view_action_action(self):
         name = self._name + '_form_no_button'
-        # view_id = self.env.ref('cowin_project.sub_project_establishment_form_no_button').id
         view_id = self.env.ref(name).id
 
         return {

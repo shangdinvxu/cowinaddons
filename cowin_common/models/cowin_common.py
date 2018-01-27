@@ -77,9 +77,10 @@ class Cowin_common_approval_flow_dialog(models.Model):
 
     is_put_off = fields.Boolean(string=u'是否开启暂缓的标志!!!', default=True)
 
-
     def process_approval_flow_info(self):
-        sub_tache_entity = self.env[self.res_model].browse(self.res_id).sub_tache_id
+
+        target_entity = self.env[self.res_model].browse(self.res_id)
+        sub_tache_entity = target_entity.sub_tache_id
 
         # 子流程配置实体
         sub_approval_flow_settings_entity = sub_tache_entity.sub_pro_approval_flow_settings_ids
@@ -131,18 +132,13 @@ class Cowin_common_approval_flow_dialog(models.Model):
         sub_approval_flow_settings_entity.save_approval_flow_info(approval_flow_settings_record_info)
 
 
-        print(u'action 的数据的操作指南的应用的范围的理解!!!')
 
-        # 向前端界面返回ir.actions.client的使用情况!!!
-
-        # return {
-        #     "type": "ir.actions.client",
-        #     "tag": "process_kanban_to_detail"
-        # }
-
-
-
-
+        return {
+            'type': 'ir.actions.act_url',
+            'name': "Redirect to the Website Projcet Rating Page",
+            'target': 'self',
+            'url': '/web#active_id=%s&action=approval_kanban_to_detail&model=cowin_project.cowin_project' % (sub_tache_entity.meta_sub_project_id.project_id.id)
+        }
 
 
 
@@ -152,7 +148,7 @@ class Cowin_common_approval_flow_dialog(models.Model):
             raise UserError(u'已审批完成')
         self.status = True
         self.approval_result = u'True'
-        self.process_approval_flow_info()
+        return self.process_approval_flow_info()
 
 
 
@@ -163,7 +159,7 @@ class Cowin_common_approval_flow_dialog(models.Model):
             raise UserError(u'已审批完成')
         self.status = True
         self.approval_result = u'False'
-        self.process_approval_flow_info()
+        return self.process_approval_flow_info()
 
     @api.multi
     def button_putoff(self):
@@ -171,7 +167,7 @@ class Cowin_common_approval_flow_dialog(models.Model):
             raise UserError(u'已审批完成')
         self.status = True
         self.approval_result = u'None'
-        self.process_approval_flow_info()
+        return self.process_approval_flow_info()
 
 
 

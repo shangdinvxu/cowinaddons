@@ -110,20 +110,22 @@ class Cowin_project(models.Model):
 
     # 添加数据版本号,用来校验数据是否在存储的过程之中已经发生了变化
     data_version = fields.Integer(string=u'数据版本号', default=0)
-
-
-
-
     is_admin_user = fields.Boolean(string=u'是否是超级用户', default=False)
-    is_admin_user_computed = fields.Boolean( compute='_compute_is_admin_user')
+    is_admin_user_computed = fields.Boolean(compute='_compute_is_admin_user')
 
-
-    @api.multi
     def _compute_is_admin_user(self):
-        print(u'改方法是否在访问的时候被执行!!! jjjjjjjjjjjjjjjjjjjjjjjj')
 
         if self.env.user.id == SUPERUSER_ID:
-            self.is_admin_user = True
+            self.write({
+                'is_admin_user': True,
+            })
+        else:
+
+            self.write({
+                'is_admin_user': False,
+            })
+
+
 
 
 
@@ -1816,20 +1818,14 @@ class Cowin_project(models.Model):
 
 
 
-    # def rpc_unlink_blank_sub_project(self):
-    #     self.meta_sub_project_ids.search(
-    #         [('project_id', '=', self.id), ('is_on_use', '=', False)]).unlink()
+    # 由于 在compute字段中,数据是先返回之前的数据,然后、去保存修改之后的数据,所以需要做两次数据的访问,这是业务的需求!!!
+    @api.model
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
 
+        super(Cowin_project, self).search_read(domain, fields, offset, limit, order)
+        res = super(Cowin_project, self).search_read(domain, fields, offset, limit, order)
 
-
-
-
-
-
-
-
-
-
+        return res
 
         # return super(Cowin_project, self).unlink()
 

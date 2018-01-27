@@ -30,6 +30,7 @@
                     <field name="name"/>
                     <field name="image" widget="image"/>
                     <field name="write_date"/>
+                    <field name="is_admin_user_computed"/>
                     <field name="is_admin_user"/>
                     <field name="registered_address"/>
                     <field name="peration_place"/>
@@ -41,7 +42,7 @@
                     <t t-name="kanban-box">
                         <div class="project_process_kanban oe_kanban_global_click cowin_project_kanban">
 
-                            <t t-if="record.is_admin_user">
+                            <t t-if="record.is_admin_user.raw_value">
                                 <div class="o_dropdown_kanban dropdown" groups="base.group_user">
                                     <a class="dropdown-toggle btn" data-toggle="dropdown" href="#" >
                                         <span class="fa fa-bars fa-lg"/>
@@ -51,7 +52,9 @@
                                     </ul>
                                 </div>
                                 <t t-js="ctx">
-                                    console.log(ctx)
+                                    console.log(ctx);
+                                    console.log('record is \n');
+                                    console.log(ctx.record.is_admin_user);
                                 </t>
                             </t>
 
