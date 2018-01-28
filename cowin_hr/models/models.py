@@ -116,6 +116,9 @@ class Cowin_hr(models.Model):
             'name': login_name,
             'login': login_name,
             'email': login_name,
+            'lang': 'zh_CN',
+            'tz': 'Asia/Shanghai',
+
             # 'groups_id': [(4, self.env.ref('cowin_project.cowin_project_group_rule').id)],
             'groups_id': [(4, self.env.ref('cowin_project.cowin_project_menu_group').id),
                           (4, self.env.ref('hr.group_hr_user').id),

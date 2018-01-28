@@ -6,6 +6,7 @@ from openerp.addons.website.controllers.main import Website
 
 
 class Home(Home):
+
     @http.route('/web/login', type='http', auth="none")
     def web_login(self, redirect=None, **kw):
         request.params['disable_footer'] = True
