@@ -8,12 +8,12 @@
       <!--<field name="inherit_id" ref="hr.view_employee_form"/>-->
       <field name="arch" type="xml">
           <tree>
-             <field name="barcode" string="员工编码"/>
+             <!--<field name="barcode" string="员工编码"/>-->
              <field name="name"/>
-             <field name="job_id"/>
-             <field name="active"/>
-             <field name="address_home_id"/>
-             <field name="create_date"/>
+             <!--<field name="job_id"/>-->
+             <!--<field name="active"/>-->
+             <!--<field name="address_home_id"/>-->
+             <!--<field name="create_date"/>-->
           </tree>
       </field>
     </record>
