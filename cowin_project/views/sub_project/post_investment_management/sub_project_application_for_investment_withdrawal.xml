@@ -67,13 +67,13 @@
                             <group>
                                  <field name="name" readonly="1"/>
                                 <field name="reporter" readonly="1"/>
-                                <field name="report_date" readonly="1"/>
-                                <field name="trustee_id" readonly="1"/>
-                                <field name="supervisor_id" readonly="1"/>
-                                <field name="withdrawal_amount"/>
-                                <field name="withdrawal_ratio"/>
-                                <field name="decision_file_list" widget="many2many_binary"/>
-                                <field name="exit_plan"/>
+                                <field name="report_date" required="1"/>
+                                <field name="trustee_id" required="1"/>
+                                <field name="supervisor_id" required="1"/>
+                                <field name="withdrawal_amount" required="1"/>
+                                <field name="withdrawal_ratio" required="1"/>
+                                <field name="decision_file_list" widget="many2many_binary" required="1"/>
+                                <field name="exit_plan" required="1"/>
                             </group>
                             <group>
                                 <!--投资基金-->
@@ -84,8 +84,8 @@
                                 <field name="the_amount_of_financing" readonly="1"/>
                                 <!---->
                             </group>
-
-                            <group>
+                        </group>
+                        <group>
                                 <field name="sub_pro_approval_flow_settings_record_ids" >
                                     <tree >
                                         <field name="approval_person_id" readonly="1" options='{"no_open":True}'/>
@@ -97,7 +97,6 @@
                                 </field>
 
                             </group>
-                        </group>
                     </sheet>
                 </form>
             </field>
