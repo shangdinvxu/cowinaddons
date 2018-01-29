@@ -131,7 +131,7 @@ class Prev_poll_status(models.Model):
 
     def get_rating_from_the_amount_of_investment(self):
 
-        if self.the_amount_of_investment <= 1000 * 10000 and self.the_amount_of_investment > 0:
+        if self.the_amount_of_investment <= 1000 * 10000 and self.the_amount_of_investment >= 0:
             return (3.0, 5.0)
 
         elif self.the_amount_of_investment > 1000 * 10000 and self.the_amount_of_investment <= 3000 * 10000:
