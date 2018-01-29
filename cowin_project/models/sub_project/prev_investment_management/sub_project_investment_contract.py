@@ -122,5 +122,5 @@ class Cowin_project_subproject_investment_contract(models.Model):
             'view_id': False,
             'res_id': self.id,
             'target': 'new',
-            'context': res,
+            'context': {},
         }
