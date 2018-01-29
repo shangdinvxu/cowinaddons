@@ -62,9 +62,9 @@
                                 <field name="project_number" readonly="1"/>
                                 <field name="reporter" readonly="1"/>
                                 <field name="filing_date" readonly="1"/>
-                                <field name="key_words"/>
-                                <field name="contents_of_matter"/>
-                                <field name="enormous_impact"/>
+                                <field name="key_words" required="1"/>
+                                <field name="contents_of_matter" required="1"/>
+                                <field name="enormous_impact" required="1"/>
                             </group>
                             <group>
                                 <!--投资基金-->
@@ -75,8 +75,8 @@
                                 <field name="the_amount_of_financing" readonly="1"/>
                                 <!---->
                             </group>
-
-                            <group>
+                        </group>
+                        <group>
 
                                 <field name="sub_pro_approval_flow_settings_record_ids" readonly="1">
                                  <tree >
@@ -87,7 +87,6 @@
                                 </tree>
                             </field>
                             </group>
-                        </group>
                     </sheet>
                 </form>
             </field>

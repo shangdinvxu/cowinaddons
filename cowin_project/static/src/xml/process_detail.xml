@@ -337,6 +337,8 @@
                 <div>联系电话：<t t-esc="item.contract_phone"/></div>
                 <div>邮箱：<t t-esc="item.contract_email"/></div>
                 <div>相关项目：<t t-esc="item.related_sub_project"/></div>
+                <div>公司名称：<t t-esc="item.company_name"/></div>
+                <div>职位：<t t-esc="item.customer_position"/> </div>
             </div>
         </t>
     </t>

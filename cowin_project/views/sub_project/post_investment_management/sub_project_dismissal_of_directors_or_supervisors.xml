@@ -59,42 +59,45 @@
             <field name="model">cowin_project.sub_dismissal_of_directs_or_supers</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year"  create="false" edit="false" delete="false">
-                    <group>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="invest_manager_ids" readonly="1"/>
+                                <field name="trustee_id" required="1"/>
+                                <field name="appointment_time_begin_trustee" required="1"/>
+                                <field name="appointment_time_end_trustee" required="1"/>
+                                <field name="Tenure_trustee" required="1"/>
+                                <field name="supervisor_id" required="1"/>
+                                <field name="appointment_time_begin_supervisor" required="1"/>
+                                <field name="appointment_time_end_supervisor" required="1"/>
+                                <field name="Tenure_supervisor" required="1"/>
+                                <field name="managing_partner_ids" required="1"/>
+                            </group>
+                            <group>
+                                <!--投资基金-->
+                                <field name="foundation_id" readonly="1"/>
+                                <field name="the_amount_of_investment" readonly="1"/>
+                                <field name="ownership_interest" readonly="1"/>
+                                <field name="round_financing_id" readonly="1"/>
+                                <field name="the_amount_of_financing" readonly="1"/>
+                                <!---->
+                            </group>
 
-                        <field name="name"/>
-                        <field name="invest_manager_ids"/>
-                        <field name="trustee_id"/>
-                        <field name="appointment_time_begin_trustee"/>
-                        <field name="appointment_time_end_trustee"/>
-                        <field name="Tenure_trustee"/>
-                        <field name="supervisor_id"/>
-                        <field name="appointment_time_begin_supervisor"/>
-                        <field name="appointment_time_end_supervisor"/>
-                        <field name="Tenure_supervisor"/>
-                        <field name="managing_partner_ids"/>
+                        </group>
+                        <group>
+                                <field name="sub_pro_approval_flow_settings_record_ids" >
+                                    <tree >
+                                      <field name="approval_person_id" readonly="1" options='{"no_open":True}'/>
+                                      <field name="approval_role_id" readonly="1"/>
+                                      <field name="approval_result" readonly="1"/>
+                                      <field name="approval_opinion" readonly="1"/>
+                                    </tree>
 
-                        <!--投资基金-->
-                        <field name="foundation_id"/>
-                        <field name="the_amount_of_investment"/>
-                        <field name="ownership_interest"/>
-                        <field name="round_financing_id"/>
-                        <field name="the_amount_of_financing"/>
-                        <!---->
+                                </field>
 
-                         <group>
-                            <field name="sub_pro_approval_flow_settings_record_ids" >
-                                <tree >
-                                  <field name="approval_person_id" readonly="1" options='{"no_open":True}'/>
-                                  <field name="approval_role_id" readonly="1"/>
-                                  <field name="approval_result" readonly="1"/>
-                                  <field name="approval_opinion" readonly="1"/>
-                                </tree>
-
-                            </field>
-
-                         </group>
-
-                    </group>
+                             </group>
+                    </sheet>
 
                 </form>
             </field>

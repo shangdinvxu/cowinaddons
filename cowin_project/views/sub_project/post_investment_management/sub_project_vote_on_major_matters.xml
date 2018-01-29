@@ -63,8 +63,8 @@
                                 <field name="name" readonly="1"/>
                                 <field name="project_number" readonly="1"/>
                                 <field name="reporter" readonly="1"/>
-                                <field name="date_convening" readonly="1"/>
-                                <field name="instructions_voting"/>
+                                <field name="date_convening" required="1"/>
+                                <field name="instructions_voting" required="1"/>
                             </group>
                             <group>
                                 <!--投资基金-->
@@ -76,8 +76,8 @@
                                 <!---->
                             </group>
 
-
-                            <group>
+                        </group>
+                        <group>
 
                                 <field name="sub_pro_approval_flow_settings_record_ids" readonly="1">
                                        <tree >
@@ -88,8 +88,6 @@
                                        </tree>
                                    </field>
                             </group>
-
-                        </group>
                     </sheet>
                 </form>
             </field>
