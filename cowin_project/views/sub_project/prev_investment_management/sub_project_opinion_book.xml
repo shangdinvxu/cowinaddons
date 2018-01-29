@@ -15,6 +15,7 @@
                             <field name="name" readonly="1"/>
                             <field name="project_number" readonly="1"/>
                             <field name="invest_manager_ids" readonly="1"/>
+                            <!--<field name="sub_approval_flow_settings_approval_flow_count" attrs="{'invisible': 1}"/>-->
                             <!--<field name="invest_manager_id" readonly="1"/>-->
                             <field name="date_of_project" readonly="1"/>
                             <!--投资基金-->
@@ -43,7 +44,8 @@
                                    </field>
                             </group>
                         <group>
-                            <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>
+                            <!--<button type="object" name="button_approval_flow_info" context="{'sub_approval_flow_settings_approval_flow_count': sub_approval_flow_settings_approval_flow_count}" args="[55 ,66, 77]"  string="审核"/>-->
+                            <button type="object" name="button_approval_flow_info" args="[55 ,66, 77]"  string="审核"/>
                         </group>
                     </sheet>
                 </form>

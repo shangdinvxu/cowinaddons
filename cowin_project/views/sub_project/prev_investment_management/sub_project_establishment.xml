@@ -15,6 +15,7 @@
                                 <field name="project_number" required="1"/>
                                 <field name="project_source" required="1" options='{"no_open":True}'/>
                                 <field name="project_source_note" required="1"/>
+                                <!--<field name="sub_approval_flow_settings_approval_flow_count" attrs="{'invisible': 1}"/>-->
                                 <!--<field name="invest_manager_id" required="1"/>-->
                                 <field name="invest_manager_ids" readonly="1"/>
                                 <field name="project_company_profile" required="1"/>
@@ -58,7 +59,8 @@
                             </group>
 
                             <group>
-                                <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>
+                                <!--<button type="object" name="button_approval_flow_info" context="{'sub_approval_flow_settings_approval_flow_count': sub_approval_flow_settings_approval_flow_count}" args="[55, 66, 77]"  string="审核"/>-->
+                                <button type="object" name="button_approval_flow_info"  args="[55, 66, 77]"  string="审核"/>
                             </group>
 
 

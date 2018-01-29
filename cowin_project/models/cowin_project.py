@@ -1714,19 +1714,19 @@ class Cowin_project(models.Model):
         return self.env[model_name].browse(res_id).approval_launch_action()
 
 
-    def rpc_test_cowin_project(self):
-
-        return {
-            'name': self.name,
-            'type': 'ir.actions.act_window',
-            'res_model': self._name,
-            'view_type': 'form',
-            'view_mode': 'form',
-            'view_id': False,
-            'res_id': self.id,
-            'target': 'new',
-            'context': {'default_name': 'kkkkk'},
-        }
+    # def rpc_test_cowin_project(self):
+    #
+    #     return {
+    #         'name': self.name,
+    #         'type': 'ir.actions.act_window',
+    #         'res_model': self._name,
+    #         'view_type': 'form',
+    #         'view_mode': 'form',
+    #         'view_id': False,
+    #         'res_id': self.id,
+    #         'target': 'new',
+    #         'context': {'default_name': 'kkkkk'},
+    #     }
 
 
 
@@ -1751,6 +1751,8 @@ class Cowin_project(models.Model):
                 sub_project_entity.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id.name)
 
             contract_info = {
+                'company_name': self.name,
+                'customer_position': '',
                 'contract_person': sub_project_entity.contract_person,
                 'contract_phone': sub_project_entity.contract_phone,
                 'contract_email': sub_project_entity.contract_email,
@@ -1764,6 +1766,8 @@ class Cowin_project(models.Model):
 
             for call_up_reco in call_up_records:
                 contract_infos.append({
+                    'company_name': call_up_reco.customer_company_name,
+                    'customer_position': call_up_reco.customer_position,
                     'contract_person': call_up_reco.customer_name,
                     'contract_phone': call_up_reco.customer_contract,
                     'contract_email': call_up_reco.customer_email,

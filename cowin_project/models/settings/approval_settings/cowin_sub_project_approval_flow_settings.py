@@ -313,6 +313,18 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         self.approval_flow_count += 1
 
 
+        model_name = self.sub_project_tache_id.tache_id.model_id.model_name
+        res_id = self.sub_project_tache_id.res_id
+
+        target_entity = self.env[model_name].browse(res_id)
+
+        target_entity.write({
+            'sub_approval_flow_settings_approval_flow_count': self.approval_flow_count,
+        })
+
+
+
+
 
     # 改变状态的操作!!!
     def process_action(self):
