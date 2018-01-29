@@ -26,8 +26,8 @@ class Cowin_sub_project_base_status(models.Model):
     def button_approval_flow_info(self, a, b, c):
         print(u'sub_approval_flow_settings_approval_flow_count is %s' % self._context.get('sub_approval_flow_settings_approval_flow_count'))
 
-        if self._context.get('sub_approval_flow_settings_approval_flow_count') != self.sub_approval_flow_settings_approval_flow_count:
-            raise UserError(u'这次审核操作已经结束,请刷新界面')
+        # if self._context.get('sub_approval_flow_settings_approval_flow_count') != self.sub_approval_flow_settings_approval_flow_count:
+        #     raise UserError(u'这次审核操作已经结束,请刷新界面')
 
 
         if self.button_status == 2:
