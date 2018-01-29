@@ -83,31 +83,31 @@ class Cowin_project_subproject_investment_contract(models.Model):
 
 
     def load_and_return_action(self, **kwargs):
-        tache_info = kwargs['tache_info']
-        # tache_info = self._context['tache']
-        meta_sub_project_id = int(tache_info['meta_sub_project_id'])
-
-        meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
-
-        sub_project_entity = meta_sub_project_entity.sub_project_ids[0]  # 获取子工程实体
-
+        # tache_info = kwargs['tache_info']
+        # # tache_info = self._context['tache']
+        # meta_sub_project_id = int(tache_info['meta_sub_project_id'])
+        #
+        # meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
+        #
+        # sub_project_entity = meta_sub_project_entity.sub_project_ids[0]  # 获取子工程实体
+        #
         # tem = meta_sub_project_entity.project_id.copy_data()[0]
-
-        common_fileds = [
-        ]
-
-        common_fileds.extend([])
-
-        tem = sub_project_entity.read(common_fileds)[0]
-
-        res = {}
-
-        for k, v in tem.iteritems():
-            nk = 'default_' + k
-            if type(v) is tuple:
-                res[nk] = v[0]
-            else:
-                res[nk] = v
+        #
+        # common_fileds = [
+        # ]
+        #
+        # common_fileds.extend([])
+        #
+        # tem = sub_project_entity.read(common_fileds)[0]
+        #
+        # res = {}
+        #
+        # for k, v in tem.iteritems():
+        #     nk = 'default_' + k
+        #     if type(v) is tuple:
+        #         res[nk] = v[0]
+        #     else:
+        #         res[nk] = v
 
         t_name = self._name + '_form_no_button'
         view_id = self.env.ref(t_name).id
