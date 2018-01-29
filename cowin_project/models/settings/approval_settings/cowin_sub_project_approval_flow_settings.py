@@ -312,15 +312,15 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         self.approval_flow_count += 1
 
-
-        model_name = self.sub_project_tache_id.tache_id.model_id.model_name
-        res_id = self.sub_project_tache_id.res_id
-
-        target_entity = self.env[model_name].browse(res_id)
-
-        target_entity.write({
-            'sub_approval_flow_settings_approval_flow_count': self.approval_flow_count,
-        })
+        #
+        # model_name = self.sub_project_tache_id.tache_id.model_id.model_name
+        # res_id = self.sub_project_tache_id.res_id
+        #
+        # target_entity = self.env[model_name].browse(res_id)
+        #
+        # target_entity.write({
+        #     'sub_approval_flow_settings_approval_flow_count': self.approval_flow_count,
+        # })
 
 
 
@@ -365,7 +365,6 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             self.prev_status = self.status = newstatus
             self.send_next_approval_flow_settings_node_msg(status=4)
             # 增加校验操作
-            # self.process_approval_flow_count()
             self.process_button_status_on_res_model(4)
 
 
@@ -376,7 +375,6 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             print(u'(2, 2) acion...')
             tmp2[u'operation'] = u'同意'
 
-            # self.process_approval_flow_count()
 
             self.message_post(json.dumps(tmp2))
             self.send_next_approval_flow_settings_node_msg(status=2)
@@ -398,7 +396,6 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             self.message_post(json.dumps(tmp2))
             self.send_next_approval_flow_settings_node_msg(status=4)
             # 增加校验操作
-            # self.process_approval_flow_count()
             self.process_button_status_on_res_model(4)
             self.process_buniess_logic()
 

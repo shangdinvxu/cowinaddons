@@ -120,6 +120,8 @@ class Cowin_project_subproject_opinion_book(models.Model):
                 'is_launch_again': False,
             })
 
+
+
             # 判断 发起过程 是否需要触发下一个子环节
 
             target_sub_tache_entity.update_sub_approval_settings()
