@@ -27,6 +27,27 @@
     </record>
 
 
+        <!-- 报错的使用的通用对话框 -->
+    <record id="cowin_common_common_dialog_dialog_form" model="ir.ui.view">
+        <field name="name">cowin_common.common_dialog form</field>
+        <field name="model">cowin_common.common_dialog</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false" delete="false">
+                <group>
+                    <field name="warning" readonly="1"/>
+                </group>
+
+
+                <footer>
+                    <button type="object" name="rpc_button_ok" string="确认"/>
+                </footer>
+            </form>
+        </field>
+
+    </record>
+
+
+
 
 
   </data>

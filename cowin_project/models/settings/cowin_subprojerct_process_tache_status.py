@@ -142,7 +142,7 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
                 rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & investment_decision_committee_entity.sub_meta_pro_approval_settings_role_rel
 
                 if not rel_entities:
-                    raise UserError(u'投资决策委员为空,不能进行投票!!!')
+                    return self.env['cowin_common.common_dialog'].show_dialog()
 
 
 
