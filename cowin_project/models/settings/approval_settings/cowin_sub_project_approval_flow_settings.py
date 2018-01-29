@@ -559,13 +559,11 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         else:
             approval_flow_settings_record_info['approval_result'] = u'发起'
 
-            # 理论上只会有一个员工  审批人
-            approval_flow_settings_record_info['approval_person_id'] = self.env.user.employee_ids[0].id
+        # 理论上只会有一个员工  审批人
+        approval_flow_settings_record_info['approval_person_id'] = self.env.user.employee_ids[0].id
 
         # 审批角色
-            approval_flow_settings_record_info['approval_role_id'] = self.current_approval_flow_node_id.operation_role_id.id
-
-        #
+        approval_flow_settings_record_info['approval_role_id'] = self.current_approval_flow_node_id.operation_role_id.id
 
         self.write({
             'sub_pro_approval_flow_settings_record_ids': [(0, 0, approval_flow_settings_record_info)]
