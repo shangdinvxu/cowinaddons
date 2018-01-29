@@ -108,8 +108,8 @@ class Cowin_common_approval_flow_dialog(models.Model):
         # if not is_target_user:
         #     raise UserError(u'该用户不具有审批资格,或许已经进入到下一个审批')
 
-        if self._context.get('sub_approval_flow_settings_approval_flow_count') != target_entity.sub_approval_flow_settings_approval_flow_count:
-            raise UserError(u'该用户不具有审批资格,或许已经进入到下一个审批')
+        # if self._context.get('sub_approval_flow_settings_approval_flow_count') != target_entity.sub_approval_flow_settings_approval_flow_count:
+        #     raise UserError(u'该用户不具有审批资格,或许已经进入到下一个审批')
 
 
         approval_flow_settings_record_info = {
