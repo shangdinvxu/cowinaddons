@@ -1797,23 +1797,20 @@ class Cowin_project(models.Model):
         # 数据版本增加
         self.data_version += 1
 
-
-        # res = {'rpc_new_found_round_entity': True}
-
         res = {
             'rec_new_found_round_info': {
                 'project_id': self.id,
             }
         }
 
-
-        # self.whether_new_meta_sub_project_or_not = False
+        t_name = name + '_form_no_button'
+        view_id = self.env.ref(t_name).id
 
         return {
             'name': u'项目立项',
             'type': 'ir.actions.act_window',
             'res_model': name,
-            'views': [[False, 'form']],
+            'views': [[view_id, 'form']],
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': False,
