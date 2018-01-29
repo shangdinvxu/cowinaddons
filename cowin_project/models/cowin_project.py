@@ -1263,12 +1263,16 @@ class Cowin_project(models.Model):
             })
 
     # 复制已有的配置,所有的主工程下面的子工程
-
-    def rpc_copy_all_permission_configuration(self):
+    def rpc_copy_all_permission_configuration(self, **kwargs):
+        current_meta_sub_pro_id = kwargs['current_meta_sub_pro_id']
         project_entities = self.search([])
         res = []
         for project_entity in project_entities:
             for meta_pro_entity in project_entity.meta_sub_project_ids:
+                # 把当前的元子工程过滤出去
+                if meta_pro_entity.id == current_meta_sub_pro_id:
+                    continue
+
                 round_financing_and_Foundation_entity = meta_pro_entity.round_financing_and_Foundation_ids[0]
                 round_financing_name = round_financing_and_Foundation_entity.round_financing_id.name if round_financing_and_Foundation_entity.round_financing_id \
                     else u'暂无轮次'
@@ -1312,18 +1316,6 @@ class Cowin_project(models.Model):
             })
 
             res.append(t)
-
-            # t = c_rel_entity.copy_data({
-            #     'meta_sub_project_id': current_meta_sub_pro_id,
-            #     'approval_role_id': c_rel_entity.approval_role_id.id,
-            #     'employee_id': c_rel_entity.employee_id.id,
-            # })
-            #
-            #
-            # res.append(t[0])
-
-
-
 
 
         result = self.rpc_get_permission_configuration()
@@ -1601,8 +1593,6 @@ class Cowin_project(models.Model):
 
         tem = self.env[self._name]
 
-
-
         res = reduce(lambda x, y: x | y, to_filter_projects, tem)
 
         return res
@@ -1611,13 +1601,6 @@ class Cowin_project(models.Model):
 
 
     def rpc_get_operation_record(self):
-
-        # selection_info = [
-        #     {'operation': u'提交'},]
-        #     {'operation': u'提交'},]
-        #     {'operation': u'提交'},]
-        #     {'operation': u'提交'},]
-        #     {'operation': u'提交'},]
         ids = []
         model_name = u''
         for meta_sub_project_entity in self.meta_sub_project_ids:
@@ -1852,15 +1835,3 @@ class Cowin_project(models.Model):
         # return super(Cowin_project, self).unlink()
 
 
-# class Project_roles(models.Model):
-#     _name = 'cowin_project.project_approval_role'
-#     '''
-#         工程审批角色的: 目的在于方便的操作虚拟角色操作
-#     '''
-#
-#
-#     project_id = fields.Many2one('cowin_project.cowin_project', string=u'主工程', ondelete="cascade")
-#
-#     status = fields.Selection([(1, u'投前发起角色'), (2, u'投前审批角色'), (3, u'投后发起角色'), (4, u'投后审批角色')], string=u'投前投后阶段')
-#
-#     approval_role_ids = fields.Many2many('cowin_common.approval_role', 'cowin_approval_role_cowin_project_rel', string=u'虚拟角色')

@@ -154,7 +154,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             self.current_meta_sub_pro_id = parseInt($(target).parents('.header_line').attr('meta_sub_pro_id'));
             var self = this;
             return new Model("cowin_project.cowin_project")
-                    .call("rpc_copy_all_permission_configuration",[[self.id]])
+                    .call("rpc_copy_all_permission_configuration",[[self.id]], {'current_meta_sub_pro_id': self.current_meta_sub_pro_id})
                     .then(function (result) {
                         console.log(result);
                         $('.process_data_main_wrap').append(QWeb.render('copy_settings_tmpl', {result: result,current:self.current_meta_sub_pro_id}));
