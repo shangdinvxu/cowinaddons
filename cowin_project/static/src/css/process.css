@@ -541,3 +541,7 @@
     color: white;
     border-radius: 10px;
 }
+
+.o_form_view > header > button:not(.btn-primary):not(.btn-link):not(.oe_highlight){
+    color: #fff;
+}

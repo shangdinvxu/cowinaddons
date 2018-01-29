@@ -317,9 +317,9 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="name"/>
+                                <field name="name" required="1"/>
                                 <field name="image" widget="image" class="oe_avatar" options="{'size': [90, 90]}" />
-                                <field name="project_source"/>
+                                <field name="project_source" required="1"/>
                                 <field name="project_source_note"/>
                                 <field name="round_financing"/>
                                 <field name="round_money"/>
