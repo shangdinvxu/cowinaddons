@@ -82,13 +82,13 @@
                                 <field name="reporter"  readonly="1"/>
                                 <field name="filing_date"  readonly="1"/>
                                 <field name="registered_address"/>
-                                <field name="chairman"/>
-                                <field name="general_manager"/>
-                                <field name="product"/>
+                                <field name="chairman" required="1"/>
+                                <field name="general_manager" required="1"/>
+                                <field name="product" required="1"/>
                                 <field name="industry" readonly="1"/>
                                 <field name="founding_time" readonly="1"/>
                                 <field name="investment_phase" readonly="1"/>
-                                <field name="current_phase"/>
+                                <field name="current_phase" required="1"/>
                             </group>
                             <group>
                                 <!--投资基金-->
