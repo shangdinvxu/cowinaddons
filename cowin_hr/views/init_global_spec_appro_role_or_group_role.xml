@@ -1,0 +1,55 @@
+<odoo>
+    <data>
+
+        <!--风控总监 1人-->
+        <record id="init_global_spec_appro_role_1" model="cowin_project.global_spec_appro_role">
+            <field name="name">风控总监</field>
+            <field name="count">1</field>
+            <field name="approval_role_id" eval="ref('cowin_common.init_approval_flow_operation_role_6')"/>
+        </record>
+
+
+         <!--管理合伙人 1人-->
+        <record id="init_global_spec_appro_role_1" model="cowin_project.global_spec_appro_role">
+            <field name="name">管理合伙人</field>
+            <field name="count">2</field>
+            <field name="approval_role_id" eval="ref('cowin_common.init_approval_flow_operation_role_7')"/>
+        </record>
+
+
+        <!--财务专员 1人-->
+        <record id="init_global_spec_appro_role_1" model="cowin_project.global_spec_appro_role">
+            <field name="name">财务专员</field>
+            <field name="count">1</field>
+            <field name="approval_role_id" eval="ref('cowin_common.init_approval_flow_operation_role_9')"/>
+        </record>
+
+
+        <!--投资决策委员会主席 1人-->
+        <record id="init_global_spec_appro_role_1" model="cowin_project.global_spec_appro_role">
+            <field name="name">投资决策委员会主席</field>
+            <field name="count">1</field>
+            <field name="approval_role_id" eval="ref('cowin_common.init_approval_flow_operation_role_11')"/>
+        </record>
+
+
+
+
+        <!--   初始化所属的角色组 跟项目配置团队业务逻辑相匹配   -->
+
+
+        <!--投资决策委员会-TMT  组-->
+        <record id="init_global_spec_appro_group_role_1" model="cowin_project.global_spec_appro_group_role">
+            <field name="name">投资决策委员会-TMT</field>
+        </record>
+
+
+        <!--投资决策委员会-BIO  组-->
+        <record id="init_global_spec_appro_group_role_2" model="cowin_project.global_spec_appro_group_role">
+            <field name="name">投资决策委员会-BIO</field>
+        </record>
+
+
+
+    </data>
+</odoo>

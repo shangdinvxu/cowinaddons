@@ -19,10 +19,6 @@ class Cowin_sub_project_base_status(models.Model):
     sub_approval_flow_settings_approval_flow_count = fields.Integer(string=u'数据版本号')
 
 
-
-
-
-
     def button_approval_flow_info(self, a, b, c):
         print(u'sub_approval_flow_settings_approval_flow_count is %s' % self._context.get('sub_approval_flow_settings_approval_flow_count'))
 

@@ -28,6 +28,7 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'views/init_global_spec_appro_role_or_group_role.xml',
         'views/initadmin_relation_employee.xml',
         'views/views.xml',
         'views/templates.xml',

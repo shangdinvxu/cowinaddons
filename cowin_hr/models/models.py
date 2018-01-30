@@ -47,6 +47,41 @@ class Cowin_meta_sub_and_approval_role_and_hr_employee(models.Model):
 
 
 
+class Cowin_Global_Special_Approval_Role(models.Model):
+    _name = 'cowin_project.global_spec_appro_role'
+
+    name = fields.Char(string=u'虚拟角色的名字')
+    approval_role_id = fields.Many2one('cowin_common.approval_role', string=u'审批角色', ondelete="cascade")
+
+    count = fields.Integer(string=u'虚拟角色对应的人数')
+
+    count_computed = fields.Char(compute='_compute_count_by_employee_ids')
+
+
+    @api.depends('employee_ids')
+    def _compute_count_by_employee_ids(self):
+        for rec in self:
+            if len(rec.employee_ids) > rec.count:
+                raise UserError(u'%s虚拟角色已达到上限!!!' % rec.name)
+
+
+
+
+    employee_ids = fields.Many2many('hr.employee', string=u'相对应的员工')
+
+
+class  Cowin_Global_Special_Approval_Group_role(models.Model):
+    _name = 'cowin_project.global_spec_appro_group_role'
+
+    name = fields.Char(string=u'角色组名')
+    employee_ids = fields.Many2many('hr.employee', string=u'所属的员工')
+
+
+
+
+
+
+
 class Cowin_hr(models.Model):
     _inherit = 'hr.employee'
 
@@ -71,6 +106,23 @@ class Cowin_hr(models.Model):
     sub_meta_pro_approval_settings_role_rel = fields.One2many('cowin_project.meta_sub_appro_role_hr_em', 'employee_id', string=u'审批角色')
 
 
+
+
+
+    # 新添加的项目的权限的配置
+    is_ventilation_control_supervisor = fields.Boolean(string=u'风控总监', default=False)
+
+    is_managing_partner = fields.Boolean(string=u'管理合伙人', default=False)
+
+    is_treasury_attache = fields.Boolean(string=u'财务专员', default=False)
+
+    is_chairman_of_the_investment_decision_committee = fields.Boolean(string=u'投资决策委员会主席', default=False)
+
+
+    investment_decision_committee_id = fields.Many2one('cowin_project.global_spec_appro_group_role', string=u'所属投资决策委员会')
+
+
+
     _sql_constraints = [
         ('login_name_key', 'UNIQUE (login_name)', 'You can not have two users with the same login !')
     ]
@@ -81,6 +133,62 @@ class Cowin_hr(models.Model):
         # 验证邮箱格式
         str = r'^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+){0,4}@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+){0,4}$'
         return re.match(str, email)
+
+
+    @api.multi
+    def write_special_user_role_or_group(self):
+        self.ensure_one()
+
+        spec_appro_role_entities = self.env['cowin_project.global_spec_appro_role'].search([])
+
+        if self.is_ventilation_control_supervisor:
+            spec_appro_role_entities.filtered(lambda self: self.name == u'风控总监').write({
+                'employee_ids': [(4, self.id)]
+            })
+        else:
+            spec_appro_role_entities.filtered(lambda self: self.name == u'风控总监').write({
+                'employee_ids': [(3, self.id)]
+            })
+
+        if self.is_managing_partner:
+            spec_appro_role_entities.filtered(lambda self: self.name == u'管理合伙人').write({
+                'employee_ids': [(4, self.id)]
+            })
+        else:
+            spec_appro_role_entities.filtered(lambda self: self.name == u'管理合伙人').write({
+                'employee_ids': [(3, self.id)]
+            })
+
+
+        if self.is_treasury_attache:
+            spec_appro_role_entities.filtered(lambda self: self.name == u'财务专员').write({
+                'employee_ids': [(4, self.id)]
+            })
+        else:
+            spec_appro_role_entities.filtered(lambda self: self.name == u'财务专员').write({
+                'employee_ids': [(3, self.id)]
+            })
+
+        if self.is_chairman_of_the_investment_decision_committee:
+            spec_appro_role_entities.filtered(lambda self: self.name == u'投资决策委员会主席').write({
+                'employee_ids': [(4, self.id)]
+            })
+        else:
+            spec_appro_role_entities.filtered(lambda self: self.name == u'投资决策委员会主席').write({
+                'employee_ids': [(3, self.id)]
+            })
+
+
+
+
+
+        if self.investment_decision_committee_id:
+            self.investment_decision_committee_id.write({
+                'employee_ids': [(4, self.id)],
+            })
+
+
+
 
 
 
@@ -139,16 +247,18 @@ class Cowin_hr(models.Model):
         # 创建当前的hr.employee实例
         vals['user_id'] = user_entity.id
         res_hr = super(Cowin_hr, self).create(vals)
-
+        res_hr.write_special_user_role_or_group()
         return res_hr
 
 
 
     @api.multi
     def write(self, vals):
-        print(type(self))
-        print u'开始进入到write方法中开始去执行的操作!!!'
-        print self.login_name
+        if not vals.get('investment_decision_committee_id'):
+            self.investment_decision_committee_id.write({
+                'employee_ids': [(3, self.id)],
+            })
+
         if vals.get('login_name'):
             login_name_strip = vals.get('login_name').strip()
 
@@ -165,6 +275,8 @@ class Cowin_hr(models.Model):
             #     raise UserError(u'目前不支持用户角色改写!!!')
 
         res = super(Cowin_hr, self).write(vals)
+
+
         return res
 
 

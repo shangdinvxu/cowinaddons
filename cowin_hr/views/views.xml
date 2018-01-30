@@ -53,6 +53,16 @@
                   </group>
 
 
+                  <group>
+                      <field name="is_ventilation_control_supervisor"/>
+                      <field name="is_managing_partner"/>
+                      <field name="is_treasury_attache"/>
+                      <field name="is_chairman_of_the_investment_decision_committee"/>
+
+                      <field name="investment_decision_committee_id"/>
+                  </group>
+
+
               </sheet>
 
           </form>

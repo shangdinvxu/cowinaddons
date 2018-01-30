@@ -1154,10 +1154,20 @@ class Cowin_project(models.Model):
             for approval_role_entity in approval_role_ids:
                 tmp2 = {}
                 tmp2['approval_role_id'] = approval_role_entity.id
-                tmp2['approval_role_name'] = approval_role_entity.name
+                tmp2['approval_role_name'] = name = approval_role_entity.name
 
-                tmp2['employee_infos'] = [{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
-                    for approval_employee_rel in meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel if approval_employee_rel.approval_role_id == approval_role_entity]
+                if name in (u'风控总监', u'管理合伙人', u'财务专员', u'投资决策委员会主席'):
+                    t = self.env['cowin_project.global_spec_appro_role'].search([('name', '=', name)])
+                    tmp2['employee_infos'] = [{'employee_id': e.id, 'name': e.name_related} for e in t.employee_ids]
+
+                elif name in (u'投资决策委员'):
+                    # res = self.env['cowin_project.global_spec_appro_group_role'].search([('name', '=', name)])
+                    # tmp2['employee_infos'] = [{'employee_id': e.id, 'name': e.name_related} for e in res.employee_ids]
+                    tmp2['employee_infos'] = []
+
+                else:
+                    tmp2['employee_infos'] = [{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
+                        for approval_employee_rel in meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel if approval_employee_rel.approval_role_id == approval_role_entity]
 
 
                 if not tmp2['employee_infos']:

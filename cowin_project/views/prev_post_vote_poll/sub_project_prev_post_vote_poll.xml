@@ -51,7 +51,7 @@
 
                             <!--投后表决使用到的字段-->
                             <field name="conference_date" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}" readonly="1"/>
-                            <field name="voting_result" required="1" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}"/>
+                            <field name="voting_result" attrs="{'invisible': [('prev_or_post_vote', '=', True)], 'required': [('prev_or_post_vote','=', False)]}"/>
 
 
 
