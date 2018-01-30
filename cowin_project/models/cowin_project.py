@@ -1169,12 +1169,12 @@ class Cowin_project(models.Model):
                                               approval_employee_rel.approval_role_id == approval_role_entity]
 
                     #
-                    if not tmp2['employee_infos']:
+                    
 
-                        if name == u'管理合伙人':
-                            tmp2['need_call_rpc'] = 'rpc_get_managing_partner_infos'
-                        else:
-                            tmp2['need_call_rpc'] = 'rpc_get_investment_decision_committee_infos'
+                    if name == u'管理合伙人':
+                        tmp2['need_call_rpc'] = 'rpc_get_managing_partner_infos'
+                    else:
+                        tmp2['need_call_rpc'] = 'rpc_get_investment_decision_committee_infos'
 
                 else:
                     tmp2['employee_infos'] = [{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
