@@ -1155,15 +1155,17 @@ class Cowin_project(models.Model):
                 tmp2 = {}
                 tmp2['approval_role_id'] = approval_role_entity.id
                 tmp2['approval_role_name'] = name = approval_role_entity.name
+                tmp2['need_call_rpc'] = False
 
                 if name in (u'风控总监', u'财务专员', u'投资决策委员会主席'):
                     t = self.env['cowin_project.global_spec_appro_role'].search([('name', '=', name)])
                     tmp2['employee_infos'] = [{'employee_id': e.id, 'name': e.name_related} for e in t.employee_ids]
 
-                elif name in (u'投资决策委员'):
+                elif name in (u'投资决策委员', u'管理合伙人'):
                     # res = self.env['cowin_project.global_spec_appro_group_role'].search([('name', '=', name)])
                     # tmp2['employee_infos'] = [{'employee_id': e.id, 'name': e.name_related} for e in res.employee_ids]
                     tmp2['employee_infos'] = []
+                    tmp2['need_call_rpc'] = True
 
                 else:
                     tmp2['employee_infos'] = [{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
