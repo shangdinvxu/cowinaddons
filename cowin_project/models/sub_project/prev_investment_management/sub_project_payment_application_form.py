@@ -110,7 +110,7 @@ class Cowin_project_subproject_payment_application_form(models.Model):
 
         project_entity = res.subproject_id.meta_sub_project_id.project_id
 
-        # 类对象中的属性
+        # 标志位,用来判断某个子工程是否进入到投后阶段!!!
         project_entity.write({
             'prev_or_post_investment': False,
         })
