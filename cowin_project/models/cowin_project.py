@@ -1262,16 +1262,12 @@ class Cowin_project(models.Model):
             })
 
     # 复制已有的配置,所有的主工程下面的子工程
-    def rpc_copy_all_permission_configuration(self, **kwargs):
-        current_meta_sub_pro_id = kwargs['current_meta_sub_pro_id']
+
+    def rpc_copy_all_permission_configuration(self):
         project_entities = self.search([])
         res = []
         for project_entity in project_entities:
             for meta_pro_entity in project_entity.meta_sub_project_ids:
-                # 把当前的元子工程过滤出去
-                if meta_pro_entity.id == current_meta_sub_pro_id:
-                    continue
-
                 round_financing_and_Foundation_entity = meta_pro_entity.round_financing_and_Foundation_ids[0]
                 round_financing_name = round_financing_and_Foundation_entity.round_financing_id.name if round_financing_and_Foundation_entity.round_financing_id \
                     else u'暂无轮次'
@@ -1315,6 +1311,18 @@ class Cowin_project(models.Model):
             })
 
             res.append(t)
+
+            # t = c_rel_entity.copy_data({
+            #     'meta_sub_project_id': current_meta_sub_pro_id,
+            #     'approval_role_id': c_rel_entity.approval_role_id.id,
+            #     'employee_id': c_rel_entity.employee_id.id,
+            # })
+            #
+            #
+            # res.append(t[0])
+
+
+
 
 
         result = self.rpc_get_permission_configuration()
@@ -1592,6 +1600,8 @@ class Cowin_project(models.Model):
 
         tem = self.env[self._name]
 
+
+
         res = reduce(lambda x, y: x | y, to_filter_projects, tem)
 
         return res
@@ -1600,6 +1610,13 @@ class Cowin_project(models.Model):
 
 
     def rpc_get_operation_record(self):
+
+        # selection_info = [
+        #     {'operation': u'提交'},]
+        #     {'operation': u'提交'},]
+        #     {'operation': u'提交'},]
+        #     {'operation': u'提交'},]
+        #     {'operation': u'提交'},]
         ids = []
         model_name = u''
         for meta_sub_project_entity in self.meta_sub_project_ids:
@@ -1639,26 +1656,9 @@ class Cowin_project(models.Model):
         #     record.unlink()
 
 
-    def approval_view_action_action(self):
-        return {
-            'name': self._name,
-            'type': 'ir.actions.act_window',
-            'views': [[False, 'form']],
-            'res_model': self._name,
-            'view_type': 'form',
-            'view_mode': 'form',
-            'view_id': False,
-            'res_id': self.id,
-            'target': 'current',
-        }
-
     # 查看按钮的显示类型
     def rpc_approval_view_action_action(self, **kwargs):
-
         tache_info = kwargs['tache_info']
-
-        if tache_info['model_name'] == self._name:
-            return self.approval_view_action_action()
 
         sub_tache_id = tache_info['sub_tache_id']
         meta_sub_project_id = tache_info['meta_sub_project_id']
@@ -1669,7 +1669,6 @@ class Cowin_project(models.Model):
         res_id = sub_tache_entity.res_id
 
         model_name = sub_tache_entity.tache_id.model_id.model_name
-
 
         return self.env[model_name].browse(res_id).approval_view_action_action()
 
@@ -1796,20 +1795,23 @@ class Cowin_project(models.Model):
         # 数据版本增加
         self.data_version += 1
 
+
+        # res = {'rpc_new_found_round_entity': True}
+
         res = {
             'rec_new_found_round_info': {
                 'project_id': self.id,
             }
         }
 
-        t_name = name + '_form_no_button'
-        view_id = self.env.ref(t_name).id
+
+        # self.whether_new_meta_sub_project_or_not = False
 
         return {
             'name': u'项目立项',
             'type': 'ir.actions.act_window',
             'res_model': name,
-            'views': [[view_id, 'form']],
+            'views': [[False, 'form']],
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': False,
@@ -1831,3 +1833,34 @@ class Cowin_project(models.Model):
         # return super(Cowin_project, self).unlink()
 
 
+# class Project_roles(models.Model):
+#     _name = 'cowin_project.project_approval_role'
+#     '''
+#         工程审批角色的: 目的在于方便的操作虚拟角色操作
+#     '''
+#
+#
+#     project_id = fields.Many2one('cowin_project.cowin_project', string=u'主工程', ondelete="cascade")
+#
+#     status = fields.Selection([(1, u'投前发起角色'), (2, u'投前审批角色'), (3, u'投后发起角色'), (4, u'投后审批角色')], string=u'投前投后阶段')
+#
+#     approval_role_ids = fields.Many2many('cowin_common.approval_role', 'cowin_approval_role_cowin_project_rel', string=u'虚拟角色')
+
+    # 获得详情的信息!!!
+    def rpc_get_detail_info(self):
+        #is_final_meeting_resolution
+        detail_infos = []
+        project_details = self.env['cowin.project.detail'].sudo().search([('project_id', '=', self.id)])
+
+        for project_detail in project_details:
+            project_detail = {
+                'round_financing_id': project_detail.round_financing_id.name,
+                'the_amount_of_financing': project_detail.the_amount_of_financing,
+                'ownership_interest': project_detail.ownership_interest,
+                'the_amount_of_investment': project_detail.the_amount_of_investment,
+                'foundation': project_detail.foundation,
+            }
+
+            detail_infos.append(project_detail)
+
+        return {'detail_infos': detail_infos}

@@ -283,8 +283,16 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             var sub_id = $(target).attr('data-sub-id');
             var self =this;
             self.tache_arr = [];
+
+            // console.log($(target).parents('.post_investment'));
+            if($(target).parents('.post_investment').length==0){
+                var method = 'rpc_get_info';
+            }else {
+                var method = 'rpc_get_post_info';
+            }
+
             return new Model("cowin_project.cowin_project")
-                    .call("rpc_get_info", [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
+                    .call(method, [parseInt(self.id)],{meta_project_id:parseInt(sub_id)})
                     .then(function (result) {
                         result.no_initate = self.no_initate
                         console.log(result);

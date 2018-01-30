@@ -70,6 +70,40 @@
                                 </li>
                             </ul>
                         </div>
+
+
+                        <!--项目查询里的项目若到了投后也要显示-->
+                        <t t-if="result.prev_or_post_investment == false">
+                            <t t-if="result.no_initate == true">
+                                <div class="process_data_rounds process_funds_rounds post_investment">
+                                    <div>投后管理</div>
+                                    <t t-set="active_flag" t-value="1"/>
+                                    <t t-foreach="result.investment_funds" t-as="item">
+                                        <div class="process_rounds_wrap">
+                                            <strong><t t-esc="item.round_financing_name ? item.round_financing_name:''"/></strong>
+                                            <ul>
+                                                <t t-foreach="item.foundation_names" t-as="obj">
+                                                    <t t-if="active_flag==1">
+                                                        <li t-att-data-sub-id="obj.meta_sub_project_id" class="fund">
+                                                            <t t-if="obj.foundation_name==''">
+                                                                暂无基金
+                                                            </t>
+                                                            <t t-else="">
+                                                                <t t-esc="obj.foundation_name"/>
+                                                            </t>
+                                                        </li>
+                                                        <t t-set="active_flag" t-value="0"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <li class="fund" t-att-data-sub-id="obj.meta_sub_project_id"><t t-esc="obj.foundation_name"/> </li>
+                                                    </t>
+                                                </t>
+                                            </ul>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                        </t>
                     </div>
 
                     <div class="process_data_main_wrap">
