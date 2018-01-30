@@ -12,7 +12,7 @@ class Cowin_project_detail(models.Model):
 
     the_amount_of_financing = fields.Float(string=u'本次融资额')
 
-    ownership_interest = fields.Integer(string=u'股份比例')
+    ownership_interest = fields.Float(string=u'股份比例')
 
     the_amount_of_investment = fields.Float(string=u'本次投资金额')
 

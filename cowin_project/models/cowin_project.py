@@ -1849,8 +1849,19 @@ class Cowin_project(models.Model):
 
     # 获得详情的信息!!!
     def rpc_get_detail_info(self):
-
         #is_final_meeting_resolution
         detail_infos = []
+        project_details = self.env['cowin.project.detail'].sudo().search([('project_id', '=', self.id)])
+
+        for project_detail in project_details:
+            project_detail = {
+                'round_financing_id': project_detail.round_financing_id.name,
+                'the_amount_of_financing': project_detail.the_amount_of_financing,
+                'ownership_interest': project_detail.ownership_interest,
+                'the_amount_of_investment': project_detail.the_amount_of_investment,
+                'foundation': project_detail.foundation,
+            }
+
+            detail_infos.append(project_detail)
 
         return {'detail_infos': detail_infos}
