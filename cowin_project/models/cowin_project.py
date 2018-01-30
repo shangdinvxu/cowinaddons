@@ -1162,13 +1162,19 @@ class Cowin_project(models.Model):
                     tmp2['employee_infos'] = [{'employee_id': e.id, 'name': e.name_related} for e in t.employee_ids]
 
                 elif name in (u'投资决策委员', u'管理合伙人'):
-                    # res = self.env['cowin_project.global_spec_appro_group_role'].search([('name', '=', name)])
-                    # tmp2['employee_infos'] = [{'employee_id': e.id, 'name': e.name_related} for e in res.employee_ids]
-                    tmp2['employee_infos'] = []
-                    if name == u'管理合伙人':
-                        tmp2['need_call_rpc'] = 'rpc_get_managing_partner_infos'
-                    else:
-                        tmp2['need_call_rpc'] = 'rpc_get_investment_decision_committee_infos'
+                    tmp2['employee_infos'] = [{'employee_id': approval_employee_rel.employee_id.id,
+                                               'name': approval_employee_rel.employee_id.name_related}
+                                              for approval_employee_rel in
+                                              meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel if
+                                              approval_employee_rel.approval_role_id == approval_role_entity]
+
+                    #
+                    if not tmp2['employee_infos']:
+
+                        if name == u'管理合伙人':
+                            tmp2['need_call_rpc'] = 'rpc_get_managing_partner_infos'
+                        else:
+                            tmp2['need_call_rpc'] = 'rpc_get_investment_decision_committee_infos'
 
                 else:
                     tmp2['employee_infos'] = [{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
@@ -1268,11 +1274,14 @@ class Cowin_project(models.Model):
 
     # 复制已有的配置,所有的主工程下面的子工程
 
-    def rpc_copy_all_permission_configuration(self):
+    def rpc_copy_all_permission_configuration(self, **kwargs):
+        current_meta_sub_pro_id = kwargs.get('current_meta_sub_pro_id')
         project_entities = self.search([])
         res = []
         for project_entity in project_entities:
             for meta_pro_entity in project_entity.meta_sub_project_ids:
+                if meta_pro_entity.id == current_meta_sub_pro_id:
+                    continue
                 round_financing_and_Foundation_entity = meta_pro_entity.round_financing_and_Foundation_ids[0]
                 round_financing_name = round_financing_and_Foundation_entity.round_financing_id.name if round_financing_and_Foundation_entity.round_financing_id \
                     else u'暂无轮次'
@@ -1661,9 +1670,25 @@ class Cowin_project(models.Model):
         #     record.unlink()
 
 
+    def approval_view_action_action(self):
+        return {
+            'name': self._name,
+            'type': 'ir.actions.act_window',
+            'views': [[False, 'form']],
+            'res_model': self._name,
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': False,
+            'res_id': self.id,
+            'target': 'current',
+        }
+
     # 查看按钮的显示类型
     def rpc_approval_view_action_action(self, **kwargs):
         tache_info = kwargs['tache_info']
+
+        if tache_info['model_name'] == self._name:
+            return self.approval_view_action_action()
 
         sub_tache_id = tache_info['sub_tache_id']
         meta_sub_project_id = tache_info['meta_sub_project_id']
@@ -1905,11 +1930,14 @@ class Cowin_project(models.Model):
         for e in all_entities:
             t = {}
             t['name'] = e.name
-            t['employee_infos'] = e.read(['name_related'])
+
+            t['employee_ids'] = str(e.employee_ids.mapped('id'))[1:-1]
+
 
             res.append(t)
 
         return res
+
 
 
 

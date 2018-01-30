@@ -44,9 +44,6 @@
                                     <span class="col-xs-4">本次融资额：</span><span class="col-xs-8" t-field="o.the_amount_of_financing"></span>
                                 </div>
                                 <div style="overflow:hidden">
-                                    <span class="col-xs-4">本次估值：</span><span class="col-xs-8" t-field="o.project_valuation"></span>
-                                </div>
-                                <div style="overflow:hidden">
                                     <span class="col-xs-4">董事：</span><span class="col-xs-8" t-field="o.trustee_id"></span>
                                 </div>
                                 <div style="overflow:hidden">
@@ -76,4 +73,5 @@
         name="cowin_project.report_invest_decision_committee_res"
         file="cowin_project.report_invest_decision_committee_res"
     />
+
 </odoo>
