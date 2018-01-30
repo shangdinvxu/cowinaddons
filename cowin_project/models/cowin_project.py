@@ -1846,3 +1846,11 @@ class Cowin_project(models.Model):
 #     status = fields.Selection([(1, u'投前发起角色'), (2, u'投前审批角色'), (3, u'投后发起角色'), (4, u'投后审批角色')], string=u'投前投后阶段')
 #
 #     approval_role_ids = fields.Many2many('cowin_common.approval_role', 'cowin_approval_role_cowin_project_rel', string=u'虚拟角色')
+
+    # 获得详情的信息!!!
+    def rpc_get_detail_info(self):
+
+        #is_final_meeting_resolution
+        detail_infos = []
+
+        return {'detail_infos': detail_infos}
