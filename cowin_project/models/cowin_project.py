@@ -1156,7 +1156,7 @@ class Cowin_project(models.Model):
                 tmp2['approval_role_id'] = approval_role_entity.id
                 tmp2['approval_role_name'] = name = approval_role_entity.name
 
-                if name in (u'风控总监', u'管理合伙人', u'财务专员', u'投资决策委员会主席'):
+                if name in (u'风控总监', u'财务专员', u'投资决策委员会主席'):
                     t = self.env['cowin_project.global_spec_appro_role'].search([('name', '=', name)])
                     tmp2['employee_infos'] = [{'employee_id': e.id, 'name': e.name_related} for e in t.employee_ids]
 
@@ -1864,3 +1864,35 @@ class Cowin_project(models.Model):
             detail_infos.append(project_detail)
 
         return {'detail_infos': detail_infos}
+
+
+
+
+    # 获取管理合伙人
+    def rpc_get_managing_partner_infos(self):
+        besiness_obj = self.env['cowin_project.global_spec_appro_role']
+
+        res = besiness_obj.search([('name', '=', u'管理合伙人')])
+        res.employee_ids.read(['name_related'])
+
+        print(res)
+
+    # 获取投资决策委员
+    def rpc_get_investment_decision_committee_infos(self):
+        all_entities = self.env['cowin_project.global_spec_appro_group_role'].search([])
+
+        res = []
+
+        for e in all_entities:
+            t = {}
+            t['name'] = e.name
+            t['employee_infos'] = e.read(['name_related'])
+
+            res.append(t)
+
+        return res
+
+
+
+
+

@@ -10,7 +10,7 @@
 
 
          <!--管理合伙人 1人-->
-        <record id="init_global_spec_appro_role_1" model="cowin_project.global_spec_appro_role">
+        <record id="init_global_spec_appro_role_2" model="cowin_project.global_spec_appro_role">
             <field name="name">管理合伙人</field>
             <field name="count">2</field>
             <field name="approval_role_id" eval="ref('cowin_common.init_approval_flow_operation_role_7')"/>
@@ -18,7 +18,7 @@
 
 
         <!--财务专员 1人-->
-        <record id="init_global_spec_appro_role_1" model="cowin_project.global_spec_appro_role">
+        <record id="init_global_spec_appro_role_3" model="cowin_project.global_spec_appro_role">
             <field name="name">财务专员</field>
             <field name="count">1</field>
             <field name="approval_role_id" eval="ref('cowin_common.init_approval_flow_operation_role_9')"/>
@@ -26,7 +26,7 @@
 
 
         <!--投资决策委员会主席 1人-->
-        <record id="init_global_spec_appro_role_1" model="cowin_project.global_spec_appro_role">
+        <record id="init_global_spec_appro_role_4" model="cowin_project.global_spec_appro_role">
             <field name="name">投资决策委员会主席</field>
             <field name="count">1</field>
             <field name="approval_role_id" eval="ref('cowin_common.init_approval_flow_operation_role_11')"/>

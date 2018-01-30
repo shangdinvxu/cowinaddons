@@ -255,6 +255,7 @@ class Cowin_hr(models.Model):
     @api.multi
     def write(self, vals):
         if not vals.get('investment_decision_committee_id'):
+
             self.investment_decision_committee_id.write({
                 'employee_ids': [(3, self.id)],
             })
@@ -275,7 +276,7 @@ class Cowin_hr(models.Model):
             #     raise UserError(u'目前不支持用户角色改写!!!')
 
         res = super(Cowin_hr, self).write(vals)
-
+        self.write_special_user_role_or_group()
 
         return res
 
