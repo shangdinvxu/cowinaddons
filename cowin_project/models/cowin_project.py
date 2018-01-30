@@ -1879,10 +1879,10 @@ class Cowin_project(models.Model):
     # 获得详情的信息!!!
     def rpc_get_detail_info(self):
         #is_final_meeting_resolution
-        detail_infos = []
+        detail_infos = {}
         project_details = self.env['cowin.project.detail'].sudo().search([('project_id', '=', self.id)])
-
         for project_detail in project_details:
+
             project_detail = {
                 'round_financing_id': project_detail.round_financing_id.name,
                 'the_amount_of_financing': project_detail.the_amount_of_financing,
@@ -1890,8 +1890,10 @@ class Cowin_project(models.Model):
                 'the_amount_of_investment': project_detail.the_amount_of_investment,
                 'foundation': project_detail.foundation,
             }
+            if project_detail.round_financing_id.name not in detail_infos.keys():
+                detail_infos.update({project_detail.round_financing_id.name, []})
 
-            detail_infos.append(project_detail)
+            detail_infos.get(project_detail.round_financing_id.name).append(project_detail)
 
         return {'detail_infos': detail_infos}
 
@@ -1915,11 +1917,14 @@ class Cowin_project(models.Model):
         for e in all_entities:
             t = {}
             t['name'] = e.name
-            t['employee_ids'] = e.employee_ids.mapped('id')[1:-1]
+
+            t['employee_ids'] = str(e.employee_ids.mapped('id'))[1:-1]
+
 
             res.append(t)
 
         return res
+
 
 
 
