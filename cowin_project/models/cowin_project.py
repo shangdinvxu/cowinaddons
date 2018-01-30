@@ -1670,9 +1670,25 @@ class Cowin_project(models.Model):
         #     record.unlink()
 
 
+    def approval_view_action_action(self):
+        return {
+            'name': self._name,
+            'type': 'ir.actions.act_window',
+            'views': [[False, 'form']],
+            'res_model': self._name,
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': False,
+            'res_id': self.id,
+            'target': 'current',
+        }
+
     # 查看按钮的显示类型
     def rpc_approval_view_action_action(self, **kwargs):
         tache_info = kwargs['tache_info']
+
+        if tache_info['model_name'] == self._name:
+            return self.approval_view_action_action()
 
         sub_tache_id = tache_info['sub_tache_id']
         meta_sub_project_id = tache_info['meta_sub_project_id']

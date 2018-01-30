@@ -40,6 +40,9 @@
                                     <span class="col-xs-4">本次融资额：</span><span class="col-xs-8" t-field="o.the_amount_of_financing"></span>
                                 </div>
                                 <div style="overflow:hidden">
+                                    <span class="col-xs-4">本次估值：</span><span class="col-xs-8" t-field="o.project_valuation"></span>
+                                </div>
+                                <div style="overflow:hidden">
                                     <span class="col-xs-4">审批文件清单：</span>
                                    <span class="col-xs-8">
                                         <t t-foreach="o.list_of_examination_and_approval_documents" t-as="item">
