@@ -545,3 +545,8 @@
 .o_form_view > header > .review{
     color: #ffffff!important;
 }
+
+
+.process_detail_container{
+    padding: 30px 50px;
+}

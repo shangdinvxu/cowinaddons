@@ -38,7 +38,19 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .operate_records':'operate_records_func',
             'click .manage_team_edit':'manage_team_edit_func',
             'click .operate_contacts':'show_operate_contacts',
-            'click .process_add_fun':'process_add_fun'
+            'click .process_add_fun':'process_add_fun',
+            'click .project_details':'project_details_func'
+        },
+        //tab 详情
+        project_details_func:function () {
+            var self = this;
+            new Model("cowin_project.cowin_project")
+                    .call("rpc_get_detail_info", [parseInt(self.id)])
+                    .then(function (result) {
+                        console.log(result);
+                        $("#process_detail").html('');
+                        $("#process_detail").append(QWeb.render('process_deatil_tmpl', {result: result}))
+                    })
         },
          //新增基金
         process_add_fun:function () {
