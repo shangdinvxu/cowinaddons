@@ -227,7 +227,7 @@
             </div>
             <div class="detail_lines_wrap" t-att-meta_sub_pro_id="item.meta_sub_pro_id">
                 <t t-foreach="item.approval_role_infos" t-as="obj">
-                    <div class="process_data_item_line detail_line" t-att-approval_role_id="obj.approval_role_id">
+                    <div class="process_data_item_line detail_line" t-att-approval_role_id="obj.approval_role_id" t-att-need_call_rpc="obj.need_call_rpc">
                         <span class="team_role"><t t-esc="obj.approval_role_name"/></span>
                         <div class="team_role_names_wrap">
 
@@ -281,6 +281,26 @@
             </div>
         </div>
     </t>
+
+
+
+    <!--项目管理团队新增人员的选择-->
+    <t t-name="add_new_objs">
+        <select class="selectpicker bla bla bli" multiple="true" data-live-search="true">
+            <t t-foreach="result" t-as="item">
+                <option class="weiyuan" t-att-data-id="item.employee_ids">
+                    <t t-esc="item.name"/>
+                </option>
+            </t>
+        </select>
+        <script>
+            $('.selectpicker').selectpicker({
+                'selectedText': 'cat'
+            });
+        </script>
+    </t>
+
+
 
     <!--项目管理团队编辑页面-->
     <t t-name="manage_team_edit_page">
@@ -389,6 +409,8 @@
                         <th>投资金额</th>
                         <th>股份比例</th>
                         <th>退出情况</th>
+                        <th style="width:50px"></th>
+                        <th style="width:50px"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -404,6 +426,8 @@
                             <td><t t-esc="item.ownership_interest"/></td>
                             <td><t t-esc="item.project_valuation"/></td>
                             <td></td>
+                            <td class="process_detail_edit">编辑</td>
+                            <td class="process_detail_delete">删除</td>
                         </tr>
                     </t>
                 </tbody>

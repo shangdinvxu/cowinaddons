@@ -1892,11 +1892,13 @@ class Cowin_project(models.Model):
         for e in all_entities:
             t = {}
             t['name'] = e.name
-            t['employee_infos'] = e.read(['name_related'])
+
+            t['employee_ids'] = str(e.employee_ids.mapped('id'))[1:-1]
 
             res.append(t)
 
         return res
+
 
 
 
