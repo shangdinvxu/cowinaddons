@@ -1891,7 +1891,7 @@ class Cowin_project(models.Model):
         project_details = self.env['cowin.project.detail'].sudo().search([('project_id', '=', self.id)])
         for project_detail in project_details:
 
-            project_detail = {
+            project_detail_dict = {
                 'round_financing_id': project_detail.round_financing_id.name,
                 'the_amount_of_financing': project_detail.the_amount_of_financing,
                 'ownership_interest': project_detail.ownership_interest,
@@ -1900,9 +1900,9 @@ class Cowin_project(models.Model):
                 'data_from': project_detail.data_from,
             }
             if project_detail.round_financing_id.name not in detail_infos.keys():
-                detail_infos.update({project_detail.round_financing_id.name, []})
+                detail_infos.update({project_detail.round_financing_id.name: []})
 
-            detail_infos.get(project_detail.round_financing_id.name).append(project_detail)
+            detail_infos.get(project_detail.round_financing_id.name).append(project_detail_dict)
 
         return {'detail_infos': detail_infos}
 
@@ -1925,7 +1925,7 @@ class Cowin_project(models.Model):
         besiness_obj = self.env['cowin_project.global_spec_appro_role']
 
         res = besiness_obj.search([('name', '=', u'管理合伙人')])
-        result.employee_ids.read(['name_related'])
+        result = res.employee_ids.read(['name_related'])
 
         return result
 

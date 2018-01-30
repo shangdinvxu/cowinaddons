@@ -288,9 +288,21 @@
     <t t-name="add_new_objs">
         <select class="selectpicker bla bla bli" multiple="true" data-live-search="true">
             <t t-foreach="result" t-as="item">
-                <option class="weiyuan" t-att-data-id="item.employee_ids">
-                    <t t-esc="item.name"/>
-                </option>
+                <t t-if="type==1">
+                    <option class="weiyuan" t-att-data-id="item.employee_ids">
+                        <t t-esc="item.name"/>
+                    </option>
+                </t>
+                <t t-elif="type==2">
+                    <option class="guanli" t-att-data-id="item.id">
+                        <t t-esc="item.name_related"/>
+                    </option>
+                </t>
+                <t t-elif="type==3">
+                    <option class="sd" t-att-data-id="item.employee_id">
+                        <t t-esc="item.name"/>
+                    </option>
+                </t>
             </t>
         </select>
         <script>

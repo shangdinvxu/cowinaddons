@@ -260,10 +260,20 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                 new Model("cowin_project.cowin_project")
                     .call($(target).parents('.detail_line').attr('need_call_rpc'), [[self.id]])
                     .then(function (result) {
-                        console.log(result)
+                        console.log(result);
                         $('.add_new_wrap .add_new_body').html('');
-                        $('.add_new_wrap .add_new_body').append(QWeb.render('add_new_objs', {result: result}))
+
+                        //type=1表示投资决策委员会
+                        if($(target).parents('.detail_line').attr('need_call_rpc')=='rpc_get_investment_decision_committee_infos'){
+                            $('.add_new_wrap .add_new_body').append(QWeb.render('add_new_objs', {result: result,type: 1}));
+                        }else {
+                            $('.add_new_wrap .add_new_body').append(QWeb.render('add_new_objs', {result: result,type: 2}));
+                        }
                     })
+            }
+            else {
+                $('.add_new_wrap .add_new_body').html('');
+                $('.add_new_wrap .add_new_body').append(QWeb.render('add_new_objs', {result: self.employee_infos,type: 3}));
             }
 
 
