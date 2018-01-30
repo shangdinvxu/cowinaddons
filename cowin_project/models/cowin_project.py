@@ -1168,8 +1168,8 @@ class Cowin_project(models.Model):
                                               meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel if
                                               approval_employee_rel.approval_role_id == approval_role_entity]
 
-
-                    if tmp2['employee_infos'] is []:
+                    #
+                    if not tmp2['employee_infos']:
 
                         if name == u'管理合伙人':
                             tmp2['need_call_rpc'] = 'rpc_get_managing_partner_infos'
@@ -1899,7 +1899,7 @@ class Cowin_project(models.Model):
         for e in all_entities:
             t = {}
             t['name'] = e.name
-            t['employee_infos'] = e.read(['name_related'])
+            t['employee_ids'] = e.employee_ids.mapped('id')[1:-1]
 
             res.append(t)
 
