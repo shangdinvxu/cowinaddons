@@ -16,9 +16,9 @@
 
 
                 <footer>
-                    <button type="object" name="button_agree" string="同意"/>
-                    <button type="object" name="button_reject" string="拒绝"/>
-                    <button type="object" name="button_putoff" string="暂缓" attrs="{'invisible': [('is_put_off', '=', False)]}"/>
+                    <button class="btn btn-success" type="object" name="button_agree" string="同意"/>
+                    <button class="btn btn-danger" type="object" name="button_reject" string="拒绝"/>
+                    <button class="btn btn-warning" type="object" name="button_putoff" string="暂缓" attrs="{'invisible': [('is_put_off', '=', False)]}"/>
                     <!--<button type="object" name="button_putoff" string="暂缓"/>-->
                 </footer>
             </form>
