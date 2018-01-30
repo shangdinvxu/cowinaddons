@@ -1875,7 +1875,7 @@ class Cowin_project(models.Model):
         res = besiness_obj.search([('name', '=', u'管理合伙人')])
         res.employee_ids.read(['name_related'])
 
-        print(res)
+        return res
 
     # 获取投资决策委员
     def rpc_get_investment_decision_committee_infos(self):
