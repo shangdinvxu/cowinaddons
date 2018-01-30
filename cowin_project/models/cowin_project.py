@@ -1268,11 +1268,14 @@ class Cowin_project(models.Model):
 
     # 复制已有的配置,所有的主工程下面的子工程
 
-    def rpc_copy_all_permission_configuration(self):
+    def rpc_copy_all_permission_configuration(self, **kwargs):
+        current_meta_sub_pro_id = kwargs.get('current_meta_sub_pro_id')
         project_entities = self.search([])
         res = []
         for project_entity in project_entities:
             for meta_pro_entity in project_entity.meta_sub_project_ids:
+                if meta_pro_entity.id == current_meta_sub_pro_id:
+                    continue
                 round_financing_and_Foundation_entity = meta_pro_entity.round_financing_and_Foundation_ids[0]
                 round_financing_name = round_financing_and_Foundation_entity.round_financing_id.name if round_financing_and_Foundation_entity.round_financing_id \
                     else u'暂无轮次'
