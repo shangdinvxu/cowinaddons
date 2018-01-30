@@ -1908,7 +1908,7 @@ class Cowin_project(models.Model):
             'the_amount_of_investment': vals.get('the_amount_of_investment'),
             'foundation': vals.get('foundation'),
             'project_valuation': vals.get('project_valuation'),
-            'data_from': 'external',
+            'data_from': vals.get('data_from'),
         })
         return 1
 
