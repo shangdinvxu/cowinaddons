@@ -113,6 +113,7 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
                     'the_amount_of_financing',
                     'the_amount_of_investment',
                     'ownership_interest',
+                    'project_valuation',
                 ]
 
                 # res = meta_sub_project_entity.round_financing_and_Foundation_ids[0].read(common_fileds)[0]

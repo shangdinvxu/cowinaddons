@@ -59,11 +59,12 @@ class Cowin_project_subproject(models.Model):
     foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金名称')
     the_amount_of_financing = fields.Float(string=u'本次融资金额')
     the_amount_of_investment = fields.Float(string=u'本次投资金额')
-    ownership_interest = fields.Integer(string=u'股份比例')
+    ownership_interest = fields.Float(string=u'股份比例')
+    project_valuation = fields.Float(string=u'估值')
 
     compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
 
-    @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment', 'ownership_interest')
+    @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment', 'ownership_interest', 'project_valuation')
     def _compute_value(self):
         for rec in self:
             rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
@@ -71,6 +72,7 @@ class Cowin_project_subproject(models.Model):
             rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
             rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
             rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
+            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
 
 
 

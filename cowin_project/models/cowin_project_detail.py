@@ -17,3 +17,5 @@ class Cowin_project_detail(models.Model):
     the_amount_of_investment = fields.Float(string=u'本次投资金额')
 
     foundation = fields.Char(string=u'基金')
+
+    project_valuation = fields.Float(string=u'估值')

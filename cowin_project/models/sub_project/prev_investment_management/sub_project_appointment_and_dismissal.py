@@ -143,6 +143,7 @@ class Cowin_project_subproject_appointment_and_dismissal(models.Model):
             'the_amount_of_financing',
             'the_amount_of_investment',
             'ownership_interest',
+            'project_valuation',
         ]
 
         tem = meta_sub_project_entity.round_financing_and_Foundation_ids[0].read(common_fileds)[0]

@@ -32,8 +32,11 @@ class sub_project_project_exit_vote(models.Model):
 
     the_amount_of_investment = fields.Float(
         related='subproject_id.the_amount_of_investment', string=u'本次投资金额')
-    ownership_interest = fields.Integer(
+    ownership_interest = fields.Float(
         related='subproject_id.ownership_interest', string=u'股份比例')
+
+    project_valuation = fields.Float(
+        related='subproject_id.project_valuation', string=u'估值')
     # ---------------
 
     conference_date = fields.Date(string=u'会议日期')
@@ -121,6 +124,7 @@ class sub_project_project_exit_vote(models.Model):
             'the_amount_of_financing',
             'the_amount_of_investment',
             'ownership_interest',
+            'project_valuation',
         ]
 
         tem = meta_sub_project_entity.round_financing_and_Foundation_ids[0].read(common_fileds)[0]
