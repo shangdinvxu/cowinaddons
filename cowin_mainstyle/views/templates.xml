@@ -5,6 +5,7 @@
                     <link rel="stylesheet" href="/cowin_mainstyle/static/src/css/main_style.css"/>
                     <script type="text/javascript" src="/cowin_mainstyle/static/src/js/no_edit_form.js"/>
                     <script type="text/javascript" src="/cowin_mainstyle/static/src/js/menu_showhide_mark.js"/>
+                    <script type="text/javascript" src="/cowin_mainstyle/static/src/js/listview_extend.js"/>
                 </xpath>
            </template>
 

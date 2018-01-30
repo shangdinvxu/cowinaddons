@@ -88,7 +88,7 @@
                                 <field name="industry" readonly="1"/>
                                 <field name="founding_time" readonly="1"/>
                                 <field name="investment_phase" readonly="1"/>
-                                <field name="current_phase"/>
+                                <field name="current_phase" required="1"/>
                             </group>
                             <group>
                                 <!--投资基金-->
