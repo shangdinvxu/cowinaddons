@@ -284,7 +284,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             var self =this;
             self.tache_arr = [];
 
-            console.log($(target).parents('.post_investment'));
+            // console.log($(target).parents('.post_investment'));
             if($(target).parents('.post_investment').length==0){
                 var method = 'rpc_get_info';
             }else {
