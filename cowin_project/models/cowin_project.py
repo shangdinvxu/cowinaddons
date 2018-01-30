@@ -1165,7 +1165,10 @@ class Cowin_project(models.Model):
                     # res = self.env['cowin_project.global_spec_appro_group_role'].search([('name', '=', name)])
                     # tmp2['employee_infos'] = [{'employee_id': e.id, 'name': e.name_related} for e in res.employee_ids]
                     tmp2['employee_infos'] = []
-                    tmp2['need_call_rpc'] = True
+                    if name == u'管理合伙人':
+                        tmp2['need_call_rpc'] = 'rpc_get_managing_partner_infos'
+                    else:
+                        tmp2['need_call_rpc'] = 'rpc_get_investment_decision_committee_infos'
 
                 else:
                     tmp2['employee_infos'] = [{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
@@ -1866,7 +1869,6 @@ class Cowin_project(models.Model):
             detail_infos.append(project_detail)
 
         return {'detail_infos': detail_infos}
-
 
 
 
