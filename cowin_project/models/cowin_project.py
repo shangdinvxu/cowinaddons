@@ -1889,6 +1889,7 @@ class Cowin_project(models.Model):
                 'ownership_interest': project_detail.ownership_interest,
                 'the_amount_of_investment': project_detail.the_amount_of_investment,
                 'foundation': project_detail.foundation,
+                'data_from': project_detail.data_from,
             }
             if project_detail.round_financing_id.name not in detail_infos.keys():
                 detail_infos.update({project_detail.round_financing_id.name, []})
@@ -1897,7 +1898,19 @@ class Cowin_project(models.Model):
 
         return {'detail_infos': detail_infos}
 
-
+    # 新增详情的信息!!!
+    def rpc_create_detail_info(self, vals):
+        self.env['cowin.project.detail'].create({
+            'project_id': vals.get('project_id'),
+            'round_financing_id': vals.get('round_financing_id'),
+            'the_amount_of_financing': vals.get('the_amount_of_financing'),
+            'ownership_interest': vals.get('ownership_interest'),
+            'the_amount_of_investment': vals.get('the_amount_of_investment'),
+            'foundation': vals.get('foundation'),
+            'project_valuation': vals.get('project_valuation'),
+            'data_from': vals.get('data_from'),
+        })
+        return 1
 
     # 获取管理合伙人
     def rpc_get_managing_partner_infos(self):

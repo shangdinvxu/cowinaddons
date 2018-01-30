@@ -19,3 +19,8 @@ class Cowin_project_detail(models.Model):
     foundation = fields.Char(string=u'基金')
 
     project_valuation = fields.Float(string=u'估值')
+
+    data_from = fields.Selection([
+        ('local', 'Local'),
+        ('external', 'External')
+    ], string='数据来源', default='local')
