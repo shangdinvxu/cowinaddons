@@ -26,6 +26,7 @@
                             <field name="ownership_interest"/>
                             <field name="round_financing_id"/>
                             <field name="the_amount_of_financing"/>
+                            <field name="project_valuation"/>
                             <!---->
                             <field name="conference_date"/>
                             <!--<field name="investment_decision_committee"/>-->
@@ -79,6 +80,7 @@
                         <field name="ownership_interest"/>
                         <field name="round_financing_id"/>
                         <field name="the_amount_of_financing"/>
+                        <field name="project_valuation"/>
                         <!---->
                         <field name="conference_date"/>
                         <!--<field name="investment_decision_committee"/>-->

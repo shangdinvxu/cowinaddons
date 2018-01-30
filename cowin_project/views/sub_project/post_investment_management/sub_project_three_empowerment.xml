@@ -26,6 +26,7 @@
                                 <field name="ownership_interest" readonly="1"/>
                                 <field name="round_financing_id" readonly="1"/>
                                 <field name="the_amount_of_financing" readonly="1"/>
+                                <field name="project_valuation" readonly="1"/>
                                 <!---->
                             </group>
 
@@ -72,6 +73,7 @@
                                 <field name="ownership_interest" readonly="1"/>
                                 <field name="round_financing_id" readonly="1"/>
                                 <field name="the_amount_of_financing" readonly="1"/>
+                                <field name="project_valuation" readonly="1"/>
                                 <!---->
                             </group>
 

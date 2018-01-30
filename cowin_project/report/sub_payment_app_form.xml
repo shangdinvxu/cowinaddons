@@ -79,6 +79,9 @@
                                     <span class="col-xs-4">本次融资额：</span><span class="col-xs-8" t-field="o.the_amount_of_financing"></span>
                                 </div>
                                 <div style="overflow:hidden">
+                                    <span class="col-xs-4">本次估值：</span><span class="col-xs-8" t-field="o.project_valuation"></span>
+                                </div>
+                                <div style="overflow:hidden">
                                     <span class="col-xs-4">付款账号：</span><span class="col-xs-8" t-field="o.payment_account"></span>
                                 </div>
 

@@ -45,6 +45,7 @@
                                 <field name="ownership_interest" required="1"/>
                                 <field name="round_financing_id" required="1" options='{"no_open":True}'/>
                                 <field name="the_amount_of_financing" required="1"/>
+                                <field name="project_valuation" required="1"/>
                                 <!---->
                             </group>
 
@@ -115,6 +116,7 @@
                                 <field name="ownership_interest" required="1"/>
                                 <field name="round_financing_id" required="1" options='{"no_open":True}'/>
                                 <field name="the_amount_of_financing" required="1"/>
+                                <field name="project_valuation" required="1"/>
                                 <!---->
                             </group>
                         </group>

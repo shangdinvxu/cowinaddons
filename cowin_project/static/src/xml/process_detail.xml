@@ -402,6 +402,7 @@
                             <td><t t-esc="item.the_amount_of_financing"/></td>
                             <td><t t-esc="item.the_amount_of_investment"/></td>
                             <td><t t-esc="item.ownership_interest"/></td>
+                            <td><t t-esc="item.project_valuation"/></td>
                             <td></td>
                         </tr>
                     </t>
