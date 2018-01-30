@@ -24,7 +24,7 @@ class sub_project_vote_on_major_matters(models.Model):
 
     reporter = fields.Many2one('hr.employee', string=u'报告人')
 
-    date_convening = fields.Datetime(string=u'召开日期')
+    date_convening = fields.Date(string=u'召开日期')
 
     instructions_voting = fields.Text(string=u'表决事项说明')
 

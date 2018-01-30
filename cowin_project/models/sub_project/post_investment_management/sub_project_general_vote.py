@@ -24,7 +24,7 @@ class sub_project_general_vote(models.Model):
     # invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
 
     reporter = fields.Many2one('hr.employee', string=u'报告人')
-    date_convening = fields.Datetime(string=u'召开日期')
+    date_convening = fields.Date(string=u'召开日期')
     instructions_voting = fields.Text(string=u'表决事项说明')
 
     # ----------  投资基金
