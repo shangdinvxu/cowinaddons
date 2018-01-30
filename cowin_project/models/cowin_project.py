@@ -1157,7 +1157,10 @@ class Cowin_project(models.Model):
                 tmp2['approval_role_name'] = name = approval_role_entity.name
                 tmp2['need_call_rpc'] = False
 
+                tmp2['is_readonly'] = False
+
                 if name in (u'风控总监', u'财务专员', u'投资决策委员会主席'):
+                    tmp2['is_readonly'] = True
                     t = self.env['cowin_project.global_spec_appro_role'].search([('name', '=', name)])
                     tmp2['employee_infos'] = [{'employee_id': e.id, 'name': e.name_related} for e in t.employee_ids]
 
@@ -1832,7 +1835,12 @@ class Cowin_project(models.Model):
             'rec_new_found_round_info': {
                 'project_id': self.id,
             }
+
         }
+
+        for k, v in self.copy_data()[0].items():
+            k1 = 'default_%s' % k
+            res[k1] = v
 
         t_name = name + '_form_no_button'
         view_id = self.env.ref(t_name).id
@@ -1917,9 +1925,9 @@ class Cowin_project(models.Model):
         besiness_obj = self.env['cowin_project.global_spec_appro_role']
 
         res = besiness_obj.search([('name', '=', u'管理合伙人')])
-        res.employee_ids.read(['name_related'])
+        result.employee_ids.read(['name_related'])
 
-        return res
+        return result
 
     # 获取投资决策委员
     def rpc_get_investment_decision_committee_infos(self):
