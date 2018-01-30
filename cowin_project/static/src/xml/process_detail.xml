@@ -16,7 +16,7 @@
             </div>
             <div style="width:100%;height:10px;background:rgba(242, 242, 242, 1)"></div>
             <ul id="process_tab" class="nav nav-tabs">
-                <li><a href="#process_detail" data-toggle="tab">详情</a></li>
+                <li><a class="project_details" href="#process_detail" data-toggle="tab">详情</a></li>
                 <li class="active"><a href="#process_data" data-toggle="tab">流程资料</a></li>
                 <li><a class="operate_contacts" href="#process_contact" data-toggle="tab">联系人</a></li>
                 <li><a class="operate_records" href="#process_record" data-toggle="tab">操作记录</a></li>
@@ -375,5 +375,38 @@
                 <div>职位：<t t-esc="item.customer_position"/> </div>
             </div>
         </t>
+    </t>
+
+    <!--tab 详情-->
+    <t t-name="process_deatil_tmpl">
+        <div class="process_detail_container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>投资方</th>
+                        <th>公司估值</th>
+                        <th>本次融资额</th>
+                        <th>投资金额</th>
+                        <th>股份比例</th>
+                        <th>退出情况</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>A轮</td>
+                    </tr>
+                    <t t-foreach="result.detail_infos" t-as="item">
+                        <tr>
+                            <td><t t-esc="item.foundation"/></td>
+                            <td><t t-esc="item.foundation"/></td>
+                            <td><t t-esc="item.the_amount_of_financing"/></td>
+                            <td><t t-esc="item.the_amount_of_investment"/></td>
+                            <td><t t-esc="item.ownership_interest"/></td>
+                            <td></td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
     </t>
 </templates>

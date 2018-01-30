@@ -80,8 +80,8 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
 
 
 
-        # if not res.investment_decision_committee_ids:
-        #     raise UserError(u'没有给投资决策委员配置员工信息, 以至于不能进行投票!!!')
+        if not res.investment_decision_committee_ids:
+            raise UserError(u'没有给投资决策委员配置员工信息, 以至于不能进行投票!!!')
 
         target_sub_tache_entity.write({
             'res_id': res.id,
