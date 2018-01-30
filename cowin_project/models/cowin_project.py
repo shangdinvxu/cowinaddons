@@ -126,18 +126,6 @@ class Cowin_project(models.Model):
             })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     # 考虑到设计上的规则性,每个工程的创建需要做很多的事情
     @api.model
     def create(self, vals):
@@ -453,6 +441,7 @@ class Cowin_project(models.Model):
                         if tache_info['is_launch_again']:
                             # 有过暂缓的状态
                             info = u'暂缓'
+                            approval_view_or_launch = False
                         # is_target_role = self.is_target_role(target_sub_approval_flow_entity)
                         # 当前用户是否属于某个角色!!!
                         if is_target_role:

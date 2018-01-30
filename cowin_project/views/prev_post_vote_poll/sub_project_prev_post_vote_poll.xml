@@ -23,7 +23,7 @@
         </record>
 
 
-
+        <!-- 我的投票需要得到的form视图 -->
         <record id="cowin_project_prev_post_vote_poll_form" model="ir.ui.view">
             <field name="name">cowin_project.prev_post_vote_poll form</field>
             <field name="model">cowin_project.prev_post_vote_poll</field>
@@ -47,8 +47,16 @@
 
                             <!--投前表决使用到的字段-->
                             <field name="voting_committee_date" attrs="{'invisible': [('prev_or_post_vote','=', False)]}" readonly="1"/>
-                            <field name="voting_score" attrs="{'invisible': [('prev_or_post_vote','=', False)]}" required="1"/>
-                            <field name="voting_opinion" attrs="{'invisible': [('prev_or_post_vote','=', False)]}" required="1"/>
+                            <field name="voting_score" attrs="{'invisible': [('prev_or_post_vote','=', False)], 'required': [('prev_or_post_vote','=', True)]}" />
+
+                            <!--投后表决使用到的字段-->
+                            <field name="conference_date" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}" readonly="1"/>
+                            <field name="voting_result" required="1" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}"/>
+
+
+
+                            <!--<field name="voting_opinion" attrs="{'invisible': [('prev_or_post_vote','=', False)], 'required': [('prev_or_post_vote','=', True)]}" required="1"/>-->
+                            <field name="voting_opinion"/>
 
 
 
@@ -59,9 +67,7 @@
                             <field name="round_financing_id" readonly="1"/>
                             <field name="the_amount_of_financing" readonly="1"/>
                             <!---->
-                            <!--投后表决使用到的字段-->
-                            <field name="conference_date" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}" readonly="1"/>
-                            <field name="voting_result" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}" widget="radio"/>
+
 
                             <!--表决人信息-->
                             <field name="voter" readonly="1"/>
@@ -84,22 +90,30 @@
                 <form create="false" delete="false" edit="false">
                     <sheet>
                         <group>
-                            <field name="name"/>
-                            <field name="project_number"/>
-                            <field name="invest_manager_ids"/>
+                            <field name="name" readonly="1"/>
+                            <field name="project_number" readonly="1"/>
+                            <field name="invest_manager_ids" readonly="1"/>
 
                             <!--条件判断字段 投前/投后的判断-->
 
                             <field name="prev_or_post_vote" attrs="{'invisible': True}" />
 
 
-                            <field name="members_of_voting_committee_ids"/>
+                            <field name="members_of_voting_committee_ids" readonly="1"/>
 
                             <!--投前表决使用到的字段-->
                             <field name="voting_committee_date" attrs="{'invisible': [('prev_or_post_vote','=', False)]}"/>
+
                             <field name="voting_score" attrs="{'invisible': [('prev_or_post_vote','=', False)]}"/>
                             <field name="voting_opinion" attrs="{'invisible': [('prev_or_post_vote','=', False)]}"/>
+
+
+
                             <!--投后表决使用到的字段-->
+                            <field name="conference_date" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}"/>
+                            <field name="voting_result" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}" widget="radio"/>
+
+
 
                              <!--投资基金-->
                             <field name="foundation_id" readonly="1" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}"/>
@@ -108,9 +122,6 @@
                             <field name="round_financing_id" readonly="1" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}"/>
                             <field name="the_amount_of_financing" readonly="1" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}"/>
                             <!---->
-
-                            <field name="conference_date" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}"/>
-                            <field name="voting_result" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}" widget="radio"/>
 
                             <!--表决人信息-->
                             <field name="voter"/>

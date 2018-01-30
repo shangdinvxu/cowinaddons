@@ -84,7 +84,12 @@
                     <t t-set="tache_index" t-value="tache_index + 1"/>
                     <span><t t-esc="obj.name"/> </span>
                     <span>【
-                        <t t-esc="obj.approval_status.status_name"/>
+                        <t t-if="obj.approval_status.status_id==-1">
+                            同意
+                        </t>
+                        <t t-else="">
+                            <t t-esc="obj.approval_status.status_name"/>
+                        </t>
                         】
                     </span>
                     <div class="button_wrap">
@@ -94,8 +99,8 @@
                         <t t-elif="obj.approval_status.approval_view_or_launch==false">
                             <span class="view_approval"><a href="javascript:void(0)">查看</a></span>
                         </t>
-                        <t t-else="">
-
+                        <t t-elif="obj.approval_status.status_id==-1">
+                            <span class="view_approval"><a href="javascript:void(0)">查看</a></span>
                         </t>
                     </div>
                 </div>

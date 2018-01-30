@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <form string="Fiscal year" create="false" edit="false" delete="false">
                     <header>
-                        <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核" style="background-color:#00B0DD;border-color:#00B0DD;"/>
+                        <button class="review" type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核" style="background-color:#00B0DD;border-color:#00B0DD;"/>
                     </header>
                     <sheet>
                         <group>
@@ -18,8 +18,8 @@
                                 <field name="project_number" readonly="1"/>
                                 <field name="reporter" readonly="1"/>
                                 <field name="filing_date" readonly="1"/>
-                                <field name="form_of_mettings"/>
-                                <field name="mettings_summary"/>
+                                <field name="form_of_mettings" required="1"/>
+                                <field name="mettings_summary" required="1"/>
                             </group>
                             <group>
                                 <!--投资基金-->

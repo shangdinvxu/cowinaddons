@@ -25,13 +25,13 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
 
     reporter = fields.Many2one('hr.employee', string=u'报告人')
 
-    filing_date = fields.Date(string=u'提交日期')
+    filing_date = fields.Date(string=u'提交日期', default=fields.Date.today())
 
     registered_address = fields.Char(string=u'注册地')
 
-    chairman = fields.Many2one('hr.employee', string=u'董事长')
+    chairman = fields.Char(string=u'董事长')
 
-    general_manager = fields.Many2one('hr.employee', string=u'总经理')
+    general_manager = fields.Char(string=u'总经理')
 
     product = fields.Text(string=u'产品')
 
