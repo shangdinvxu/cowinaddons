@@ -1,7 +1,7 @@
 /**
  * Created by 123 on 2018/1/30.
  */
-odoo.define('web.menu_showhide_mark', function (require) {
+odoo.define('web.listview_extend', function (require) {
     "use strict";
     /*---------------------------------------------------------
      * Odoo Editable List view linkloving version
@@ -38,6 +38,6 @@ odoo.define('web.menu_showhide_mark', function (require) {
                             return self.render_cell.apply(self, arguments); }
                     })));
             this.pad_table_to(1);
-        },
+        }
     })
 });
