@@ -19,8 +19,8 @@
                                 <field name="name" readonly="1"/>
                                 <field name="project_number" readonly="1"/>
                                 <field name="reporter" readonly="1"/>
-                                <field name="date_convening" readonly="1"/>
-                                <field name="instructions_voting"/>
+                                <field name="date_convening" required="1"/>
+                                <field name="instructions_voting" required="1"/>
                             </group>
                             <group>
                                 <!--投资基金-->

@@ -18,9 +18,9 @@
                                 <field name="project_number" readonly="1"/>
                                 <field name="reporter" readonly="1"/>
                                 <field name="filing_date" readonly="1"/>
-                                <field name="key_words"/>
-                                <field name="contents_of_matter"/>
-                                <field name="enormous_impact"/>
+                                <field name="key_words" required="1"/>
+                                <field name="contents_of_matter" required="1"/>
+                                <field name="enormous_impact" required="1"/>
                             </group>
                             <group>
                                 <!--投资基金-->

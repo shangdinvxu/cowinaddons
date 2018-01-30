@@ -21,13 +21,13 @@
                                 <field name="reporter" readonly="1"/>
                                 <field name="filing_date" readonly="1"/>
                                 <field name="registered_address"/>
-                                <field name="chairman"/>
-                                <field name="general_manager"/>
-                                <field name="product"/>
+                                <field name="chairman" required="1"/>
+                                <field name="general_manager" required="1"/>
+                                <field name="product" required="1"/>
                                 <field name="industry" readonly="1"/>
                                 <field name="founding_time" readonly="1"/>
                                 <field name="investment_phase" readonly="1"/>
-                                <field name="current_phase"/>
+                                <field name="current_phase" required="1"/>
                             </group>
                             <group>
                                 <!--投资基金-->
@@ -39,13 +39,13 @@
                             </group>
                         </group>
                         <group>
-                            <field name="total_assets"/>
-                            <field name="gross_liabilities"/>
-                            <field name="trustee_id"/>
-                            <field name="securities_trader"/>
-                            <field name="IPOplan"/>
-                            <field name="company_status"/>
-                            <field name="industry_status"/>
+                            <field name="total_assets" required="1"/>
+                            <field name="gross_liabilities" required="1"/>
+                            <field name="trustee_id" required="1"/>
+                            <field name="securities_trader" required="1"/>
+                            <field name="IPOplan" required="1"/>
+                            <field name="company_status" required="1"/>
+                            <field name="industry_status" required="1"/>
                         </group>
 
                         <group>
@@ -110,7 +110,7 @@
                         </group>
 
                         <group>
-                                <field name="sub_pro_approval_flow_settings_record_ids" >
+                                <field name="sub_pro_approval_flow_settings_record_ids" readonly="1">
                                     <tree >
                                         <field name="approval_person_id" readonly="1" options='{"no_open":True}'/>
                                         <field name="approval_role_id" readonly="1"/>

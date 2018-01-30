@@ -337,6 +337,7 @@
                                 <field name="founding_time"/>
                                 <!--<field name="invest_manager"/>-->
                                 <field name="contract_person"/>
+                                <field name="contract_phone"/>
                                 <field name="contract_email"/>
                             </group>
                         </group>

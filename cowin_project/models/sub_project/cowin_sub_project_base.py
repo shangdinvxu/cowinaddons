@@ -48,8 +48,12 @@ class Cowin_sub_project_base_status(models.Model):
 
         })
 
+
+        # 获得审核过程中,该环节的名字
+        tache_name = self.sub_tache_id.name
+
         return {
-            'name': res._name,
+            'name': tache_name,
             'type': 'ir.actions.act_window',
             'res_model': res._name,
             'views': [[False, 'form']],

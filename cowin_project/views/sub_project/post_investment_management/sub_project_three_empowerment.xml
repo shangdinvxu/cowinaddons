@@ -15,7 +15,8 @@
                         <group>
                             <group>
                                 <field name="name" readonly="1"/>
-                                <field name="topic_for_discussion"/>
+                                <field name="invest_manager_ids" readonly="1"/>
+                                <field name="topic_for_discussion" required="1"/>
                                 <field name="managing_partner_ids" readonly="1"/>
                             </group>
                             <group>
@@ -60,6 +61,7 @@
                         <group>
                             <group>
                                 <field name="name" readonly="1"/>
+                                <field name="invest_manager_ids" readonly="1"/>
                                 <field name="managing_partner_ids" readonly="1"/>
                                 <field name="topic_for_discussion" required="1"/>
                             </group>

@@ -18,8 +18,8 @@
                                 <field name="project_number" readonly="1"/>
                                 <field name="reporter" readonly="1"/>
                                 <field name="filing_date" readonly="1"/>
-                                <field name="form_of_mettings"/>
-                                <field name="mettings_summary"/>
+                                <field name="form_of_mettings" required="1"/>
+                                <field name="mettings_summary" required="1"/>
                             </group>
                             <group>
                                 <!--投资基金-->

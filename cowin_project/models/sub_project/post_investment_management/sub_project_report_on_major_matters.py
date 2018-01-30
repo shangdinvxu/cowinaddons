@@ -24,7 +24,7 @@ class sub_project_report_on_major_matters(models.Model):
 
     reporter = fields.Many2one('hr.employee', string=u'报告人')
 
-    filing_date = fields.Datetime(string=u'提交日期')
+    filing_date = fields.Datetime(string=u'提交日期', default=fields.Date.today())
 
     key_words = fields.Char(string=u'事项关键词')
 

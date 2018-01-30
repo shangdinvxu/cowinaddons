@@ -14,26 +14,17 @@ class sub_project_dismissal_of_directors_or_supervisors(models.Model):
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
-
-    # name = fields.Char(related='subproject_id.name', string=u"项目名称")
-    # invest_manager_id = fields.Many2one('hr.employee', related='subproject_id.invest_manager_id', string=u'投资经理')
-
     name = fields.Char(string=u"项目名称")
-    # project_number = fields.Char(string=u'项目编号')
     invest_manager_ids = fields.Many2many('hr.employee', 'sub_dismissal_of_directs_or_supers_employee_rel', string=u'投资经理')
 
     # ----- 解职对象
     trustee_id = fields.Many2one('hr.employee', string=u'董事')
-    appointment_time_begin_trustee = fields.Date(string=u'开始日期')
-    appointment_time_end_trustee = fields.Date(string=u'结束日期')
+    dismissal_time_for_trustee = fields.Date(string=u'解职时间')
 
-    Tenure_trustee = fields.Float(string=u'任职年限')
 
     supervisor_id = fields.Many2one('hr.employee', string=u'监事')
-    appointment_time_begin_supervisor = fields.Date(string=u'开始日期')
-    appointment_time_end_supervisor = fields.Date(string=u'结束日期')
+    dismissal_time_for_supervisor = fields.Date(string=u'解职时间')
 
-    Tenure_supervisor = fields.Float(string=u'任职年限')
 
     managing_partner_ids = fields.Many2many('hr.employee', 'sub_dismissal_of_directs_or_supers_employee_rel', string=u'管理合伙人')
 
