@@ -37,7 +37,8 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
     foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金名称')
     the_amount_of_financing = fields.Float(string=u'本次融资金额')
     the_amount_of_investment = fields.Float(string=u'本次投资金额')
-    ownership_interest = fields.Integer(string=u'股份比例')
+    ownership_interest = fields.Float(string=u'股份比例')
+    project_valuation = fields.Float(string=u'估值')
 
     compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
 
@@ -50,6 +51,7 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
             rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
             rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
             rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
+            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
     #
             rec.subproject_id.trustee_id = rec.trustee_id
             rec.subproject_id.supervisor_id = rec.supervisor_id
@@ -226,6 +228,7 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
             'the_amount_of_financing',
             'the_amount_of_investment',
             'ownership_interest',
+            'project_valuation',
         ]
 
         tem = meta_sub_project_entity.round_financing_and_Foundation_ids[0].read(common_fileds)[0]

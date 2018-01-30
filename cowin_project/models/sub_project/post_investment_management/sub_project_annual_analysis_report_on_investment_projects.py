@@ -51,7 +51,8 @@ class sub_project_annual_analysis_report_on_investment_projects(models.Model):
     foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金名称')
     the_amount_of_financing = fields.Float(string=u'本次融资金额')
     the_amount_of_investment = fields.Float(string=u'本次投资金额')
-    ownership_interest = fields.Integer(string=u'股份比例')
+    ownership_interest = fields.Float(string=u'股份比例')
+    project_valuation = fields.Float(string=u'估值')
 
     # # ----------  投资基金
     # round_financing_id = fields.Many2one('cowin_common.round_financing',
@@ -168,6 +169,7 @@ class sub_project_annual_analysis_report_on_investment_projects(models.Model):
             'the_amount_of_financing',
             'the_amount_of_investment',
             'ownership_interest',
+            'project_valuation',
         ]
 
         tem = meta_sub_project_entity.round_financing_and_Foundation_ids[0].read(common_fileds)[0]

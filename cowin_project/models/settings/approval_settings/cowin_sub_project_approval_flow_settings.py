@@ -242,6 +242,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                         'ownership_interest': entity.ownership_interest,
                         'the_amount_of_investment': entity.the_amount_of_financing,
                         'foundation': entity.foundation_id.name,
+                        'project_valuation': entity.project_valuation,
                     })
             else:
                 res_entity.write({
