@@ -10,6 +10,10 @@ odoo.define('web.menu_showhide_mark', function (require) {
      * handles editability case for lists, because it depends on form and forms already depends on lists it had to be split out
      * @namespace
      */
+    /**
+    * 左边面板按钮展开关闭的三角图标
+    *
+    * */
 
     var core = require('web.core');
     var data = require('web.data');
