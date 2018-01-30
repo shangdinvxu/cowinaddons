@@ -10,6 +10,9 @@
             <field name="model">cowin_project.sub_conference_resolutions</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year" create="false" edit="false" delete="false">
+                    <header>
+                        <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核" style="background-color:#00B0DD;border-color:#00B0DD;"/>
+                    </header>
                     <sheet>
                         <group>
                             <field name="name"/>
@@ -37,7 +40,7 @@
 
 
                         <group>
-                            <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>
+                            <!--<button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>-->
                         </group>
                     </sheet>
                 </form>

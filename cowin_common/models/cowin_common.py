@@ -108,8 +108,8 @@ class Cowin_common_approval_flow_dialog(models.Model):
         # if not is_target_user:
         #     raise UserError(u'该用户不具有审批资格,或许已经进入到下一个审批')
 
-        if self._context.get('sub_approval_flow_settings_approval_flow_count') != target_entity.sub_approval_flow_settings_approval_flow_count:
-            raise UserError(u'该用户不具有审批资格,或许已经进入到下一个审批')
+        # if self._context.get('sub_approval_flow_settings_approval_flow_count') != target_entity.sub_approval_flow_settings_approval_flow_count:
+        #     raise UserError(u'该用户不具有审批资格,或许已经进入到下一个审批')
 
 
         approval_flow_settings_record_info = {
@@ -169,6 +169,39 @@ class Cowin_common_approval_flow_dialog(models.Model):
         self.status = True
         self.approval_result = u'None'
         return self.process_approval_flow_info()
+
+
+
+
+class Common_Dialog(models.Model):
+
+    _name = 'cowin_common.common_dialog'
+
+    warning = fields.Char(string=u'警告!!!', default=u'该审批已经审阅过!!!')
+
+
+    @api.model
+    def show_dialog(self):
+
+        entity = self.create({})
+
+        return {
+            'name': entity._name,
+            'type': 'ir.actions.act_window',
+            'res_model': entity._name,
+            'views': [[False, 'form']],
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': False,
+            'res_id': entity.id,
+            'target': 'new',
+        }
+
+
+    def rpc_button_ok(self):
+
+        pass
+
 
 
 

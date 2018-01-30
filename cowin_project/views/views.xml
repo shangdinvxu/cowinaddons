@@ -51,11 +51,11 @@
                                         <t t-if="widget.deletable"><li><a type="delete">Delete</a></li></t>
                                     </ul>
                                 </div>
-                                <t t-js="ctx">
-                                    console.log(ctx);
-                                    console.log('record is \n');
-                                    console.log(ctx.record.is_admin_user);
-                                </t>
+                                <!--<t t-js="ctx">-->
+                                    <!--console.log(ctx);-->
+                                    <!--console.log('record is \n');-->
+                                    <!--console.log(ctx.record.is_admin_user);-->
+                                <!--</t>-->
                             </t>
 
                             <div class="kanban_top">
@@ -317,9 +317,9 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="name"/>
+                                <field name="name" required="1"/>
                                 <field name="image" widget="image" class="oe_avatar" options="{'size': [90, 90]}" />
-                                <field name="project_source"/>
+                                <field name="project_source" required="1"/>
                                 <field name="project_source_note"/>
                                 <field name="round_financing"/>
                                 <field name="round_money"/>

@@ -85,8 +85,6 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
             # 这个操作只会去触发可能有多个子环节的解锁,如果解锁则不需要再次解锁
             if sub_tache_entity.order_parent_id == self and not sub_tache_entity.is_unlocked:
 
-
-
                 name = self.meta_sub_project_id.sub_project_ids[0].name
                 project_number = self.meta_sub_project_id.sub_project_ids[0].project_number
 
@@ -142,7 +140,7 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
                 rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & investment_decision_committee_entity.sub_meta_pro_approval_settings_role_rel
 
                 if not rel_entities:
-                    raise UserError(u'投资决策委员为空,不能进行投票!!!')
+                    raise UserError(u'投资决策委员不能为空!!!')
 
 
 
@@ -234,71 +232,3 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
 
 
-    # def check_or_not_next_sub_tache(self):
-    #     if self.sub_pro_approval_flow_settings_ids.update_final_approval_flow_settings_status_and_node():
-    #         # 当前子审批实体状态设置为4
-    #         # self.sub_pro_approval_flow_settings_ids.status = 4
-    #         # self.sub_pro_approval_flow_settings_ids.write({
-    #         #         'status': 4,
-    #         #     })
-    #
-    #         # self.sub_pro_approval_flow_settings_ids.update_final_approval_flow_settings_status_and_node()
-    #         for sub_tache_entity in self.meta_sub_project_id.sub_tache_ids:
-    #             # 这个操作只会去触发下一个子环节的解锁,如果解锁则不需要再次解锁
-    #             if sub_tache_entity.parent_id == self and not sub_tache_entity.is_unlocked:
-    #                                 sub_tache_entity.write({
-    #                                     'is_unlocked': True,
-    #                                     })
-    #
-    #                                 # 触发下面的所有的依赖于该环节的解锁!!!
-    #                                 # break
-    #
-    #     else:
-    #         # 调整审核状态
-    #
-    #         # 更新子审批实体的状态
-    #         self.sub_pro_approval_flow_settings_ids.update_approval_flow_settings_status_and_node()
-
-
-
-    # 重新设定依赖写入的问题
-    # def set_depency_order_by_sub_tache(self):
-    #
-    #     # 找到主工程的环节
-    #
-    #     # if len(self) > 1:
-    #     #     this = self[0]
-    #
-    #     this = self[0] if len(self) > 1 else self
-    #
-    #     base_tache_entity = [tache_entity for tache_entity in this.meta_sub_project_id.project_id.process_id.get_all_tache_entities()
-    #                          if tache_entity.model_id.model_name == this.meta_sub_project_id.project_id._name
-    #                          ][0]
-    #
-    #
-    #     count = itertools.count(1)
-    #     base_sub_tache_entity = [entity for entity in this.meta_sub_project_id.sub_tache_ids \
-    #                                                         if entity.tache_id.parent_id == base_tache_entity][0]
-    #     base_sub_tache_entity.write({
-    #         'order': count.next(),
-    #     })
-    #
-    #     current_sub_tache_entity = base_sub_tache_entity
-    #
-    #     a = set()
-    #     while current_sub_tache_entity:
-    #         if current_sub_tache_entity in a:
-    #             break
-    #
-    #         for sub_tache_entity in this.meta_sub_project_id.sub_tache_ids:
-    #             if sub_tache_entity == current_sub_tache_entity:
-    #                 a.add(sub_tache_entity)
-    #                 continue
-    #             if sub_tache_entity.parent_id == current_sub_tache_entity:
-    #                 a.add(current_sub_tache_entity)
-    #                 sub_tache_entity.write({'order': count.next()})
-    #                 current_sub_tache_entity = sub_tache_entity
-    #
-    #
-    #
-    #     return 'kk'

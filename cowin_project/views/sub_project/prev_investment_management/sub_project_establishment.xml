@@ -7,6 +7,9 @@
             <field name="model">cowin_project.cowin_subproject</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year" create="false" edit="false" delete="false">
+                    <header>
+                        <button type="object" name="button_approval_flow_info"  args="[55, 66, 77]"  string="审核" style="background-color:#00B0DD;border-color:#00B0DD;"/>
+                    </header>
                     <sheet>
                         <group>
                             <group>
@@ -45,26 +48,25 @@
                                 <!---->
                             </group>
 
-                            <group>
-                                <field name="sub_pro_approval_flow_settings_record_ids" >
-                                    <tree >
-                                        <field name="approval_person_id" readonly="1" options='{"no_open":True}'/>
-                                        <field name="approval_role_id" readonly="1"/>
-                                        <field name="approval_result" readonly="1"/>
-                                        <field name="approval_opinion" readonly="1"/>
-                                    </tree>
+                        </group>
+                        <group>
+                            <field name="sub_pro_approval_flow_settings_record_ids" >
+                                <tree >
+                                    <field name="approval_person_id" readonly="1" options='{"no_open":True}'/>
+                                    <field name="approval_role_id" readonly="1"/>
+                                    <field name="approval_result" readonly="1"/>
+                                    <field name="approval_opinion" readonly="1"/>
+                                </tree>
 
-                                </field>
-
-                            </group>
-
-                            <group>
-                                <!--<button type="object" name="button_approval_flow_info" context="{'sub_approval_flow_settings_approval_flow_count': sub_approval_flow_settings_approval_flow_count}" args="[55, 66, 77]"  string="审核"/>-->
-                                <button type="object" name="button_approval_flow_info"  args="[55, 66, 77]"  string="审核"/>
-                            </group>
-
+                            </field>
 
                         </group>
+
+                        <!--<group>-->
+                            <!--&lt;!&ndash;<button type="object" name="button_approval_flow_info" context="{'sub_approval_flow_settings_approval_flow_count': sub_approval_flow_settings_approval_flow_count}" args="[55, 66, 77]"  string="审核"/>&ndash;&gt;-->
+                            <!--<button type="object" name="button_approval_flow_info"  args="[55, 66, 77]"  string="审核"/>-->
+                        <!--</group>-->
+
                     </sheet>
 
                 </form>
@@ -115,20 +117,17 @@
                                 <field name="the_amount_of_financing" required="1"/>
                                 <!---->
                             </group>
+                        </group>
+                        <group>
+                            <field name="sub_pro_approval_flow_settings_record_ids" readonly="1">
+                                <tree >
+                                    <field name="approval_person_id" readonly="1" options='{"no_open":True}'/>
+                                    <field name="approval_role_id" readonly="1"/>
+                                    <field name="approval_result" readonly="1"/>
+                                    <field name="approval_opinion" readonly="1"/>
+                                </tree>
 
-                            <group>
-                                <field name="sub_pro_approval_flow_settings_record_ids" readonly="1">
-                                    <tree >
-                                        <field name="approval_person_id" readonly="1" options='{"no_open":True}'/>
-                                        <field name="approval_role_id" readonly="1"/>
-                                        <field name="approval_result" readonly="1"/>
-                                        <field name="approval_opinion" readonly="1"/>
-                                    </tree>
-
-                                </field>
-
-                            </group>
-
+                            </field>
 
                         </group>
                     </sheet>

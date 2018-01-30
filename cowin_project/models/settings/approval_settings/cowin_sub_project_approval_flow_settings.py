@@ -56,6 +56,9 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                                                                          u'解决多个用户同时审核的问题!!!')
 
 
+    is_launch_again = fields.Boolean(string=u'是否是重新提交的状态', default=False)
+
+
     def get_all_message(self):
         message_entities = self.env['mail.message'].search([('subject', '=', 'approval_flow_setting'), ('res_id', '=', self.id), ('model', '=', self._name)])
         message_infos = message_entities.mapped(lambda m: html2plaintext(m.body))
@@ -312,7 +315,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         self.approval_flow_count += 1
 
-        #
+
         # model_name = self.sub_project_tache_id.tache_id.model_id.model_name
         # res_id = self.sub_project_tache_id.res_id
         #
@@ -357,6 +360,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             tmp2[u'operation'] = u'提交'
             self.message_post(json.dumps(tmp2))
             self.send_next_approval_flow_settings_node_msg(status=2)
+            self.launch_or_relaunch_agin(self.is_launch_again)
             self.prev_status = self.status = newstatus
         elif (prevstatus, newstatus) == (1, 4):
             print(u'(1, 4) aciton...')
@@ -369,7 +373,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
 
             self.process_buniess_logic()
-
+            self.launch_or_relaunch_agin(self.is_launch_again)
 
         elif (prevstatus, newstatus) == (2, 2):
             print(u'(2, 2) acion...')
@@ -388,6 +392,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             # self.prev_status = self.status = 1
 
             self.process_button_status_on_res_model(3)
+            self.is_launch_again = True
 
 
         elif (prevstatus, newstatus) == (2, 4):
@@ -541,6 +546,30 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
     def is_final_approval_flow_settings_status(self):
         return self.status == 4 or self.status == 5
+
+
+    # 发起/重新发起的需要记录的操作
+    def launch_or_relaunch_agin(self, is_launch_agin=False):
+        approval_flow_settings_record_info = {}
+        approval_flow_settings_record_info['res_model'] = self.sub_project_tache_id.tache_id.model_id.model_name
+        approval_flow_settings_record_info['res_id'] = self.sub_project_tache_id.res_id
+
+        if is_launch_agin:
+            approval_flow_settings_record_info['approval_result'] = u'重新发起'
+        else:
+            approval_flow_settings_record_info['approval_result'] = u'发起'
+
+        # 理论上只会有一个员工  审批人
+        approval_flow_settings_record_info['approval_person_id'] = self.env.user.employee_ids[0].id
+
+        # 审批角色
+        approval_flow_settings_record_info['approval_role_id'] = self.current_approval_flow_node_id.operation_role_id.id
+
+        self.write({
+            'sub_pro_approval_flow_settings_record_ids': [(0, 0, approval_flow_settings_record_info)]
+        })
+
+        self.approval_flow_count += 1
 
 
 

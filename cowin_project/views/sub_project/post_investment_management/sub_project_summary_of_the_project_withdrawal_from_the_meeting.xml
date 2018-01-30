@@ -9,7 +9,9 @@
             <field name="model">cowin_project.sub_sum_pro_withdraw_from_meeting</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year" create="false" edit="false" delete="false">
-
+                    <header>
+                        <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核" style="background-color:#00B0DD;border-color:#00B0DD;"/>
+                    </header>
                     <sheet>
                         <group>
                             <group>
@@ -45,7 +47,7 @@
                             </group>
 
                              <group>
-                                <button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>
+                                <!--<button type="object" name="button_approval_flow_info"  args="[55 ,66, 77]"  string="审核"/>-->
                             </group>
                         </group>
                     </sheet>
@@ -65,11 +67,11 @@
                                 <field name="name"  readonly="1"/>
                                 <field name="project_number"  readonly="1"/>
                                 <field name="invest_manager_ids"  readonly="1"/>
-                                <field name="conference_date"/>
-                                <field name="conference_recorder"/>
-                                <field name="checker"/>
+                                <field name="conference_date" required="1"/>
+                                <field name="conference_recorder" required="1"/>
+                                <field name="checker" required="1"/>
                                 <field name="members_of_voting_committee_ids"  readonly="1"/>
-                                <field name="conference_highlights"/>
+                                <field name="conference_highlights" required="1"/>
                             </group>
                             <group>
                                 <!--投资基金-->
@@ -80,20 +82,16 @@
                                 <field name="the_amount_of_financing" readonly="1"/>
                                 <!---->
                             </group>
-
-                            <group>
-
-                                <field name="sub_pro_approval_flow_settings_record_ids" readonly="1">
-                                       <tree >
-                                         <field name="approval_person_id" readonly="1" options='{"no_open":True}'/>
-                                         <field name="approval_role_id" readonly="1"/>
-                                         <field name="approval_result" readonly="1"/>
-                                         <field name="approval_opinion" readonly="1"/>
-                                       </tree>
-                                   </field>
-                            </group>
-
-
+                        </group>
+                        <group>
+                            <field name="sub_pro_approval_flow_settings_record_ids" readonly="1">
+                               <tree >
+                                 <field name="approval_person_id" readonly="1" options='{"no_open":True}'/>
+                                 <field name="approval_role_id" readonly="1"/>
+                                 <field name="approval_result" readonly="1"/>
+                                 <field name="approval_opinion" readonly="1"/>
+                               </tree>
+                            </field>
                         </group>
                     </sheet>
                 </form>

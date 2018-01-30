@@ -84,7 +84,7 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
 
 
 
-    # 用于控制新增按钮的显示的操作的操作!!!
+    # 用于控制新增按钮的显示的操作的操作,以及投资决策是最终的决议!!!
     is_final_meeting_resolution = fields.Boolean(string=u'是否为最终决议', default=False)
 
     # 审批实体记录

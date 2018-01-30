@@ -33,9 +33,9 @@
                 <form create="false" delete="false" edit="false" js_class="form2">
                     <sheet>
                         <group>
-                            <field name="name"/>
-                            <field name="project_number"/>
-                            <field name="invest_manager_ids"/>
+                            <field name="name" readonly="1"/>
+                            <field name="project_number" readonly="1"/>
+                            <field name="invest_manager_ids" readonly="1"/>
 
 
                             <!--条件判断字段 投前/投后的判断-->
@@ -43,12 +43,12 @@
                             <field name="prev_or_post_vote" attrs="{'invisible': True}" />
 
 
-                            <field name="members_of_voting_committee_ids"/>
+                            <field name="members_of_voting_committee_ids" readonly="1"/>
 
                             <!--投前表决使用到的字段-->
-                            <field name="voting_committee_date" attrs="{'invisible': [('prev_or_post_vote','=', False)]}"/>
-                            <field name="voting_score" attrs="{'invisible': [('prev_or_post_vote','=', False)]}"/>
-                            <field name="voting_opinion" attrs="{'invisible': [('prev_or_post_vote','=', False)]}"/>
+                            <field name="voting_committee_date" attrs="{'invisible': [('prev_or_post_vote','=', False)]}" readonly="1"/>
+                            <field name="voting_score" attrs="{'invisible': [('prev_or_post_vote','=', False)]}" required="1"/>
+                            <field name="voting_opinion" attrs="{'invisible': [('prev_or_post_vote','=', False)]}" required="1"/>
 
 
 
@@ -60,11 +60,11 @@
                             <field name="the_amount_of_financing" readonly="1"/>
                             <!---->
                             <!--投后表决使用到的字段-->
-                            <field name="conference_date" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}"/>
+                            <field name="conference_date" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}" readonly="1"/>
                             <field name="voting_result" attrs="{'invisible': [('prev_or_post_vote', '=', True)]}" widget="radio"/>
 
                             <!--表决人信息-->
-                            <field name="voter"/>
+                            <field name="voter" readonly="1"/>
                         </group>
 
                     </sheet>

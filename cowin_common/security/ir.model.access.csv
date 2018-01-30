@@ -5,3 +5,4 @@ access_cowin_common_approval_role,cowin_common.approval_role,model_cowin_common_
 
 access_cowin_common_project_source,cowin_common.project_source,model_cowin_common_project_source,,1,1,1,1
 access_cowin_common_approval_flow_dialog,cowin_common.approval_flow_dialog,model_cowin_common_approval_flow_dialog,,1,1,1,1
+access_cowin_common_common_dialog,cowin_common.common_dialog,model_cowin_common_common_dialog,,1,1,1,1
