@@ -1856,7 +1856,6 @@ class Cowin_project(models.Model):
         #is_final_meeting_resolution
         detail_infos = {}
         project_details = self.env['cowin.project.detail'].sudo().search([('project_id', '=', self.id)])
-        round_financing_ids = []
         for project_detail in project_details:
 
             project_detail = {
