@@ -1162,13 +1162,19 @@ class Cowin_project(models.Model):
                     tmp2['employee_infos'] = [{'employee_id': e.id, 'name': e.name_related} for e in t.employee_ids]
 
                 elif name in (u'投资决策委员', u'管理合伙人'):
-                    # res = self.env['cowin_project.global_spec_appro_group_role'].search([('name', '=', name)])
-                    # tmp2['employee_infos'] = [{'employee_id': e.id, 'name': e.name_related} for e in res.employee_ids]
-                    tmp2['employee_infos'] = []
-                    if name == u'管理合伙人':
-                        tmp2['need_call_rpc'] = 'rpc_get_managing_partner_infos'
-                    else:
-                        tmp2['need_call_rpc'] = 'rpc_get_investment_decision_committee_infos'
+                    tmp2['employee_infos'] = [{'employee_id': approval_employee_rel.employee_id.id,
+                                               'name': approval_employee_rel.employee_id.name_related}
+                                              for approval_employee_rel in
+                                              meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel if
+                                              approval_employee_rel.approval_role_id == approval_role_entity]
+
+
+                    if tmp2['employee_infos'] is []:
+
+                        if name == u'管理合伙人':
+                            tmp2['need_call_rpc'] = 'rpc_get_managing_partner_infos'
+                        else:
+                            tmp2['need_call_rpc'] = 'rpc_get_investment_decision_committee_infos'
 
                 else:
                     tmp2['employee_infos'] = [{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
