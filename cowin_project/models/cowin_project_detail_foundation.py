@@ -22,9 +22,8 @@ class Cowin_project_detail_foundation(models.Model):
     @api.multi
     @api.depends('the_amount_of_investment')
     def _calc_ownership_interest(self):
-
+        print 'sss'
         round_entity = self.env['cowin.project.detail.round']
-        foundation_entity = self.env['cowin.project.detail.foundation']
         for s in self:
             rounds = round_entity.search([('project_id', '=', s.round_id.project_id.id)])
 
@@ -33,8 +32,7 @@ class Cowin_project_detail_foundation(models.Model):
 
             for round_ in rounds:
                 if s.round_id.round_financing_id.sequence > round_.round_financing_id.sequence:
-                    foundations = foundation_entity.sudo().search(['round_id', '=', round_.id])
-                    for foundation in foundations:
+                    for foundation in round_.foundation_ids:
                         foundation.ownership_interest = round(
                             foundation.the_amount_of_investment /
                             (round_.project_valuation + round_.the_amount_of_financing), 4)

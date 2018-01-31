@@ -1895,7 +1895,7 @@ class Cowin_project(models.Model):
         #is_final_meeting_resolution
         detail_infos = []
 
-        project_details = self.env['cowin.project.detail.round'].sudo().search([('project_id', '=', self.id)])
+        project_details = self.env['cowin.project.detail.round'].sudo().search([('project_id', '=', self.id)], order='round_financing_id')
         for project_detail in project_details:
             foundations = []
             for foundation in project_detail.foundation_ids:
