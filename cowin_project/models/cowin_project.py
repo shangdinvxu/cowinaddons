@@ -1894,7 +1894,7 @@ class Cowin_project(models.Model):
             foundations = []
             for foundation in project_detail.foundation_ids:
                 foundation_dict = {
-                    'round_id': foundation.round_id,
+                    'round_id': foundation.round_id.id,
                     'ownership_interest': foundation.ownership_interest,
                     'the_amount_of_investment': foundation.the_amount_of_investment,
                     'foundation': foundation.foundation,
@@ -1905,6 +1905,7 @@ class Cowin_project(models.Model):
                 foundations.append(foundation_dict)
             detail_infos.append({'name': project_detail.round_financing_id.name, 'data': foundations})
 
+        # print detail_infos
         return detail_infos
 
     # 新增详情的信息!!!
@@ -1933,7 +1934,7 @@ class Cowin_project(models.Model):
                     'data_from': 'external'
                 })]
             })
-        return 1
+        return self.rpc_get_detail_info()
 
     # 获取管理合伙人
     def rpc_get_managing_partner_infos(self):

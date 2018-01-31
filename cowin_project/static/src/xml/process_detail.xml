@@ -471,7 +471,7 @@
                     <div class="invest_infos_item">
                         <div><span style="color:red">*</span>投资方名称: </div>
                         <div>
-                            <input type="text"/>
+                            <input class="foundation" type="text"/>
                         </div>
                     </div>
                     <div class="invest_infos_item">
@@ -486,12 +486,12 @@
                             <input class="the_amount_of_investment" type="text"/>
                         </div>
                     </div>
-                    <div class="invest_infos_item">
-                        <div><span style="color:red">*</span>股份比例: </div>
-                        <div>
-                            <input class="ownership_interest" type="text"/>
-                        </div>
-                    </div>
+                    <!--<div class="invest_infos_item">-->
+                        <!--<div><span style="color:red">*</span>股份比例: </div>-->
+                        <!--<div>-->
+                            <!--<input class="ownership_interest" type="text"/>-->
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
                 <div class="invest_exit_infos">
                     <p>退出情况</p>
