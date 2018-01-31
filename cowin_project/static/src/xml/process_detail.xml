@@ -426,21 +426,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>A轮</td>
-                    </tr>
-                    <t t-foreach="result.detail_infos" t-as="item">
+                    <t t-foreach="result" t-as="item">
                         <tr>
-                            <td><t t-esc="item.foundation"/></td>
-                            <td><t t-esc="item.foundation"/></td>
-                            <td><t t-esc="item.the_amount_of_financing"/></td>
-                            <td><t t-esc="item.the_amount_of_investment"/></td>
-                            <td><t t-esc="item.ownership_interest"/></td>
-                            <td></td>
-                            <td class="process_detail_edit">编辑</td>
-                            <td class="process_detail_delete">删除</td>
+                            <td>
+                              <t t-esc="item"/>
+                            </td>
                         </tr>
                     </t>
+
+
+                    <!--<tr>-->
+                        <!--<td>A轮</td>-->
+                    <!--</tr>-->
+                    <!--<t t-foreach="result.detail_infos" t-as="item">-->
+                        <!--<tr>-->
+                            <!--<td><t t-esc="item.foundation"/></td>-->
+                            <!--<td><t t-esc="item.foundation"/></td>-->
+                            <!--<td><t t-esc="item.the_amount_of_financing"/></td>-->
+                            <!--<td><t t-esc="item.the_amount_of_investment"/></td>-->
+                            <!--<td><t t-esc="item.ownership_interest"/></td>-->
+                            <!--<td></td>-->
+                            <!--<td class="process_detail_edit">编辑</td>-->
+                            <!--<td class="process_detail_delete">删除</td>-->
+                        <!--</tr>-->
+                    <!--</t>-->
                 </tbody>
             </table>
         </div>

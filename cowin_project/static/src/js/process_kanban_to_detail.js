@@ -48,6 +48,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     .call("rpc_get_detail_info", [parseInt(self.id)])
                     .then(function (result) {
                         console.log(result);
+
                         $("#process_detail").html('');
                         $("#process_detail").append(QWeb.render('process_deatil_tmpl', {result: result}))
                     })
