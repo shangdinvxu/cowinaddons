@@ -1214,6 +1214,8 @@ class Cowin_project(models.Model):
         for meta_sub_project_info in meta_sub_project_infos:
             meta_sub_project_info[u'is_current_exists'] = False  # 我们之前的数据在前端复制数据的时候,会提前把数据写入,可能有些数据我们并不需要在之后的操作
 
+
+
         # meta_sub_project_entity = self.meta_sub_project_ids.browse(meta_sub_project_id)
         # self._save_permission_configuration(meta_sub_project_entity, meta_sub_project_info)
 
@@ -1223,6 +1225,10 @@ class Cowin_project(models.Model):
 
             for meta_sub_project_info in meta_sub_project_infos:
                 if meta_sub_project_info[u'meta_sub_pro_id'] == meta_sub_project_entity.id:
+
+                    meta_sub_project_entity.write({
+                        'investment_decision_committee_scope_id': meta_sub_project_info['investment_decision_committee_scope_id'],
+                    })
 
                     self._save_permission_configuration(meta_sub_project_entity, meta_sub_project_info)
                     meta_sub_project_info[u'is_current_exists'] = True
@@ -1953,6 +1959,7 @@ class Cowin_project(models.Model):
         for e in all_entities:
             t = {}
             t['name'] = e.name
+            t['investment_decision_committee_scope_id'] = e.id
 
             t['employee_ids'] = str(e.employee_ids.mapped('id'))[1:-1]
 

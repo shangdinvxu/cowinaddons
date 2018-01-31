@@ -235,10 +235,13 @@
                                 <t t-set="is_admin" t-value="result.is_admin"></t>
                                 <t t-set="result" t-value="obj.employee_infos"></t>
                                 <t t-set="edit" t-value="edit"></t>
+                                <t t-set="is_readonly" t-value="obj.is_readonly"></t>
                             </t>
 
                             <t t-if="edit==true">
-                                <span class="add_new_role">新增</span>
+                                <t t-if="obj.is_readonly==false">
+                                    <span class="add_new_role">新增</span>
+                                </t>
                             </t>
                         </div>
                     </div>
@@ -333,7 +336,9 @@
             <span class="member_name" t-att-employee_id="item.employee_id">
                 <t t-esc="item.name"/>
                 <t t-if="edit==true">
-                    <span class="fa fa-close"></span>
+                    <t t-if="is_readonly==false">
+                        <span class="fa fa-close"></span>
+                    </t>
                 </t>
             </span>
         </t>
