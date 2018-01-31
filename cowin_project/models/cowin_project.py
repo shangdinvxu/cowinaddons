@@ -1917,13 +1917,13 @@ class Cowin_project(models.Model):
 
     # 新增详情的信息!!!
     def rpc_create_detail_info(self, vals):
-        round = self.env['cowin.project.detail.round'].sudo().search([
+        round_ = self.env['cowin.project.detail.round'].sudo().search([
             ('project_id', '=', self.id),
             ('round_financing_id', '=', int(vals.get('round_financing_id')))])
 
-        if round:
+        if round_:
             self.env['cowin.project.detail.foundation'].create({
-                'round_id': round.id,
+                'round_id': round_.id,
                 'the_amount_of_investment': float(vals.get('the_amount_of_investment')),
                 'foundation': vals.get('foundation'),
                 'data_from': 'external',
@@ -1939,6 +1939,17 @@ class Cowin_project(models.Model):
                     'foundation': vals.get('foundation'),
                     'data_from': 'external'
                 })]
+            })
+        return self.rpc_get_detail_info()
+
+    # 修改详情的信息!!!
+    def rpc_update_detail_info(self, vals):
+        foundation_id = vals.get('foundation_id')
+        foundation = self.env['cowin.project.detail.foundation'].sudo().search([('id', '=', foundation_id)])
+        if foundation and foundation.data_from == 'external':
+            self.env['cowin.project.detail.foundation'].update({
+                'the_amount_of_investment': float(vals.get('the_amount_of_investment')),
+                'foundation': vals.get('foundation'),
             })
         return self.rpc_get_detail_info()
 
@@ -1963,8 +1974,6 @@ class Cowin_project(models.Model):
             t['investment_decision_committee_scope_id'] = e.id
 
             t['employee_ids'] = str(e.employee_ids.mapped('id'))[1:-1]
-
-
             res.append(t)
 
         return res
