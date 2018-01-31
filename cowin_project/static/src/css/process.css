@@ -550,3 +550,95 @@
 .process_detail_container{
     padding: 30px 50px;
 }
+.process_detail_container>.table .financing>td{
+    border-top: none;
+    font-size: 18px;
+    color: #00B0DD;
+}
+.process_detail_container>.table tr:not(.financing)>td{
+    border-bottom: 1px solid #ddd;
+}
+.process_detail_container .table .btn_wrap{
+    padding: 0;
+}
+.process_detail_container .table .btn_wrap>span{
+    cursor: pointer;
+    display: inline-block;
+    padding: 3px 5px;
+    background-color: rgba(0, 176, 221, .3);
+    margin-top: 5px;
+    color: #00B0DD;
+    border-radius: 5px;
+}
+.add_new_invest{
+    color:#00B0DD;
+    margin-bottom: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    color: white;
+    background-color: rgba(0, 176, 221, .3);
+    border-radius: 10px;
+    padding: 5px 10px;
+    width: 150px;
+    text-align: center;
+}
+.add_external_invest_wrap{
+    display: none;
+}
+.add_external_invest_wrap .add_content{
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+    top: 5%;
+    width: 500px;
+    z-index: 1040;
+    background-color: white;
+    padding: 20px;
+    color: #868686;
+}
+.add_external_invest_wrap .add_content .add_header{
+    font-size: 14px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #ddd;
+}
+.invest_infos .invest_infos_item{
+    margin-bottom: 20px;
+}
+.invest_infos .invest_infos_item>div{
+    display: inline-block;
+    vertical-align: top;
+}
+.invest_infos .invest_infos_item>div:nth-child(1){
+    width: 80px;
+    text-align: right;
+}
+.add_external_invest_wrap .invest_infos p, .add_external_invest_wrap .invest_exit_infos p{
+    color:#00B0DD;
+    margin-top: 10px;
+    margin-left: 28px;
+}
+.add_btn{
+    color: #00B0DD;
+}
+.add_content .invest_exit_infos .add_btn td{
+    border-top: none;
+}
+.add_content .invest_exit_infos tr:not(.add_btn){
+    border-bottom: 1px solid #ddd;
+}
+.add_external_invest_wrap .add_invest_foot{
+    text-align: center;
+}
+.add_external_invest_wrap .add_invest_foot>span{
+    display: inline-block;
+    padding: 8px 18px;
+    cursor: pointer;
+}
+.add_external_invest_wrap .add_invest_foot>span.save{
+    background-color: #00B0DD;
+    color: white;
+}
+.add_external_invest_wrap .add_invest_foot>span.cancel{
+    border: 1px solid #ddd;
+}

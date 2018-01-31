@@ -1961,6 +1961,17 @@ class Cowin_project(models.Model):
 
         return res
 
+    # 获取轮次
+    def rpc_get_financing(self):
+        data = self.env['cowin_common.round_financing'].search([])
+        res = []
+        for obj in data:
+            res.append({
+                'id': obj.id,
+                'name': obj.name
+            })
+        return res
+
 
 
 
