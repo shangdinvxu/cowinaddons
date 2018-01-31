@@ -1917,8 +1917,7 @@ class Cowin_project(models.Model):
         if round:
             self.env['cowin.project.detail.foundation'].create({
                 'round_id': round.id,
-                'ownership_interest': vals.get('ownership_interest'),
-                'the_amount_of_investment': vals.get('the_amount_of_investment'),
+                'the_amount_of_investment': float(vals.get('the_amount_of_investment')),
                 'foundation': vals.get('foundation'),
                 'data_from': 'external',
             })
@@ -1926,10 +1925,10 @@ class Cowin_project(models.Model):
             self.env['cowin.project.detail.round'].create({
                 'project_id': self.id,
                 'round_financing_id': int(vals.get('round_financing_id')),
-                'the_amount_of_financing': vals.get('the_amount_of_financing'),
-                'project_valuation': vals.get('project_valuation'),
+                'the_amount_of_financing': float(vals.get('the_amount_of_financing')),
+                'project_valuation': float(vals.get('project_valuation')),
                 'foundation_ids': [(0, 0, {
-                    'the_amount_of_investment': vals.get('the_amount_of_investment'),
+                    'the_amount_of_investment': float(vals.get('the_amount_of_investment')),
                     'foundation': vals.get('foundation'),
                     'data_from': 'external'
                 })]
@@ -1973,6 +1972,17 @@ class Cowin_project(models.Model):
             })
         return res
 
+    # 获取轮次的估值及融资信息
+    def rpc_get_financing_infos(self, vals):
+        data = self.env['cowin.project.detail.round'].sudo().search([
+            ('project_id', '=', self.id), ('round_financing_id', '=', vals.get('round_financing_id'))])
+        res = {}
+        if data:
+            res.update({
+                'id': data.the_amount_of_financing,
+                'name': data.project_valuation
+            })
+        return res
 
 
 
