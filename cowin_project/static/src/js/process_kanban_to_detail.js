@@ -70,16 +70,18 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
         add_invest_select_change_func:function () {
             var self = this;
             var round_financing_id = parseInt($('.add_invest_select option:selected').attr('data-id'));
-            if(round_financing_id != 1){
-                $('.the_amount_of_financing').prop('disabled',true);
-                $('.project_valuation').prop('disabled',true);
-            }else {
-                $('.the_amount_of_financing').prop('disabled',false);
-                $('.project_valuation').prop('disabled',false);
-            }
+
             new Model("cowin_project.cowin_project")
                     .call("rpc_get_financing_infos", [self.id],{vals:{'round_financing_id':round_financing_id}})
                     .then(function (result) {
+                        if(result.id && result.name){
+                            $('.the_amount_of_financing').prop('disabled',true);
+                            $('.project_valuation').prop('disabled',true);
+                        }else {
+                            $('.the_amount_of_financing').prop('disabled',false);
+                            $('.project_valuation').prop('disabled',false);
+                        }
+
                         $('.the_amount_of_financing').val(result.id);
                         $('.project_valuation').val(result.name);
                     })
@@ -119,6 +121,20 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
 
                         $('.add_invest_select').html('');
                         $('.add_invest_select').append(QWeb.render('add_invest_select_tmpl',{result:result}));
+
+                        new Model("cowin_project.cowin_project")
+                            .call("rpc_get_financing_infos", [self.id],{vals:{'round_financing_id':result[0].id}})
+                            .then(function (result) {
+                                if(result.id && result.name){
+                                    $('.the_amount_of_financing').prop('disabled',true);
+                                    $('.project_valuation').prop('disabled',true);
+                                }else {
+                                    $('.the_amount_of_financing').prop('disabled',false);
+                                    $('.project_valuation').prop('disabled',false);
+                                }
+                                $('.the_amount_of_financing').val(result.id);
+                                $('.project_valuation').val(result.name);
+                            });
                         $('.add_external_invest_wrap').show();
                     })
         },
@@ -328,7 +344,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     }
                 })
             })
-            $(add_sel_node).prepend(QWeb.render('names_tmpl', {result: render_names,is_admin:self.is_admin,edit:true,weiyuan: weiyuan_id}));
+            $(add_sel_node).prepend(QWeb.render('names_tmpl', {result: render_names,is_admin:self.is_admin,edit:true,weiyuan: weiyuan_id,is_readonly:false}));
             self.hide_add_new_sels();
 
         },

@@ -417,6 +417,7 @@
     background-color: rgba(242, 242, 242, 1);
     padding: 3px 10px;
     text-align: center;
+    margin-bottom: 5px;
     font-weight: 500!important;
 }
 .team_role_names_wrap .member_name .fa-close{
