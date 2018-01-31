@@ -434,8 +434,8 @@
                               <t t-esc="item.name"/>
                             </td>
                         </tr>
-                        <tr>
-                            <t t-foreach="item.data" t-as="obj">
+                        <t t-foreach="item.data" t-as="obj">
+                            <tr>
                                 <td><t t-esc="obj.foundation"/></td>
                                 <td><t t-esc="obj.foundation"/></td>
                                 <td><t t-esc="obj.the_amount_of_financing"/></td>
@@ -448,8 +448,8 @@
                                         <span>删除</span>
                                     <!--</t>-->
                                 </td>
-                            </t>
-                        </tr>
+                            </tr>
+                        </t>
                     </t>
                 </tbody>
             </table>
