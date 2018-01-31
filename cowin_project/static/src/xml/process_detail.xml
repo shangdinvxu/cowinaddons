@@ -292,7 +292,7 @@
         <select class="selectpicker bla bla bli" multiple="true" data-live-search="true">
             <t t-foreach="result" t-as="item">
                 <t t-if="type==1">
-                    <option class="weiyuan" t-att-data-id="item.employee_ids">
+                    <option class="weiyuan" t-att-data-id="item.employee_ids" t-att-data-scope-id="item.investment_decision_committee_scope_id">
                         <t t-esc="item.name"/>
                     </option>
                 </t>
@@ -333,7 +333,7 @@
     <!--内部-->
     <t t-name="names_tmpl">
         <t t-foreach="result" t-as="item">
-            <span class="member_name" t-att-employee_id="item.employee_id">
+            <span class="member_name" t-att-employee_id="item.employee_id" t-att-weiyuan="weiyuan">
                 <t t-esc="item.name"/>
                 <t t-if="edit==true">
                     <t t-if="is_readonly==false">
