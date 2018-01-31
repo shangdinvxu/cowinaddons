@@ -1904,6 +1904,7 @@ class Cowin_project(models.Model):
                     'ownership_interest': foundation.ownership_interest,
                     'the_amount_of_investment': foundation.the_amount_of_investment,
                     'foundation': foundation.foundation,
+                    'foundation_id': foundation.id,
                     'data_from': foundation.data_from,
                     'project_valuation': project_detail.project_valuation,
                     'the_amount_of_financing': project_detail.the_amount_of_financing,
@@ -1990,6 +1991,18 @@ class Cowin_project(models.Model):
                 'name': data.project_valuation
             })
         return res
+
+    # 删除项目详情信息
+    def rpc_delete_foundation_infos(self, vals):
+        data = self.env['cowin.project.detail.foundation'].search([
+            ('id', '=', vals.get('foundation_id'))])
+
+        if data:
+            if data.round_id.foundation_ids.length == 1:
+                data.round_id.unlink()
+            else:
+                data.unlink()
+
 
 
 
