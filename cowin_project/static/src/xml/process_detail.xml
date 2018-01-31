@@ -235,10 +235,13 @@
                                 <t t-set="is_admin" t-value="result.is_admin"></t>
                                 <t t-set="result" t-value="obj.employee_infos"></t>
                                 <t t-set="edit" t-value="edit"></t>
+                                <t t-set="is_readonly" t-value="obj.is_readonly"></t>
                             </t>
 
                             <t t-if="edit==true">
-                                <span class="add_new_role">新增</span>
+                                <t t-if="obj.is_readonly==false">
+                                    <span class="add_new_role">新增</span>
+                                </t>
                             </t>
                         </div>
                     </div>
@@ -333,7 +336,9 @@
             <span class="member_name" t-att-employee_id="item.employee_id">
                 <t t-esc="item.name"/>
                 <t t-if="edit==true">
-                    <span class="fa fa-close"></span>
+                    <t t-if="is_readonly==false">
+                        <span class="fa fa-close"></span>
+                    </t>
                 </t>
             </span>
         </t>
@@ -434,8 +439,8 @@
                               <t t-esc="item.name"/>
                             </td>
                         </tr>
-                        <tr>
-                            <t t-foreach="item.data" t-as="obj">
+                        <t t-foreach="item.data" t-as="obj">
+                            <tr>
                                 <td><t t-esc="obj.foundation"/></td>
                                 <td><t t-esc="obj.foundation"/></td>
                                 <td><t t-esc="obj.the_amount_of_financing"/></td>
@@ -448,8 +453,8 @@
                                         <span>删除</span>
                                     <!--</t>-->
                                 </td>
-                            </t>
-                        </tr>
+                            </tr>
+                        </t>
                     </t>
                 </tbody>
             </table>
@@ -471,7 +476,7 @@
                     <div class="invest_infos_item">
                         <div><span style="color:red">*</span>投资方名称: </div>
                         <div>
-                            <input type="text"/>
+                            <input class="foundation" type="text"/>
                         </div>
                     </div>
                     <div class="invest_infos_item">
@@ -486,12 +491,12 @@
                             <input class="the_amount_of_investment" type="text"/>
                         </div>
                     </div>
-                    <div class="invest_infos_item">
-                        <div><span style="color:red">*</span>股份比例: </div>
-                        <div>
-                            <input class="ownership_interest" type="text"/>
-                        </div>
-                    </div>
+                    <!--<div class="invest_infos_item">-->
+                        <!--<div><span style="color:red">*</span>股份比例: </div>-->
+                        <!--<div>-->
+                            <!--<input class="ownership_interest" type="text"/>-->
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
                 <div class="invest_exit_infos">
                     <p>退出情况</p>
