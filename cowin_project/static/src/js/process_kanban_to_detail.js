@@ -44,11 +44,39 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .add_invest_foot .save':'save_add_invest',
             'click .add_invest_foot .cancel':'cancel_add_invest',
             'click .add_btn td':'add_exit_func',
-            'change .add_invest_select select':'add_invest_select_change_func'
+            'change .add_invest_select select':'add_invest_select_change_func',
+            'click .btn_wrap .delete':'delete_func'
         },
+        //详情页tab  删除
+        delete_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            var foundation_id = $(target).parents('tr').attr('foundation-id');
+
+            Dialog.confirm(this, _t("确定删除这条数据?"), {
+                confirm_callback: function() {
+                    new Model("cowin_project.cowin_project")
+                        .call("rpc_delete_foundation_infos", [self.id],{vals:{'foundation_id':parseInt(foundation_id)}})
+                        .then(function (result) {
+                            console.log(result)
+                            $("#process_detail").html('');
+                            $("#process_detail").append(QWeb.render('process_deatil_tmpl', {result: result}))
+                        })
+                },
+            });
+        },
+        //详情页添加外部投资选择轮次的change事件
         add_invest_select_change_func:function () {
             var self = this;
             var round_financing_id = parseInt($('.add_invest_select option:selected').attr('data-id'));
+            if(round_financing_id != 1){
+                $('.the_amount_of_financing').prop('disabled',true);
+                $('.project_valuation').prop('disabled',true);
+            }else {
+                $('.the_amount_of_financing').prop('disabled',false);
+                $('.project_valuation').prop('disabled',false);
+            }
             new Model("cowin_project.cowin_project")
                     .call("rpc_get_financing_infos", [self.id],{vals:{'round_financing_id':round_financing_id}})
                     .then(function (result) {
@@ -73,6 +101,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             data['foundation'] = $('.foundation').val();
             data['the_amount_of_investment'] = $('.the_amount_of_investment').val();
             data['the_amount_of_financing'] = $('.the_amount_of_financing').val();
+            data['project_valuation'] = $('.project_valuation').val();
             new Model("cowin_project.cowin_project")
                     .call("rpc_create_detail_info", [self.id],{vals:data})
                     .then(function (result) {

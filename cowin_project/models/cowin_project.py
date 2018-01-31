@@ -2002,7 +2002,6 @@ class Cowin_project(models.Model):
                 data.round_id.unlink()
             else:
                 data.unlink()
-
         return self.rpc_get_detail_info()
 
 

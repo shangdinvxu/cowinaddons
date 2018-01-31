@@ -440,7 +440,7 @@
                             </td>
                         </tr>
                         <t t-foreach="item.data" t-as="obj">
-                            <tr>
+                            <tr t-att-foundation-id="obj.foundation_id">
                                 <td><t t-esc="obj.foundation"/></td>
                                 <td><t t-esc="obj.project_valuation"/></td>
                                 <td><t t-esc="obj.the_amount_of_financing"/></td>
@@ -450,7 +450,7 @@
                                 <td class="btn_wrap">
                                     <!--<t t-if="obj.data_from=='external'">-->
                                         <span>编辑</span>
-                                        <span>删除</span>
+                                        <span class="delete">删除</span>
                                     <!--</t>-->
                                 </td>
                             </tr>
@@ -482,7 +482,7 @@
                     <div class="invest_infos_item">
                         <div><span style="color:red">*</span>本次融资额: </div>
                         <div>
-                            <input class="the_amount_of_financing" type="text" disabled="disabled"/>
+                            <input class="the_amount_of_financing" type="text"/>
                         </div>
                     </div>
                     <div class="invest_infos_item">
@@ -494,7 +494,7 @@
                     <div class="invest_infos_item">
                         <div><span style="color:red">*</span>公司估值: </div>
                         <div>
-                            <input class="project_valuation" type="text" disabled="disabled"/>
+                            <input class="project_valuation" type="text"/>
                         </div>
                     </div>
                 </div>
