@@ -598,7 +598,7 @@
     padding: 20px;
     color: #868686;
 }
-.add_external_invest_wrap .add_content .add_header{
+.add_header{
     font-size: 14px;
     padding-bottom: 5px;
     border-bottom: 2px solid #ddd;
@@ -614,7 +614,7 @@
     width: 80px;
     text-align: right;
 }
-.add_external_invest_wrap .invest_infos p, .add_external_invest_wrap .invest_exit_infos p{
+.invest_infos p,.invest_exit_infos p{
     color:#00B0DD;
     margin-top: 10px;
     margin-left: 28px;
@@ -640,6 +640,24 @@
     background-color: #00B0DD;
     color: white;
 }
+.add_external_invest_wrap .add_invest_foot>span.save_edit{
+    background-color: #00B0DD;
+    color: white;
+}
 .add_external_invest_wrap .add_invest_foot>span.cancel{
     border: 1px solid #ddd;
 }
+
+.process_deatil_edit_wrap .process_deatil_edit_content{
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+    top: 5%;
+    width: 500px;
+    z-index: 1040;
+    background-color: white;
+    padding: 20px;
+    color: #868686;
+}
+

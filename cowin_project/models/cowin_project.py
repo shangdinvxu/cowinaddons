@@ -1910,7 +1910,7 @@ class Cowin_project(models.Model):
                     'the_amount_of_financing': project_detail.the_amount_of_financing,
                 }
                 foundations.append(foundation_dict)
-            detail_infos.append({'name': project_detail.round_financing_id.name, 'data': foundations})
+            detail_infos.append({'name': project_detail.round_financing_id.name, 'data': foundations, 'id':project_detail.round_financing_id.id})
 
         # print detail_infos
         return detail_infos
@@ -1947,7 +1947,7 @@ class Cowin_project(models.Model):
         foundation_id = vals.get('foundation_id')
         foundation = self.env['cowin.project.detail.foundation'].sudo().search([('id', '=', foundation_id)])
         if foundation and foundation.data_from == 'external':
-            self.env['cowin.project.detail.foundation'].update({
+            foundation.write({
                 'the_amount_of_investment': float(vals.get('the_amount_of_investment')),
                 'foundation': vals.get('foundation'),
             })

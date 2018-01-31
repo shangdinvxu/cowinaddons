@@ -45,7 +45,51 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .add_invest_foot .cancel':'cancel_add_invest',
             'click .add_btn td':'add_exit_func',
             'change .add_invest_select select':'add_invest_select_change_func',
-            'click .btn_wrap .delete':'delete_func'
+            'click .btn_wrap .delete':'delete_func',
+            'click .btn_wrap .edit':'edit_func',
+            'click .add_invest_foot .save_edit':'save_edit_func'
+        },
+        //详情页面编辑的保存
+        save_edit_func:function () {
+            var self = this;
+            var back_datas = {
+                'foundation_id': parseInt(self.edit_foundation_id),
+                'the_amount_of_investment': $('.add_content .the_amount_of_investment').val(),
+                'foundation':$('.add_content .foundation').val()
+            };
+            console.log(back_datas)
+            new Model("cowin_project.cowin_project")
+                        .call("rpc_update_detail_info", [self.id],{vals:back_datas})
+                        .then(function (result) {
+                            console.log(result);
+                            $("#process_detail").html('');
+                            $("#process_detail").append(QWeb.render('process_deatil_tmpl', {result: result}))
+                        })
+        },
+        //详情页面 编辑按钮
+        edit_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            $('.add_external_invest_wrap').show();
+            var self = this;
+            self.edit_foundation_id = $(target).parents('tr').attr('foundation-id');
+
+            data = [{
+                'id':null,
+                'name':$(target).parents('tr').prev().find('td').html()
+            }];
+            console.log(data);
+            $('.add_invest_select').html('');
+            $('.add_invest_select').append(QWeb.render('add_invest_select_tmpl',{result:data}));
+            $('.add_invest_select select').prop('disabled',true);
+            $('.add_content .foundation').val($(target).parents('tr').find('.foundation').text());
+            $('.add_content .the_amount_of_financing').val($(target).parents('tr').find('.the_amount_of_financing').text());
+            $('.add_content .the_amount_of_financing').prop('disabled',true);
+            $('.add_content .the_amount_of_investment').val($(target).parents('tr').find('.the_amount_of_investment').text());
+            $('.add_content .project_valuation').val($(target).parents('tr').find('.project_valuation').text());
+            $('.add_content .project_valuation').prop('disabled',true);
+
+            $('.add_invest_foot .save').addClass('save_edit').removeClass('save');
         },
         //详情页tab  删除
         delete_func:function (e) {
@@ -118,6 +162,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     .call("rpc_get_financing", [[]])
                     .then(function (result) {
                         console.log(result);
+                        $('.add_external_invest_wrap input').val('');
 
                         $('.add_invest_select').html('');
                         $('.add_invest_select').append(QWeb.render('add_invest_select_tmpl',{result:result}));

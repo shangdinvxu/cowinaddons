@@ -434,22 +434,22 @@
                 </thead>
                 <tbody>
                     <t t-foreach="result" t-as="item">
-                        <tr class="financing">
+                        <tr class="financing" t-att-round-financing-id="item.id">
                             <td>
                               <t t-esc="item.name"/>
                             </td>
                         </tr>
                         <t t-foreach="item.data" t-as="obj">
                             <tr t-att-foundation-id="obj.foundation_id">
-                                <td><t t-esc="obj.foundation"/></td>
-                                <td><t t-esc="obj.project_valuation"/></td>
-                                <td><t t-esc="obj.the_amount_of_financing"/></td>
-                                <td><t t-esc="obj.the_amount_of_investment"/></td>
-                                <td><t t-esc="obj.ownership_interest"/></td>
+                                <td class="foundation"><t t-esc="obj.foundation"/></td>
+                                <td class="project_valuation"><t t-esc="obj.project_valuation"/></td>
+                                <td class="the_amount_of_financing"><t t-esc="obj.the_amount_of_financing"/></td>
+                                <td class="the_amount_of_investment"><t t-esc="obj.the_amount_of_investment"/></td>
+                                <td class="ownership_interest"><t t-esc="obj.ownership_interest"/></td>
                                 <td>没有数据</td>
                                 <td class="btn_wrap">
                                     <!--<t t-if="obj.data_from=='external'">-->
-                                        <span>编辑</span>
+                                        <span class="edit">编辑</span>
                                         <span class="delete">删除</span>
                                     <!--</t>-->
                                 </td>
@@ -460,7 +460,7 @@
             </table>
         </div>
 
-
+        <!--新增外部投资-->
         <div class="add_external_invest_wrap">
             <div class="modal-backdrop in"></div>
             <div class="add_content">
@@ -527,6 +527,29 @@
                 </div>
             </div>
         </div>
+
+        <!--详情页面 编辑-->
+        <!--<div class="process_deatil_edit_wrap">-->
+            <!--<div class="modal-backdrop in"></div>-->
+            <!--<div class="process_deatil_edit_content">-->
+                <!--<div class="add_header">编辑投资</div>-->
+                <!--<div class="invest_infos">-->
+                    <!--<p>投资情况</p>-->
+                    <!--<div class="invest_infos_item">-->
+                        <!--<div><span style="color:red">*</span>投资轮次: </div>-->
+                        <!--<div class="add_invest_select">-->
+
+                        <!--</div>-->
+                    <!--</div>-->
+                     <!--<div class="invest_infos_item">-->
+                        <!--<div><span style="color:red">*</span>本次融资额: </div>-->
+                        <!--<div>-->
+                            <!--<input class="the_amount_of_financing" type="text"/>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
     </t>
 
     <!--新增投资的投资轮次选择模板-->
