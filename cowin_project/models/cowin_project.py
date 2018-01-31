@@ -1998,7 +1998,7 @@ class Cowin_project(models.Model):
             ('id', '=', vals.get('foundation_id'))])
 
         if data:
-            if data.round_id.foundation_ids.length == 1:
+            if len(data.round_id.foundation_ids) == 1:
                 data.round_id.unlink()
             else:
                 data.unlink()
