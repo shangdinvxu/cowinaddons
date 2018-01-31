@@ -442,7 +442,7 @@
                         <t t-foreach="item.data" t-as="obj">
                             <tr>
                                 <td><t t-esc="obj.foundation"/></td>
-                                <td><t t-esc="obj.foundation"/></td>
+                                <td><t t-esc="obj.project_valuation"/></td>
                                 <td><t t-esc="obj.the_amount_of_financing"/></td>
                                 <td><t t-esc="obj.the_amount_of_investment"/></td>
                                 <td><t t-esc="obj.ownership_interest"/></td>
@@ -482,7 +482,7 @@
                     <div class="invest_infos_item">
                         <div><span style="color:red">*</span>本次融资额: </div>
                         <div>
-                            <input class="the_amount_of_financing" type="text"/>
+                            <input class="the_amount_of_financing" type="text" disabled="disabled"/>
                         </div>
                     </div>
                     <div class="invest_infos_item">
@@ -491,12 +491,12 @@
                             <input class="the_amount_of_investment" type="text"/>
                         </div>
                     </div>
-                    <!--<div class="invest_infos_item">-->
-                        <!--<div><span style="color:red">*</span>股份比例: </div>-->
-                        <!--<div>-->
-                            <!--<input class="ownership_interest" type="text"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                    <div class="invest_infos_item">
+                        <div><span style="color:red">*</span>公司估值: </div>
+                        <div>
+                            <input class="project_valuation" type="text" disabled="disabled"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="invest_exit_infos">
                     <p>退出情况</p>

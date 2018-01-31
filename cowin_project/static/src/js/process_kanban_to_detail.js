@@ -43,7 +43,18 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .add_new_invest':'add_new_invest_func',
             'click .add_invest_foot .save':'save_add_invest',
             'click .add_invest_foot .cancel':'cancel_add_invest',
-            'click .add_btn td':'add_exit_func'
+            'click .add_btn td':'add_exit_func',
+            'change .add_invest_select select':'add_invest_select_change_func'
+        },
+        add_invest_select_change_func:function () {
+            var self = this;
+            var round_financing_id = parseInt($('.add_invest_select option:selected').attr('data-id'));
+            new Model("cowin_project.cowin_project")
+                    .call("rpc_get_financing_infos", [self.id],{vals:{'round_financing_id':round_financing_id}})
+                    .then(function (result) {
+                        $('.the_amount_of_financing').val(result.id);
+                        $('.project_valuation').val(result.name);
+                    })
         },
         //添加退出情况
         add_exit_func:function () {
