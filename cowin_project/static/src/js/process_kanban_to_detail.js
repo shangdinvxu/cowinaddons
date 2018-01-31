@@ -65,7 +65,8 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             new Model("cowin_project.cowin_project")
                     .call("rpc_create_detail_info", [self.id],{vals:data})
                     .then(function (result) {
-                        console.log(result);
+                        $("#process_detail").html('');
+                        $("#process_detail").append(QWeb.render('process_deatil_tmpl', {result: result}))
                     })
         },
         //新增外部投资

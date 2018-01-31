@@ -1912,7 +1912,7 @@ class Cowin_project(models.Model):
     def rpc_create_detail_info(self, vals):
         round = self.env['cowin.project.detail.round'].sudo().search([
             ('project_id', '=', self.id),
-            ('round_financing_id', '=', vals.get('round_financing_id'))])
+            ('round_financing_id', '=', int(vals.get('round_financing_id')))])
 
         if round:
             self.env['cowin.project.detail.foundation'].create({
@@ -1925,7 +1925,7 @@ class Cowin_project(models.Model):
         else:
             self.env['cowin.project.detail.round'].create({
                 'project_id': self.id,
-                'round_financing_id': vals.get('round_financing_id'),
+                'round_financing_id': int(vals.get('round_financing_id')),
                 'the_amount_of_financing': vals.get('the_amount_of_financing'),
                 'project_valuation': vals.get('project_valuation'),
                 'foundation_ids': [(0, 0, {
