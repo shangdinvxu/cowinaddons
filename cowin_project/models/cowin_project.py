@@ -1906,7 +1906,7 @@ class Cowin_project(models.Model):
 
         # 为了满足页面所需格式而做的无意义操作.
         details = []
-        for k, v in detail_infos.keys():
+        for k, v in detail_infos:
             details.append({'name': k, 'data': v})
 
         return {'detail_infos': details}
