@@ -36,6 +36,7 @@ class Meat_sub_project(models.Model):
 
     # is_on_use = fields.Boolean(string=u'是否属于使用状态', default=False)
 
+    investment_decision_committee_scope_id = fields.Many2one('cowin_project.global_spec_appro_group_role', string=u'投资决策委员组')
 
 
     @api.model
