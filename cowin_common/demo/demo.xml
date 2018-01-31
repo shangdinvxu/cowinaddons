@@ -1,25 +1,79 @@
 <odoo>
     <data>
+        <record id="object0" model="cowin_common.round_financing">
+            <field name="name">天使轮</field>
+            <field name="sequence">1</field>
+        </record>
 
-         <record id="object0" model="cowin_common.round_financing">
-             <field name="name">天使轮</field>
-         </record>
+        <record id="object1" model="cowin_common.round_financing">
+            <field name="name">A轮</field>
+            <field name="sequence">2</field>
+        </record>
 
-         <record id="object1" model="cowin_common.round_financing">
-             <field name="name">A轮</field>
-         </record>
+        <record id="object2" model="cowin_common.round_financing">
+            <field name="name">B轮</field>
+            <field name="sequence">3</field>
+        </record>
 
-         <record id="object2" model="cowin_common.round_financing">
-             <field name="name">B轮</field>
-         </record>
+        <record id="object3" model="cowin_common.round_financing">
+            <field name="name">C轮</field>
+            <field name="sequence">4</field>
+        </record>
 
-         <record id="object3" model="cowin_common.round_financing">
-             <field name="name">C轮</field>
-           </record>
+        <record id="object4" model="cowin_common.round_financing">
+            <field name="name">D轮</field>
+            <field name="sequence">5</field>
+        </record>
 
-         <record id="object4" model="cowin_common.round_financing">
-             <field name="name">D轮</field>
-         </record>
+        <record id="object5" model="cowin_common.round_financing">
+            <field name="name">E轮</field>
+            <field name="sequence">6</field>
+        </record>
+
+        <record id="object6" model="cowin_common.round_financing">
+            <field name="name">F轮</field>
+            <field name="sequence">7</field>
+        </record>
+
+        <record id="object7" model="cowin_common.round_financing">
+            <field name="name">G轮</field>
+            <field name="sequence">8</field>
+        </record>
+
+        <record id="object8" model="cowin_common.round_financing">
+            <field name="name">H轮</field>
+            <field name="sequence">9</field>
+        </record>
+
+        <record id="object9" model="cowin_common.round_financing">
+            <field name="name">I轮</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="object10" model="cowin_common.round_financing">
+            <field name="name">J轮</field>
+            <field name="sequence">11</field>
+        </record>
+
+        <record id="object11" model="cowin_common.round_financing">
+            <field name="name">K轮</field>
+            <field name="sequence">12</field>
+        </record>
+
+        <record id="object12" model="cowin_common.round_financing">
+            <field name="name">L轮</field>
+            <field name="sequence">13</field>
+        </record>
+
+        <record id="object13" model="cowin_common.round_financing">
+            <field name="name">M轮</field>
+            <field name="sequence">14</field>
+        </record>
+
+        <record id="object14" model="cowin_common.round_financing">
+            <field name="name">N轮</field>
+            <field name="sequence">15</field>
+        </record>
 
     </data>
 </odoo>

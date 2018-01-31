@@ -235,14 +235,17 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                 # 投委会决议票审核通过之后, 将该基金投资信息存入项目详情内, (该操作与项目主流程无关)
                 if self.sub_project_tache_id.meta_sub_project_id.round_financing_and_Foundation_ids:
                     entity = self.sub_project_tache_id.meta_sub_project_id.round_financing_and_Foundation_ids[0]
-                    self.env['cowin.project.detail'].create({
+                    self.env['cowin.project.detail.round'].create({
                         'project_id': self.meta_sub_project_id.project_id.id,
                         'round_financing_id': entity.foundation_id.id,
                         'the_amount_of_financing': entity.the_amount_of_investment,
-                        'ownership_interest': entity.ownership_interest,
-                        'the_amount_of_investment': entity.the_amount_of_financing,
-                        'foundation': entity.foundation_id.name,
                         'project_valuation': entity.project_valuation,
+                        'foundation_ids': [(0, 0, {
+                            'ownership_interest': entity.ownership_interest,
+                            'the_amount_of_investment': entity.the_amount_of_financing,
+                            'foundation': entity.foundation_id.name,
+                            'data_from': 'local'
+                        })]
                     })
             else:
                 res_entity.write({

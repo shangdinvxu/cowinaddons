@@ -1,4 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_cowin_project_cowin_project,cowin_project.cowin_project,model_cowin_project_cowin_project,,1,1,1,1
-access_cowin_project_detail,cowin_project.cowin_project_detail,model_cowin_project_detail,,1,1,1,1
-
+access_cowin_project_detail_foundation,cowin_project.cowin_project_detail_foundation,model_cowin_project_detail_foundation,,1,1,1,1
+access_cowin_project_detail_round,cowin_project.cowin_project_detail_round,model_cowin_project_detail_round,,1,1,1,1

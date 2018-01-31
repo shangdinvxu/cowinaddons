@@ -30,8 +30,11 @@ class Cowin_round_financing(models.Model):
 
     name = fields.Char(string=u'轮次')
 
+    sequence = fields.Integer(string=u'序列')
+
     _sql_constraints = [
-            ('name_key', 'UNIQUE (name)', u'轮次名不能够相同')
+            ('name_key', 'UNIQUE (name)', u'轮次名不能够相同'),
+            ('sequence_key', 'UNIQUE (sequence)', u'轮次序列不能够相同')
         ]
 
 

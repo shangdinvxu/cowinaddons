@@ -1887,42 +1887,52 @@ class Cowin_project(models.Model):
     # 获得详情的信息!!!
     def rpc_get_detail_info(self):
         #is_final_meeting_resolution
-        detail_infos = {}
-        res = {}
-        project_details = self.env['cowin.project.detail'].sudo().search([('project_id', '=', self.id)])
+        detail_infos = []
+
+        project_details = self.env['cowin.project.detail.round'].sudo().search([('project_id', '=', self.id)])
         for project_detail in project_details:
+            foundations = []
+            for foundation in project_detail.foundation_ids:
+                foundation_dict = {
+                    'round_id': foundation.round_id,
+                    'ownership_interest': foundation.ownership_interest,
+                    'the_amount_of_investment': foundation.the_amount_of_investment,
+                    'foundation': foundation.foundation,
+                    'data_from': foundation.data_from,
+                    'project_valuation': project_detail.project_valuation,
+                    'the_amount_of_financing': project_detail.the_amount_of_financing,
+                }
+                foundations.append(foundation_dict)
+            detail_infos.append({'name': project_detail.round_financing_id.name, 'data': foundations})
 
-            project_detail_dict = {
-                'round_financing_id': project_detail.round_financing_id.name,
-                'the_amount_of_financing': project_detail.the_amount_of_financing,
-                'ownership_interest': project_detail.ownership_interest,
-                'the_amount_of_investment': project_detail.the_amount_of_investment,
-                'foundation': project_detail.foundation,
-                'data_from': project_detail.data_from,
-            }
-            if project_detail.round_financing_id.name not in detail_infos.keys():
-                detail_infos.update({project_detail.round_financing_id.name: []})
-
-            detail_infos.get(project_detail.round_financing_id.name).append(project_detail_dict)
-
-        # 为了满足页面所需格式而做的无意义操作.
-        details = []
-        for key in detail_infos.keys():
-            details.append({'name': key, 'data': detail_infos.get(key)})
-        return details
+        return detail_infos
 
     # 新增详情的信息!!!
     def rpc_create_detail_info(self, vals):
-        self.env['cowin.project.detail'].create({
-            'project_id': vals.get('project_id'),
-            'round_financing_id': vals.get('round_financing_id'),
-            'the_amount_of_financing': vals.get('the_amount_of_financing'),
-            'ownership_interest': vals.get('ownership_interest'),
-            'the_amount_of_investment': vals.get('the_amount_of_investment'),
-            'foundation': vals.get('foundation'),
-            'project_valuation': vals.get('project_valuation'),
-            'data_from': vals.get('data_from'),
-        })
+        round = self.env['cowin.project.detail.round'].sudo().search([
+            ('project_id', '=', self.id),
+            ('round_financing_id', '=', vals.get('round_financing_id'))])
+
+        if round:
+            self.env['cowin.project.detail.foundation'].create({
+                'round_id': round.id,
+                'ownership_interest': vals.get('ownership_interest'),
+                'the_amount_of_investment': vals.get('the_amount_of_investment'),
+                'foundation': vals.get('foundation'),
+                'data_from': 'external',
+            })
+        else:
+            self.env['cowin.project.detail.round'].create({
+                'project_id': self.id,
+                'round_financing_id': vals.get('round_financing_id'),
+                'the_amount_of_financing': vals.get('the_amount_of_financing'),
+                'project_valuation': vals.get('project_valuation'),
+                'foundation_ids': [(0, 0, {
+                    'the_amount_of_investment': vals.get('the_amount_of_investment'),
+                    'foundation': vals.get('foundation'),
+                    'data_from': 'external'
+                })]
+            })
         return 1
 
     # 获取管理合伙人
