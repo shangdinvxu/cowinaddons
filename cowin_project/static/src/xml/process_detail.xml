@@ -426,7 +426,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <t t-foreach="result.detail_infos.get('B轮', [])" t-as="item">
+                    <t t-foreach="result" t-as="item">
                         <tr>
                             <td>
                               <t t-esc="item"/>
