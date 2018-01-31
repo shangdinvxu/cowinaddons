@@ -52,6 +52,14 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
             $('.selectpicker option:selected').each(function () {
                 sel.push(parseInt($(this).attr('data-id')));
             })
+            $('.selectpicker option:selected').each(function () {
+                if($(this).hasClass('weiyuan')){
+                    var weiyuan = $(this).attr('data-id').split(', ')
+                    sel = weiyuan
+                }else {
+                    sel.push(parseInt($(this).attr('data-id')));
+                }
+            })
             var add_sel_node = $(".manage_team_edit_wrap .detail_lines_wrap[meta_sub_pro_id="+ self.add_meta_sub_pro_id +"] .detail_line[approval_role_id="+ self.add_approval_role_id +"] .team_role_names_wrap");
             $.each(sel,function (x,n) {
                 $.each(self.employee_infos,function (y,v) {
@@ -76,6 +84,28 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
             var self = this;
             self.add_approval_role_id = $(target).parents('.detail_line').attr('approval_role_id');
             self.add_meta_sub_pro_id = $(target).parents('.detail_lines_wrap').attr('meta_sub_pro_id');
+
+
+            //判断是否是要单独请求方法获取选择的人员
+            if($(target).parents('.detail_line').attr('need_call_rpc')!='false'){
+                new Model("cowin_project.cowin_project")
+                    .call($(target).parents('.detail_line').attr('need_call_rpc'), [[self.id]])
+                    .then(function (result) {
+                        console.log(result);
+                        $('.add_new_wrap .add_new_body').html('');
+
+                        //type=1表示投资决策委员会
+                        if($(target).parents('.detail_line').attr('need_call_rpc')=='rpc_get_investment_decision_committee_infos'){
+                            $('.add_new_wrap .add_new_body').append(QWeb.render('add_new_objs', {result: result,type: 1}));
+                        }else {
+                            $('.add_new_wrap .add_new_body').append(QWeb.render('add_new_objs', {result: result,type: 2}));
+                        }
+                    })
+            }
+            else {
+                $('.add_new_wrap .add_new_body').html('');
+                $('.add_new_wrap .add_new_body').append(QWeb.render('add_new_objs', {result: self.employee_infos,type: 3}));
+            }
 
             $('.add_new_body option').each(function () {
                $(this)[0].selected = false;
