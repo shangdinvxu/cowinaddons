@@ -1904,7 +1904,12 @@ class Cowin_project(models.Model):
 
             detail_infos.get(project_detail.round_financing_id.name).append(project_detail_dict)
 
-        return {'detail_infos': detail_infos}
+        # 为了满足页面所需格式而做的无意义操作.
+        details = []
+        for key in detail_infos.keys():
+            details.append({'name': key, 'data': detail_infos.get(key)})
+
+        return {'detail_infos': details}
 
     # 新增详情的信息!!!
     def rpc_create_detail_info(self, vals):
