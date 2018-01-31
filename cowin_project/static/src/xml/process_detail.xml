@@ -412,6 +412,9 @@
     <!--tab 详情-->
     <t t-name="process_deatil_tmpl">
         <div class="process_detail_container">
+            <div class="add_new_invest">
+                <span class="fa fa-plus"></span> 新增外部投资
+            </div>
             <table class="table">
                 <thead>
                     <tr>
@@ -421,38 +424,113 @@
                         <th>投资金额</th>
                         <th>股份比例</th>
                         <th>退出情况</th>
-                        <th style="width:50px"></th>
-                        <th style="width:50px"></th>
+                        <th style="width:80px"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <t t-foreach="result" t-as="item">
-                        <tr>
+                        <tr class="financing">
                             <td>
-                              <t t-esc="item"/>
+                              <t t-esc="item.name"/>
                             </td>
                         </tr>
+                        <tr>
+                            <t t-foreach="item.data" t-as="obj">
+                                <td><t t-esc="obj.foundation"/></td>
+                                <td><t t-esc="obj.foundation"/></td>
+                                <td><t t-esc="obj.the_amount_of_financing"/></td>
+                                <td><t t-esc="obj.the_amount_of_investment"/></td>
+                                <td><t t-esc="obj.ownership_interest"/></td>
+                                <td>没有数据</td>
+                                <td class="btn_wrap">
+                                    <!--<t t-if="obj.data_from=='external'">-->
+                                        <span>编辑</span>
+                                        <span>删除</span>
+                                    <!--</t>-->
+                                </td>
+                            </t>
+                        </tr>
                     </t>
-
-
-                    <!--<tr>-->
-                        <!--<td>A轮</td>-->
-                    <!--</tr>-->
-                    <!--<t t-foreach="result.detail_infos" t-as="item">-->
-                        <!--<tr>-->
-                            <!--<td><t t-esc="item.foundation"/></td>-->
-                            <!--<td><t t-esc="item.foundation"/></td>-->
-                            <!--<td><t t-esc="item.the_amount_of_financing"/></td>-->
-                            <!--<td><t t-esc="item.the_amount_of_investment"/></td>-->
-                            <!--<td><t t-esc="item.ownership_interest"/></td>-->
-                            <!--<td></td>-->
-                            <!--<td class="process_detail_edit">编辑</td>-->
-                            <!--<td class="process_detail_delete">删除</td>-->
-                        <!--</tr>-->
-                    <!--</t>-->
                 </tbody>
             </table>
         </div>
+
+
+        <div class="add_external_invest_wrap">
+            <div class="modal-backdrop in"></div>
+            <div class="add_content">
+                <div class="add_header">新增投资</div>
+                <div class="invest_infos">
+                    <p>投资情况</p>
+                    <div class="invest_infos_item">
+                        <div><span style="color:red">*</span>投资轮次: </div>
+                        <div class="add_invest_select">
+
+                        </div>
+                    </div>
+                    <div class="invest_infos_item">
+                        <div><span style="color:red">*</span>投资方名称: </div>
+                        <div>
+                            <input type="text"/>
+                        </div>
+                    </div>
+                    <div class="invest_infos_item">
+                        <div><span style="color:red">*</span>本次融资额: </div>
+                        <div>
+                            <input class="the_amount_of_financing" type="text"/>
+                        </div>
+                    </div>
+                    <div class="invest_infos_item">
+                        <div><span style="color:red">*</span>投资金额: </div>
+                        <div>
+                            <input class="the_amount_of_investment" type="text"/>
+                        </div>
+                    </div>
+                    <div class="invest_infos_item">
+                        <div><span style="color:red">*</span>股份比例: </div>
+                        <div>
+                            <input class="ownership_interest" type="text"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="invest_exit_infos">
+                    <p>退出情况</p>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>退出时公司估值</th>
+                                <th>退出金额</th>
+                                <th>退出比例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="value_info">
+                                <td><input type="text"/></td>
+                                <td><input type="text"/></td>
+                                <td><input type="text"/></td>
+                            </tr>
+                            <tr class="add_btn">
+                                <td>添加</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="add_invest_foot">
+                    <span class="save">保存</span>
+                    <span class="cancel">取消</span>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <!--新增投资的投资轮次选择模板-->
+    <t t-name="add_invest_select_tmpl">
+        <select style="width:154px">
+            <t t-foreach="result" t-as="item">
+                <option t-att-data-id="item.id"><t t-esc="item.name"/></option>
+            </t>
+        </select>
     </t>
 
 </templates>

@@ -39,7 +39,39 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .manage_team_edit':'manage_team_edit_func',
             'click .operate_contacts':'show_operate_contacts',
             'click .process_add_fun':'process_add_fun',
-            'click .project_details':'project_details_func'
+            'click .project_details':'project_details_func',
+            'click .add_new_invest':'add_new_invest_func',
+            'click .add_invest_foot .save':'save_add_invest',
+            'click .add_invest_foot .cancel':'cancel_add_invest',
+            'click .add_btn td':'add_exit_func'
+        },
+        //添加退出情况
+        add_exit_func:function () {
+            $('.invest_exit_infos tbody tr').eq(0).clone(true).insertBefore($('.add_btn'));
+        },
+        //取消新增投资
+        cancel_add_invest:function () {
+            $('.add_external_invest_wrap').hide();
+        },
+        //保存新增投资
+        save_add_invest:function () {
+            var self = this;
+            var data = {};
+            data['project_id'] = self.id;
+            data['round_financing_id'] = $('.add_invest_select option:selected').attr('data-id');
+            console.log(data);
+        },
+        //新增外部投资
+        add_new_invest_func:function () {
+            new Model("cowin_project.cowin_project")
+                    .call("rpc_get_financing", [[]])
+                    .then(function (result) {
+                        console.log(result);
+
+                        $('.add_invest_select').html('');
+                        $('.add_invest_select').append(QWeb.render('add_invest_select_tmpl',{result:result}));
+                        $('.add_external_invest_wrap').show();
+                    })
         },
         //tab 详情
         project_details_func:function () {
