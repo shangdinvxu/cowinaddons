@@ -57,17 +57,27 @@ class Cowin_Global_Special_Approval_Role(models.Model):
 
     count_computed = fields.Char(compute='_compute_count_by_employee_ids')
 
-
-    @api.depends('employee_ids')
-    def _compute_count_by_employee_ids(self):
-        for rec in self:
-            if len(rec.employee_ids) > rec.count:
-                raise UserError(u'%s虚拟角色已达到上限!!!' % rec.name)
-
-
-
-
     employee_ids = fields.Many2many('hr.employee', string=u'相对应的员工')
+
+    count_accumulation = fields.Integer(string=u'员工人数的累加值')
+
+    @api.multi
+    def verify_count(self):
+        self.ensure_one()
+        if self.count_accumulation > self.count:
+            raise UserError(u'%s中只允许%s个员工' % (self.name, self.count))
+
+    # @api.depends('employee_ids')
+    # def _compute_count_by_employee_ids(self):
+    #     print(u'虚拟角色是否已经达到了上限的挑战!!!')
+    #     for rec in self:
+    #         if len(rec.employee_ids) > rec.count:
+    #             raise UserError(u'%s虚拟角色已达到上限!!!' % rec.name)
+
+
+
+
+
 
 
 class  Cowin_Global_Special_Approval_Group_role(models.Model):
@@ -136,47 +146,121 @@ class Cowin_hr(models.Model):
 
 
     @api.multi
-    def write_special_user_role_or_group(self):
+    def write_special_user_role_or_group(self, vals):
         self.ensure_one()
 
         spec_appro_role_entities = self.env['cowin_project.global_spec_appro_role'].search([])
 
-        if self.is_ventilation_control_supervisor:
-            spec_appro_role_entities.filtered(lambda self: self.name == u'风控总监').write({
-                'employee_ids': [(4, self.id)]
-            })
-        else:
-            spec_appro_role_entities.filtered(lambda self: self.name == u'风控总监').write({
-                'employee_ids': [(3, self.id)]
-            })
-
-        if self.is_managing_partner:
-            spec_appro_role_entities.filtered(lambda self: self.name == u'管理合伙人').write({
-                'employee_ids': [(4, self.id)]
-            })
-        else:
-            spec_appro_role_entities.filtered(lambda self: self.name == u'管理合伙人').write({
-                'employee_ids': [(3, self.id)]
-            })
+        def _inner_filter(name):
+            return spec_appro_role_entities.filtered(lambda self: self.name == name)
 
 
-        if self.is_treasury_attache:
-            spec_appro_role_entities.filtered(lambda self: self.name == u'财务专员').write({
-                'employee_ids': [(4, self.id)]
-            })
-        else:
-            spec_appro_role_entities.filtered(lambda self: self.name == u'财务专员').write({
-                'employee_ids': [(3, self.id)]
+
+        # 风控总监
+        is_ventilation_control_supervisor = vals.get('is_ventilation_control_supervisor', None)
+        if is_ventilation_control_supervisor == True:
+            res = _inner_filter(u'风控总监')
+            res.verify_count()
+            res.write({
+                'count_accumulation': res.count_accumulation + 1,
+                'employee_ids': [(4, self.id)],
             })
 
-        if self.is_chairman_of_the_investment_decision_committee:
-            spec_appro_role_entities.filtered(lambda self: self.name == u'投资决策委员会主席').write({
-                'employee_ids': [(4, self.id)]
+        elif is_ventilation_control_supervisor == False:
+            res = _inner_filter(u'风控总监')
+            c = res.count_accumulation
+            c = c - 1
+            if c <= 1:
+                c = 1
+
+            res.write({
+                'count_accumulation': c,
+                'employee_ids': [(3, self.id)],
             })
         else:
-            spec_appro_role_entities.filtered(lambda self: self.name == u'投资决策委员会主席').write({
-                'employee_ids': [(3, self.id)]
+            pass
+
+
+
+        # 管理合伙人
+        is_managing_partner = vals.get('is_managing_partner', None)
+        if is_managing_partner == True:
+
+            res = _inner_filter(u'管理合伙人')
+            res.verify_count()
+            res.write({
+                'count_accumulation': res.count_accumulation + 1,
+                'employee_ids': [(4, self.id)],
             })
+
+        elif is_managing_partner == False:
+
+            res = _inner_filter(u'管理合伙人')
+            c = res.count_accumulation
+            c = c - 1
+            if c <= 1:
+                c = 1
+
+            res.write({
+                'count_accumulation': c,
+                'employee_ids': [(3, self.id)],
+            })
+
+        else:
+            pass
+
+
+        # 财务专员
+        is_treasury_attache = vals.get('is_treasury_attache', None)
+        if is_treasury_attache == True:
+            res = _inner_filter(u'财务专员')
+            res.verify_count()
+            res.write({
+                'count_accumulation': res.count_accumulation + 1,
+                'employee_ids': [(4, self.id)],
+            })
+        elif is_treasury_attache == False:
+            res = _inner_filter(u'财务专员')
+            c = res.count_accumulation
+            c = c - 1
+            if c <= 1:
+                c = 1
+
+            res.write({
+                'count_accumulation': c,
+                'employee_ids': [(3, self.id)],
+            })
+
+        else:
+            pass
+
+
+
+        # 投资决策委员会主席
+        is_chairman_of_the_investment_decision_committee = vals.get('is_chairman_of_the_investment_decision_committee', None)
+        if is_chairman_of_the_investment_decision_committee == True:
+            res = _inner_filter(u'投资决策委员会主席')
+            res.verify_count()
+            res.write({
+                'count_accumulation': res.count_accumulation + 1,
+                'employee_ids': [(4, self.id)],
+            })
+
+        elif is_chairman_of_the_investment_decision_committee == False:
+            res = _inner_filter(u'投资决策委员会主席')
+            c = res.count_accumulation
+            c = c - 1
+            if c <= 1:
+                c = 1
+
+            res.write({
+                'count_accumulation': c,
+                'employee_ids': [(3, self.id)],
+            })
+
+        else:
+            pass
+
 
 
 
@@ -247,7 +331,9 @@ class Cowin_hr(models.Model):
         # 创建当前的hr.employee实例
         vals['user_id'] = user_entity.id
         res_hr = super(Cowin_hr, self).create(vals)
-        res_hr.write_special_user_role_or_group()
+
+
+        res_hr.write_special_user_role_or_group(vals)
         return res_hr
 
 
@@ -276,7 +362,7 @@ class Cowin_hr(models.Model):
             #     raise UserError(u'目前不支持用户角色改写!!!')
 
         res = super(Cowin_hr, self).write(vals)
-        self.write_special_user_role_or_group()
+        self.write_special_user_role_or_group(vals)
 
         return res
 

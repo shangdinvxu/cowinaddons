@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_cowin_project_meta_sub_appro_role_hr_em,cowin_project.meta_sub_appro_role_hr_em,model_cowin_project_meta_sub_appro_role_hr_em,,1,1,1,1
+access_cowin_project_global_spec_appro_role,cowin_project.global_spec_appro_role,model_cowin_project_global_spec_appro_role,,1,1,1,1
+access_cowin_project_global_spec_appro_group_role,cowin_project.global_spec_appro_group_role,model_cowin_project_global_spec_appro_group_role,,1,1,1,1
