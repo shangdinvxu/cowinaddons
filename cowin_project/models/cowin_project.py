@@ -1997,12 +1997,13 @@ class Cowin_project(models.Model):
         data = self.env['cowin.project.detail.foundation'].search([
             ('id', '=', vals.get('foundation_id'))])
 
-        if data:
-            if len(data.round_id.foundation_ids) == 1:
+        if data and data.data_from == 'external':
+            if len(data.round_id.foundation_ids) < 2:
                 data.round_id.unlink()
             else:
                 data.unlink()
 
+        return self.rpc_get_detail_info()
 
 
 
