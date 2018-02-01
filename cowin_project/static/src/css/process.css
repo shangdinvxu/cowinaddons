@@ -566,7 +566,7 @@
     cursor: pointer;
     display: inline-block;
     padding: 3px 10px;
-    background-color: rgba(0, 176, 221, .3);
+    /*background-color: rgba(0, 176, 221, .3);*/
     margin-top: 5px;
     color: #00B0DD;
     border-radius: 5px;
@@ -578,7 +578,7 @@
     cursor: pointer;
     color: white;
     background-color: rgba(0, 176, 221, 1);
-    border-radius: 10px;
+    border-radius: 25px;
     padding: 5px 10px;
     width: 150px;
     text-align: center;
@@ -666,4 +666,35 @@
 }
 .search_page .manage_team_edit{
     display: none;
+}
+.tab_detail_view_item{
+    color: #00B0DD;
+    cursor: pointer;
+}
+
+.tab_detail_view_withdraw_wrap{
+    display: none;
+}
+.tab_detail_view_withdraw_wrap .exit_detail_content{
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+    top: 5%;
+    width: 500px;
+    z-index: 1040;
+    background-color: white;
+    padding: 20px;
+    color: #868686;
+}
+.tab_detail_view_withdraw_wrap .exit_detail_content .header{
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+.tab_detail_view_withdraw_wrap .exit_detail_content .close{
+    position: absolute;
+    right: 18px;
+    top: 10px;
+    cursor: pointer;
 }

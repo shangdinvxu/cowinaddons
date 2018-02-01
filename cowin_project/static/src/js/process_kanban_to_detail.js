@@ -50,6 +50,21 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .add_invest_foot .save_edit':'save_edit_func',
             'input .invest_exit_infos .the_amount_of_withdrawals':'calc_exit_inter',
             'input .invest_exit_infos .project_valuation':'calc_exit_inter',
+            'click .tab_detail_view_item':'tab_detail_view_item_func',
+            'click .exit_detail_content .close':'close_view_withdraw'
+        },
+        close_view_withdraw:function () {
+            $('.tab_detail_view_withdraw_wrap').hide();
+        },
+        //查看退出情况
+        tab_detail_view_item_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            var index = $(target).parents('tr').attr('item-index');
+            $('.tab_detail_view_withdraw_wrap').show();
+            $('.tab_detail_view_withdraw_wrap').find('.exit_detail_content').find('tbody').html('');
+            $('.tab_detail_view_withdraw_wrap').find('.exit_detail_content').find('tbody').append(QWeb.render('view_withdraw_tmpl',{result: self.tab_detail_infos[parseFloat(index)]}));
         },
         //计算退出比例
         calc_exit_inter:function (e) {
@@ -72,6 +87,16 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                         .call("rpc_update_detail_info", [self.id],{vals:back_datas})
                         .then(function (result) {
                             console.log(result);
+
+                            self.tab_detail_infos = [];
+                            //获取详情页数据存到全局
+                            result.forEach(function (value) {
+                                value.data.forEach(function (data) {
+                                    self.tab_detail_infos.push(data.withdrawals)
+                                });
+                            });
+                            console.log(self.tab_detail_infos);
+
                             $("#process_detail").html('');
                             $("#process_detail").append(QWeb.render('process_deatil_tmpl', {result: result}))
                         })
@@ -81,7 +106,9 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
             $('.add_external_invest_wrap').show();
+            $('.add_content .add_header').html('编辑投资');
             var self = this;
+            var index = $(target).parents('tr').attr('item-index');
             self.edit_foundation_id = $(target).parents('tr').attr('foundation-id');
 
             data = [{
@@ -92,14 +119,17 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             $('.add_invest_select').html('');
             $('.add_invest_select').append(QWeb.render('add_invest_select_tmpl',{result:data}));
             $('.add_invest_select select').prop('disabled',true);
-            $('.add_content .foundation').val($(target).parents('tr').find('.foundation').text());
-            $('.add_content .the_amount_of_financing').val($(target).parents('tr').find('.the_amount_of_financing').text());
-            $('.add_content .the_amount_of_financing').prop('disabled',true);
-            $('.add_content .the_amount_of_investment').val($(target).parents('tr').find('.the_amount_of_investment').text());
-            $('.add_content .project_valuation').val($(target).parents('tr').find('.project_valuation').text());
-            $('.add_content .project_valuation').prop('disabled',true);
+            $('.invest_infos_item .foundation').val($(target).parents('tr').find('.foundation').text());
+            $('.invest_infos_item .the_amount_of_financing').val($(target).parents('tr').find('.the_amount_of_financing').text());
+            $('.invest_infos_item .the_amount_of_financing').prop('disabled',true);
+            $('.invest_infos_item .the_amount_of_investment').val($(target).parents('tr').find('.the_amount_of_investment').text());
+            $('.invest_infos_item .project_valuation').val($(target).parents('tr').find('.project_valuation').text());
+            $('.invest_infos_item .project_valuation').prop('disabled',true);
 
             $('.add_invest_foot .save').addClass('save_edit').removeClass('save');
+
+            $('.invest_exit_infos tbody').html('');
+            $('.invest_exit_infos tbody').append(QWeb.render('withdraw_infos_tmpl', {result: self.tab_detail_infos[parseInt(index)]}))
         },
         //详情页tab  删除
         delete_func:function (e) {
@@ -113,7 +143,17 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     new Model("cowin_project.cowin_project")
                         .call("rpc_delete_foundation_infos", [self.id],{vals:{'foundation_id':parseInt(foundation_id)}})
                         .then(function (result) {
-                            console.log(result)
+                            console.log(result);
+
+                            self.tab_detail_infos = [];
+                            //获取详情页数据存到全局
+                            result.forEach(function (value) {
+                                value.data.forEach(function (data) {
+                                    self.tab_detail_infos.push(data.withdrawals)
+                                });
+                            });
+                            console.log(self.tab_detail_infos);
+
                             $("#process_detail").html('');
                             $("#process_detail").append(QWeb.render('process_deatil_tmpl', {result: result}))
                         })
@@ -179,6 +219,15 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                 new Model("cowin_project.cowin_project")
                     .call("rpc_create_detail_info", [self.id],{vals:data})
                     .then(function (result) {
+                        self.tab_detail_infos = [];
+                        //获取详情页数据存到全局
+                        result.forEach(function (value) {
+                            value.data.forEach(function (data) {
+                                self.tab_detail_infos.push(data.withdrawals)
+                            });
+                        });
+                        console.log(self.tab_detail_infos);
+
                         $("#process_detail").html('');
                         $("#process_detail").append(QWeb.render('process_deatil_tmpl', {result: result}))
                     })
@@ -210,6 +259,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                                 $('.invest_infos_item .project_valuation').val(result.name);
                             });
                         $('.add_external_invest_wrap').show();
+                        $('.add_content .add_header').html('新增投资')
                     })
         },
         //tab 详情
@@ -219,6 +269,14 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     .call("rpc_get_detail_info", [parseInt(self.id)])
                     .then(function (result) {
                         console.log(result);
+
+                        //获取详情页数据存到全局
+                        result.forEach(function (value) {
+                            value.data.forEach(function (data) {
+                                self.tab_detail_infos.push(data.withdrawals)
+                            });
+                        });
+                        console.log(self.tab_detail_infos);
 
                         $("#process_detail").html('');
                         $("#process_detail").append(QWeb.render('process_deatil_tmpl', {result: result}))
@@ -672,6 +730,9 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             // console.log(action);
             //存储环节
             self.tache_arr = [];
+
+            //存储详情页数据
+            self.tab_detail_infos = [];
 
             //项目管理团队是否完善
             self.perfect = true;
