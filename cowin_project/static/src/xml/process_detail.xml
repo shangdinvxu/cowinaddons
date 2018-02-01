@@ -436,6 +436,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <t t-set="tab_detail_item_index" t-value="0"/>
                     <t t-foreach="result" t-as="item">
                         <tr class="financing" t-att-round-financing-id="item.id">
                             <td>
@@ -443,13 +444,21 @@
                             </td>
                         </tr>
                         <t t-foreach="item.data" t-as="obj">
-                            <tr t-att-foundation-id="obj.foundation_id">
+                            <tr t-att-foundation-id="obj.foundation_id" t-att-item-index="tab_detail_item_index">
+                                <t t-set="tab_detail_item_index" t-value="tab_detail_item_index + 1"/>
                                 <td class="foundation"><t t-esc="obj.foundation"/></td>
                                 <td class="project_valuation"><t t-esc="obj.project_valuation"/></td>
                                 <td class="the_amount_of_financing"><t t-esc="obj.the_amount_of_financing"/></td>
                                 <td class="the_amount_of_investment"><t t-esc="obj.the_amount_of_investment"/></td>
                                 <td class="ownership_interest"><t t-esc="obj.ownership_interest"/></td>
-                                <td>没有数据</td>
+                                <td>
+                                    <t t-if="obj.withdrawals.length==0">
+                                        无
+                                    </t>
+                                    <t t-else="">
+                                        <span class="tab_detail_view_item">查看</span>
+                                    </t>
+                                </td>
                                 <td class="btn_wrap">
                                     <t t-if="obj.data_from=='external'">
                                         <span class="edit">编辑</span>
@@ -530,6 +539,38 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="tab_detail_view_withdraw_wrap">
+            <div class="modal-backdrop in"></div>
+            <div class="exit_detail_content">
+                <div class="header">退出情况</div>
+                <span class="fa fa-times close"></span>
+                <table class="table">
+                    <thead>
+                        <tr style="background-color:#F2F2F2">
+                            <th>退出时公司估值</th>
+                            <th>退出金额</th>
+                            <th>退出比例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+
+    <!--退出情况详情-->
+    <t t-name="view_withdraw_tmpl">
+        <t t-foreach="result" t-as="item">
+            <tr>
+                <td><t t-esc="item.project_valuation"/></td>
+                <td><t t-esc="item.the_amount_of_withdrawals"/></td>
+                <td><t t-esc="item.ownership_interest"/></td>
+            </tr>
+        </t>
     </t>
 
     <!--新增投资的投资轮次选择模板-->
@@ -539,6 +580,29 @@
                 <option t-att-data-id="item.id"><t t-esc="item.name"/></option>
             </t>
         </select>
+    </t>
+
+    <!--退出情况的模板-->
+    <t t-name="withdraw_infos_tmpl">
+        <t t-if="result.length==0">
+            <tr class="value_info">
+                <td><input class="project_valuation" type="text"/></td>
+                <td><input class="the_amount_of_withdrawals" type="text"/></td>
+                <td><input class="ownership_interest" type="text" disabled="disabled"/></td>
+            </tr>
+        </t>
+        <t t-else="">
+            <t t-foreach="result" t-as="item">
+                <tr class="value_info">
+                    <td><input type="text" disabled="disabled" t-att-value="item.project_valuation"/></td>
+                    <td><input type="text" disabled="disabled" t-att-value="item.the_amount_of_withdrawals"/></td>
+                    <td><input type="text" disabled="disabled" t-att-value="item.ownership_interest"/></td>
+                </tr>
+            </t>
+        </t>
+        <tr class="add_btn">
+            <td class="cursor:pointer">添加</td>
+        </tr>
     </t>
 
 </templates>
