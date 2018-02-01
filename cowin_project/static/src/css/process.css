@@ -664,4 +664,6 @@
     padding: 20px;
     color: #868686;
 }
-
+.search_page .manage_team_edit{
+    display: none;
+}

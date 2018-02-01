@@ -10,7 +10,7 @@
 
 
     <t t-name="project_process_detail_tmp">
-        <div id="project_process_container">
+        <div id="project_process_container" t-att-class="result.no_initate==true ? 'search_page':''">
             <div class="project_header">
                 <h2><t t-esc="result.name"/></h2>
             </div>
@@ -54,23 +54,13 @@
                                 </div>
                             </t>
                             <t t-if="result.whether_new_meta_sub_project_or_not==true">
-                                <div class="process_add_fun">
-                                    <span><span class="fa fa-plus"></span> 新增基金</span>
-                                </div>
+                                <t t-if="result.no_initate==false">
+                                    <div class="process_add_fun">
+                                        <span><span class="fa fa-plus"></span> 新增基金</span>
+                                    </div>
+                                </t>
                             </t>
                         </div>
-                        <div class="process_data_rounds">
-                            <div>其他</div>
-                            <ul style="padding-left:18px">
-                                <li class="manage_team_btn">项目管理团队
-                                    <t t-if="result.permission_configuration.default_is_full == false">
-                                        <span class="no_perfect">未完善</span>
-                                    </t>
-                                    <span class="fa fa-chevron-right"></span>
-                                </li>
-                            </ul>
-                        </div>
-
 
                         <!--项目查询里的项目若到了投后也要显示-->
                         <t t-if="result.prev_or_post_investment == false">
@@ -104,6 +94,19 @@
                                 </div>
                             </t>
                         </t>
+
+
+                        <div class="process_data_rounds">
+                            <div>其他</div>
+                            <ul style="padding-left:18px">
+                                <li class="manage_team_btn">项目管理团队
+                                    <t t-if="result.permission_configuration.default_is_full == false">
+                                        <span class="no_perfect">未完善</span>
+                                    </t>
+                                    <span class="fa fa-chevron-right"></span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="process_data_main_wrap">
