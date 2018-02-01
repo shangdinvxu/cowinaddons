@@ -19,28 +19,18 @@ class Cowin_project_detail_foundation(models.Model):
     ], string='数据来源', default='local')
 
     # 计算股份比例
-    @api.multi
-    @api.depends('the_amount_of_investment')
     def _calc_ownership_interest(self):
         print 'sss'
         round_entity = self.env['cowin.project.detail.round']
-        for s in self:
-            rounds = round_entity.search([('project_id', '=', s.round_id.project_id.id)])
+        for self_one in self:
+            rounds = round_entity.search([('project_id', '=', self_one.round_id.project_id.id)])
 
-            temp_ownership_interest = s.the_amount_of_investment / (
-            s.round_id.project_valuation + s.round_id.the_amount_of_financing)
+            temp_ownership_interest = self_one.the_amount_of_investment / (
+                self_one.round_id.project_valuation + self_one.round_id.the_amount_of_financing)
 
             for round_ in rounds:
-                if s.round_id.round_financing_id.sequence > round_.round_financing_id.sequence:
-                    for foundation in round_.foundation_ids:
-                        foundation.ownership_interest = round(
-                            foundation.the_amount_of_investment /
-                            (round_.project_valuation + round_.the_amount_of_financing), 4)
+                if self_one.round_id.round_financing_id.sequence < round_.round_financing_id.sequence:
+                    temp_ownership_interest = temp_ownership_interest * (
+                        round_.project_valuation / (round_.project_valuation + round_.the_amount_of_financing))
 
-                if s.round_id.round_financing_id.sequence < round_.round_financing_id.sequence:
-                    temp_ownership_interest = round(
-                        temp_ownership_interest * (
-                            round_.project_valuation /
-                            (round_.project_valuation + round_.the_amount_of_financing)), 4)
-
-            s.ownership_interest = round(temp_ownership_interest, 4)
+            self_one.ownership_interest = round(temp_ownership_interest, 4)
