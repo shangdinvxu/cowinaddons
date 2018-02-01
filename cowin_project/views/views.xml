@@ -329,14 +329,14 @@
                                 <field name="project_company_profile"/>
                                 <field name="project_appraisal"/>
                                 <field name="project_note"/>
-                                <field name="industry"/>
+                                <field name="industry" required="1"/>
                                 <field name="stage"/>
-                                <field name="production"/>
-                                <field name="registered_address"/>
-                                <field name="peration_place"/>
+                                <field name="production" required="1"/>
+                                <field name="registered_address" required="1"/>
+                                <field name="peration_place"  required="1"/>
                                 <field name="founding_time"/>
                                 <!--<field name="invest_manager"/>-->
-                                <field name="contract_person"/>
+                                <field name="contract_person" required="1"/>
                                 <field name="contract_phone"/>
                                 <field name="contract_email"/>
                             </group>
