@@ -123,7 +123,7 @@ class Cowin_project_subproject(models.Model):
     date_of_project = fields.Date(string=u'立项日期')
 
     # 投资决策委员会会议纪要 依赖的字段
-    voting_committee = fields.Date(string=u'投决会日期')
+    # voting_committee = fields.Date(string=u'投决会日期')
 
 
 

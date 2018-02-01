@@ -170,7 +170,10 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
 
                 # 创建投票实体  投决会日期
-                vals['voting_committee'] = meta_sub_project_entity.sub_project_ids[0].voting_committee
+                if prev_or_post_vote:
+                    vals['voting_committee_date'] = meta_sub_project_entity.sub_project_ids[0].prev_voting_date
+                else:
+                    vals['voting_committee_date'] = meta_sub_project_entity.sub_project_ids[0].post_voting_date
                 vals['sub_prev_post_poll_status_id'] = e.id
                 vals['prev_or_post_vote'] = prev_or_post_vote
 
