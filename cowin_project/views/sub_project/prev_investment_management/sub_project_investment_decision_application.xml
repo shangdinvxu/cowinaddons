@@ -20,9 +20,9 @@
                                 <field name="project_number" readonly="1"/>
                                 <field name="date_of_review" readonly="1"/>
                                 <field name="invest_manager_ids" readonly="1"/>
-                                <field name="company_investment_role" readonly="1"/>
-                                <field name="decision_file_list" widget="many2many_binary"/>
-                                <field name="investment_decision_Committee_held_time"/>
+                                <field name="company_investment_role" required="1"/>
+                                <field name="decision_file_list" widget="many2many_binary" required="1"/>
+                                <field name="investment_decision_Committee_held_time" required="1"/>
                             </group>
                             <group>
                                 <!--投资基金-->
@@ -70,9 +70,9 @@
                                 <field name="project_number" readonly="1"/>
                                 <field name="invest_manager_ids" readonly="1"/>
                                 <field name="date_of_review" readonly="1"/>
-                                <field name="company_investment_role" readonly="1"/>
-                                <field name="decision_file_list" widget="many2many_binary"/>
-                                <field name="investment_decision_Committee_held_time"/>
+                                <field name="company_investment_role" required="1"/>
+                                <field name="decision_file_list" widget="many2many_binary" required="1"/>
+                                <field name="investment_decision_Committee_held_time" required="1"/>
                             </group>
                             <group>
                                 <!--投资基金-->
