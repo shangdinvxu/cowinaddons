@@ -661,7 +661,8 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         approval_flow_settings_record_info['approval_person_id'] = self.env.user.employee_ids[0].id
 
         # 审批角色
-        approval_flow_settings_record_info['approval_role_id'] = self.current_approval_flow_node_id.operation_role_id.id
+        # approval_flow_settings_record_info['approval_role_id'] = self.current_approval_flow_node_id.operation_role_id.id
+        approval_flow_settings_record_info['approval_role_id'] = self.approval_flow_settings_id.approval_flow_setting_node_ids[1].operation_role_id.id
 
         self.write({
             'sub_pro_approval_flow_settings_record_ids': [(0, 0, approval_flow_settings_record_info)]
