@@ -47,7 +47,17 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'change .add_invest_select select':'add_invest_select_change_func',
             'click .btn_wrap .delete':'delete_func',
             'click .btn_wrap .edit':'edit_func',
-            'click .add_invest_foot .save_edit':'save_edit_func'
+            'click .add_invest_foot .save_edit':'save_edit_func',
+            'input .invest_exit_infos .the_amount_of_withdrawals':'calc_exit_inter',
+            'input .invest_exit_infos .project_valuation':'calc_exit_inter',
+        },
+        //计算退出比例
+        calc_exit_inter:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var x = $(target).parents('tr').find('.the_amount_of_withdrawals').val();
+            var y = $(target).parents('tr').find('.project_valuation').val();
+            $(target).parents('tr').find('.ownership_interest').val(parseFloat(x)/parseFloat(y));
         },
         //详情页面编辑的保存
         save_edit_func:function () {
@@ -133,6 +143,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
         //添加退出情况
         add_exit_func:function () {
             $('.invest_exit_infos tbody tr').eq(0).clone(true).insertBefore($('.add_btn'));
+            $('.add_btn').prev().find('input').val('');
         },
         //取消新增投资
         cancel_add_invest:function () {
@@ -148,13 +159,30 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             data['the_amount_of_investment'] = $('.invest_infos_item .the_amount_of_investment').val();
             data['the_amount_of_financing'] = $('.invest_infos_item .the_amount_of_financing').val();
             data['project_valuation'] = $('.invest_infos_item .project_valuation').val();
-            console.log(data)
-            new Model("cowin_project.cowin_project")
+            data['withdrawals'] = [];
+            $('.invest_exit_infos .value_info').each(function (index) {
+                if($(this).find('.ownership_interest').val() && $(this).find('.the_amount_of_withdrawals').val() && $(this).find('.project_valuation').val()){
+                    data['withdrawals'].push({
+                         'ownership_interest': $(this).find('.ownership_interest').val() ? $(this).find('.ownership_interest').val(): null,
+                         'the_amount_of_withdrawals': $(this).find('.the_amount_of_withdrawals').val() ? parseInt($(this).find('.the_amount_of_withdrawals').val()) : null,
+                         'project_valuation': $(this).find('.project_valuation').val() ? parseInt($(this).find('.project_valuation').val()):null
+                     })
+                }
+            });
+
+            console.log(data);
+            if($('.invest_infos_item .foundation').val() == '' || $('.invest_infos_item .the_amount_of_financing').val() == '' || $('.invest_infos_item .the_amount_of_investment').val() == '' || $('.invest_infos_item .project_valuation').val() == ''){
+                Dialog.alert(self, _t("警告！"), {
+                    title: _t('请完善数据！'),
+                });
+            }else {
+                new Model("cowin_project.cowin_project")
                     .call("rpc_create_detail_info", [self.id],{vals:data})
                     .then(function (result) {
                         $("#process_detail").html('');
                         $("#process_detail").append(QWeb.render('process_deatil_tmpl', {result: result}))
                     })
+            }
         },
         //新增外部投资
         add_new_invest_func:function () {
@@ -172,14 +200,14 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                             .call("rpc_get_financing_infos", [self.id],{vals:{'round_financing_id':result[0].id}})
                             .then(function (result) {
                                 if(result.id && result.name){
-                                    $('.the_amount_of_financing').prop('disabled',true);
-                                    $('.project_valuation').prop('disabled',true);
+                                    $('.invest_infos_item .the_amount_of_financing').prop('disabled',true);
+                                    $('.invest_infos_item .project_valuation').prop('disabled',true);
                                 }else {
-                                    $('.the_amount_of_financing').prop('disabled',false);
-                                    $('.project_valuation').prop('disabled',false);
+                                    $('.invest_infos_item .the_amount_of_financing').prop('disabled',false);
+                                    $('.invest_infos_item .project_valuation').prop('disabled',false);
                                 }
-                                $('.the_amount_of_financing').val(result.id);
-                                $('.project_valuation').val(result.name);
+                                $('.invest_infos_item .the_amount_of_financing').val(result.id);
+                                $('.invest_infos_item .project_valuation').val(result.name);
                             });
                         $('.add_external_invest_wrap').show();
                     })

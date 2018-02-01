@@ -513,9 +513,9 @@
                         </thead>
                         <tbody>
                             <tr class="value_info">
-                                <td><input type="text"/></td>
-                                <td><input type="text"/></td>
-                                <td><input type="text"/></td>
+                                <td><input class="project_valuation" type="text"/></td>
+                                <td><input class="the_amount_of_withdrawals" type="text"/></td>
+                                <td><input class="ownership_interest" type="text" disabled="disabled"/></td>
                             </tr>
                             <tr class="add_btn">
                                 <td style="cursor:pointer">添加</td>
