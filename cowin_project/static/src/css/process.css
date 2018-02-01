@@ -417,6 +417,7 @@
     background-color: rgba(242, 242, 242, 1);
     padding: 3px 10px;
     text-align: center;
+    margin-bottom: 5px;
     font-weight: 500!important;
 }
 .team_role_names_wrap .member_name .fa-close{
@@ -564,7 +565,7 @@
 .process_detail_container .table .btn_wrap>span{
     cursor: pointer;
     display: inline-block;
-    padding: 3px 5px;
+    padding: 3px 10px;
     background-color: rgba(0, 176, 221, .3);
     margin-top: 5px;
     color: #00B0DD;
@@ -576,7 +577,7 @@
     font-size: 16px;
     cursor: pointer;
     color: white;
-    background-color: rgba(0, 176, 221, .3);
+    background-color: rgba(0, 176, 221, 1);
     border-radius: 10px;
     padding: 5px 10px;
     width: 150px;
@@ -597,7 +598,7 @@
     padding: 20px;
     color: #868686;
 }
-.add_external_invest_wrap .add_content .add_header{
+.add_header{
     font-size: 14px;
     padding-bottom: 5px;
     border-bottom: 2px solid #ddd;
@@ -605,15 +606,19 @@
 .invest_infos .invest_infos_item{
     margin-bottom: 20px;
 }
+.invest_infos_item>div:nth-child(2){
+    width: 230px;
+}
 .invest_infos .invest_infos_item>div{
     display: inline-block;
     vertical-align: top;
 }
 .invest_infos .invest_infos_item>div:nth-child(1){
     width: 80px;
-    text-align: right;
+    text-align: left;
+    padding-top: 3px;
 }
-.add_external_invest_wrap .invest_infos p, .add_external_invest_wrap .invest_exit_infos p{
+.invest_infos p,.invest_exit_infos p{
     color:#00B0DD;
     margin-top: 10px;
     margin-left: 28px;
@@ -639,6 +644,26 @@
     background-color: #00B0DD;
     color: white;
 }
+.add_external_invest_wrap .add_invest_foot>span.save_edit{
+    background-color: #00B0DD;
+    color: white;
+}
 .add_external_invest_wrap .add_invest_foot>span.cancel{
     border: 1px solid #ddd;
+}
+
+.process_deatil_edit_wrap .process_deatil_edit_content{
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+    top: 5%;
+    width: 500px;
+    z-index: 1040;
+    background-color: white;
+    padding: 20px;
+    color: #868686;
+}
+.search_page .manage_team_edit{
+    display: none;
 }

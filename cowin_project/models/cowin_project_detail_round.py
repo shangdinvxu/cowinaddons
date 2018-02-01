@@ -14,4 +14,8 @@ class Cowin_project_detail_round(models.Model):
 
     project_valuation = fields.Float(string=u'估值')
 
-    foundation_ids = fields.One2many('cowin.project.detail.foundation', 'round_id')
+    foundation_ids = fields.One2many('cowin.project.detail.foundation', 'round_id', ondelete="cascade")
+
+    _sql_constraints = [
+        ('cowin_project_detail_round_project_unique', 'unique (project_id, round_financing_id)', u"项目轮次不可重复"),
+    ]

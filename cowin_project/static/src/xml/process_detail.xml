@@ -10,7 +10,7 @@
 
 
     <t t-name="project_process_detail_tmp">
-        <div id="project_process_container">
+        <div id="project_process_container" t-att-class="result.no_initate==true ? 'search_page':''">
             <div class="project_header">
                 <h2><t t-esc="result.name"/></h2>
             </div>
@@ -54,23 +54,13 @@
                                 </div>
                             </t>
                             <t t-if="result.whether_new_meta_sub_project_or_not==true">
-                                <div class="process_add_fun">
-                                    <span><span class="fa fa-plus"></span> 新增基金</span>
-                                </div>
+                                <t t-if="result.no_initate==false">
+                                    <div class="process_add_fun">
+                                        <span><span class="fa fa-plus"></span> 新增基金</span>
+                                    </div>
+                                </t>
                             </t>
                         </div>
-                        <div class="process_data_rounds">
-                            <div>其他</div>
-                            <ul style="padding-left:18px">
-                                <li class="manage_team_btn">项目管理团队
-                                    <t t-if="result.permission_configuration.default_is_full == false">
-                                        <span class="no_perfect">未完善</span>
-                                    </t>
-                                    <span class="fa fa-chevron-right"></span>
-                                </li>
-                            </ul>
-                        </div>
-
 
                         <!--项目查询里的项目若到了投后也要显示-->
                         <t t-if="result.prev_or_post_investment == false">
@@ -104,6 +94,19 @@
                                 </div>
                             </t>
                         </t>
+
+
+                        <div class="process_data_rounds">
+                            <div>其他</div>
+                            <ul style="padding-left:18px">
+                                <li class="manage_team_btn">项目管理团队
+                                    <t t-if="result.permission_configuration.default_is_full == false">
+                                        <span class="no_perfect">未完善</span>
+                                    </t>
+                                    <span class="fa fa-chevron-right"></span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="process_data_main_wrap">
@@ -292,7 +295,7 @@
         <select class="selectpicker bla bla bli" multiple="true" data-live-search="true">
             <t t-foreach="result" t-as="item">
                 <t t-if="type==1">
-                    <option class="weiyuan" t-att-data-id="item.employee_ids">
+                    <option class="weiyuan" t-att-data-id="item.employee_ids" t-att-data-scope-id="item.investment_decision_committee_scope_id">
                         <t t-esc="item.name"/>
                     </option>
                 </t>
@@ -333,7 +336,7 @@
     <!--内部-->
     <t t-name="names_tmpl">
         <t t-foreach="result" t-as="item">
-            <span class="member_name" t-att-employee_id="item.employee_id">
+            <span class="member_name" t-att-employee_id="item.employee_id" t-att-weiyuan="weiyuan">
                 <t t-esc="item.name"/>
                 <t t-if="edit==true">
                     <t t-if="is_readonly==false">
@@ -421,7 +424,7 @@
                 <span class="fa fa-plus"></span> 新增外部投资
             </div>
             <table class="table">
-                <thead>
+                <thead style="background-color:rgba(242, 242, 242, 0.9)">
                     <tr>
                         <th>投资方</th>
                         <th>公司估值</th>
@@ -429,29 +432,29 @@
                         <th>投资金额</th>
                         <th>股份比例</th>
                         <th>退出情况</th>
-                        <th style="width:80px"></th>
+                        <th style="width:100px"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <t t-foreach="result" t-as="item">
-                        <tr class="financing">
+                        <tr class="financing" t-att-round-financing-id="item.id">
                             <td>
                               <t t-esc="item.name"/>
                             </td>
                         </tr>
                         <t t-foreach="item.data" t-as="obj">
-                            <tr>
-                                <td><t t-esc="obj.foundation"/></td>
-                                <td><t t-esc="obj.foundation"/></td>
-                                <td><t t-esc="obj.the_amount_of_financing"/></td>
-                                <td><t t-esc="obj.the_amount_of_investment"/></td>
-                                <td><t t-esc="obj.ownership_interest"/></td>
+                            <tr t-att-foundation-id="obj.foundation_id">
+                                <td class="foundation"><t t-esc="obj.foundation"/></td>
+                                <td class="project_valuation"><t t-esc="obj.project_valuation"/></td>
+                                <td class="the_amount_of_financing"><t t-esc="obj.the_amount_of_financing"/></td>
+                                <td class="the_amount_of_investment"><t t-esc="obj.the_amount_of_investment"/></td>
+                                <td class="ownership_interest"><t t-esc="obj.ownership_interest"/></td>
                                 <td>没有数据</td>
                                 <td class="btn_wrap">
-                                    <!--<t t-if="obj.data_from=='external'">-->
-                                        <span>编辑</span>
-                                        <span>删除</span>
-                                    <!--</t>-->
+                                    <t t-if="obj.data_from=='external'">
+                                        <span class="edit">编辑</span>
+                                        <span class="delete">删除</span>
+                                    </t>
                                 </td>
                             </tr>
                         </t>
@@ -460,7 +463,7 @@
             </table>
         </div>
 
-
+        <!--新增外部投资-->
         <div class="add_external_invest_wrap">
             <div class="modal-backdrop in"></div>
             <div class="add_content">
@@ -491,18 +494,18 @@
                             <input class="the_amount_of_investment" type="text"/>
                         </div>
                     </div>
-                    <!--<div class="invest_infos_item">-->
-                        <!--<div><span style="color:red">*</span>股份比例: </div>-->
-                        <!--<div>-->
-                            <!--<input class="ownership_interest" type="text"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                    <div class="invest_infos_item">
+                        <div><span style="color:red">*</span>公司估值: </div>
+                        <div>
+                            <input class="project_valuation" type="text"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="invest_exit_infos">
                     <p>退出情况</p>
                     <table class="table">
                         <thead>
-                            <tr>
+                            <tr style="background-color:#F2F2F2">
                                 <th>退出时公司估值</th>
                                 <th>退出金额</th>
                                 <th>退出比例</th>
@@ -510,12 +513,12 @@
                         </thead>
                         <tbody>
                             <tr class="value_info">
-                                <td><input type="text"/></td>
-                                <td><input type="text"/></td>
-                                <td><input type="text"/></td>
+                                <td><input class="project_valuation" type="text"/></td>
+                                <td><input class="the_amount_of_withdrawals" type="text"/></td>
+                                <td><input class="ownership_interest" type="text" disabled="disabled"/></td>
                             </tr>
                             <tr class="add_btn">
-                                <td>添加</td>
+                                <td style="cursor:pointer">添加</td>
                             </tr>
                         </tbody>
                     </table>
@@ -531,7 +534,7 @@
 
     <!--新增投资的投资轮次选择模板-->
     <t t-name="add_invest_select_tmpl">
-        <select style="width:154px">
+        <select style="width:100%">
             <t t-foreach="result" t-as="item">
                 <option t-att-data-id="item.id"><t t-esc="item.name"/></option>
             </t>

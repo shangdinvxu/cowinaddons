@@ -23,7 +23,7 @@ import json
 class Cowin_project(models.Model):
 
     _name = 'cowin_project.cowin_project'
-    _order = "create_date DESC"
+    _order = "id DESC"
 
     # 这些公有的字段用于投前,投后区别
     created = False
@@ -1896,7 +1896,7 @@ class Cowin_project(models.Model):
         #is_final_meeting_resolution
         detail_infos = []
 
-        project_details = self.env['cowin.project.detail.round'].sudo().search([('project_id', '=', self.id)])
+        project_details = self.env['cowin.project.detail.round'].sudo().search([('project_id', '=', self.id)], order='round_financing_id')
         for project_detail in project_details:
             foundations = []
             for foundation in project_detail.foundation_ids:
@@ -1905,41 +1905,69 @@ class Cowin_project(models.Model):
                     'ownership_interest': foundation.ownership_interest,
                     'the_amount_of_investment': foundation.the_amount_of_investment,
                     'foundation': foundation.foundation,
+                    'foundation_id': foundation.id,
                     'data_from': foundation.data_from,
                     'project_valuation': project_detail.project_valuation,
                     'the_amount_of_financing': project_detail.the_amount_of_financing,
+                    'withdrawals': [{
+                        'id': p.id,
+                        'ownership_interest': p.ownership_interest,
+                        'the_amount_of_withdrawals': p.the_amount_of_withdrawals,
+                        'project_valuation': p.project_valuation,
+                    } for p in foundation.withdrawal_ids]
                 }
                 foundations.append(foundation_dict)
-            detail_infos.append({'name': project_detail.round_financing_id.name, 'data': foundations})
+            detail_infos.append({'name': project_detail.round_financing_id.name, 'data': foundations, 'id': project_detail.round_financing_id.id})
 
         # print detail_infos
         return detail_infos
 
     # 新增详情的信息!!!
     def rpc_create_detail_info(self, vals):
-        round = self.env['cowin.project.detail.round'].sudo().search([
+        round_ = self.env['cowin.project.detail.round'].sudo().search([
             ('project_id', '=', self.id),
             ('round_financing_id', '=', int(vals.get('round_financing_id')))])
 
-        if round:
+        if round_:
             self.env['cowin.project.detail.foundation'].create({
-                'round_id': round.id,
-                'ownership_interest': vals.get('ownership_interest'),
-                'the_amount_of_investment': vals.get('the_amount_of_investment'),
+                'round_id': round_.id,
+                'the_amount_of_investment': float(vals.get('the_amount_of_investment')),
                 'foundation': vals.get('foundation'),
                 'data_from': 'external',
+                'withdrawal_ids': [(0, 0, {
+                    'ownership_interest': float(p.get('ownership_interest')),
+                    'the_amount_of_withdrawals': p.get('the_amount_of_withdrawals'),
+                    'project_valuation': p.get('project_valuation'),
+                }) for p in vals.get('withdrawals')]
             })
         else:
             self.env['cowin.project.detail.round'].create({
                 'project_id': self.id,
                 'round_financing_id': int(vals.get('round_financing_id')),
-                'the_amount_of_financing': vals.get('the_amount_of_financing'),
-                'project_valuation': vals.get('project_valuation'),
+                'the_amount_of_financing': float(vals.get('the_amount_of_financing')),
+                'project_valuation': float(vals.get('project_valuation')),
                 'foundation_ids': [(0, 0, {
-                    'the_amount_of_investment': vals.get('the_amount_of_investment'),
+                    'the_amount_of_investment': float(vals.get('the_amount_of_investment')),
                     'foundation': vals.get('foundation'),
-                    'data_from': 'external'
+                    'data_from': 'external',
+                    'withdrawal_ids': [(0, 0, {
+                        'ownership_interest': float(p.get('ownership_interest')),
+                        'the_amount_of_withdrawals': p.get('the_amount_of_withdrawals'),
+                        'project_valuation': p.get('project_valuation'),
+                    }) for p in vals.get('withdrawals')]
+
                 })]
+            })
+        return self.rpc_get_detail_info()
+
+    # 修改详情的信息!!!
+    def rpc_update_detail_info(self, vals):
+        foundation_id = vals.get('foundation_id')
+        foundation = self.env['cowin.project.detail.foundation'].sudo().search([('id', '=', foundation_id)])
+        if foundation and foundation.data_from == 'external':
+            foundation.write({
+                'the_amount_of_investment': float(vals.get('the_amount_of_investment')),
+                'foundation': vals.get('foundation'),
             })
         return self.rpc_get_detail_info()
 
@@ -1964,8 +1992,6 @@ class Cowin_project(models.Model):
             t['investment_decision_committee_scope_id'] = e.id
 
             t['employee_ids'] = str(e.employee_ids.mapped('id'))[1:-1]
-
-
             res.append(t)
 
         return res
@@ -1981,6 +2007,43 @@ class Cowin_project(models.Model):
             })
         return res
 
+    # 获取轮次的估值及融资信息
+    def rpc_get_financing_infos(self, vals):
+        data = self.env['cowin.project.detail.round'].sudo().search([
+            ('project_id', '=', self.id), ('round_financing_id', '=', vals.get('round_financing_id'))])
+        res = {}
+        if data:
+            res.update({
+                'id': data.the_amount_of_financing,
+                'name': data.project_valuation
+            })
+        return res
+
+    # 删除项目详情信息
+    def rpc_delete_foundation_infos(self, vals):
+        data = self.env['cowin.project.detail.foundation'].search([
+            ('id', '=', vals.get('foundation_id'))])
+
+        if data and data.data_from == 'external':
+            if len(data.round_id.foundation_ids) < 2:
+                data.round_id.unlink()
+            else:
+                data.unlink()
+        return self.rpc_get_detail_info()
+
+    # 获取项目退出详情信息
+    def rpc_get_withdrawals_infos(self, vals):
+        data = self.env['cowin.project.detail.withdrawals'].search([
+            ('foundation_id', '=', vals.get('foundation_id'))])
+        res = []
+        for obj in data:
+            res.append({
+                'id': obj.id,
+                'ownership_interest': obj.ownership_interest,
+                'the_amount_of_withdrawals': obj.the_amount_of_withdrawals,
+                'project_valuation': obj.project_valuation,
+            })
+        return res
 
 
 

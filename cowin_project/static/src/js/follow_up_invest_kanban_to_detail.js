@@ -48,13 +48,12 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
         confirm_add_new_sels:function () {
             var self = this;
             var sel = [];
-            var render_names = []
-            $('.selectpicker option:selected').each(function () {
-                sel.push(parseInt($(this).attr('data-id')));
-            })
+            var render_names = [];
+            var weiyuan_id;
             $('.selectpicker option:selected').each(function () {
                 if($(this).hasClass('weiyuan')){
-                    var weiyuan = $(this).attr('data-id').split(', ')
+                    var weiyuan = $(this).attr('data-id').split(', ');
+                    weiyuan_id = parseInt($(this).attr('data-scope-id'));
                     sel = weiyuan
                 }else {
                     sel.push(parseInt($(this).attr('data-id')));
@@ -68,7 +67,7 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
                     }
                 })
             })
-            $(add_sel_node).prepend(QWeb.render('names_tmpl', {result: render_names,is_admin:self.is_admin,edit:true}));
+            $(add_sel_node).prepend(QWeb.render('names_tmpl', {result: render_names,is_admin:self.is_admin,edit:true,weiyuan: weiyuan_id}));
             self.hide_add_new_sels();
 
         },
@@ -240,6 +239,11 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
                     self.meta_sub_project_infos[i].approval_role_infos[j].employee_infos = [];
                     $(this).find('.member_name').each(function () {
                         self.meta_sub_project_infos[i].approval_role_infos[j].employee_infos.push({'employee_id':parseInt($(this).attr('employee_id'))});
+                        if($(this).attr('weiyuan')){
+                            self.meta_sub_project_infos[i].investment_decision_committee_scope_id = parseInt($(this).attr('weiyuan'))
+                        }else {
+                            self.meta_sub_project_infos[i].investment_decision_committee_scope_id = null;
+                        }
                     })
                 })
             })
