@@ -84,7 +84,7 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
         res.subproject_id.write({
             'inner_or_outer_status': 2,     # write方法 状态发生变化
         })
-        res.subproject_id.voting_committee_date = res.voting_committee_date
+        res.subproject_id.prev_voting_date = res.prev_voting_date
 
 
 
