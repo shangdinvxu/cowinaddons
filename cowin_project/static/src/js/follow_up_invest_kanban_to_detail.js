@@ -241,6 +241,8 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
                         self.meta_sub_project_infos[i].approval_role_infos[j].employee_infos.push({'employee_id':parseInt($(this).attr('employee_id'))});
                         if($(this).attr('weiyuan')){
                             self.meta_sub_project_infos[i].investment_decision_committee_scope_id = parseInt($(this).attr('weiyuan'))
+                        }else {
+                            self.meta_sub_project_infos[i].investment_decision_committee_scope_id = null;
                         }
                     })
                 })
