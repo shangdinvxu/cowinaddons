@@ -144,10 +144,11 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             var data = {};
             data['project_id'] = self.id;
             data['round_financing_id'] = $('.add_invest_select option:selected').attr('data-id');
-            data['foundation'] = $('.foundation').val();
-            data['the_amount_of_investment'] = $('.the_amount_of_investment').val();
-            data['the_amount_of_financing'] = $('.the_amount_of_financing').val();
-            data['project_valuation'] = $('.project_valuation').val();
+            data['foundation'] = $('.invest_infos_item .foundation').val();
+            data['the_amount_of_investment'] = $('.invest_infos_item .the_amount_of_investment').val();
+            data['the_amount_of_financing'] = $('.invest_infos_item .the_amount_of_financing').val();
+            data['project_valuation'] = $('.invest_infos_item .project_valuation').val();
+            console.log(data)
             new Model("cowin_project.cowin_project")
                     .call("rpc_create_detail_info", [self.id],{vals:data})
                     .then(function (result) {
