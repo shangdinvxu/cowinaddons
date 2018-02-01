@@ -103,4 +103,25 @@ odoo.define('linkloving_core.TreeView', function (require) {
             }
         },
     });
-})
+
+
+//  * Client action to reload the whole interface.
+//  * If params.menu_id, it opens the given menu entry.
+//  * If params.wait, reload will wait the openerp server to be reachable before reloading
+
+function Reload2(parent, action) {
+    var end_url = action.url;
+
+    var l = window.location;
+    var url = l.protocol + "//" + l.host + end_url;
+
+    framework.redirect(url);
+}
+
+core.action_registry.add("reload2", Reload2);
+});
+
+
+
+
+

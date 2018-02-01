@@ -128,14 +128,20 @@ class Cowin_common_approval_flow_dialog(models.Model):
 
         sub_approval_flow_settings_entity.save_approval_flow_info(approval_flow_settings_record_info)
 
-
-
         return {
-            'type': 'ir.actions.act_url',
-            'name': "Redirect to the Website Projcet Rating Page",
-            'target': 'self',
+            'type': 'ir.actions.client',
+            'name': '主工程信息',
+            'tag': 'reload2',
             'url': '/web#active_id=%s&action=approval_kanban_to_detail&model=cowin_project.cowin_project' % (sub_tache_entity.meta_sub_project_id.project_id.id)
+
+            # 'params': {'menu_id': self.env.ref('point_of_sale.menu_point_root').id},
         }
+        # return {
+        #     'type': 'ir.actions.act_url',
+        #     'name': "Redirect to the Website Projcet Rating Page",
+        #     'target': 'self',
+        #     'url': '/web#active_id=%s&action=approval_kanban_to_detail&model=cowin_project.cowin_project' % (sub_tache_entity.meta_sub_project_id.project_id.id)
+        # }
 
 
 
