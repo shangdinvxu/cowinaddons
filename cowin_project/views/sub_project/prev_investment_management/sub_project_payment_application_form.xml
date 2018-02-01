@@ -9,6 +9,7 @@
         <record model="ir.ui.view" id="sub_payment_app_form_form">
             <field name="name">cowin_project.sub_payment_app_form form</field>
             <field name="model">cowin_project.sub_payment_app_form</field>
+            <field name="priority">17</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year" create="false" edit="false" delete="false">
                     <header>

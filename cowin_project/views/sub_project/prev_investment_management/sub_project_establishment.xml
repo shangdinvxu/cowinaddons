@@ -5,6 +5,7 @@
         <record model="ir.ui.view" id="cowin_subproject_form">
             <field name="name">cowin_project.cowin_subproject form</field>
             <field name="model">cowin_project.cowin_subproject</field>
+            <field name="priority">17</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year" create="false" edit="false" delete="false">
                     <header>

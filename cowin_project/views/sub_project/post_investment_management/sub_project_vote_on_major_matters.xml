@@ -8,6 +8,7 @@
         <record model="ir.ui.view" id="sub_vote_on_major_matters_form">
             <field name="name">cowin_project.sub_vote_on_major_matters form</field>
             <field name="model">cowin_project.sub_vote_on_major_matters</field>
+            <field name="priority">17</field>
             <field name="arch" type="xml">
                 <form string="Fiscal year" create="false" edit="false" delete="false">
                     <header>
