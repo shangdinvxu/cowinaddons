@@ -1908,6 +1908,12 @@ class Cowin_project(models.Model):
                     'data_from': foundation.data_from,
                     'project_valuation': project_detail.project_valuation,
                     'the_amount_of_financing': project_detail.the_amount_of_financing,
+                    'withdrawals': [{
+                        'id': p.id,
+                        'ownership_interest': p.ownership_interest,
+                        'the_amount_of_withdrawals': p.the_amount_of_withdrawals,
+                        'project_valuation': p.project_valuation,
+                    } for p in foundation.withdrawal_ids]
                 }
                 foundations.append(foundation_dict)
             detail_infos.append({'name': project_detail.round_financing_id.name, 'data': foundations, 'id': project_detail.round_financing_id.id})
@@ -1931,7 +1937,7 @@ class Cowin_project(models.Model):
                     'ownership_interest': float(p.get('ownership_interest')),
                     'the_amount_of_withdrawals': p.get('the_amount_of_withdrawals'),
                     'project_valuation': p.get('project_valuation'),
-                }) for (_, p) in vals.get('withdrawals')]
+                }) for p in vals.get('withdrawals')]
             })
         else:
             self.env['cowin.project.detail.round'].create({
@@ -1947,7 +1953,7 @@ class Cowin_project(models.Model):
                         'ownership_interest': float(p.get('ownership_interest')),
                         'the_amount_of_withdrawals': p.get('the_amount_of_withdrawals'),
                         'project_valuation': p.get('project_valuation'),
-                    }) for (_, p) in vals.get('withdrawals')]
+                    }) for p in vals.get('withdrawals')]
 
                 })]
             })
@@ -2023,6 +2029,20 @@ class Cowin_project(models.Model):
             else:
                 data.unlink()
         return self.rpc_get_detail_info()
+
+    # 获取项目退出详情信息
+    def rpc_get_withdrawals_infos(self, vals):
+        data = self.env['cowin.project.detail.withdrawals'].search([
+            ('foundation_id', '=', vals.get('foundation_id'))])
+        res = []
+        for obj in data:
+            res.append({
+                'id': obj.id,
+                'ownership_interest': obj.ownership_interest,
+                'the_amount_of_withdrawals': obj.the_amount_of_withdrawals,
+                'project_valuation': obj.project_valuation,
+            })
+        return res
 
 
 
