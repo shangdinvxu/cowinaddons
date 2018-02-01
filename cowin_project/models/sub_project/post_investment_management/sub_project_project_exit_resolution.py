@@ -57,6 +57,7 @@ class sub_project_project_exit_resolution(models.Model):
 
     withdrawal_amount = fields.Float(string=u'退出金额')
     withdrawal_ratio = fields.Float(string=u'退出比例')
+    withdrawal_valuation = fields.Float(string=u'退出时估值')
     exit_plan = fields.Text(string=u'退出方案')
 
     # chairman_of_investment_decision_committee = fields.Many2one('hr.employee', string=u'投资决策委员会主席')

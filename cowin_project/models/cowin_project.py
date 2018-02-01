@@ -1910,7 +1910,7 @@ class Cowin_project(models.Model):
                     'the_amount_of_financing': project_detail.the_amount_of_financing,
                 }
                 foundations.append(foundation_dict)
-            detail_infos.append({'name': project_detail.round_financing_id.name, 'data': foundations, 'id':project_detail.round_financing_id.id})
+            detail_infos.append({'name': project_detail.round_financing_id.name, 'data': foundations, 'id': project_detail.round_financing_id.id})
 
         # print detail_infos
         return detail_infos
@@ -1927,6 +1927,11 @@ class Cowin_project(models.Model):
                 'the_amount_of_investment': float(vals.get('the_amount_of_investment')),
                 'foundation': vals.get('foundation'),
                 'data_from': 'external',
+                'withdrawal_ids': [(0, 0, {
+                    'ownership_interest': float(p.get('ownership_interest')),
+                    'the_amount_of_withdrawals': p.get('the_amount_of_withdrawals'),
+                    'project_valuation': p.get('project_valuation'),
+                }) for (_, p) in vals.get('withdrawals')]
             })
         else:
             self.env['cowin.project.detail.round'].create({
@@ -1937,7 +1942,13 @@ class Cowin_project(models.Model):
                 'foundation_ids': [(0, 0, {
                     'the_amount_of_investment': float(vals.get('the_amount_of_investment')),
                     'foundation': vals.get('foundation'),
-                    'data_from': 'external'
+                    'data_from': 'external',
+                    'withdrawal_ids': [(0, 0, {
+                        'ownership_interest': float(p.get('ownership_interest')),
+                        'the_amount_of_withdrawals': p.get('the_amount_of_withdrawals'),
+                        'project_valuation': p.get('project_valuation'),
+                    }) for (_, p) in vals.get('withdrawals')]
+
                 })]
             })
         return self.rpc_get_detail_info()

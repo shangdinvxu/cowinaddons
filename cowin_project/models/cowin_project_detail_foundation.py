@@ -18,6 +18,8 @@ class Cowin_project_detail_foundation(models.Model):
         ('external', 'External')
     ], string='数据来源', default='local')
 
+    withdrawal_ids = fields.One2many('cowin.project.detail.withdrawals', 'foundation_id', ondelete="cascade")
+
     # 计算股份比例
     def _calc_ownership_interest(self):
         print 'sss'

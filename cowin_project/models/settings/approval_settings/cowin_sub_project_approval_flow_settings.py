@@ -310,6 +310,16 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             # 触发下一个子环节!!!
             self.sub_project_tache_id.trigger_next_subtache()
 
+            # 退出时将信息存入项目详情-退出信息中, 此操作与主流程无关
+            if self.sub_project_tache_id.meta_sub_project_id.round_financing_and_Foundation_ids:
+                entity = self.sub_project_tache_id.meta_sub_project_id.round_financing_and_Foundation_ids[0]
+                self.env['cowin.project.detail.withdrawals'].create({
+                    'foundation_id': entity.foundation_id.id,
+                    'ownership_interest': res_entity.withdrawal_ratio,
+                    'the_amount_of_withdrawals': res_entity.withdrawal_amount,
+                    'project_valuation': res_entity.withdrawal_valuation,
+                })
+
 
         # 投资决策委员会会议纪要 所关联的投票表
         elif self.sub_project_tache_id.tache_id.model_id.model_name == investment_decision_sum:
