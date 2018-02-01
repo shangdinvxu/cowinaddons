@@ -11,6 +11,9 @@ class Cowin_project_subproject_application_form_for_project_investment(models.Mo
 
     _name = 'cowin_project.sub_app_form_pro_investment'
 
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
+
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
@@ -26,6 +29,16 @@ class Cowin_project_subproject_application_form_for_project_investment(models.Mo
 
 
     date_of_application = fields.Date(string=u'申请日期', default=fields.Date.today())
+
+    # compute字段
+    compute_date_of_application = fields.Char(string=u'根据重新发起来计算申请日期', compute='_compute_date_of_application')
+    def _compute_date_of_application(self):
+        if self.sub_tache_id.is_launch_again:
+            self.write({
+                'date_of_application': fields.Date.today(),
+            })
+
+
 
     # ----------  投资基金
     round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation',
@@ -179,7 +192,7 @@ class Cowin_project_subproject_application_form_for_project_investment(models.Mo
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

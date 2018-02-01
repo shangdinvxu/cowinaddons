@@ -12,6 +12,9 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
 
     _name = 'cowin_project.sub_invest_decision_committee_res'
 
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
+
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
@@ -25,8 +28,8 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
     # invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
     invest_manager_ids = fields.Many2many('hr.employee', 'committee_res_invest_manager_employee_rel', string=u'投资经理')
 
-    voting_committee = fields.Date(string=u'投决会日期')
-    outcome_of_the_voting_committee = fields.Char(string=u'投决会结果')
+    prev_voting_date = fields.Date(string=u'投决会日期')
+    prev_voting_result = fields.Char(string=u'投决会结果')
 
     # ----------  投资基金
 
@@ -42,41 +45,22 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
 
     compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
 
-    @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment',
-                 'ownership_interest', 'trustee_id', 'supervisor_id', 'amount_of_entrusted_loan')
-    def _compute_value(self):
-        for rec in self:
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
-    #
-            rec.subproject_id.trustee_id = rec.trustee_id
-            rec.subproject_id.supervisor_id = rec.supervisor_id
-            rec.subproject_id.amount_of_entrusted_loan = rec.amount_of_entrusted_loan
-
-    # round_financing_id = fields.Many2one('cowin_common.round_financing',
-    #                                      related='subproject_id.round_financing_id', string=u'轮次')
-    #
-    # foundation_id = fields.Many2one('cowin_foundation.cowin_foudation',
-    #                                 related='subproject_id.foundation_id', string=u'基金')
-    #
-    # the_amount_of_financing = fields.Float(
-    #     related='subproject_id.the_amount_of_financing', string=u'本次融资额')
-    #
-    # the_amount_of_investment = fields.Float(
-    #     related='subproject_id.the_amount_of_investment', string=u'本次投资金额')
-    # ownership_interest = fields.Integer(
-    #     related='subproject_id.ownership_interest', string=u'股份比例')
-    # ---------------
+    # @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment',
+    #              'ownership_interest', 'trustee_id', 'supervisor_id', 'amount_of_entrusted_loan')
+    # def _compute_value(self):
+    #     for rec in self:
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
+    # #
+    #         rec.subproject_id.trustee_id = rec.trustee_id
+    #         rec.subproject_id.supervisor_id = rec.supervisor_id
+    #         rec.subproject_id.amount_of_entrusted_loan = rec.amount_of_entrusted_loan
 
 
-    #
-    # round_financing_and_Foundation_ids = fields.One2many('cowin_project.round_financing_and_foundation',
-    #                                                      'sub_invest_decision_committee_res_id',
-    #                                                      string=u'添加基金')
 
 
     trustee_id = fields.Many2one('hr.employee', string=u'董事')
@@ -94,6 +78,20 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
                                                                 'res_id', string=u'审批记录',
                                                                 domain=lambda self: [('res_model', '=', self._name)])
 
+
+    @api.multi
+    def write_date_of_review_to_related_model(self):
+        for rec in self:
+            # rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
+            # rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
+            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
+            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
+            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
+            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
+            #
+            rec.subproject_id.trustee_id = rec.trustee_id
+            rec.subproject_id.supervisor_id = rec.supervisor_id
+            rec.subproject_id.amount_of_entrusted_loan = rec.amount_of_entrusted_loan
 
 
     @api.model
@@ -114,48 +112,8 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
         vals['sub_tache_id'] = sub_tache_id
         res = super(Cowin_project_subproject_investment_decision_committee_meeting_resolution, self).create(vals)
 
-        # if res.is_final_meeting_resolution:
-        #
-        #     name = 'cowin_project.sub_invest_decision_app'
-        #     # 如果为最终决议的话,就不需要再显示新增按钮的操作!!!
-        #     target = meta_sub_project_entity.sub_tache_ids.filtered(lambda e: e.tache_id.model_id.model_name == name).sorted('id')[0]
-        #     target.write({
-        #         'once_or_more': False,
-        #     })
+        res.write_date_of_review_to_related_model()  # 写入当前子工程的轮次基金实体
 
-
-
-        # 获得当前所有的基金轮次!!! (基金实体, 轮次实体)
-        # current_f_F_entities = []
-        # for meta_entity in meta_sub_project_entity.project_id.meta_sub_project_ids:
-        #
-        #     t = (meta_entity.round_financing_and_Foundation_ids[0].foundation_id, meta_entity.round_financing_and_Foundation_ids[0].round_financing_id)
-        #     current_f_F_entities.append(t)
-        #
-        #
-        # # 可能添加多个子工程实体
-        # for r_f_F_entity in res.round_financing_and_Foundation_ids:
-        #     t = (r_f_F_entity.foundation_id, r_f_F_entity.round_financing_id)
-        #     if t in current_f_F_entities:
-        #         raise UserError(u'已经有了其他的基金轮次')
-        #     # 关联到新的轮次基金实体
-        #     new_entity = meta_sub_project_entity.create({
-        #         'project_id': meta_sub_project_entity.project_id.id,
-        #     })
-        #
-        #
-        #     # 写入元子工程实体
-        #     r_f_F_entity.write({
-        #         'meta_sub_project_id': new_entity.id,
-        #     })
-
-
-
-
-
-
-
-        res._compute_value() # 写入当前子工程的轮次基金实体
         target_sub_tache_entity.write({
             'res_id': res.id,
             # 'is_unlocked': True,
@@ -202,7 +160,7 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
         if not vals:
             return True
 
-
+        self.write_date_of_review_to_related_model()
         result = super(Cowin_project_subproject_investment_decision_committee_meeting_resolution, self).write(vals)
         return result
 
@@ -241,7 +199,7 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
 
 
         # target_fileds = ['name', 'project_number', 'invest_manager_id', 'trustee', 'supervisor']
-        target_fileds = ['name', 'project_number', 'invest_manager_id']
+        target_fileds = ['name', 'project_number', 'invest_manager_id', 'prev_voting_date', 'prev_voting_result']
 
         tem = sub_project_entity.read(target_fileds)[0]
         for k, v in tem.iteritems():
@@ -266,7 +224,7 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

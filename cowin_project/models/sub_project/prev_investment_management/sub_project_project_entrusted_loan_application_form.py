@@ -9,6 +9,9 @@ class Cowin_project_subproject_project_entrusted_loan_application_form(models.Mo
 
     _name = 'cowin_project.sub_entrusted_loan_app_form'
 
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
+
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
@@ -23,6 +26,15 @@ class Cowin_project_subproject_project_entrusted_loan_application_form(models.Mo
     invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
 
     date_of_application = fields.Date(string=u'申请日期', default=fields.Date.today())
+
+    # compute字段
+    compute_date_of_application = fields.Char(string=u'根据重新发起来计算申请日期', compute='_compute_date_of_application')
+
+    def _compute_date_of_application(self):
+        if self.sub_tache_id.is_launch_again:
+            self.write({
+                'date_of_application': fields.Date.today(),
+            })
 
     # ----------  投资基金
 
@@ -79,6 +91,12 @@ class Cowin_project_subproject_project_entrusted_loan_application_form(models.Mo
                                                                 domain=lambda self: [('res_model', '=', self._name)])
 
 
+    @api.multi
+    def write_date_of_review_to_related_model(self):
+        for rec in self:
+            rec.subproject_id.amount_of_entrusted_loan = rec.amount_of_application_for_entrusted_loan
+
+
     @api.model
     def create(self, vals):
         tache_info = self._context['tache']
@@ -100,7 +118,7 @@ class Cowin_project_subproject_project_entrusted_loan_application_form(models.Mo
         target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
 
         sub_project = super(Cowin_project_subproject_project_entrusted_loan_application_form, self).create(vals)
-        sub_project._compute_value() # # 写入----> 轮次基金实体
+        sub_project.write_date_of_review_to_related_model()   # # 写入----> 轮次基金实体
         target_sub_tache_entity.write({
             'res_id': sub_project.id,
             'view_or_launch': True,
@@ -136,7 +154,7 @@ class Cowin_project_subproject_project_entrusted_loan_application_form(models.Mo
         if not vals:
             return True
 
-
+        self.write_date_of_review_to_related_model()
         res = super(Cowin_project_subproject_project_entrusted_loan_application_form, self).write(vals)
 
         return res
@@ -197,7 +215,7 @@ class Cowin_project_subproject_project_entrusted_loan_application_form(models.Mo
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

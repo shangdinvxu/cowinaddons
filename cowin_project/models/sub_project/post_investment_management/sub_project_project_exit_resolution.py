@@ -10,6 +10,9 @@ class sub_project_project_exit_resolution(models.Model):
         项目退出决议
     '''
 
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
+
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
@@ -23,9 +26,10 @@ class sub_project_project_exit_resolution(models.Model):
     # invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
     invest_manager_ids = fields.Many2many('hr.employee', 'exit_resolution_invest_manager_employee_rel', string=u'投资经理')
 
-    project_exit_date = fields.Date(string=u'项目退出会议日期')
+    # project_exit_date = fields.Date(string=u'项目退出会议日期')
+    post_voting_date = fields.Date(string=u'项目退出会议日期')
 
-    result = fields.Char(string=u'项目退出会议结果')
+    post_voting_result = fields.Char(string=u'项目退出会议结果')
 
     # ----------  投资基金
     round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation',
@@ -161,7 +165,7 @@ class sub_project_project_exit_resolution(models.Model):
                 res[nk] = v
 
 
-        target_fileds = ['name', 'project_number', 'invest_manager_id', 'conference_date', 'voting_result']
+        target_fileds = ['name', 'project_number', 'invest_manager_id', 'post_voting_date', 'post_voting_result']
 
         tem = sub_project_entity.read(target_fileds)[0]
         for k, v in tem.iteritems():
@@ -187,7 +191,7 @@ class sub_project_project_exit_resolution(models.Model):
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

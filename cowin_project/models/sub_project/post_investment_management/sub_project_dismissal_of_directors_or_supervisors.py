@@ -11,6 +11,9 @@ class sub_project_dismissal_of_directors_or_supervisors(models.Model):
         董事／监事解聘书
     '''
 
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
+
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
@@ -46,11 +49,11 @@ class sub_project_dismissal_of_directors_or_supervisors(models.Model):
 
     compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
 
-    @api.depends('supervisor_id', 'trustee_id')
-    def _compute_value(self):
-        for rec in self:
-            rec.subproject_id.supervisor_id = None
-            rec.subproject_id.trustee_id = None
+    # @api.depends('supervisor_id', 'trustee_id')
+    # def _compute_value(self):
+    #     for rec in self:
+    #         rec.subproject_id.supervisor_id = None
+    #         rec.subproject_id.trustee_id = None
 
     # ----------  投资基金
     # round_financing_id = fields.Many2one('cowin_common.round_financing',
@@ -68,7 +71,11 @@ class sub_project_dismissal_of_directors_or_supervisors(models.Model):
     #     related='subproject_id.ownership_interest', string=u'股份比例')
     # ---------------
 
-
+    @api.multi
+    def write_date_of_review_to_related_model(self):
+        for rec in self:
+            rec.subproject_id.supervisor_id = None
+            rec.subproject_id.trustee_id = None
 
     @api.model
     def create(self, vals):
@@ -86,7 +93,7 @@ class sub_project_dismissal_of_directors_or_supervisors(models.Model):
         vals['sub_tache_id'] = sub_tache_id
 
         res = super(sub_project_dismissal_of_directors_or_supervisors, self).create(vals)
-        res._compute_value() # 写入----> 轮次基金实体
+        res.write_date_of_review_to_related_model() # 写入----> 轮次基金实体
 
         target_sub_tache_entity.write({
             'res_id': res.id,
@@ -117,7 +124,7 @@ class sub_project_dismissal_of_directors_or_supervisors(models.Model):
         if not vals:
             return True
 
-
+        self.write_date_of_review_to_related_model()
         res = super(sub_project_dismissal_of_directors_or_supervisors, self).write(vals)
 
         return res
@@ -169,7 +176,7 @@ class sub_project_dismissal_of_directors_or_supervisors(models.Model):
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

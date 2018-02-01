@@ -20,7 +20,7 @@
                             <!--<field name="invest_manager_id" readonly="1"/>-->
                             <field name="invest_manager_ids" readonly="1"/>
 
-                            <field name="voting_committee_date" required="1"/>
+                            <field name="prev_voting_date" required="1"/>
                             <field name="conference_recorder" required="1"/>
                             <field name="checker" required="1"/>
                             <!--<field name="investment_decision_committee" readonly="1"/>-->
@@ -62,7 +62,7 @@
                             <!--<field name="invest_manager_id" readonly="1"/>-->
                             <field name="invest_manager_ids" readonly="1"/>
 
-                            <field name="voting_committee_date" required="1"/>
+                            <field name="prev_voting_date" required="1"/>
                             <field name="conference_recorder" required="1"/>
                             <field name="checker" required="1"/>
                             <!--<field name="investment_decision_committee" readonly="1"/>-->

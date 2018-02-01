@@ -10,8 +10,13 @@ class Cowin_project_subproject_investment_decision_application(models.Model):
 
     _name = 'cowin_project.sub_invest_decision_app'
 
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
+
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
+
+    date_of_review = fields.Date(string=u'尽调审核日期')
 
 
     # name = fields.Char(related='subproject_id.name', string=u"项目名称")
@@ -44,16 +49,16 @@ class Cowin_project_subproject_investment_decision_application(models.Model):
 
     compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
 
-    @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment',
-                 'ownership_interest')
-    def _compute_value(self):
-        for rec in self:
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
+    # @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment',
+    #              'ownership_interest')
+    # def _compute_value(self):
+    #     for rec in self:
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
 
 
 
@@ -80,6 +85,16 @@ class Cowin_project_subproject_investment_decision_application(models.Model):
 
     investment_decision_Committee_held_time = fields.Date(string=u'投资决策委员会召开时间')
 
+    # 把一些依赖的字段写入到子工程之中
+    @api.multi
+    def write_date_of_review_to_related_model(self):
+        for rec in self:
+            # rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
+            # rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
+            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
+            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
+            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
+            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
 
     @api.model
     def create(self, vals):
@@ -98,7 +113,7 @@ class Cowin_project_subproject_investment_decision_application(models.Model):
         vals['subproject_id'] = sub_project_id
         vals['sub_tache_id'] = sub_tache_id
         res = super(Cowin_project_subproject_investment_decision_application, self).create(vals)
-        res._compute_value() #  写入----> 轮次基金实体
+        res.write_date_of_review_to_related_model() #  写入----> 轮次基金实体
         target_sub_tache_entity.write({
             'res_id': res.id,
             # 'is_unlocked': True,
@@ -117,29 +132,26 @@ class Cowin_project_subproject_investment_decision_application(models.Model):
         #         })
 
 
-        # 发送投资决策通知!!!
-        # for rel_entity in self.subproject_id.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel:
-        #     pass
 
 
-        partner_ids = [rel_entity.approval_role.employee_id.user_id.partner_id.id for rel_entity in self.subproject_id.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel
-             if rel_entity.approval_role.name == u'投资决策委员会']
-        channel_entity = self.env['mail.channel'].create({
-            'name': u'投决策申请通道 %s' % self.id,
-            "public": "public",
-        })
-
-        sub_project_name = res.subproject_id.meta_sub_project_id.sub_project_ids[0].name
-        round_financing_name = res.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id.name
-        foundation_name = res.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id.name
-
-        sub_project_name = sub_project_name if sub_project_name else u''
-        round_financing_name = round_financing_name if round_financing_name else u'暂无轮次'
-        foundation_name = foundation_name if foundation_name else u'暂无基金'
-
-        info_first = u'%s/%s/%s\n' % (sub_project_name, round_financing_name, foundation_name)
-        channel_entity.message_post(info_first + u'您有一项[投资决策申请]待审批',
-                    message_type = 'comment', subtype = 'mail.mt_comment')
+        # partner_ids = [rel_entity.approval_role.employee_id.user_id.partner_id.id for rel_entity in self.subproject_id.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel
+        #      if rel_entity.approval_role.name == u'投资决策委员会']
+        # channel_entity = self.env['mail.channel'].create({
+        #     'name': u'投决策申请通道 %s' % self.id,
+        #     "public": "public",
+        # })
+        #
+        # sub_project_name = res.subproject_id.meta_sub_project_id.sub_project_ids[0].name
+        # round_financing_name = res.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id.name
+        # foundation_name = res.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id.name
+        #
+        # sub_project_name = sub_project_name if sub_project_name else u''
+        # round_financing_name = round_financing_name if round_financing_name else u'暂无轮次'
+        # foundation_name = foundation_name if foundation_name else u'暂无基金'
+        #
+        # info_first = u'%s/%s/%s\n' % (sub_project_name, round_financing_name, foundation_name)
+        # channel_entity.message_post(info_first + u'您有一项[投资决策申请]待审批',
+        #             message_type = 'comment', subtype = 'mail.mt_comment')
 
         return res
 
@@ -162,7 +174,7 @@ class Cowin_project_subproject_investment_decision_application(models.Model):
         if not vals:
             return True
 
-
+        self.write_date_of_review_to_related_model()
         res = super(Cowin_project_subproject_investment_decision_application, self).write(vals)
 
         return res
@@ -199,7 +211,7 @@ class Cowin_project_subproject_investment_decision_application(models.Model):
                 res[nk] = v
 
 
-        target_fileds = ['name', 'project_number', 'invest_manager_id']
+        target_fileds = ['name', 'project_number', 'invest_manager_id', 'date_of_review']
 
         tem = sub_project_entity.read(target_fileds)[0]
         for k, v in tem.iteritems():
@@ -219,7 +231,7 @@ class Cowin_project_subproject_investment_decision_application(models.Model):
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

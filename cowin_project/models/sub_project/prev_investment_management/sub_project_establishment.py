@@ -15,7 +15,8 @@ class Cowin_project_subproject(models.Model):
     '''
         项目立项
     '''
-
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
 
     @api.model
     def _default_image(self):
@@ -64,15 +65,15 @@ class Cowin_project_subproject(models.Model):
 
     compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
 
-    @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment', 'ownership_interest', 'project_valuation')
-    def _compute_value(self):
-        for rec in self:
-            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
-            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
-            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
-            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
-            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
-            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
+    # @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment', 'ownership_interest', 'project_valuation')
+    # def _compute_value(self):
+    #     for rec in self:
+    #         rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
+    #         rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
+    #         rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
+    #         rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
+    #         rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
+    #         rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
 
 
 
@@ -137,16 +138,34 @@ class Cowin_project_subproject(models.Model):
 
 
     # 投资决策委员会会议纪要 表中投决会日期的依赖的字段
-    voting_committee_date = fields.Date(string=u'投决会日期')
+    prev_voting_date = fields.Date(string=u'投决会日期')
 
     # 项目退出会议纪要 表中投决会日期的依赖的字段
-    conference_date = fields.Date(string=u'会议日期')
+    post_voting_date = fields.Date(string=u'项目退出会议日期')
 
 
-    # 项目退出会议表决票 表中的会议结果需要依赖的字段
-    voting_result = fields.Char(string=u'投票结果')
+    # 投资决策委员会 表中的会议结果需要依赖的字段   ----投前环节
+    prev_voting_result = fields.Char(string=u'投资决策委员会会议决议结果')
+
+    # 尽调报告审核通过的日期!!!
+    date_of_review = fields.Date(string=u'尽调审核日期')
 
 
+
+    # 项目退出会议表决票 需要写入的投票的结果 --- 投后环节
+    post_voting_result = fields.Char(string=u'项目退出会议结果')
+
+
+    # 把一些依赖的字段写入到子工程之中
+    @api.multi
+    def write_date_of_review_to_related_model(self):
+        for rec in self:
+            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
+            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
+            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
+            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
+            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
+            rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
 
 
     def unlink_blank_sub_project(self):
@@ -227,7 +246,7 @@ class Cowin_project_subproject(models.Model):
 
 
 
-        sub_project_entity._compute_value()  # 将数据写入到指定的位置!!!
+        sub_project_entity.write_date_of_review_to_related_model()  # 将数据写入到指定的位置!!!
 
         target_sub_tache_entity = sub_project_entity.sub_tache_id
 
@@ -261,6 +280,7 @@ class Cowin_project_subproject(models.Model):
         if not vals:
             return True
 
+        self.write_date_of_review_to_related_model()
         res = super(Cowin_project_subproject, self).write(vals)
 
         return res
@@ -295,7 +315,7 @@ class Cowin_project_subproject(models.Model):
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

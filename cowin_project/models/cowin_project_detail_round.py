@@ -6,7 +6,7 @@ class Cowin_project_detail_round(models.Model):
 
     _name = 'cowin.project.detail.round'
 
-    project_id = fields.Many2one('cowin_project.cowin_project', string='Project', ondelete='restrict')
+    project_id = fields.Many2one('cowin_project.cowin_project', string='Project', ondelete='cascade')
 
     round_financing_id = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
 

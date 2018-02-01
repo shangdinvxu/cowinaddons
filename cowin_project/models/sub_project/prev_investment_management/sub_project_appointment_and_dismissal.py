@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
+import datetime
+from odoo.exceptions import UserError
 class Cowin_project_subproject_appointment_and_dismissal(models.Model):
 
     '''
@@ -9,6 +11,9 @@ class Cowin_project_subproject_appointment_and_dismissal(models.Model):
     _inherit = 'cowin_project.base_status'
 
     _name = 'cowin_project.sub_appointment_and_dismissal'
+
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
 
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
@@ -25,30 +30,46 @@ class Cowin_project_subproject_appointment_and_dismissal(models.Model):
 
     #----- 任免对象
     trustee_id = fields.Many2one('hr.employee', string=u'董事')
-    appointment_time_begin_trustee = fields.Date(string=u'开始日期')
-    appointment_time_end_trustee = fields.Date(string=u'结束日期')
+    appointment_time_begin_trustee = fields.Date(string=u'开始日期', default=lambda self: fields.Date.today())
+    appointment_time_end_trustee = fields.Date(string=u'结束日期', default=lambda self: fields.Date.today())
 
     Tenure_trustee = fields.Float(string=u'任职年限')
+    #
+    @api.onchange('appointment_time_begin_trustee', 'appointment_time_end_trustee')
+    def _compute_Tenure_trustee(self):
+
+        prev = datetime.datetime.strptime(self.appointment_time_begin_trustee, '%Y-%m-%d')
+        post = datetime.datetime.strptime(self.appointment_time_end_trustee, '%Y-%m-%d')
+
+        delta = post - prev
+        if delta.days < 0:
+            raise UserError(u'开始时间应该小于结束时间,请重新输入!!!')
+
+        self.Tenure_trustee = float(delta.days) / 365
+
 
     supervisor_id = fields.Many2one('hr.employee', string=u'监事')
-    appointment_time_begin_supervisor = fields.Date(string=u'开始日期')
-    appointment_time_endr_supervisor = fields.Date(string=u'结束日期')
+    appointment_time_begin_supervisor = fields.Date(string=u'开始日期', default=lambda self: fields.Date.today())
+    appointment_time_endr_supervisor = fields.Date(string=u'结束日期', default=lambda self: fields.Date.today())
 
     Tenure_supervisor = fields.Float(string=u'任职年限')
+
+    @api.onchange('appointment_time_begin_supervisor', 'appointment_time_endr_supervisor')
+    def _compute_Tenure_supervisor(self):
+
+        prev = datetime.datetime.strptime(self.appointment_time_begin_supervisor, '%Y-%m-%d')
+        post = datetime.datetime.strptime(self.appointment_time_endr_supervisor, '%Y-%m-%d')
+
+        delta = post - prev
+        if delta.days < 0:
+            raise UserError(u'开始时间应该小于结束时间,请重新输入!!!')
+
+        self.Tenure_supervisor = float(delta.days) / 365
+
 
 
     compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
 
-    @api.depends('supervisor_id', 'trustee_id')
-    def _compute_value(self):
-        for rec in self:
-            rec.subproject_id.trustee_id = rec.trustee_id
-            rec.subproject_id.supervisor_id = rec.supervisor_id
-
-
-
-
-    #------
 
     managing_partner_ids = fields.Many2many('hr.employee', 'sub_appointment_and_dismissal_managing_partner_employee_rel', string=u'管理合伙人')
 
@@ -56,6 +77,16 @@ class Cowin_project_subproject_appointment_and_dismissal(models.Model):
     sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
                                                                 'res_id', string=u'审批记录',
                                                                 domain=lambda self: [('res_model', '=', self._name)])
+
+
+    @api.multi
+    def write_date_of_review_to_related_model(self):
+        for rec in self:
+            rec.subproject_id.trustee_id = rec.trustee_id
+            rec.subproject_id.supervisor_id = rec.supervisor_id
+
+
+
 
     @api.model
     def create(self, vals):
@@ -75,7 +106,7 @@ class Cowin_project_subproject_appointment_and_dismissal(models.Model):
         vals['sub_tache_id'] = sub_tache_id
         res = super(Cowin_project_subproject_appointment_and_dismissal, self).create(vals)
 
-        res._compute_value() # 写入----> 轮次基金实体
+        res.write_date_of_review_to_related_model() # 写入----> 轮次基金实体
 
 
         target_sub_tache_entity.write({
@@ -117,7 +148,7 @@ class Cowin_project_subproject_appointment_and_dismissal(models.Model):
         if not vals:
             return True
 
-
+        self.write_date_of_review_to_related_model()
         res = super(Cowin_project_subproject_appointment_and_dismissal, self).write(vals)
         return res
 
@@ -185,7 +216,7 @@ class Cowin_project_subproject_appointment_and_dismissal(models.Model):
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

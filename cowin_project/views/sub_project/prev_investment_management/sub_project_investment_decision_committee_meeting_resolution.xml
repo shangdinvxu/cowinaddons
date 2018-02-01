@@ -22,8 +22,8 @@
                             <!--<field name="invest_manager_id" readonly="1"/>-->
                             <field name="invest_manager_ids" readonly="1"/>
 
-                            <field name="voting_committee" readonly="1"/>
-                            <field name="outcome_of_the_voting_committee" readonly="1"/>
+                            <field name="prev_voting_date" readonly="1"/>
+                            <field name="prev_voting_result" readonly="1"/>
                             <!--投资基金-->
                             <field name="foundation_id" readonly="1"/>
                             <field name="the_amount_of_investment" required="1"/>
@@ -79,8 +79,8 @@
                             <!--<field name="invest_manager_id" readonly="1"/>-->
                             <field name="invest_manager_ids" readonly="1"/>
 
-                            <field name="voting_committee" readonly="1"/>
-                            <field name="outcome_of_the_voting_committee" readonly="1"/>
+                            <field name="prev_voting_date" readonly="1"/>
+                            <field name="prev_voting_result" readonly="1"/>
                             <!--投资基金-->
                             <field name="foundation_id" readonly="1"/>
                             <field name="the_amount_of_investment" required="1"/>

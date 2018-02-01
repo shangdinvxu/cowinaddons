@@ -12,6 +12,9 @@ class Cowin_project_subproject_opinion_book(models.Model):
 
     _name = 'cowin_project.sub_opinion_book'
 
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
+
 
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
@@ -52,16 +55,16 @@ class Cowin_project_subproject_opinion_book(models.Model):
 
     compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
 
-    @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment',
-                 'ownership_interest')
-    def _compute_value(self):
-        for rec in self:
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
+    # @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment',
+    #              'ownership_interest')
+    # def _compute_value(self):
+    #     for rec in self:
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
+    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
 
 
     # round_financing_id = fields.Many2one('cowin_common.round_financing',
@@ -83,6 +86,18 @@ class Cowin_project_subproject_opinion_book(models.Model):
 
 
 
+    @api.multi
+    def write_date_of_review_to_related_model(self):
+        for rec in self:
+            # rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
+            # rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
+            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
+            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
+            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
+            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
+
+
+
     @api.model
     def create(self, vals):
         tache_info = self._context['tache']
@@ -98,7 +113,7 @@ class Cowin_project_subproject_opinion_book(models.Model):
         vals['subproject_id'] = sub_project_id
         vals['sub_tache_id'] = sub_tache_id
         res = super(Cowin_project_subproject_opinion_book, self).create(vals)
-        res._compute_value() # 写入----> 轮次基金实体
+        res.write_date_of_review_to_related_model() # 写入----> 轮次基金实体
 
         target_sub_tache_entity.write({
             'res_id': res.id,
@@ -131,7 +146,7 @@ class Cowin_project_subproject_opinion_book(models.Model):
         # 由于在前端界面中,重写过前端想后端写入的方法,有空值的影响, 尤其是button的操作的影响,所以,我们需要把该问题给过滤掉!!!
         if not vals:
             return True
-
+        self.write_date_of_review_to_related_model()
         res = super(Cowin_project_subproject_opinion_book, self).write(vals)
 
         # button在当前的业务逻辑中当前属于审核状态, 分发之后的业务,业务逻辑不同
@@ -195,7 +210,7 @@ class Cowin_project_subproject_opinion_book(models.Model):
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

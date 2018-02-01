@@ -6,7 +6,7 @@ class Cowin_project_detail_foundation(models.Model):
 
     _name = 'cowin.project.detail.foundation'
 
-    round_id = fields.Many2one('cowin.project.detail.round', string=u'详情轮次', ondelete='restrict')
+    round_id = fields.Many2one('cowin.project.detail.round', string=u'详情轮次', ondelete='cascade')
 
     ownership_interest = fields.Float(string=u'股份比例')
 

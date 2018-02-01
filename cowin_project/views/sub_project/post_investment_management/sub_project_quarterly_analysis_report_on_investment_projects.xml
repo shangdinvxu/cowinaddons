@@ -23,7 +23,7 @@
                                 <field name="registered_address"/>
                                 <field name="chairman" required="1"/>
                                 <field name="general_manager" required="1"/>
-                                <field name="product" required="1"/>
+                                <field name="production" required="1"/>
                                 <field name="industry" readonly="1"/>
                                 <field name="founding_time" readonly="1"/>
                                 <field name="investment_phase" readonly="1"/>
@@ -77,6 +77,9 @@
                 <form string="Fiscal year" create="false" edit="false" delete="false">
                     <sheet>
                         <group>
+                            <!-- 需要隐藏的compute字段  -->
+                            <field name="filing_date" invisible="1"/>
+
                             <group>
                                 <field name="name"  readonly="1"/>
                                 <field name="project_number"  readonly="1"/>
@@ -85,7 +88,7 @@
                                 <field name="registered_address"/>
                                 <field name="chairman" required="1"/>
                                 <field name="general_manager" required="1"/>
-                                <field name="product" required="1"/>
+                                <field name="production" required="1"/>
                                 <field name="industry" readonly="1"/>
                                 <field name="founding_time" readonly="1"/>
                                 <field name="investment_phase" readonly="1"/>

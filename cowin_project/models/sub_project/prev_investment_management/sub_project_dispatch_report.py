@@ -10,8 +10,22 @@ class Cowin_project_subproject_dispatch_report(models.Model):
 
     _name = 'cowin_project.subt_dispatch_report'
 
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
+
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
+
+    date_of_review = fields.Date(string=u'尽调审核日期')
+    compute_date_of_review = fields.Char(compute=u'_compute_value', store=True)
+
+    # @api.depends('date_of_review')
+    # def _compute_value(self):
+    #     print(u'kkkkkk')
+    #     print self
+    #     for rec in self:
+    #         rec.subproject_id.date_of_review =  rec.date_of_review
+    #         print('date_of_review is %s' % rec.date_of_review)
 
 
     dispatch_report = fields.Many2many('ir.attachment', 'subt_dispatch_report_attachment_rel', string=u'尽调报告')
@@ -22,6 +36,14 @@ class Cowin_project_subproject_dispatch_report(models.Model):
     sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
                                                                 'res_id', string=u'审批记录',
                                                                 domain=lambda self: [('res_model', '=', self._name)])
+
+
+    # 把一些依赖的字段写入到子工程之中
+    @api.multi
+    def write_date_of_review_to_related_model(self):
+        for rec in self:
+            rec.subproject_id.date_of_review = rec.date_of_review
+
 
 
     @api.model
@@ -41,6 +63,8 @@ class Cowin_project_subproject_dispatch_report(models.Model):
         vals['subproject_id'] = sub_project_id
         vals['sub_tache_id'] = sub_tache_id
         res = super(Cowin_project_subproject_dispatch_report, self).create(vals)
+        # res.write_date_of_review_to_related_model()
+        # res._compute_value() # 写入轮次基金实体
         target_sub_tache_entity.write({
             'res_id': res.id,
             # 'is_unlocked': True,
@@ -79,8 +103,9 @@ class Cowin_project_subproject_dispatch_report(models.Model):
         if not vals:
             return True
 
-
+        # self.write_date_of_review_to_related_model()
         res = super(Cowin_project_subproject_dispatch_report, self).write(vals)
+
         return res
 
 
@@ -107,7 +132,7 @@ class Cowin_project_subproject_dispatch_report(models.Model):
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

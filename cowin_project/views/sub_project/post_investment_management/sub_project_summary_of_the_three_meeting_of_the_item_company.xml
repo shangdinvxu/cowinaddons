@@ -62,6 +62,8 @@
                 <form string="Fiscal year" create="false" edit="false" delete="false">
                     <sheet>
                         <group>
+                            <!-- 需要隐藏的compute字段  -->
+                            <field name="filing_date" invisible="1"/>
                             <group>
                                 <field name="name" readonly="1"/>
                                 <field name="project_number" readonly="1"/>

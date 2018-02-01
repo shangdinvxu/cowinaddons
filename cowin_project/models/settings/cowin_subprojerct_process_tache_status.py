@@ -11,7 +11,8 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
     '''
         每个子subproject都有自己的环节状态信息
     '''
-
+    # 用于显示数据的名称
+    _rec_name = 'tache_id'
 
     name = fields.Char(string=u'环节名')
 
@@ -58,17 +59,6 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
             'current_approval_flow_node_id': res.tache_id.approval_flow_settings_ids.approval_flow_setting_node_ids.sorted('order')[0].id,
         })
 
-        # # 每个子审批节点创建一条通道
-        # channel_entity = self.env['mail.channel'].create({
-        #     'name': u'子审批通道:%s' % res2.id,
-        #     "public": "public",
-        # })
-        #
-        # # 写入通道数据
-        # res2.write({
-        #     'channel_id': channel_entity.id,
-        # })
-
         return res
 
 
@@ -78,7 +68,7 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
     def get_tache(self):
         return self.tache_id
 
-    # 投资决策委员会会议表决票 有特殊的操作,业务有关联
+    # 投资决策委员会会议表决票/项目退出会议表决票 有特殊的操作,业务有关联
     # 而且,投前/投后 通过prev_or_post_vote 来区分 prev_or_post_vote = True 代表投前
     def write_special_vote(self, prev_or_post_vote=True):
         for sub_tache_entity in self.meta_sub_project_id.sub_tache_ids:
@@ -94,12 +84,12 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
                     'project_number': project_number,
                 }
                 if prev_or_post_vote:
-                    voting_committee_date = self.meta_sub_project_id.sub_project_ids[0].voting_committee_date
-                    vals['voting_committee_date'] = voting_committee_date
+                    prev_voting_date = self.meta_sub_project_id.sub_project_ids[0].prev_voting_date
+                    vals['prev_voting_date'] = prev_voting_date
 
                 else:
-                    conference_date = self.meta_sub_project_id.sub_project_ids[0].conference_date
-                    vals['conference_date'] = conference_date
+                    post_voting_date = self.meta_sub_project_id.sub_project_ids[0].post_voting_date
+                    vals['post_voting_date'] = post_voting_date
 
 
                 meta_sub_project_entity = self.meta_sub_project_id
@@ -174,6 +164,8 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
                     'status': 6,
                     'prev_status': 6,
                 })
+                # 同时不再考虑该子环节中审批节点的问题
+                sub_tache_entity.sub_pro_approval_flow_settings_ids[0].upate_status(new_status=6)
 
 
 

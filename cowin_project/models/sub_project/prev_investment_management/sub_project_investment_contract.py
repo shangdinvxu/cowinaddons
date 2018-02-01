@@ -9,6 +9,8 @@ class Cowin_project_subproject_investment_contract(models.Model):
 
     _name = 'cowin_project.sub_invest_contract'
 
+    _rec_name = 'sub_tache_id'
+
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
@@ -83,7 +85,7 @@ class Cowin_project_subproject_investment_contract(models.Model):
 
 
     def load_and_return_action(self, **kwargs):
-        # tache_info = kwargs['tache_info']
+        tache_info = kwargs['tache_info']
         # # tache_info = self._context['tache']
         # meta_sub_project_id = int(tache_info['meta_sub_project_id'])
         #
@@ -113,7 +115,7 @@ class Cowin_project_subproject_investment_contract(models.Model):
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

@@ -17,7 +17,7 @@
                             <group>
                                 <field name="name" readonly="1"/>
                                 <field name="project_number" readonly="1"/>
-                                <!--<field name="invest_manager_id" readonly="1"/>-->
+                                <field name="date_of_review" readonly="1"/>
                                 <field name="invest_manager_ids" readonly="1"/>
                                 <field name="company_investment_role" readonly="1"/>
                                 <field name="decision_file_list" widget="many2many_binary"/>
@@ -67,8 +67,8 @@
                             <group>
                                 <field name="name" readonly="1"/>
                                 <field name="project_number" readonly="1"/>
-                                <!--<field name="invest_manager_id" readonly="1"/>-->
                                 <field name="invest_manager_ids" readonly="1"/>
+                                <field name="date_of_review" readonly="1"/>
                                 <field name="company_investment_role" readonly="1"/>
                                 <field name="decision_file_list" widget="many2many_binary"/>
                                 <field name="investment_decision_Committee_held_time"/>

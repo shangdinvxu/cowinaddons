@@ -12,6 +12,9 @@ class sub_project_summary_of_the_three_meeting_of_the_item_company(models.Model)
         项目公司三会纪要
     '''
 
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
+
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
@@ -27,6 +30,15 @@ class sub_project_summary_of_the_three_meeting_of_the_item_company(models.Model)
     reporter = fields.Many2one('hr.employee', string=u'报告人')
 
     filing_date = fields.Date(string=u'提交日期', default=fields.Date.today())
+
+    # compute字段
+    compute_filing_date = fields.Char(string=u'根据重新发起来计算申请日期', compute='_compute_filing_date')
+
+    def _compute_filing_date(self):
+        if self.sub_tache_id.is_launch_again:
+            self.write({
+                'filing_date': fields.Date.today(),
+            })
 
     form_of_mettings = fields.Selection([(1, u'董事会'), (2, u'股东会'), (3, u'监事会')], string=u'会议形式')
 
@@ -164,7 +176,7 @@ class sub_project_summary_of_the_three_meeting_of_the_item_company(models.Model)
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

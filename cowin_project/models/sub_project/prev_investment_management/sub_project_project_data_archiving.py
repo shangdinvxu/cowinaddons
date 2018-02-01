@@ -10,7 +10,8 @@ class Cowin_project_subproject_project_data_archiving(models.Model):
 
     _name = 'cowin_project.sub_project_data_archiving'
 
-
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
 
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
@@ -186,7 +187,7 @@ class Cowin_project_subproject_project_data_archiving(models.Model):
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

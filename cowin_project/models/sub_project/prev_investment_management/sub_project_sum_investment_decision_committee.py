@@ -11,6 +11,9 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
 
     _name = 'cowin_project.sub_sum_invest_decision_committee'
 
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
+
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
@@ -25,14 +28,14 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
     project_number = fields.Char(string=u'项目编号')
     # invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
 
-    voting_committee_date = fields.Date(string=u'投决会日期')
+    prev_voting_date = fields.Date(string=u'投决会日期')
 
     compute_voting_committee_date = fields.Char(compute=u'_compute_value')
 
-    @api.depends('voting_committee_date')
-    def _compute_value(self):
-        for rec in self:
-            rec.subproject_id.voting_committee_date = self.voting_committee_date
+    # @api.depends('voting_committee_date')
+    # def _compute_value(self):
+    #     for rec in self:
+    #         rec.subproject_id.voting_committee_date = self.voting_committee_date
 
 
 
@@ -47,6 +50,11 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
                                                                 'res_id', string=u'审批记录',
                                                                 domain=lambda self: [('res_model', '=', self._name)])
 
+
+    @api.multi
+    def write_date_of_review_to_related_model(self):
+        for rec in self:
+            rec.subproject_id.prev_voting_date = self.prev_voting_date
 
 
     @api.model
@@ -67,6 +75,7 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
         vals['sub_tache_id'] = sub_tache_id
 
         res = super(Cowin_project_subproject_sum_investment_decision_committee, self).create(vals)
+        res.write_date_of_review_to_related_model()
         # 手动的操作把数据写入到子工程中!!!
 
         # 局部数据写入,用以避免与发起状态之间产生的操作!!!
@@ -126,7 +135,7 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
         if not vals:
             return True
 
-
+        self.write_date_of_review_to_related_model()
         res = super(Cowin_project_subproject_sum_investment_decision_committee, self).write(vals)
 
         return res
@@ -172,7 +181,7 @@ class Cowin_project_subproject_sum_investment_decision_committee(models.Model):
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

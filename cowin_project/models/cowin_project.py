@@ -1227,7 +1227,8 @@ class Cowin_project(models.Model):
                 if meta_sub_project_info[u'meta_sub_pro_id'] == meta_sub_project_entity.id:
 
                     meta_sub_project_entity.write({
-                        'investment_decision_committee_scope_id': meta_sub_project_info['investment_decision_committee_scope_id'],
+                        #  investment_decision_committee_scope_id 该值可能为空!!!
+                        'investment_decision_committee_scope_id': meta_sub_project_info.get('investment_decision_committee_scope_id'),
                     })
 
                     self._save_permission_configuration(meta_sub_project_entity, meta_sub_project_info)

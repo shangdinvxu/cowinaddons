@@ -11,6 +11,9 @@ class sub_project_application_for_investment_withdrawal(models.Model):
         投资退出申请书
     '''
 
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
+
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
@@ -59,11 +62,11 @@ class sub_project_application_for_investment_withdrawal(models.Model):
 
     compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
 
-    @api.depends('supervisor_id', 'trustee_id')
-    def _compute_value(self):
-        for rec in self:
-            rec.subproject_id.supervisor_id = rec.supervisor_id
-            rec.subproject_id.trustee_id = rec.trustee_id
+    # @api.depends('supervisor_id', 'trustee_id')
+    # def _compute_value(self):
+    #     for rec in self:
+    #         rec.subproject_id.supervisor_id = rec.supervisor_id
+    #         rec.subproject_id.trustee_id = rec.trustee_id
 
     # decision_file_list = fields.Many2many('ir.attachment', string=u'决策文件清单')
     decision_file_list = fields.Many2many('ir.attachment', 'sub_app_invest_withdrawal_attachment_rel', string=u'决策文件清单')
@@ -74,6 +77,14 @@ class sub_project_application_for_investment_withdrawal(models.Model):
     sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
                                                                 'res_id', string=u'审批记录',
                                                                 domain=lambda self: [('res_model', '=', self._name)])
+
+
+    @api.multi
+    def write_date_of_review_to_related_model(self):
+        for rec in self:
+            rec.subproject_id.supervisor_id = rec.supervisor_id
+            rec.subproject_id.trustee_id = rec.trustee_id
+
 
 
 
@@ -93,6 +104,7 @@ class sub_project_application_for_investment_withdrawal(models.Model):
         vals['sub_tache_id'] = sub_tache_id
 
         res = super(sub_project_application_for_investment_withdrawal, self).create(vals)
+        res.write_date_of_review_to_related_model()
         target_sub_tache_entity.write({
             'res_id': res.id,
             # 'is_unlocked': True,
@@ -122,7 +134,7 @@ class sub_project_application_for_investment_withdrawal(models.Model):
         if not vals:
             return True
 
-
+        self.write_date_of_review_to_related_model()
         res = super(sub_project_application_for_investment_withdrawal, self).write(vals)
 
         return res
@@ -176,7 +188,7 @@ class sub_project_application_for_investment_withdrawal(models.Model):
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

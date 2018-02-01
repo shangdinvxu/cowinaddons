@@ -11,7 +11,8 @@ class Cowin_project_subproject_call_up_record(models.Model):
 
     _name = 'cowin_project.sub_call_up_record'
 
-
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
 
     # foundation_stage_id = fields.Many2one('cowin_foudation.cowin_foudation_stage', string=u'基金阶段')
 
@@ -156,7 +157,7 @@ class Cowin_project_subproject_call_up_record(models.Model):
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

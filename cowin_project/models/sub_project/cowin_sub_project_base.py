@@ -15,6 +15,10 @@ class Cowin_sub_project_base_status(models.Model):
     button_status = fields.Selection([(0, u'初始化'), (1, u'使用中') , (2, u'已完成')], string=u'button状态的改变', default=0)
 
 
+    # 公共表名, 用于在面包先线上显示出有意义的效果!!!
+
+
+
     # 要和审批实体的数据的版本号匹配
     sub_approval_flow_settings_approval_flow_count = fields.Integer(string=u'数据版本号')
 
@@ -64,13 +68,16 @@ class Cowin_sub_project_base_status(models.Model):
         }
 
 
-    # 查看审核结果
+    # 查看结果
     def approval_view_action_action(self):
+        # 获得审核过程中,该环节的名字
+        tache_name = self.sub_tache_id.name
+
         name = self._name + '_form_no_button'
         view_id = self.env.ref(name).id
 
         return {
-            'name': self._name,
+            'name':tache_name,
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],
@@ -84,14 +91,16 @@ class Cowin_sub_project_base_status(models.Model):
 
 
     # 审核界面的操作
-
     def approval_launch_action(self):
+        # 获得审核过程中,该环节的名字
+        tache_name = self.sub_tache_id.name
+
         name = self._name + '_form'
         view_id = self.env.ref(name).id
         # view_id = self.env.ref('cowin_project.sub_project_establishment_form').id
 
         return {
-            'name': self._name,
+            'name': tache_name,
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

@@ -13,6 +13,9 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
 
     '''
 
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
+
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
@@ -26,6 +29,14 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
     reporter = fields.Many2one('hr.employee', string=u'报告人')
 
     filing_date = fields.Date(string=u'提交日期', default=fields.Date.today())
+    # compute字段
+    compute_filing_date = fields.Char(string=u'根据重新发起来计算申请日期', compute='_compute_filing_date')
+
+    def _compute_filing_date(self):
+        if self.sub_tache_id.is_launch_again:
+            self.write({
+                'filing_date': fields.Date.today(),
+            })
 
     registered_address = fields.Char(string=u'注册地')
 
@@ -33,7 +44,7 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
 
     general_manager = fields.Char(string=u'总经理')
 
-    product = fields.Text(string=u'产品')
+    production = fields.Text(string=u'产品')
 
     industry = fields.Many2one('cowin_common.cowin_industry', string=u'所属行业')
 
@@ -61,12 +72,12 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
 
     compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
 
-    @api.depends('trustee_id', 'registered_address', 'product')
-    def _compute_value(self):
-        for rec in self:
-            rec.subproject_id.trustee_id = rec.trustee_id
-            rec.subproject_id.registered_address = rec.registered_address
-            rec.subproject_id.product = rec.product
+    # @api.depends('trustee_id', 'registered_address', 'product')
+    # def _compute_value(self):
+    #     for rec in self:
+    #         rec.subproject_id.trustee_id = rec.trustee_id
+    #         rec.subproject_id.registered_address = rec.registered_address
+    #         rec.subproject_id.product = rec.product
 
     accounting_firm = fields.Char(string=u'会计事务所')
     securities_trader = fields.Char(string=u'券商')
@@ -85,6 +96,14 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
 
 
 
+    @api.multi
+    def write_date_of_review_to_related_model(self):
+        for rec in self:
+            rec.subproject_id.trustee_id = rec.trustee_id
+            rec.subproject_id.registered_address = rec.registered_address
+            rec.subproject_id.production = rec.production
+
+
     @api.model
     def create(self, vals):
         tache_info = self._context['tache']
@@ -101,7 +120,7 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
         vals['sub_tache_id'] = sub_tache_id
 
         res = super(sub_project_quarterly_analysis_report_on_investment_projects, self).create(vals)
-        res._compute_value() # 写入----> 轮次基金实体
+        res.write_date_of_review_to_related_model() # 写入----> 轮次基金实体
         target_sub_tache_entity.write({
             'res_id': res.id,
             # 'is_unlocked': True,
@@ -131,7 +150,7 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
         if not vals:
             return True
 
-
+        self.write_date_of_review_to_related_model()
         res = super(sub_project_quarterly_analysis_report_on_investment_projects, self).write(vals)
 
         return res
@@ -188,7 +207,7 @@ class sub_project_quarterly_analysis_report_on_investment_projects(models.Model)
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

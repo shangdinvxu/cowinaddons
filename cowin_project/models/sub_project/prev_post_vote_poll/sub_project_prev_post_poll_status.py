@@ -65,10 +65,10 @@ class Prev_poll_status(models.Model):
                     })
                     # self.sub_tache_id.sub_pro_approval_flow_settings_ids.upate_status(5)
 
-                    # 把投票结果写入到子工程中
-                    self.subproject_id.write({
-                        'voting_result': self.voting_result,
-                    })
+                # 把投票结果写入到子工程中
+                self.subproject_id.write({
+                    'prev_voting_result': self.voting_result,
+                })
 
             else:
                 self.voting_result = u'还有%s人,没有投票' % (len(self.sudo().prev_post_conference_resolutions_ids) - self.compute_voting_count)
@@ -101,10 +101,10 @@ class Prev_poll_status(models.Model):
                     })
                     # self.sub_tache_id.sub_pro_approval_flow_settings_ids.upate_status(5)
 
-                    # 把投票结果写入到子工程中
-                    self.subproject_id.write({
-                        'voting_result': self.voting_result,
-                    })
+                # 把投票结果写入到子工程中
+                self.subproject_id.write({
+                    'post_voting_result': self.voting_result,
+                })
 
             else:
                 self.voting_result = u'还有%s人,没有投票' % (len(self.sudo().prev_post_conference_resolutions_ids) - self.compute_voting_count)
@@ -140,43 +140,6 @@ class Prev_poll_status(models.Model):
 
         else:
             return (4.5, 5.0)
-
-
-
-    # @api.model
-    # def create(self, vals):
-    #     tache_info = self._context['tache']
-    #
-    #     # sub_project_id = int(tache_info['sub_project_id'])
-    #
-    #     sub_tache_id = int(tache_info['sub_tache_id'])
-    #     meta_sub_project_id = int(tache_info['meta_sub_project_id'])
-    #     meta_sub_project_entity = self.env['cowin_project.meat_sub_project'].browse(meta_sub_project_id)
-    #
-    #     sub_project_id = meta_sub_project_entity.sub_project_ids.id
-    #
-    #     target_sub_tache_entity = meta_sub_project_entity.sub_tache_ids.browse(sub_tache_id)
-    #
-    #     vals['subproject_id'] = sub_project_id
-    #     res = super(Prev_poll_status, self).create(vals)
-    #     target_sub_tache_entity.write({
-    #         'res_id': res.id,
-    #         # 'is_unlocked': True,
-    #         'view_or_launch': True,
-    #     })
-    #
-    #     #判断 发起过程 是否需要触发下一个子环节
-    #     target_sub_tache_entity.check_or_not_next_sub_tache()
-    #     target_sub_tache_entity.update_sub_approval_settings()
-    #
-    #     #触发下一个依赖子环节处于解锁状态
-    #     for current_sub_tache_entity in meta_sub_project_entity.sub_tache_ids:
-    #         if current_sub_tache_entity.parent_id == target_sub_tache_entity:
-    #             current_sub_tache_entity.write({
-    #                 'is_unlocked': True,
-    #             })
-    #
-    #     return res
 
 
 
@@ -230,10 +193,13 @@ class Prev_poll_status(models.Model):
             'ownership_interest',
         ]
 
+
+        # 注意: prev_voting_result/post_voting_result 是互斥出现,所以,只会有一个我们就可以
         common_fileds.extend(['name', 'project_number'])
 
         # tem = sub_project_entity.read(common_fileds)[0]
         tem = meta_sub_project_entity.round_financing_and_Foundation_ids[0].read(common_fileds)[0]
+        # tem = sub_project_entity.read(common_fileds)[0]
 
 
         res = {}
@@ -244,6 +210,9 @@ class Prev_poll_status(models.Model):
                 res[nk] = v[0]
             else:
                 res[nk] = v
+
+
+
 
         # 默认的投资经理的数据我们需要去自定义添加
         invest_manager_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资经理')])
@@ -259,7 +228,7 @@ class Prev_poll_status(models.Model):
         # 默认情况下 一对一
         res['default_voter_id'] = self.env.user.employee_ids[0].id
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[False, 'form']],

@@ -12,6 +12,9 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
 
     '''
 
+    # 用于显示环节中的名称
+    _rec_name = 'sub_tache_id'
+
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
     sub_tache_id = fields.Many2one('cowin_project.subproject_process_tache', string=u'子环节实体')
 
@@ -53,13 +56,13 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
     #     related='subproject_id.ownership_interest', string=u'股份比例')
     # ---------------
 
-    conference_date = fields.Date(string=u'会议日期')
+    post_voting_date = fields.Date(string=u'会议日期')
     compute_conference_data = fields.Char(compute='_compute_conference_date')
 
-    @api.depends('conference_date')
-    def _compute_conference_date(self):
-        for rec in self:
-            rec.subproject_id.conference_date = rec.conference_date
+    # @api.depends('conference_date')
+    # def _compute_conference_date(self):
+    #     for rec in self:
+    #         rec.subproject_id.conference_date = rec.conference_date
 
 
 
@@ -77,6 +80,11 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
 
 
 
+    @api.multi
+    def write_date_of_review_to_related_model(self):
+        for rec in self:
+            rec.subproject_id.post_voting_date = rec.post_voting_date
+
     @api.model
     def create(self, vals):
         tache_info = self._context['tache']
@@ -93,13 +101,14 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
         vals['sub_tache_id'] = sub_tache_id
 
         res = super(sub_project_summary_of_the_project_withdrawal_from_the_meeting, self).create(vals)
+        res.write_date_of_review_to_related_model()
 
         # 局部数据写入,用以避免与发起状态之间产生的操作!!!
         res.subproject_id.write({
             'inner_or_outer_status': 2,  # write方法 状态发生变化
         })
 
-        res.subproject_id.conference_date = res.conference_date
+        # res.subproject_id.conference_date = res.conference_date
 
         target_sub_tache_entity.write({
             'res_id': res.id,
@@ -131,7 +140,7 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
         if not vals:
             return True
 
-
+        self.write_date_of_review_to_related_model()
         res = super(sub_project_summary_of_the_project_withdrawal_from_the_meeting, self).write(vals)
 
         return res
@@ -192,7 +201,7 @@ class sub_project_summary_of_the_project_withdrawal_from_the_meeting(models.Mode
         view_id = self.env.ref(t_name).id
 
         return {
-            'name': self._name,
+            'name': tache_info['name'],
             'type': 'ir.actions.act_window',
             'res_model': self._name,
             'views': [[view_id, 'form']],

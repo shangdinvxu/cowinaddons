@@ -18,7 +18,7 @@
                                 <field name="name"  readonly="1"/>
                                 <field name="project_number"  readonly="1"/>
                                 <field name="invest_manager_ids"  readonly="1"/>
-                                <field name="conference_date" required="1"/>
+                                <field name="post_voting_date" required="1"/>
                                 <field name="conference_recorder" required="1"/>
                                 <field name="checker" required="1"/>
                                 <field name="members_of_voting_committee_ids"  readonly="1"/>
@@ -68,7 +68,7 @@
                                 <field name="name"  readonly="1"/>
                                 <field name="project_number"  readonly="1"/>
                                 <field name="invest_manager_ids"  readonly="1"/>
-                                <field name="conference_date" required="1"/>
+                                <field name="post_voting_date" required="1"/>
                                 <field name="conference_recorder" required="1"/>
                                 <field name="checker" required="1"/>
                                 <field name="members_of_voting_committee_ids"  readonly="1"/>
