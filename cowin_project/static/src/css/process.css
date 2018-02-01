@@ -565,7 +565,7 @@
 .process_detail_container .table .btn_wrap>span{
     cursor: pointer;
     display: inline-block;
-    padding: 3px 5px;
+    padding: 3px 10px;
     background-color: rgba(0, 176, 221, .3);
     margin-top: 5px;
     color: #00B0DD;
@@ -606,13 +606,17 @@
 .invest_infos .invest_infos_item{
     margin-bottom: 20px;
 }
+.invest_infos_item>div:nth-child(2){
+    width: 230px;
+}
 .invest_infos .invest_infos_item>div{
     display: inline-block;
     vertical-align: top;
 }
 .invest_infos .invest_infos_item>div:nth-child(1){
     width: 80px;
-    text-align: right;
+    text-align: left;
+    padding-top: 3px;
 }
 .invest_infos p,.invest_exit_infos p{
     color:#00B0DD;
