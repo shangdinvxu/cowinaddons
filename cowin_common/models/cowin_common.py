@@ -133,7 +133,7 @@ class Cowin_common_approval_flow_dialog(models.Model):
         return {
             'type': 'ir.actions.client',
             'name': '主工程信息',
-            'tag': 'process_kanban_to_detail',
+            'tag': 'approval_kanban_to_detail',
             'active_id': project_entity.id,
             'params': {
                 'no_initate': True,
@@ -164,6 +164,11 @@ class Cowin_common_approval_flow_dialog(models.Model):
     def button_reject(self):
         if self.status:
             raise UserError(u'已审批完成')
+
+        if not self.approval_opinion:
+            raise UserError(u'请输入您的意见!!!')
+
+
         self.status = True
         self.approval_result = u'False'
         return self.process_approval_flow_info()
