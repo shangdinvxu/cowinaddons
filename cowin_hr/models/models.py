@@ -105,8 +105,8 @@ class Cowin_hr(models.Model):
 
     barcode = fields.Char(string=u'员工编码')
 
-    is_add_user = fields.Boolean(string=u'添加登陆用户', default=True)
-    login_name = fields.Char(string=u'邮箱')
+    is_add_user = fields.Boolean(string=u'添加登录用户', default=True)
+    login_name = fields.Char(string=u'登录邮箱')
     industry = fields.Many2one('cowin_common.cowin_industry', string=u'所属行业')
 
     # 员工与登录角色的关系 理论上 One-2-One关系
