@@ -143,6 +143,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
         show_approval_flow_wrap:function (e) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
+
             if($(target).parents('tr').find('.tache_name').text()=='信息登记'){
                 var operate = false;
             }else {
@@ -163,6 +164,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
                     self.approval_over = result.approval_flow_setting_node_ids[result.approval_flow_setting_node_ids.length-1];   //存储审批结束的节点
 
                     self.$el.append(QWeb.render('approval_flow_tmpl',{result: result,operate:operate}));
+                    $('.approval_flow_wrap .approval_tache_name').html($(target).parents('tr').find('.tache_name').text());
                 })
         },
         //取消排序

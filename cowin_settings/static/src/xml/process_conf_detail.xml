@@ -194,7 +194,7 @@
         <div class="approval_flow_container close_this_container">
             <div class="modal-backdrop  in"></div>
             <div class="approval_flow_wrap">
-                <p>审批流设置</p>
+                <p>审批流设置---<span class="approval_tache_name"></span></p>
                 <div class="add_approval_node_wrap">
                     <div class="add_approval_node">
                         <t t-if="operate==true">
