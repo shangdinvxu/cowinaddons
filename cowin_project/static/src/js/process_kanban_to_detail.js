@@ -82,6 +82,17 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                 'the_amount_of_investment': $('.add_content .the_amount_of_investment').val(),
                 'foundation':$('.add_content .foundation').val()
             };
+            back_datas['withdrawals'] = [];
+            $('.invest_exit_infos .value_info').each(function (index) {
+                if($(this).find('.ownership_interest').val() && $(this).find('.the_amount_of_withdrawals').val() && $(this).find('.project_valuation').val()){
+                    back_datas['withdrawals'].push({
+                         'ownership_interest': $(this).find('.ownership_interest').val() ? $(this).find('.ownership_interest').val(): null,
+                         'the_amount_of_withdrawals': $(this).find('.the_amount_of_withdrawals').val() ? parseInt($(this).find('.the_amount_of_withdrawals').val()) : null,
+                         'project_valuation': $(this).find('.project_valuation').val() ? parseInt($(this).find('.project_valuation').val()):null,
+                         'id': parseInt($(this).attr('data-id'))
+                     })
+                }
+            });
             console.log(back_datas)
             new Model("cowin_project.cowin_project")
                         .call("rpc_update_detail_info", [self.id],{vals:back_datas})
@@ -236,6 +247,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
         //新增外部投资
         add_new_invest_func:function () {
             var self = this;
+            $('.add_invest_foot span').eq(0).addClass('save').removeClass('save_edit');
             new Model("cowin_project.cowin_project")
                     .call("rpc_get_financing", [[]])
                     .then(function (result) {
@@ -244,7 +256,10 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
 
                         $('.add_invest_select').html('');
                         $('.add_invest_select').append(QWeb.render('add_invest_select_tmpl',{result:result}));
+                        $('.add_content .invest_exit_infos tbody').html('');
+                        $('.add_content .invest_exit_infos tbody').append(QWeb.render('withdraw_infos_tmpl',{result:[]}));
 
+                        //获取轮次带出的信息
                         new Model("cowin_project.cowin_project")
                             .call("rpc_get_financing_infos", [self.id],{vals:{'round_financing_id':result[0].id}})
                             .then(function (result) {
