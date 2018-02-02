@@ -172,6 +172,10 @@ class Cowin_common_approval_flow_dialog(models.Model):
     def button_putoff(self):
         if self.status:
             raise UserError(u'已审批完成')
+
+        if not self.approval_opinion:
+            raise UserError(u'请输入您的意见!!!')
+
         self.status = True
         self.approval_result = u'None'
         return self.process_approval_flow_info()
