@@ -2057,31 +2057,14 @@ class Cowin_project(models.Model):
 
         group_by = 'create_date:day'
 
-
-
-
-        # msg_data_my = [{'name': data_one.body} for data_one in
-        #                self.env['mail.message'].search(domain, limit=20)]
-
         res = []
 
         group_message_infos = self.env['mail.message'].read_group(domain=domain, fields=group_fields, groupby=group_by, orderby='create_date desc')
 
         for group_info in group_message_infos:
             messages = self.env['mail.message'].search(group_info['__domain'], order='create_date desc' )
-            # messages = self.env['mail.message'].search(group_info['__domain'])
-            # messages = self.env['mail.message'].search(['&', ('create_date', '>=', '2018-01-30 23:00:00'), ('create_date', '<', '2018-01-31 23:00:00')])
-            res.extend(messages.message_format())
+            res.append(messages.message_format())
 
-
-
-        # for message_info in group_message_infos:
-        #     for message in message_info[group_by + '_count']:
-
-
-        # message_entities = self.env['mail.message'].search(domain)
-        #
-        # msg_data_my = self.env['mail.message'].search(domain).message_format()
 
         return {
             'type': 'ir.actions.client',
