@@ -90,6 +90,8 @@ class Cowin_common_approval_flow_dialog(models.Model):
         # 子流程配置实体
         sub_approval_flow_settings_entity = sub_tache_entity.sub_pro_approval_flow_settings_ids
 
+        project_entity = sub_tache_entity.meta_sub_project_id.project_id
+
         res_1s = sub_approval_flow_settings_entity.current_approval_flow_node_id.operation_role_id.sub_meta_pro_approval_settings_role_rel
 
         res_2s = sub_approval_flow_settings_entity.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel
@@ -131,10 +133,12 @@ class Cowin_common_approval_flow_dialog(models.Model):
         return {
             'type': 'ir.actions.client',
             'name': '主工程信息',
-            'tag': 'reload2',
-            'url': '/web#active_id=%s&action=approval_kanban_to_detail&model=cowin_project.cowin_project' % (sub_tache_entity.meta_sub_project_id.project_id.id)
+            'tag': 'process_kanban_to_detail',
+            'active_id': project_entity.id,
+            'params': {
+                'no_initate': True,
+            }
 
-            # 'params': {'menu_id': self.env.ref('point_of_sale.menu_point_root').id},
         }
         # return {
         #     'type': 'ir.actions.act_url',
