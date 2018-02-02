@@ -2045,8 +2045,24 @@ class Cowin_project(models.Model):
             })
         return res
 
+    @api.multi
+    def action_message_me_view(self):
 
+        domain = [('channel_ids', 'in', self.env['mail.channel'].search(
+            [('channel_partner_ids', 'child_of', self.env.user.partner_id.id
 
+              )]).ids)]
+
+        # msg_data_my = [{'name': data_one.body} for data_one in
+        #                self.env['mail.message'].search(domain, limit=20)]
+
+        msg_data_my = self.env['mail.message'].search(domain).message_format()
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'message_me_view_js',
+            'message_data': msg_data_my,
+        }
 
 
 

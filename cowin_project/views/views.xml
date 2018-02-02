@@ -457,6 +457,13 @@
             <field name="view_mode">kanban,tree,form</field>
         </record>
 
+        <!--消息-->
+        <record model="ir.actions.client" id="cowin_project_message">
+            <field name="name">消息</field>
+            <field name="res_model">cowin_project.cowin_project</field>
+            <field name="tag">message_me_view_js</field>
+        </record>
+
 
 
         <!--开始为菜单构建用户组/角色-->
@@ -486,6 +493,7 @@
 
         <!-- menu categories -->
         <!--左侧菜单-->
+        <menuitem name="消息" id="cowin_project.message" parent="cowin_project.menu_root" action="cowin_project_message"/>
         <menuitem name="项目管理" id="cowin_project.menu_1" parent="cowin_project.menu_root"/>
         <menuitem name="投后管理" id="cowin_project.menu_2" parent="cowin_project.menu_root"/>
         <menuitem name="项目查询" id="cowin_project.menu_3" parent="cowin_project.menu_root"
