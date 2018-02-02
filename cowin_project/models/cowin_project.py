@@ -2065,10 +2065,12 @@ class Cowin_project(models.Model):
 
         res = []
 
-        group_message_infos = self.env['mail.message'].read_group(domain=domain, fields=['create_date'], groupby=group_by, , orderby=True)
+        group_message_infos = self.env['mail.message'].read_group(domain=domain, fields=group_fields, groupby=group_by, orderby='create_date desc')
 
         for group_info in group_message_infos:
-            messages = self.env['mail.message'].search(group_info['__domain'], order=True)
+            messages = self.env['mail.message'].search(group_info['__domain'], order='create_date desc' )
+            # messages = self.env['mail.message'].search(group_info['__domain'])
+            # messages = self.env['mail.message'].search(['&', ('create_date', '>=', '2018-01-30 23:00:00'), ('create_date', '<', '2018-01-31 23:00:00')])
             res.extend(messages.message_format())
 
 
