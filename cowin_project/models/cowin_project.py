@@ -5,7 +5,7 @@ from odoo import tools
 from odoo.exceptions import UserError
 from odoo import SUPERUSER_ID
 from odoo.tools.mail import html_sanitize, html2plaintext
-
+import collections
 import json
 
 # # 审批角色
@@ -2045,7 +2045,9 @@ class Cowin_project(models.Model):
             })
         return res
 
-    @api.multi
+
+
+    @api.model
     def action_message_me_view(self):
 
         domain = [('channel_ids', 'in', self.env['mail.channel'].search(
@@ -2059,17 +2061,40 @@ class Cowin_project(models.Model):
 
         res = []
 
-        group_message_infos = self.env['mail.message'].read_group(domain=domain, fields=group_fields, groupby=group_by, orderby='create_date desc')
+        limit = 80
+        count = 0
 
-        for group_info in group_message_infos:
-            messages = self.env['mail.message'].search(group_info['__domain'], order='create_date desc' )
-            res.append(messages.message_format())
+        message_entities = self.env['mail.message'].search([], limit=80, offset=0, order='create_date desc')
 
+        # dict k: create_day v: mesages
+        messas_dict = collections.defaultdict(list)
+
+        for message in message_entities:
+            k = message.create_date[:10]
+            messas_dict[k].append(message.message_format()[0])
+
+
+
+
+        #
+        #
+        #
+        #
+        #
+        # group_message_infos = self.env['mail.message'].read_group(domain=domain, fields=group_fields, groupby=group_by, orderby='create_date desc')
+        #
+        # for group_info in group_message_infos:
+        #     messages = self.env['mail.message'].search(group_info['__domain'], order='create_date desc', limit=80 )
+        #     # actual_count = group_info['create_date_count']
+        #
+        #
+        #     res.append(messages.message_format())
+        #
 
         return {
             'type': 'ir.actions.client',
             'tag': 'message_me_view_js',
-            'message_data': res,
+            'message_data': messas_dict,
         }
 
 
