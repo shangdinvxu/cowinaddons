@@ -298,7 +298,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                     round_env = self.env['cowin.project.detail.round']
                     round_ = round_env.search([
                         ('project_id', '=', self.meta_sub_project_id.project_id.id),
-                        ('round_financing_id', '=', entity.foundation_id.id),
+                        ('round_financing_id', '=', entity.round_financing_id.id),
                     ])
                     if round_:
                         self.env['cowin.project.detail.foundation'].create({
@@ -312,7 +312,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                     else:
                         round_env.create({
                             'project_id': self.meta_sub_project_id.project_id.id,
-                            'round_financing_id': entity.foundation_id.id,
+                            'round_financing_id': entity.round_financing_id.id,
                             'the_amount_of_financing': entity.the_amount_of_investment,
                             'project_valuation': entity.project_valuation,
                             'foundation_ids': [(0, 0, {

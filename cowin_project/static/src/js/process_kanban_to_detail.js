@@ -39,6 +39,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'click .manage_team_edit':'manage_team_edit_func',
             'click .operate_contacts':'show_operate_contacts',
             'click .process_add_fun':'process_add_fun',
+            //  详情 tab
             'click .project_details':'project_details_func',
             'click .add_new_invest':'add_new_invest_func',
             'click .add_invest_foot .save':'save_add_invest',
@@ -80,7 +81,8 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             var target = e.target || e.srcElement;
             var x = $(target).parents('tr').find('.the_amount_of_withdrawals').val();
             var y = $(target).parents('tr').find('.project_valuation').val();
-            $(target).parents('tr').find('.ownership_interest').val(parseFloat(x)/parseFloat(y));
+            var z = parseFloat(x)/parseFloat(y);
+            $(target).parents('tr').find('.ownership_interest').val(Number(z*100).toFixed(2) + '%');
         },
         //详情页面编辑的保存
         save_edit_func:function () {
@@ -103,8 +105,10 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                         var op_type = 1;  //修改
                         var op_id = parseInt($(this).attr('data-id'));
                     }
+                    var interest = (parseFloat($(this).find('.ownership_interest').val().replace("%",""))/100).toFixed(4);
+                    // var interest = $(this).find('.ownership_interest').val().replace("%","")/100;
                     back_datas['withdrawal_ids'].push([op_type, op_id,{
-                         'ownership_interest': $(this).find('.ownership_interest').val() ? $(this).find('.ownership_interest').val(): null,
+                         'ownership_interest': interest,
                          'the_amount_of_withdrawals': $(this).find('.the_amount_of_withdrawals').val() ? parseInt($(this).find('.the_amount_of_withdrawals').val()) : null,
                          'project_valuation': $(this).find('.project_valuation').val() ? parseInt($(this).find('.project_valuation').val()):null,
                          'id': parseInt($(this).attr('data-id'))
@@ -145,7 +149,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                 'id':null,
                 'name':$(target).parents('tr').prev().find('td').html()
             }];
-            console.log(data);
+            // console.log(data);
             $('.add_invest_select').html('');
             $('.add_invest_select').append(QWeb.render('add_invest_select_tmpl',{result:data}));
             $('.add_invest_select select').prop('disabled',true);
@@ -157,7 +161,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             $('.invest_infos_item .project_valuation').prop('disabled',true);
 
             $('.add_invest_foot .save').addClass('save_edit').removeClass('save');
-
+            console.log(self.tab_detail_infos[parseInt(index)]);
             $('.invest_exit_infos tbody').html('');
             $('.invest_exit_infos tbody').append(QWeb.render('withdraw_infos_tmpl', {result: self.tab_detail_infos[parseInt(index)],add:false}))
         },
@@ -199,15 +203,15 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                     .call("rpc_get_financing_infos", [self.id],{vals:{'round_financing_id':round_financing_id}})
                     .then(function (result) {
                         if(result.id && result.name){
-                            $('.the_amount_of_financing').prop('disabled',true);
-                            $('.project_valuation').prop('disabled',true);
+                            $('.invest_infos .the_amount_of_financing').prop('disabled',true);
+                            $('.invest_infos .project_valuation').prop('disabled',true);
                         }else {
-                            $('.the_amount_of_financing').prop('disabled',false);
-                            $('.project_valuation').prop('disabled',false);
+                            $('.invest_infos .the_amount_of_financing').prop('disabled',false);
+                            $('.invest_infos .project_valuation').prop('disabled',false);
                         }
 
-                        $('.the_amount_of_financing').val(result.id);
-                        $('.project_valuation').val(result.name);
+                        $('.invest_infos .the_amount_of_financing').val(result.id);
+                        $('.invest_infos .project_valuation').val(result.name);
                     })
         },
         //添加退出情况
@@ -233,8 +237,10 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             data['withdrawals'] = [];
             $('.invest_exit_infos .value_info').each(function (index) {
                 if($(this).find('.ownership_interest').val() && $(this).find('.the_amount_of_withdrawals').val() && $(this).find('.project_valuation').val()){
+                    //百分数转成四位小数
+                    var interest = (parseFloat($(this).find('.ownership_interest').val().replace("%",""))/100).toFixed(4);
                     data['withdrawals'].push({
-                         'ownership_interest': $(this).find('.ownership_interest').val() ? $(this).find('.ownership_interest').val(): null,
+                         'ownership_interest': interest,
                          'the_amount_of_withdrawals': $(this).find('.the_amount_of_withdrawals').val() ? parseInt($(this).find('.the_amount_of_withdrawals').val()) : null,
                          'project_valuation': $(this).find('.project_valuation').val() ? parseInt($(this).find('.project_valuation').val()):null
                      })

@@ -9,8 +9,9 @@
             <div class="message_header_date"><span><t t-esc="message.message_date"/></span></div>
             <t t-foreach="message.message_data" t-as="item">
                 <div class="message_item">
-                    <div>
-                        <t t-esc="item.body"/>
+                    <t t-raw="item.body"/>
+                    <div class="message_item_time">
+                        <t t-esc="item.date"/>
                     </div>
                 </div>
             </t>

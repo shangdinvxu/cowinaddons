@@ -14,3 +14,11 @@
     position: relative;
     top: 12px;
 }
+.message_item{
+    padding: 10px;
+    background-color: rgba(242, 242, 242, 1);
+    margin-bottom: 10px;
+}
+.message_item_time{
+    float: right;
+}

@@ -450,7 +450,7 @@
                                 <td class="project_valuation"><t t-esc="obj.project_valuation"/></td>
                                 <td class="the_amount_of_financing"><t t-esc="obj.the_amount_of_financing"/></td>
                                 <td class="the_amount_of_investment"><t t-esc="obj.the_amount_of_investment"/></td>
-                                <td class="ownership_interest"><t t-esc="obj.ownership_interest"/></td>
+                                <td class="ownership_interest"><t t-esc="100*(obj.ownership_interest*1000)/1000 + '%'"/></td>
                                 <td>
                                     <t t-if="obj.withdrawals.length==0">
                                         无
@@ -568,7 +568,7 @@
             <tr>
                 <td><t t-esc="item.project_valuation"/></td>
                 <td><t t-esc="item.the_amount_of_withdrawals"/></td>
-                <td><t t-esc="item.ownership_interest"/></td>
+                <td><t t-esc="100*(item.ownership_interest*1000)/1000 + '%'"/></td>
             </tr>
         </t>
     </t>
@@ -597,7 +597,8 @@
                     <td><input type="text" class="project_valuation"  t-att-value="item.project_valuation"/></td>
                     <td><input type="text" class="the_amount_of_withdrawals" t-att-value="item.the_amount_of_withdrawals"/></td>
                     <td>
-                        <input type="text" class="ownership_interest" disabled="disabled" t-att-value="item.ownership_interest"/>
+                        <input type="text" class="ownership_interest" disabled="disabled" t-att-value="100*(item.ownership_interest*1000)/1000 + '%'"/>
+                        <!--<span><t t-esc="item.ownership_interest*100 + '%'"/></span>-->
                         <t t-if="add==false">
                             <span class="delete_value_item fa fa-trash"></span>
                         </t>
