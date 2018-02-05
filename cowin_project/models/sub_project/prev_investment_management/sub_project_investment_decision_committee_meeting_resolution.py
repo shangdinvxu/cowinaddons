@@ -94,6 +94,19 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
             rec.subproject_id.amount_of_entrusted_loan = rec.amount_of_entrusted_loan
 
 
+    @api.multi
+    def check_special_filed(self):
+        self.ensure_one()
+        extend_entity = self.env['cowin.project.detail.round'].search([('project_id', '=', self.subproject_id.meta_project_id.project_id.id),
+                                                                       ('round_financing_id', '=', self.round_financing_id)])
+
+        if self.the_amount_of_financing != extend_entity.the_amount_of_financing or \
+            self.project_valuation != extend_entity.project_valuation:
+            raise UserError(u'本次融资金额 和 估值必须为 %s, %s' % (extend_entity.the_amount_of_financing, extend_entity.project_valuation))
+
+
+
+
     @api.model
     def create(self, vals):
         tache_info = self._context['tache']
@@ -112,6 +125,7 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
         vals['sub_tache_id'] = sub_tache_id
         res = super(Cowin_project_subproject_investment_decision_committee_meeting_resolution, self).create(vals)
 
+        res.check_special_filed()
         res.write_date_of_review_to_related_model()  # 写入当前子工程的轮次基金实体
 
         target_sub_tache_entity.write({
@@ -159,7 +173,7 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
         # 由于在前端界面中,重写过前端想后端写入的方法,有空值的影响, 尤其是button的操作的影响,所以,我们需要把该问题给过滤掉!!!
         if not vals:
             return True
-
+        self.check_special_filed()
         self.write_date_of_review_to_related_model()
         result = super(Cowin_project_subproject_investment_decision_committee_meeting_resolution, self).write(vals)
         return result
