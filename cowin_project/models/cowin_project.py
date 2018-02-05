@@ -2064,10 +2064,15 @@ class Cowin_project(models.Model):
         total_count = self.env['mail.message'].search_count(domain)
 
         message_entities = self.env['mail.message'].search(domain, limit=80, offset=0, order='create_date desc')
-        messas_dict = collections.defaultdict(list)
+        # messas_dict = collections.defaultdict(list)
+        messas_dict = collections.OrderedDict()
         for message in message_entities:
             k = message.create_date[:10]
+            messas_dict.setdefault(k, [])
             messas_dict[k].append(message.message_format()[0])
+
+
+
 
         for k, v in  messas_dict.items():
             tmp = {}
@@ -2081,23 +2086,6 @@ class Cowin_project(models.Model):
             'taotal_count':total_count
         }
 
-
-    # @api.multi
-    # def action_message_me_view(self):
-    #
-    #     domain = [(u'channel_ids', u'in', self.env['mail.channel'].search(
-    #         [('channel_partner_ids', 'child_of', self.env.user.partner_id.id)]).ids)]
-    #
-    #     # msg_data_my = [{'name': data_one.body} for data_one in
-    #     #                self.env['mail.message'].search(domain, limit=20)]
-    #
-    #     msg_data_my = self.env['mail.message'].search(domain).message_format()
-    #
-    #     return {
-    #         'type': 'ir.actions.client',
-    #         'tag': 'message_me_view_js',
-    #         'message_data': msg_data_my,
-    #     }
 
 
 
