@@ -328,8 +328,21 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
                 exit_entity = self.env[investment_post_decision_res].browse(self.sub_project_tache_id.res_id)
                 entity = self.sub_project_tache_id.meta_sub_project_id.round_financing_and_Foundation_ids[0]
+                project_id = self.sub_project_tache_id.meta_sub_project_id.project_id.id
+
+                round_id = self.env['cowin.project.detail.round'].sudo().search([
+                    ('project_id', '=', project_id),
+                    ('round_financing_id', '=', entity.foundation_id.id),
+                ])
+
+                foundation_id = self.env['cowin.project.detail.foundation'].sudo().search([
+                    ('round_id', '=', round_id.id),
+                    ('foundation', '=', entity.foundation_id.name),
+                    ('data_from', '=', 'local'),
+                ])
+
                 self.env['cowin.project.detail.withdrawals'].create({
-                    'foundation_id': entity.foundation_id.id,
+                    'foundation_id': foundation_id.id,
                     'ownership_interest': exit_entity.withdrawal_ratio,
                     'the_amount_of_withdrawals': exit_entity.withdrawal_amount,
                     'project_valuation': exit_entity.withdrawal_valuation,
