@@ -2055,24 +2055,32 @@ class Cowin_project(models.Model):
 
               )]).ids)]
 
-        group_fields = ['create_date']
+        # group_fields = ['create_date']
+        #
+        # group_by = 'create_date:day'
+        #
 
-        group_by = 'create_date:day'
+        #
+        # limit = 80
+        # count = 0
 
         res = []
-
-        limit = 80
-        count = 0
-
-        message_entities = self.env['mail.message'].search([], limit=80, offset=0, order='create_date desc')
+        message_entities = self.env['mail.message'].search(domain, limit=80, offset=0, order='create_date desc')
 
         # dict k: create_day v: mesages
         messas_dict = collections.defaultdict(list)
 
         for message in message_entities:
             k = message.create_date[:10]
+
             messas_dict[k].append(message.message_format()[0])
 
+
+        for k, v in  messas_dict.items():
+            tmp = {}
+            tmp['message_date'] = k
+            tmp['message_data'] = v
+            res.append(tmp)
 
 
 
@@ -2094,7 +2102,7 @@ class Cowin_project(models.Model):
         return {
             'type': 'ir.actions.client',
             'tag': 'message_me_view_js',
-            'message_data': messas_dict,
+            'message_data': res,
         }
 
 
