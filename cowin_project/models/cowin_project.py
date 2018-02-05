@@ -2065,6 +2065,8 @@ class Cowin_project(models.Model):
         # count = 0
 
         res = []
+        total_count = self.env['mail.message'].search_count(domain)
+
         message_entities = self.env['mail.message'].search(domain, limit=80, offset=0, order='create_date desc')
 
         # dict k: create_day v: mesages
@@ -2080,6 +2082,7 @@ class Cowin_project(models.Model):
             tmp = {}
             tmp['message_date'] = k
             tmp['message_data'] = v
+            tmp['taotal_count'] = total_count
             res.append(tmp)
 
 
