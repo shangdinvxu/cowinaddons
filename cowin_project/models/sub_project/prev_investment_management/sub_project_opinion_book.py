@@ -88,13 +88,11 @@ class Cowin_project_subproject_opinion_book(models.Model):
 
     @api.multi
     def write_date_of_review_to_related_model(self):
-        for rec in self:
-            # rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
-            # rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
-            rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
+        self.ensure_one()
+        self.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = self.the_amount_of_financing
+        self.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = self.the_amount_of_investment
+        self.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = self.ownership_interest
+        self.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = self.project_valuation
 
 
 
