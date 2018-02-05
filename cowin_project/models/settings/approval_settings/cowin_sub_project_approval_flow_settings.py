@@ -335,7 +335,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                     ('round_financing_id', '=', entity.foundation_id.id),
                 ])
 
-                foundation_id = self.env['cowin.project.detail.foundation'].sodu().search([
+                foundation_id = self.env['cowin.project.detail.foundation'].sudo().search([
                     ('round_id', '=', round_id.id),
                     ('foundation', '=', entity.foundation_id.name),
                     ('data_from', '=', 'local'),
