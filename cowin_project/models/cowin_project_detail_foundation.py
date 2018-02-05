@@ -7,6 +7,8 @@ class Cowin_project_detail_foundation(models.Model):
 
     round_id = fields.Many2one('cowin.project.detail.round', string=u'详情轮次', ondelete='cascade')
 
+    meta_sub_project_id = fields.Many2one('cowin_project.meat_sub_project', string=u'元子工程ID')
+
     ownership_interest = fields.Float(string=u'股份比例', compute="_calc_ownership_interest")
 
     the_amount_of_investment = fields.Float(string=u'本次投资金额')
@@ -19,6 +21,10 @@ class Cowin_project_detail_foundation(models.Model):
     ], string='数据来源', default='local')
 
     withdrawal_ids = fields.One2many('cowin.project.detail.withdrawals', 'foundation_id', ondelete="cascade")
+
+    _sql_constraints = [
+        ('cowin_project_detail_foundation_project_unique', 'unique (round_id, meta_sub_project_id)', u"子项目轮次不可重复"),
+    ]
 
     # 计算股份比例
     def _calc_ownership_interest(self):

@@ -290,18 +290,34 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                 # 投委会决议票审核通过之后, 将该基金投资信息存入项目详情内, (该操作与项目主流程无关)
                 if self.sub_project_tache_id.meta_sub_project_id.round_financing_and_Foundation_ids:
                     entity = self.sub_project_tache_id.meta_sub_project_id.round_financing_and_Foundation_ids[0]
-                    self.env['cowin.project.detail.round'].create({
-                        'project_id': self.meta_sub_project_id.project_id.id,
-                        'round_financing_id': entity.foundation_id.id,
-                        'the_amount_of_financing': entity.the_amount_of_investment,
-                        'project_valuation': entity.project_valuation,
-                        'foundation_ids': [(0, 0, {
+                    round_env = self.env['cowin.project.detail.round']
+                    round_ = round_env.search([
+                        ('project_id', '=', self.meta_sub_project_id.project_id.id),
+                        ('round_financing_id', '=', entity.foundation_id.id),
+                    ])
+                    if round_:
+                        self.env['cowin.project.detail.foundation'].create({
+                            'round_id': round_.id,
                             'ownership_interest': entity.ownership_interest,
+                            'meta_sub_project_id': self.meta_sub_project_id.id,
                             'the_amount_of_investment': entity.the_amount_of_financing,
                             'foundation': entity.foundation_id.name,
                             'data_from': 'local'
-                        })]
-                    })
+                        })
+                    else:
+                        round_env.create({
+                            'project_id': self.meta_sub_project_id.project_id.id,
+                            'round_financing_id': entity.foundation_id.id,
+                            'the_amount_of_financing': entity.the_amount_of_investment,
+                            'project_valuation': entity.project_valuation,
+                            'foundation_ids': [(0, 0, {
+                                'ownership_interest': entity.ownership_interest,
+                                'meta_sub_project_id': self.meta_sub_project_id.id,
+                                'the_amount_of_investment': entity.the_amount_of_financing,
+                                'foundation': entity.foundation_id.name,
+                                'data_from': 'local'
+                            })]
+                        })
             else:
                 res_entity.write({
                     'once_or_more': True,
@@ -340,13 +356,12 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                     ('foundation', '=', entity.foundation_id.name),
                     ('data_from', '=', 'local'),
                 ])
-
-                self.env['cowin.project.detail.withdrawals'].create({
-                    'foundation_id': foundation_id.id,
-                    'ownership_interest': exit_entity.withdrawal_ratio,
-                    'the_amount_of_withdrawals': exit_entity.withdrawal_amount,
-                    'project_valuation': exit_entity.withdrawal_valuation,
-                })
+                if foundation_id:
+                    self.env['cowin.project.detail.withdrawals'].create({
+                        'foundation_id': foundation_id.id,
+                        'the_amount_of_withdrawals': exit_entity.withdrawal_amount,
+                        'project_valuation': exit_entity.withdrawal_valuation,
+                    })
 
 
         # 投资决策委员会会议纪要 所关联的投票表
