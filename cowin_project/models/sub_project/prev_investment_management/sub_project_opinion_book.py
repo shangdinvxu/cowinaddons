@@ -136,6 +136,9 @@ class Cowin_project_subproject_opinion_book(models.Model):
             })
 
 
+            # 重新发起状态,需要重新写入相关的数据
+            self.write_date_of_review_to_related_model()
+
 
             # 判断 发起过程 是否需要触发下一个子环节
 
@@ -144,7 +147,7 @@ class Cowin_project_subproject_opinion_book(models.Model):
         # 由于在前端界面中,重写过前端想后端写入的方法,有空值的影响, 尤其是button的操作的影响,所以,我们需要把该问题给过滤掉!!!
         if not vals:
             return True
-        self.write_date_of_review_to_related_model()
+        # self.write_date_of_review_to_related_model()
         res = super(Cowin_project_subproject_opinion_book, self).write(vals)
 
         # button在当前的业务逻辑中当前属于审核状态, 分发之后的业务,业务逻辑不同

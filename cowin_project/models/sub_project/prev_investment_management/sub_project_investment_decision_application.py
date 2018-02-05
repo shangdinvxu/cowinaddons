@@ -164,6 +164,9 @@ class Cowin_project_subproject_investment_decision_application(models.Model):
                 'is_launch_again': False,
             })
 
+            # 重新发起状态,需要重新写入相关的数据
+            self.write_date_of_review_to_related_model()
+
             # 判断 发起过程 是否需要触发下一个子环节
 
             target_sub_tache_entity.update_sub_approval_settings()
@@ -172,7 +175,7 @@ class Cowin_project_subproject_investment_decision_application(models.Model):
         if not vals:
             return True
 
-        self.write_date_of_review_to_related_model()
+        # self.write_date_of_review_to_related_model()
         res = super(Cowin_project_subproject_investment_decision_application, self).write(vals)
 
         return res
