@@ -15,6 +15,8 @@ class Cowin_sub_project_base_status(models.Model):
     button_status = fields.Selection([(0, u'初始化'), (1, u'使用中') , (2, u'已完成')], string=u'button状态的改变', default=0)
 
 
+
+
     # 公共表名, 用于在面包先线上显示出有意义的效果!!!
 
 
