@@ -57,11 +57,11 @@ class Round_financing_and_Foundation(models.Model):
     project_valuation = fields.Float(string=u'估值')
 
 
-    _sql_constraints = [
-      ('number_uniq', 'unique(meta_sub_project_id, foundation_id, round_financing_id)', u'基金轮次不能相同!'),
-    ]
-
-
+    # _sql_constraints = [
+    #   ('number_uniq', 'unique(meta_sub_project_id, foundation_id, round_financing_id)', u'基金轮次不能相同!'),
+    # ]
+    #
+    #
 
 
 
