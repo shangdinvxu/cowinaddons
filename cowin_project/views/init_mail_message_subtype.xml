@@ -1,0 +1,21 @@
+<odoo>
+
+    <data>
+
+        <!-- 自定义的通知消息类型 以及 自定义的操作记录类型 -->
+        <record id="init_project_mail_message_subtype_notification" model="mail.message.subtype">
+          <field name="name">通知消息</field>
+          <field name="description">通知的消息</field>
+        </record>
+
+        <record id="init_project_mail_message_subtype_operation_record" model="mail.message.subtype">
+          <field name="name">通知消息</field>
+          <field name="description">操作记录的消息</field>
+        </record>
+
+
+
+
+    </data>
+
+</odoo>

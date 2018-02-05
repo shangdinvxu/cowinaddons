@@ -57,6 +57,28 @@ class Cowin_project_subproject(models.Model):
     round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation',
                                                         string=u'基金轮次实体')
     round_financing_id = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
+
+
+    # 由于轮次的使用需要依赖于外部的投资的介入,所以需要做一些指定的操作
+    @api.onchange('round_financing_id')
+    def _onchange_round_financing_id(self):
+
+        if self._context.get('rec_new_found_round_info'):
+            project_id = self._context.get('rec_new_found_round_info')['project_id']
+
+            tem = self.env['cowin.project.detail.round'].search([('project_id', '=', project_id),
+                                                       ('round_financing_id', '=', self.round_financing_id.id)])
+
+        else:
+            tem = self.env['cowin.project.detail.round'].search([('project_id', '=', self.meta_sub_project_id.project_id.id),
+                                                                 ('round_financing_id', '=',self.round_financing_id.id)])
+
+        self.the_amount_of_financing = tem.the_amount_of_financing
+        self.project_valuation = tem.project_valuation
+
+
+
+
     foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金名称')
     the_amount_of_financing = fields.Float(string=u'本次融资金额')
     the_amount_of_investment = fields.Float(string=u'本次投资金额')
@@ -64,35 +86,6 @@ class Cowin_project_subproject(models.Model):
     project_valuation = fields.Float(string=u'估值')
 
     compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
-
-    # @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment', 'ownership_interest', 'project_valuation')
-    # def _compute_value(self):
-    #     for rec in self:
-    #         rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
-    #         rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
-    #         rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
-    #         rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
-    #         rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
-    #         rec.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
-
-
-
-
-
-    # round_financing_id = fields.Many2one('cowin_common.round_financing',
-    #                                      related='round_financing_and_foundation_id.round_financing_id', string=u'融资轮次')
-
-    # foundation_id = fields.Many2one('cowin_foundation.cowin_foudation',
-    #                                 related='round_financing_and_foundation_id.foundation_id', string=u'基金名称')
-
-    # the_amount_of_financing = fields.Float(
-    #                                     related='round_financing_and_foundation_id.the_amount_of_financing', string=u'本次融资额')
-
-    # the_amount_of_investment = fields.Float(
-    #                                 related='round_financing_and_foundation_id.the_amount_of_investment', string=u'本次投资金额')
-    # ownership_interest = fields.Integer(
-    #                         related='round_financing_and_foundation_id.ownership_interest',string=u'股份比例')
-    # ---------------
 
 
     project_company_profile = fields.Text(string=u'项目公司概况')
@@ -309,6 +302,9 @@ class Cowin_project_subproject(models.Model):
         rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & invest_manager_entity.sub_meta_pro_approval_settings_role_rel
 
         res['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+
+        # res['default_meta_sub_project_id'] = meta_sub_project_id
+        # res['default_project_id'] = meta_sub_project_entity.project_id.id
 
 
         t_name = self._name + '_form_no_button'

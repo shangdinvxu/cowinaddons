@@ -277,6 +277,8 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             # 投资决策委员会会议决议  是否为为最终决议
             if last_entity.is_final_meeting_resolution:
                 # 在为是最终决议的条件下,需要开启主工程 新增基金轮次实体接口
+
+
                 self.process_new_round_fund_entity()
 
                 # 需要把 投资决策申请子环节的新增按钮禁用!!!  默认我们去第一条即可
@@ -289,7 +291,10 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
                 # 投委会决议票审核通过之后, 将该基金投资信息存入项目详情内, (该操作与项目主流程无关)
                 if self.sub_project_tache_id.meta_sub_project_id.round_financing_and_Foundation_ids:
+
+                    #
                     entity = self.sub_project_tache_id.meta_sub_project_id.round_financing_and_Foundation_ids[0]
+
                     self.env['cowin.project.detail.round'].create({
                         'project_id': self.meta_sub_project_id.project_id.id,
                         'round_financing_id': entity.foundation_id.id,
@@ -404,6 +409,11 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                 })
             else:
                 pass
+
+    # # 设定已经解锁,但是没有发起的的子环节 is_unlocked 为Fasle
+    # def set_all_sub_tache_entities_unlocked_to_false(self):
+    #     for sub_e in self.meta_sub_project_id.sub_tache_ids:
+
 
     # 处理投资抉择委员会议决议表 为最终决议 或者是 拒绝的情况   即, 需要添加可以添加新的基金伦次实体
     def process_new_round_fund_entity(self):
@@ -523,6 +533,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
             # 设定所有的子环节 once_or_more 为False
             self.set_all_sub_tache_entities_once_or_more_to_false()
+            self.set_all_sub_tache_entities_unlocked_to_false()
 
             # 处理投资抉择委员会议决议表 拒绝的情况   即, 需要添加可以添加新的基金伦次实体
             self.process_new_round_fund_entity()
