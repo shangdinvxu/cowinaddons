@@ -596,13 +596,19 @@
                 <tr class="value_info" t-att-data-id="item.id">
                     <td><input type="text" class="project_valuation"  t-att-value="item.project_valuation"/></td>
                     <td><input type="text" class="the_amount_of_withdrawals" t-att-value="item.the_amount_of_withdrawals"/></td>
-                    <td><input type="text" class="ownership_interest" disabled="disabled" t-att-value="item.ownership_interest"/></td>
+                    <td>
+                        <input type="text" class="ownership_interest" disabled="disabled" t-att-value="item.ownership_interest"/>
+                        <t t-if="add==false">
+                            <span class="delete_value_item fa fa-trash"></span>
+                        </t>
+                    </td>
                 </tr>
             </t>
         </t>
         <tr class="add_btn">
             <td class="cursor:pointer">添加</td>
         </tr>
+
     </t>
 
 </templates>

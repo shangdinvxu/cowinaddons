@@ -33,7 +33,8 @@ odoo.define('cowin_project.message_me_view_js', function (require) {
             new Model("cowin_project.cowin_project")
                 .call("action_message_me_view", [[]])
                 .then(function (result) {
-                    console.log(result)
+                    console.log(result);
+                    self.$el.addClass('message_container');
                     self.$el.append(QWeb.render('MessageMeView', {message_data: result}));
                 })
         },

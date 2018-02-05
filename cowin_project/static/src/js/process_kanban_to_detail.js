@@ -51,7 +51,15 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             'input .invest_exit_infos .the_amount_of_withdrawals':'calc_exit_inter',
             'input .invest_exit_infos .project_valuation':'calc_exit_inter',
             'click .tab_detail_view_item':'tab_detail_view_item_func',
-            'click .exit_detail_content .close':'close_view_withdraw'
+            'click .exit_detail_content .close':'close_view_withdraw',
+            'click .delete_value_item':'delete_value_item_func'
+        },
+        //编辑投资里删除退出详情
+        delete_value_item_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            $(target).parents('tr').hide();
         },
         close_view_withdraw:function () {
             $('.tab_detail_view_withdraw_wrap').hide();
@@ -82,15 +90,25 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                 'the_amount_of_investment': $('.add_content .the_amount_of_investment').val(),
                 'foundation':$('.add_content .foundation').val()
             };
-            back_datas['withdrawals'] = [];
+            back_datas['withdrawal_ids'] = [];
             $('.invest_exit_infos .value_info').each(function (index) {
                 if($(this).find('.ownership_interest').val() && $(this).find('.the_amount_of_withdrawals').val() && $(this).find('.project_valuation').val()){
-                    back_datas['withdrawals'].push({
+                    if($(this).css('display') == 'none'){
+                        var op_id = parseInt($(this).attr('data-id'));
+                        var op_type = 2;  //删除
+                    }else if($(this).attr('data-id')=='false'){
+                        var op_type = 0;   //新增
+                        var op_id = 0;
+                    }else {
+                        var op_type = 1;  //修改
+                        var op_id = parseInt($(this).attr('data-id'));
+                    }
+                    back_datas['withdrawal_ids'].push([op_type, op_id,{
                          'ownership_interest': $(this).find('.ownership_interest').val() ? $(this).find('.ownership_interest').val(): null,
                          'the_amount_of_withdrawals': $(this).find('.the_amount_of_withdrawals').val() ? parseInt($(this).find('.the_amount_of_withdrawals').val()) : null,
                          'project_valuation': $(this).find('.project_valuation').val() ? parseInt($(this).find('.project_valuation').val()):null,
                          'id': parseInt($(this).attr('data-id'))
-                     })
+                     }])
                 }
             });
             console.log(back_datas)
@@ -118,6 +136,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             var target = e.target || e.srcElement;
             $('.add_external_invest_wrap').show();
             $('.add_content .add_header').html('编辑投资');
+
             var self = this;
             var index = $(target).parents('tr').attr('item-index');
             self.edit_foundation_id = $(target).parents('tr').attr('foundation-id');
@@ -140,7 +159,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             $('.add_invest_foot .save').addClass('save_edit').removeClass('save');
 
             $('.invest_exit_infos tbody').html('');
-            $('.invest_exit_infos tbody').append(QWeb.render('withdraw_infos_tmpl', {result: self.tab_detail_infos[parseInt(index)]}))
+            $('.invest_exit_infos tbody').append(QWeb.render('withdraw_infos_tmpl', {result: self.tab_detail_infos[parseInt(index)],add:false}))
         },
         //详情页tab  删除
         delete_func:function (e) {
@@ -195,6 +214,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
         add_exit_func:function () {
             $('.invest_exit_infos tbody tr').eq(0).clone(true).insertBefore($('.add_btn'));
             $('.add_btn').prev().find('input').val('');
+            $('.add_btn').prev().attr('data-id',false);
         },
         //取消新增投资
         cancel_add_invest:function () {
@@ -257,7 +277,7 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
                         $('.add_invest_select').html('');
                         $('.add_invest_select').append(QWeb.render('add_invest_select_tmpl',{result:result}));
                         $('.add_content .invest_exit_infos tbody').html('');
-                        $('.add_content .invest_exit_infos tbody').append(QWeb.render('withdraw_infos_tmpl',{result:[]}));
+                        $('.add_content .invest_exit_infos tbody').append(QWeb.render('withdraw_infos_tmpl',{result:[],add:true}));
 
                         //获取轮次带出的信息
                         new Model("cowin_project.cowin_project")

@@ -1,0 +1,16 @@
+.message_container{
+    padding: 50px;
+}
+.message_container .message_header_date{
+    text-align: center;
+    font-size: 16px;
+    border-bottom: solid #eeeeee 2px;
+}
+.message_container .message_header_date>span{
+    margin: 0 auto;
+    padding: 0 10px;
+    background-color: white;
+    font-weight: bold;
+    position: relative;
+    top: 12px;
+}

@@ -1965,10 +1965,17 @@ class Cowin_project(models.Model):
         foundation_id = vals.get('foundation_id')
         foundation = self.env['cowin.project.detail.foundation'].sudo().search([('id', '=', foundation_id)])
         if foundation and foundation.data_from == 'external':
-            foundation.write({
-                'the_amount_of_investment': float(vals.get('the_amount_of_investment')),
-                'foundation': vals.get('foundation'),
-            })
+            foundation.write(vals
+            #     {
+            #     'the_amount_of_investment': float(vals.get('the_amount_of_investment')),
+            #     'foundation': vals.get('foundation'),
+            #     'withdrawal_ids': [(1, p.get('id'), {
+            #         'ownership_interest': float(p.get('ownership_interest')),
+            #         'the_amount_of_withdrawals': p.get('the_amount_of_withdrawals'),
+            #         'project_valuation': p.get('project_valuation'),
+            #     }) for p in vals.get('withdrawals')]
+            # }
+            )
         return self.rpc_get_detail_info()
 
     # 获取管理合伙人
@@ -2049,64 +2056,49 @@ class Cowin_project(models.Model):
 
     @api.model
     def action_message_me_view(self):
-
         domain = [('channel_ids', 'in', self.env['mail.channel'].search(
             [('channel_partner_ids', 'child_of', self.env.user.partner_id.id
 
               )]).ids)]
-
-        # group_fields = ['create_date']
-        #
-        # group_by = 'create_date:day'
-        #
-
-        #
-        # limit = 80
-        # count = 0
-
         res = []
         total_count = self.env['mail.message'].search_count(domain)
 
         message_entities = self.env['mail.message'].search(domain, limit=80, offset=0, order='create_date desc')
-
-        # dict k: create_day v: mesages
         messas_dict = collections.defaultdict(list)
-
         for message in message_entities:
             k = message.create_date[:10]
-
             messas_dict[k].append(message.message_format()[0])
-
 
         for k, v in  messas_dict.items():
             tmp = {}
             tmp['message_date'] = k
             tmp['message_data'] = v
-            tmp['taotal_count'] = total_count
             res.append(tmp)
-
-
-
-        #
-        #
-        #
-        #
-        #
-        # group_message_infos = self.env['mail.message'].read_group(domain=domain, fields=group_fields, groupby=group_by, orderby='create_date desc')
-        #
-        # for group_info in group_message_infos:
-        #     messages = self.env['mail.message'].search(group_info['__domain'], order='create_date desc', limit=80 )
-        #     # actual_count = group_info['create_date_count']
-        #
-        #
-        #     res.append(messages.message_format())
-        #
-
         return {
             'type': 'ir.actions.client',
             'tag': 'message_me_view_js',
             'message_data': res,
+            'taotal_count':total_count
         }
+
+
+    # @api.multi
+    # def action_message_me_view(self):
+    #
+    #     domain = [(u'channel_ids', u'in', self.env['mail.channel'].search(
+    #         [('channel_partner_ids', 'child_of', self.env.user.partner_id.id)]).ids)]
+    #
+    #     # msg_data_my = [{'name': data_one.body} for data_one in
+    #     #                self.env['mail.message'].search(domain, limit=20)]
+    #
+    #     msg_data_my = self.env['mail.message'].search(domain).message_format()
+    #
+    #     return {
+    #         'type': 'ir.actions.client',
+    #         'tag': 'message_me_view_js',
+    #         'message_data': msg_data_my,
+    #     }
+
 
 
 

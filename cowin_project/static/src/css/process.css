@@ -632,6 +632,10 @@
 .add_content .invest_exit_infos tr:not(.add_btn){
     border-bottom: 1px solid #ddd;
 }
+.invest_exit_infos td{
+    position: relative;
+}
+
 .add_external_invest_wrap .add_invest_foot{
     text-align: center;
 }
@@ -696,5 +700,22 @@
     position: absolute;
     right: 18px;
     top: 10px;
+    cursor: pointer;
+}
+.value_info .ownership_interest{
+    width: 70%;
+    display: inline-block;
+}
+.delete_value_item{
+    position: absolute;
+    cursor: pointer;
+    right: 15px;
+    top: 12px;
+    display: none;
+}
+.invest_exit_infos .value_info:hover .delete_value_item{
+    display: inline-block;
+}
+.add_btn td{
     cursor: pointer;
 }

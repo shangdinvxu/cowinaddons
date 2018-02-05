@@ -488,6 +488,11 @@
             </field>
         </record>
 
+
+
+
+
+
         <!-- Top menu item -->
         <menuitem name="项目" id="cowin_project.menu_root" groups="cowin_project_menu_group"/>
 

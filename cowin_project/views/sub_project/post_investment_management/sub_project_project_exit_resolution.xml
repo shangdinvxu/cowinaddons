@@ -70,6 +70,7 @@
                                 <field name="invest_manager_ids" readonly="1"/>
                                 <field name="post_voting_date" readonly="1"/>
                                 <field name="post_voting_result" readonly="1"/>
+                                <field name="withdrawal_valuation" required="1"/>
                                 <field name="withdrawal_amount" required="1"/>
                                 <field name="withdrawal_ratio" required="1"/>
                                 <field name="exit_plan" required="1"/>
