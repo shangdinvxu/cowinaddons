@@ -100,8 +100,7 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
         extend_entity = self.env['cowin.project.detail.round'].search([('project_id', '=', self.subproject_id.meta_sub_project_id.project_id.id),
                                                                        ('round_financing_id', '=', self.round_financing_id.id)])
         if extend_entity:
-            if self.the_amount_of_financing != extend_entity.the_amount_of_financing or \
-                self.project_valuation != extend_entity.project_valuation:
+            if self.the_amount_of_financing != extend_entity.the_amount_of_financing or self.project_valuation != extend_entity.project_valuation:
                 res = u'本轮已有融资，请保证以下信息一致：公司估值——%s；本次融资金额——%s' % (extend_entity.the_amount_of_financing, extend_entity.project_valuation)
                 raise UserError(res)
 
