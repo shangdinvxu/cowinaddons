@@ -2084,7 +2084,7 @@ class Cowin_project(models.Model):
             'type': 'ir.actions.client',
             'tag': 'message_me_view_js',
             'message_data': res,
-            'taotal_count':total_count
+            'total_count':total_count
         }
 
 

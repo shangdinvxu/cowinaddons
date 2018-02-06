@@ -18,7 +18,7 @@
         </t>
         <t t-if="view_more==true">
             <div class="view_more_message">
-                获取更多信息
+                <span>-------获取更多信息-------</span>
             </div>
         </t>
 

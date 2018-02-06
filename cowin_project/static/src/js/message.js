@@ -15,16 +15,30 @@ odoo.define('cowin_project.message_me_view_js', function (require) {
     var MessageList = Widget.extend({
         // template: "MessageMeView",
         events: {
-            // 'click span.lead_update_submit': 'update_lead',
-            // 'click span.lead_back_click': 'lead_back_fn',
-            // 'click .show_time_begin': 'show_time_view',
-            // 'click input.brand_check': 'on_click_version',
+            'click .view_more_message span':'get_more_message'
+        },
+        //获取更多信息
+        get_more_message:function () {
+            var self = this;
+            $('.view_more_message').remove();
+            self.offset = self.offset + self.limit;
+            new Model("cowin_project.cowin_project")
+                .call("action_message_me_view", [[]],{limit:self.limit, offset:self.offset})
+                .then(function (result) {
+                    console.log(result);
+                    if(self.offset + self.limit<result.total_count){
+                        var view_more = true;
+                    }else {
+                        var view_more = false;
+                    }
+                    $('.message_container').append(QWeb.render('MessageMeView', {message_data: result,view_more:view_more}));
+                })
         },
 
         init: function (parent, action) {
             this._super.apply(this, arguments);
             var self = this;
-            self.limit = 30;
+            self.limit = 80;
             self.offset = 0;
 
         },
@@ -35,7 +49,7 @@ odoo.define('cowin_project.message_me_view_js', function (require) {
                 .call("action_message_me_view", [[]],{limit:self.limit, offset:self.offset})
                 .then(function (result) {
                     console.log(result);
-                    if((self.offset + 1)*self.limit<result.total_count){
+                    if(self.offset + self.limit<result.total_count){
                         var view_more = true;
                     }else {
                         var view_more = false;
