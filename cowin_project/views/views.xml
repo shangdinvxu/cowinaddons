@@ -321,8 +321,8 @@
                                 <field name="image" widget="image" class="oe_avatar" options="{'size': [90, 90]}" />
                                 <field name="project_source" required="1"/>
                                 <field name="project_source_note"/>
-                                <field name="round_financing"/>
-                                <field name="round_money"/>
+                                <field name="round_financing_id"/>
+                                <field name="the_amount_of_financing"/>
 
                             </group>
                             <group>
@@ -364,8 +364,8 @@
                             <field name="process_id"/>
                             <field name="project_source"/>
                             <field name="project_source_note"/>
-                            <field name="round_financing"/>
-                            <field name="round_money"/>
+                            <field name="round_financing_id"/>
+                            <field name="the_amount_of_financing"/>
                             <field name="project_company_profile"/>
                             <field name="project_appraisal"/>
                             <field name="project_note"/>

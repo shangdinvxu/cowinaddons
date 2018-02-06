@@ -69,8 +69,9 @@ class Cowin_project(models.Model):
     project_source_note = fields.Char(string=u'项目来源备注')
     # invest_manager = fields.Many2one('hr.employee', string=u'投资经理')
 
-    round_financing = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
-    round_money = fields.Float(string=u'本次融资额')
+    round_financing_id = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
+    # round_money = fields.Float(string=u'本次融资额')
+    the_amount_of_financing = fields.Float(string=u'本次融资金额')
 
     project_company_profile = fields.Text(string=u'项目公司概况')
     project_appraisal = fields.Text(string=u'项目评价')
