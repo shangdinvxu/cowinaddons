@@ -24,18 +24,25 @@ odoo.define('cowin_project.message_me_view_js', function (require) {
         init: function (parent, action) {
             this._super.apply(this, arguments);
             var self = this;
-
+            self.limit = 30;
+            self.offset = 0;
 
         },
         start: function () {
             var self = this;
 
             new Model("cowin_project.cowin_project")
-                .call("action_message_me_view", [[]])
+                .call("action_message_me_view", [[]],{limit:self.limit, offset:self.offset})
                 .then(function (result) {
                     console.log(result);
+                    if((self.offset + 1)*self.limit<result.total_count){
+                        var view_more = true;
+                    }else {
+                        var view_more = false;
+                    }
+
                     self.$el.addClass('message_container');
-                    self.$el.append(QWeb.render('MessageMeView', {message_data: result}));
+                    self.$el.append(QWeb.render('MessageMeView', {message_data: result,view_more:view_more}));
                 })
         },
 

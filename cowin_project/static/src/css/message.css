@@ -5,6 +5,7 @@
     text-align: center;
     font-size: 16px;
     border-bottom: solid #eeeeee 2px;
+    margin-bottom: 25px;
 }
 .message_container .message_header_date>span{
     margin: 0 auto;
@@ -18,7 +19,14 @@
     padding: 10px;
     background-color: rgba(242, 242, 242, 1);
     margin-bottom: 10px;
+    position: relative;
+}
+.message_item>p{
+    width: 82%;
 }
 .message_item_time{
     float: right;
+    position: absolute;
+    right: 5px;
+    top: 12px;
 }
