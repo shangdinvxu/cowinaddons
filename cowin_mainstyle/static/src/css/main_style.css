@@ -1,8 +1,12 @@
 /*主菜单条底色*/
 #oe_main_menu_navbar {
     /*background-color: rgba(58, 143, 184, 1)  !important;*/
-    background-color: #1F2E4D!important;
+    background-color: #F0F1F2!important;
     border: none !important;
+    -moz-box-shadow:0px 5px 12px rgba(0,0,0,.5);
+    -webkit-box-shadow:0px 5px 12px rgba(0,0,0,.5);
+    box-shadow:0px 5px 12px rgba(0,0,0,.5);
+    z-index: 100;
 }
 .o_no_chat_window #oe_main_menu_navbar{
     margin-left: 0px!important;
@@ -13,7 +17,7 @@ a.oe_menu_toggler { background-color: transparent !important; }
 
 /*主菜单字体及颜色*/
 .navbar-inverse .navbar-nav > li > a {
-    color: #FFF;
+    color: rgba(0,0,0,.8);
     font-size: 16px;
     font-family: "微软雅黑";
     font-weight: 400;
@@ -27,13 +31,20 @@ a.oe_menu_toggler { background-color: transparent !important; }
 }
 
 
+#oe_main_menu_navbar .navbar-collapse ul li a:hover{
+    color: rgba(0,0,0,.8);
+}
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus{
+    color: rgba(0,0,0,.8);
+}
+
 .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus{
-    color: #fff;
+    color: rgba(0,0,0,.8);
     border-radius: 3px;
 }
 .oe_application_menu_placeholder .active{
     /*background-color: rgba(43,152,226,1) !important;*/
-    border-bottom:2px solid white;
+    border-bottom:2px solid #409eff;
 }
 
 
@@ -45,7 +56,7 @@ a.oe_menu_toggler { background-color: transparent !important; }
     border-color: white;
 }
 .navbar-inverse .navbar-toggle:hover{
-    background-color: #2B98E2;
+    background-color: #2A3344;
 }
 
 .oe_secondary_menu .oe_secondary_submenu>.active{
@@ -55,7 +66,7 @@ a.oe_menu_toggler { background-color: transparent !important; }
 }
 .oe_secondary_menu .oe_secondary_submenu>.active>a{
    /*background-color: rgba(106, 106, 106, 1) !important;*/
-    background-color: rgba(64,148,255,1) !important;
+    background-color: #2A3344!important;
 }
 
 .navbar-right .o_user_menu>a:hover{
@@ -80,7 +91,7 @@ a.oe_menu_toggler { background-color: transparent !important; }
 
 .o_web_client > .o_main .o_sub_menu{
     /*background-color: rgba(19, 31, 55, 1);*/
-    background-color: #000000;
+    background-color: #2F3A4C;
     z-index: 100;
 }
 .o_web_client > .o_main .o_sub_menu ul li .oe_menu_text{
@@ -111,7 +122,7 @@ a.oe_menu_toggler { background-color: transparent !important; }
 }
 .o_web_client > .o_main .o_sub_menu .o_sub_menu_content .oe_secondary_menu ul li a:hover{
     /*background-color: rgba(106, 106, 106, 1) !important;*/
-    background-color: rgba(64,148,255,.6) !important;
+    background-color: #2A3344!important;
 }
 .navbar-inverse .navbar-nav > li > a:hover{
     background-color: transparent;
