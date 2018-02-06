@@ -63,7 +63,7 @@ class Cowin_project_subproject(models.Model):
     # 由于轮次的使用需要依赖于外部的投资的介入,所以需要做一些指定的操作
     @api.onchange('round_financing_id')
     def _onchange_round_financing_id(self):
-
+        project_id = None
         if self._context.get('rec_new_found_round_info'):
             project_id = self._context.get('rec_new_found_round_info')['project_id']
 
@@ -76,11 +76,22 @@ class Cowin_project_subproject(models.Model):
                  ('round_financing_id', '=', self.round_financing_id.id)])
 
         else:
+            project_id = self.meta_sub_project_id.project_id.id
             tem = self.env['cowin.project.detail.round'].search([('project_id', '=', self.meta_sub_project_id.project_id.id),
                                                                  ('round_financing_id', '=',self.round_financing_id.id)])
 
-        self.the_amount_of_financing = tem.the_amount_of_financing
-        self.project_valuation = tem.project_valuation
+        if tem:
+
+            self.the_amount_of_financing = tem.the_amount_of_financing
+            self.project_valuation = tem.project_valuation
+        else:
+            project_entity = self.meta_sub_project_id.project_id.browse(project_id)
+
+            if self.round_financing_id == project_entity.round_financing_id:
+
+                self.the_amount_of_financing = project_entity.the_amount_of_financing
+            else:
+                self.the_amount_of_financing = 0.0
 
         # if tem:
         #     self.is_some_files_edit_or_not = True
