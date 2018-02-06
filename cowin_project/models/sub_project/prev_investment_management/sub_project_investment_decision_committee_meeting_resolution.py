@@ -102,7 +102,8 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
 
         if self.the_amount_of_financing != extend_entity.the_amount_of_financing or \
             self.project_valuation != extend_entity.project_valuation:
-            raise UserError(u'本次融资金额 和 估值必须为 %s, %s' % (extend_entity.the_amount_of_financing, extend_entity.project_valuation))
+            res = u'本轮已有融资，请保证以下信息一致：公司估值——%s；本次融资金额——%s' % (extend_entity.the_amount_of_financing, extend_entity.project_valuation)
+            raise UserError(res)
 
 
 

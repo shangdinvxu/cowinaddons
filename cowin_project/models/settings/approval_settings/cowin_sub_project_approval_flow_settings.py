@@ -251,6 +251,10 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
     def process_buniess_logic(self):
         # ---> 投前
+
+        # 项目立项 表名
+        cowin_project_cowin_subproject_name = 'cowin_project.cowin_subproject'
+
         # 投资决策申请 表名
         investment_decision_application = 'cowin_project.sub_invest_decision_app'
 
@@ -259,6 +263,9 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         # 投资决策委员会会议纪要 表名
         investment_decision_sum = 'cowin_project.sub_sum_invest_decision_committee'
+
+        # 尽调报告  表名
+        subt_dispatch_report = 'cowin_project.subt_dispatch_report'
 
         # ---> 投后
         # 投资退出申请书 表名
@@ -270,14 +277,10 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         # 项目退出决议 表名
         investment_post_decision_res = 'cowin_project.sub_project_exit_resolution'
 
-        # 尽调报告  表名
-        subt_dispatch_report = 'cowin_project.subt_dispatch_report'
 
 
 
-        # 项目立项 表名
 
-        cowin_project_cowin_subproject_name = 'cowin_project.cowin_subproject'
 
         if self.sub_project_tache_id.tache_id.model_id.model_name == investment_decision_res:
             # 投资决策委员会决议 需要开启 投资决策申请中子环节中的新增按钮
