@@ -2065,10 +2065,10 @@ class Cowin_project(models.Model):
         #
         #       )]).ids), ('subtype_id', '=', subtype_id)]
 
-        domain = [('channel_ids', 'in', self.env['mail.channel'].search(
-            [('channel_partner_ids', 'child_of', self.env.user.partner_id.id
-
-              )]).ids)]
+        # domain = [('channel_ids', 'in', self.env['mail.channel'].search(
+        #     [('channel_partner_ids', 'child_of', self.env.user.partner_id.id
+        #
+        #       )]).ids)]
 
         domain = [('subtype_id', '=', subtype_id), ('partner_ids', 'child_of', self.env.user.partner_id.id)]
         # domain = [('subtype_id', '=', subtype_id)]
