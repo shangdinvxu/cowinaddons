@@ -568,7 +568,12 @@
             <tr>
                 <td><t t-esc="item.project_valuation"/></td>
                 <td><t t-esc="item.the_amount_of_withdrawals"/></td>
-                <td><t t-esc="100*(item.ownership_interest*1000)/1000 + '%'"/></td>
+                <t t-if="item.ownership_interest &lt; 0.1">
+                    <td><t t-esc="1000*(item.ownership_interest*100)/1000 + '%'"/></td>
+                </t>
+                <t t-else="">
+                    <td><t t-esc="100*(item.ownership_interest*1000)/1000 + '%'"/></td>
+                </t>
             </tr>
         </t>
     </t>
@@ -597,8 +602,12 @@
                     <td><input type="text" class="project_valuation"  t-att-value="item.project_valuation"/></td>
                     <td><input type="text" class="the_amount_of_withdrawals" t-att-value="item.the_amount_of_withdrawals"/></td>
                     <td>
-                        <input type="text" class="ownership_interest" disabled="disabled" t-att-value="100*(item.ownership_interest*1000)/1000 + '%'"/>
-                        <!--<span><t t-esc="item.ownership_interest*100 + '%'"/></span>-->
+                        <t t-if="item.ownership_interest &lt; 0.1">
+                            <input type="text" class="ownership_interest" disabled="disabled" t-att-value="1000*(item.ownership_interest*100)/1000 + '%'"/>
+                        </t>
+                        <t t-else="">
+                            <input type="text" class="ownership_interest" disabled="disabled" t-att-value="100*(item.ownership_interest*1000)/1000 + '%'"/>
+                        </t>
                         <t t-if="add==false">
                             <span class="delete_value_item fa fa-trash"></span>
                         </t>
