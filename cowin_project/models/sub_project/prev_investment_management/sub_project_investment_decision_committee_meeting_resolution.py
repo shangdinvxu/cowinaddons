@@ -97,8 +97,8 @@ class Cowin_project_subproject_investment_decision_committee_meeting_resolution(
     @api.multi
     def check_special_filed(self):
         self.ensure_one()
-        extend_entity = self.env['cowin.project.detail.round'].search([('project_id', '=', self.subproject_id.meta_project_id.project_id.id),
-                                                                       ('round_financing_id', '=', self.round_financing_id)])
+        extend_entity = self.env['cowin.project.detail.round'].search([('project_id', '=', self.subproject_id.meta_sub_project_id.project_id.id),
+                                                                       ('round_financing_id', '=', self.round_financing_id.id)])
 
         if self.the_amount_of_financing != extend_entity.the_amount_of_financing or \
             self.project_valuation != extend_entity.project_valuation:

@@ -9,7 +9,7 @@
         </record>
 
         <record id="init_project_mail_message_subtype_operation_record" model="mail.message.subtype">
-          <field name="name">通知消息</field>
+          <field name="name">操作记录通知消息</field>
           <field name="description">操作记录的消息</field>
         </record>
 

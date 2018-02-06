@@ -2056,10 +2056,22 @@ class Cowin_project(models.Model):
 
     @api.model
     def action_message_me_view(self):
+
+        # 通知消息
+        subtype_id = self.env.ref('cowin_project.init_project_mail_message_subtype_notification').id
+
+        # domain = [('channel_ids', 'in', self.env['mail.channel'].search(
+        #     [('channel_partner_ids', 'child_of', self.env.user.partner_id.id
+        #
+        #       )]).ids), ('subtype_id', '=', subtype_id)]
+
         domain = [('channel_ids', 'in', self.env['mail.channel'].search(
             [('channel_partner_ids', 'child_of', self.env.user.partner_id.id
 
               )]).ids)]
+
+        domain = [('subtype_id', '=', subtype_id), ('partner_ids', 'child_of', self.env.user.partner_id.id)]
+        # domain = [('subtype_id', '=', subtype_id)]
         res = []
         total_count = self.env['mail.message'].search_count(domain)
 
