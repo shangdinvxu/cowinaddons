@@ -4,6 +4,9 @@
     <t t-name="MessageMeView">
 
         <!--<h2 style="padding-left: 12px;">消息列表</h2>-->
+        <t t-if="message_data.message_data.length==0">
+            <div class="no_message">暂无消息</div>
+        </t>
 
         <t t-foreach="message_data.message_data" t-as="message">
             <t t-js="ctx">

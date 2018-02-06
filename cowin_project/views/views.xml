@@ -498,7 +498,7 @@
 
         <!-- menu categories -->
         <!--左侧菜单-->
-        <menuitem name="消息" id="cowin_project.message" parent="cowin_project.menu_root" action="cowin_project_message"/>
+        <menuitem name="消息" id="cowin_project.message" parent="cowin_project.menu_root" action="cowin_project_message" sequence="1"/>
         <menuitem name="项目管理" id="cowin_project.menu_1" parent="cowin_project.menu_root"/>
         <menuitem name="投后管理" id="cowin_project.menu_2" parent="cowin_project.menu_root"/>
         <menuitem name="项目查询" id="cowin_project.menu_3" parent="cowin_project.menu_root"
