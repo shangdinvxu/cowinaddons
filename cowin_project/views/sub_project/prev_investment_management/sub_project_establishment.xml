@@ -111,6 +111,8 @@
 
 
                             <group>
+                                <!-- 某些字段可能在某个条件下是可编辑的,可能咋其他的条件下是可编辑的 -->
+
                                  <!--投资基金-->
                                 <field name="foundation_id" required="1" options='{"no_open":True}'/>
                                 <field name="the_amount_of_investment" required="1"/>

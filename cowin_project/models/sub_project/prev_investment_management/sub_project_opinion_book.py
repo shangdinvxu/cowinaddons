@@ -48,6 +48,7 @@ class Cowin_project_subproject_opinion_book(models.Model):
     ownership_interest = fields.Float(string=u'股份比例')
     project_valuation = fields.Float(string=u'估值')
 
+
     # 审批实体记录
     sub_pro_approval_flow_settings_record_ids = fields.One2many('cowin_project.sub_approval_flow_settings_record',
                                                                 'res_id', string=u'审批记录',
@@ -55,32 +56,7 @@ class Cowin_project_subproject_opinion_book(models.Model):
 
     compute_round_financing_and_foundation_id = fields.Char(compute=u'_compute_value')
 
-    # @api.depends('round_financing_id', 'foundation_id', 'the_amount_of_financing', 'the_amount_of_investment',
-    #              'ownership_interest')
-    # def _compute_value(self):
-    #     for rec in self:
-    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].round_financing_id = rec.round_financing_id
-    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].foundation_id = rec.foundation_id
-    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_financing = rec.the_amount_of_financing
-    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].the_amount_of_investment = rec.the_amount_of_investment
-    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].ownership_interest = rec.ownership_interest
-    #         rec.subproject_id.meta_sub_project_id.round_financing_and_Foundation_ids[0].project_valuation = rec.project_valuation
 
-
-    # round_financing_id = fields.Many2one('cowin_common.round_financing',
-    #                                      related='subproject_id.round_financing_id', string=u'轮次')
-    #
-    # foundation_id = fields.Many2one('cowin_foundation.cowin_foudation',
-    #                                 related='subproject_id.foundation_id', string=u'基金')
-    #
-    # the_amount_of_financing = fields.Float(
-    #     related='subproject_id.the_amount_of_financing', string=u'本次融资额')
-    #
-    # the_amount_of_investment = fields.Float(
-    #     related='subproject_id.the_amount_of_investment', string=u'本次投资金额')
-    # ownership_interest = fields.Integer(
-    #     related='subproject_id.ownership_interest', string=u'股份比例')
-    # ---------------
 
     project_mumbers = fields.Many2many('hr.employee', 'sub_opinion_book_project_mumbers_employee_rel', string=u'项目小组成员')
 

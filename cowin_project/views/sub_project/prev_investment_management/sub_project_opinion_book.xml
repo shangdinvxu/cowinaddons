@@ -71,6 +71,7 @@
                             <field name="invest_manager_ids" readonly="1"/>
                             <!--<field name="invest_manager_id" readonly="1"/>-->
                             <field name="date_of_project" readonly="1"/>
+
                             <!--投资基金-->
                             <field name="foundation_id" required="1" readonly="1" options='{"no_open":True}'/>
                             <field name="the_amount_of_investment"  required="1"/>
@@ -80,9 +81,7 @@
                             <field name="project_valuation" required="1"/>
                             <!---->
                             <field name="project_mumbers" required="1"/>
-                            <!--<field name="partner_opinion"/>-->
-                            <!--<field name="business_director_option"/>-->
-                            <!--<field name="policy_making_committee"/>-->
+
                         </group>
 
                         <group>

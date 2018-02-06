@@ -50,7 +50,8 @@ class Cowin_project_subproject(models.Model):
     invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
     invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
 
-
+    # ----- 某些字段可能在某个条件下是可编辑的,可能咋其他的条件下是可编辑的
+    # is_some_files_edit_or_not = fields.Boolean(string=u'该条件可能在某些情况下是变化的', default=True)
 
 
     # ----------  投资基金
@@ -68,6 +69,11 @@ class Cowin_project_subproject(models.Model):
 
             tem = self.env['cowin.project.detail.round'].search([('project_id', '=', project_id),
                                                        ('round_financing_id', '=', self.round_financing_id.id)])
+        elif self._context.get('project_info'):
+            project_id = self._context['project_info']['project_id']
+            tem = self.env['cowin.project.detail.round'].search(
+                [('project_id', '=', project_id),
+                 ('round_financing_id', '=', self.round_financing_id.id)])
 
         else:
             tem = self.env['cowin.project.detail.round'].search([('project_id', '=', self.meta_sub_project_id.project_id.id),
@@ -75,6 +81,12 @@ class Cowin_project_subproject(models.Model):
 
         self.the_amount_of_financing = tem.the_amount_of_financing
         self.project_valuation = tem.project_valuation
+
+        # if tem:
+        #     self.is_some_files_edit_or_not = True
+        #
+        # else:
+        #     self.is_some_files_edit_or_not = False
 
 
 
@@ -308,6 +320,9 @@ class Cowin_project_subproject(models.Model):
 
         # res['default_meta_sub_project_id'] = meta_sub_project_id
         # res['default_project_id'] = meta_sub_project_entity.project_id.id
+        res['project_info'] = {
+            'project_id': meta_sub_project_entity.project_id.id,
+        }
 
 
         t_name = self._name + '_form_no_button'
