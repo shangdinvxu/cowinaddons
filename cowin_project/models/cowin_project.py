@@ -22,6 +22,8 @@ import json
 
 class Cowin_project(models.Model):
 
+    _inherit = 'mail.thread'
+
     _name = 'cowin_project.cowin_project'
     _order = "id DESC"
 
@@ -90,6 +92,7 @@ class Cowin_project(models.Model):
 
 
     # main_approval_role_ids = fields.One2many('cowin_project.project_approval_role', 'project_id', string=u'工程主角色')
+
 
 
     attachment_note = fields.Char(string=u'附件说明')
@@ -1641,16 +1644,21 @@ class Cowin_project(models.Model):
         #     {'operation': u'提交'},]
         #     {'operation': u'提交'},]
         #     {'operation': u'提交'},]
-        ids = []
-        model_name = u''
-        for meta_sub_project_entity in self.meta_sub_project_ids:
-            # 子审批流程实体
-            model_name = meta_sub_project_entity.sub_approval_flow_settings_ids._name
-            for entity in meta_sub_project_entity.sub_approval_flow_settings_ids:
-                ids.append(entity.id)
 
+        # 操作记录消息
+        subtype_id = self.env.ref('cowin_project.init_project_mail_message_subtype_operation_record').id
 
-        res_entity = self.env['mail.message'].search([('res_id', 'in', ids), ('model', '=', model_name)])
+        # ids = []
+        # model_name = u''
+        # for meta_sub_project_entity in self.meta_sub_project_ids:
+        #     # 子审批流程实体
+        #     model_name = meta_sub_project_entity.sub_approval_flow_settings_ids._name
+        #     for entity in meta_sub_project_entity.sub_approval_flow_settings_ids:
+        #         ids.append(entity.id)
+
+        domain = [('subtype_id', '=', subtype_id), ('model', '=', self._name), ('res_id', '=', self.id)]
+
+        res_entity = self.env['mail.message'].search(domain)
 
         res_entity = res_entity.read(fields=['body'])
         for e in res_entity:
@@ -1667,6 +1675,7 @@ class Cowin_project(models.Model):
 
     @api.multi
     def unlink(self):
+
 
         for record in self:
             # 因为有通信模块的操作,所以需要指定在主工程中做删除

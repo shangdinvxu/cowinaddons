@@ -148,30 +148,34 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         if status == 6:  # 投票的消息
             partner_ids = self.meta_sub_project_id.investment_decision_committee_scope_id.employee_ids.mapped(
                 'user_id.partner_id.id')
-            channel_entity = self.env.ref('cowin_project.init_project_mail_channel')
-            # channel_entity.write({
-            #     'channel_partner_ids': [(6, 0, partner_ids)],
-            # })
+
+            # 主工程继承了mail.thread
+            channel_entity = self.meta_sub_project_id.project_id
+
             # 通知消息
             subtype_id = self.env.ref('cowin_project.init_project_mail_message_subtype_notification').id
 
             channel_entity.message_post(info, message_type='comment', subtype='mail.mt_comment', subtype_id=subtype_id, partner_ids=partner_ids)
+            # channel_entity.message_post(json.dumps(tmp2), message_type='comment', subtype='mail.mt_comment', subtype_id=subtype_id, partner_ids=partner_ids)
         else:  # 普通消息
 
             def send_message_():
                 if is_current_or_next:  # 当前发送消息
                     # 通知消息
                     subtype_id = self.env.ref('cowin_project.init_project_mail_message_subtype_operation_record').id
-                    channel_entity = self.env.ref('cowin_project.init_project_mail_channel')
+                    channel_entity = self.meta_sub_project_id.project_id
 
                     # channel_entity.write({
                     #     'channel_partner_ids': [(6, 0, [self.env.user.partner_id.id, 45])],
                     # })
                     # 指定主题为审批消息
-                    channel_entity.message_post(info, message_type='comment', subtype='mail.mt_comment', subtype_id=subtype_id, partner_ids=[self.env.user.partner_id.id])
+
+
+                    channel_entity.message_post(json.dumps(tmp2), message_type='comment', subtype='mail.mt_comment', subtype_id=subtype_id,
+                                                partner_ids=[self.env.user.partner_id.id])
                 else:
                     approval_role = tes.operation_role_id
-                    channel_entity = self.env.ref('cowin_project.init_project_mail_channel')
+                    channel_entity = self.meta_sub_project_id.project_id
                     # 操作记录通知消息
                     subtype_id = self.env.ref('cowin_project.init_project_mail_message_subtype_notification').id
 
@@ -182,12 +186,13 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                     id = self.env['res.users'].search([('id', '=', 1)]).partner_id.id
                     partner_ids.append(id)
 
-                    # channel_entity.write({
-                    #     'channel_partner_ids': [(6, 0, [self.env.user.partner_id.id])],
-                    # })
+
+
+                    model = self.meta_sub_project_id.project_id._name
+                    res_id = self.meta_sub_project_id.project_id.id
 
                     channel_entity.message_post(info, message_type='comment', subtype='mail.mt_comment',
-                                                subtype_id=subtype_id, partner_ids=partner_ids)
+                                                subtype_id=subtype_id)
 
             # 用来发送消息!!!
             send_message_()

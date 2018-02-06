@@ -2,10 +2,10 @@
 
     <data>
         <!--<record id="cowin_project.init_project_mail_channel" model="mail.channel">-->
-        <record id="init_project_mail_channel" model="mail.channel">
-          <field name="name">项目通知</field>
-          <field name="public">public</field>
-        </record>
+        <!--<record id="init_project_mail_channel" model="mail.channel">-->
+          <!--<field name="name">项目通知</field>-->
+          <!--<field name="public">public</field>-->
+        <!--</record>-->
 
     </data>
 </odoo>
