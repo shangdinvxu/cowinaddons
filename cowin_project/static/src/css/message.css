@@ -30,3 +30,10 @@
     right: 5px;
     top: 12px;
 }
+.view_more_message{
+    text-align: center;
+    margin-top: 30px;
+}
+.view_more_message>span{
+    cursor: pointer;
+}
