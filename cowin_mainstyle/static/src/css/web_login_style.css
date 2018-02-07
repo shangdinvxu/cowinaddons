@@ -21,11 +21,11 @@ body, html {
 }
 
 .body_login:before {
-	content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-    margin-right: -0.25em;
+    /*content: '';*/
+    /*display: inline-block;*/
+    /*height: 100%;*/
+    /*vertical-align: middle;*/
+    /*margin-right: -0.25em;*/
 }
 
 #background-wrapper + div{
@@ -34,7 +34,7 @@ body, html {
 	margin-top: 200px;
 }
 #background-wrapper + div + .o_database_list{
-    margin-top: -360px;
+    margin-top: 100px;
 	text-align: center;
 }
 .o_database_list {
