@@ -3,6 +3,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
 import re
+from odoo import SUPERUSER_ID
 
 AVAILABLE_PRIORITIES = [
     ('0', 'badly'),
@@ -97,6 +98,16 @@ class Cowin_hr(models.Model):
 
     label = fields.Selection(AVAILABLE_PRIORITIES, string=u'标签', index=True, default=AVAILABLE_PRIORITIES[0][0])
 
+    compute_is_admin = fields.Boolean(string=u'计算是否属于admin', compute='_compute_is_admin')
+    is_admin = fields.Boolean(string=u'是否是admin')
+
+    def _compute_is_admin(self):
+
+        res = self.env.user.id == SUPERUSER_ID
+        self.write({
+            'is_admin': res,
+        })
+
 
     backup_person = fields.Char(string=u'备用联系人')
     relation_to_me = fields.Char(string=u'与本人关系')
@@ -108,6 +119,9 @@ class Cowin_hr(models.Model):
     is_add_user = fields.Boolean(string=u'添加登录用户', default=True)
     login_name = fields.Char(string=u'登录邮箱')
     industry = fields.Many2one('cowin_common.cowin_industry', string=u'所属行业')
+
+    identification_id = fields.Char(string='Identification No', groups='base.group_user')
+    passport_id = fields.Char('Passport No', groups='base.group_user')
 
     # 员工与登录角色的关系 理论上 One-2-One关系
     # user_id = fields.Many2one('res.users', string=u'登陆用户')
@@ -136,6 +150,23 @@ class Cowin_hr(models.Model):
     _sql_constraints = [
         ('login_name_key', 'UNIQUE (login_name)', 'You can not have two users with the same login !')
     ]
+
+
+    def kddddk(self):
+        print(u'kfjslfjslafjlasfj')
+        form_id = self.env.ref('cowin_hr.cowin_hr_form').id
+
+        action = {
+            'name': 'kkkkkk',
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'views': [[form_id, 'form']],
+            'view_type': 'form',
+            'view_mode': 'form',
+            "res_id": 25,
+            'target': 'new',
+        }
+
 
 
     def _check_emial_format(self, email):
@@ -368,3 +399,13 @@ class Cowin_hr(models.Model):
 
 
 
+    @api.model
+    def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
+
+        if view_type == 'form':
+            if self.env.user.id == SUPERUSER_ID:
+                view_id  = self.env.ref('cowin_hr.cowin_hr_form_admin').id
+            else:
+                view_id = self.env.ref('cowin_hr.cowin_hr_form').id
+
+        return super(Cowin_hr, self).fields_view_get(view_id, view_type, toolbar, submenu)

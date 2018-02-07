@@ -25,6 +25,7 @@
       <!--<field name="inherit_id" ref="hr.view_employee_form"/>-->
       <field name="arch" type="xml">
           <form create="false" edit="false" delete="false" duplicate="false">
+          <!--<form>-->
               <sheet>
                   <group>
                         <field name="image" widget='image' class="oe_avatar" options='{"preview_image":"image_medium"}'/>
@@ -177,7 +178,7 @@
 
     <!--对hr模块中的顶级菜单,添加action动作,否则会出现顶级菜单忽略状态,继而第一个子菜单会继承下来  -->
 
-     <delete model="ir.ui.menu" id="hr.menu_hr_root"/>
+    <delete model="ir.ui.menu" id="hr.menu_hr_root"/>
     <menuitem
             id="hr.menu_hr_root"
             name="人力资源"
@@ -193,6 +194,11 @@
       <!---->
       <delete model="ir.ui.menu" id="hr.menu_hr_department_tree"/>
 
+
+      <!-- 删除员工附属的的附加的action操作!!! -->
+      <delete model="ir.values" id="hr_employee_action_subordinate_hierachy_mutli"/>
+
+
        <menuitem
             id="hr.menu_hr_department_tree"
             parent="hr.menu_hr_root"
@@ -201,18 +207,12 @@
             groups="hr.group_hr_user"/>
 
 
-    <!-- Top menu item -->
-
-      <!--<menuitem-->
-            <!--id="hr.menu_open_view_employee_list_my"-->
-            <!--name="人力资源3"-->
-            <!--parent="hr.menu_hr_main"-->
-            <!--sequence="30"/>-->
 
      <menuitem
             id="hr.menu_open_view_employee_list_my"
             name="员工"
             action="hr.open_view_employee_list_my"
+            groups="hr.group_hr_manager,hr.group_hr_user,base.group_user"
             parent="hr.menu_hr_root"
             sequence="75"/>
 
@@ -247,11 +247,8 @@
             <!--<field name="inherit_id" ref="product.product_normal_form_view"/>-->
       </record>
 
-      <!--<menuitem id="petstore_employee"-->
-            <!--name="员工"-->
-            <!--action="employee_view_action"-->
-            <!--parent="cowin_hr.menu_1"-->
-            <!--sequence="13"/>-->
+   
+
 
   </data>
 </odoo>
