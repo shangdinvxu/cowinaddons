@@ -259,3 +259,11 @@ a.oe_menu_toggler { background-color: transparent !important; }
 .o_form_view .o_form_required.o_form_input, .o_form_view .o_form_required .o_form_input, .o_form_view .o_form_required.o_form_textarea, .o_form_view .o_form_required .o_form_textarea{
     background-color:#fff3f3;
 }
+
+.table-striped > tbody > tr:nth-of-type(odd){
+    background-color: white;
+}
+.o_main_content .btn-primary{
+    background-color: #409eff;
+    border-color:#409eff;
+}
