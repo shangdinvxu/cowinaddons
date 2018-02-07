@@ -634,63 +634,12 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             var tache_id = parseInt($(target).parents('.process_data_item_line').attr('data-tache-id'));
             var self = this;
 
-
             new Model("cowin_project.cowin_project")
                         .call("rpc_approval_view_action_action", [parseInt(self.id)],{'tache_info':self.tache_arr[tache_index]})
                         .then(function (result) {
                             console.log(result)
                             self.do_action(result);
                         })
-
-
-            // var context ={
-            //         'tache': self.tache_arr[tache_index],
-            //     };
-            // if(self.tache_arr[tache_index].round_financing_and_foundation){
-            //     context = {
-            //         'tache': self.tache_arr[tache_index],
-            //         'default_foundation_id':self.tache_arr[tache_index].round_financing_and_foundation.foundation_id,
-            //         'default_ownership_interest':self.tache_arr[tache_index].round_financing_and_foundation.ownership_interest,
-            //         'default_round_financing_and_foundation_id':self.tache_arr[tache_index].round_financing_and_foundation.round_financing_and_foundation_id,
-            //         'default_round_financing_id':self.tache_arr[tache_index].round_financing_and_foundation.round_financing_id,
-            //         'default_the_amount_of_financing': self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_financing,
-            //         'default_the_amount_of_investment':self.tache_arr[tache_index].round_financing_and_foundation.the_amount_of_investment,
-            //         'default_invest_manager_id':self.pagedata.sub_project_info ? self.pagedata.sub_project_info.invest_manager_id:'',
-            //         'default_name':self.pagedata.name,
-            //         'default_image':self.pagedata.image,
-            //         'default_project_number':self.pagedata.sub_project_info ? self.pagedata.sub_project_info.project_number:'',
-            //         'default_project_source':self.pagedata.project_source,
-            //         'default_project_source_note':self.pagedata.project_source_note,
-            //         'default_project_company_profile':self.pagedata.project_company_profile,
-            //         'default_project_appraisal':self.pagedata.project_appraisal,
-            //         'default_project_note':self.pagedata.project_note,
-            //         'default_industry':self.pagedata.industry,
-            //         'default_stage':self.pagedata.stage,
-            //         'default_production':self.pagedata.production,
-            //         'default_registered_address':self.pagedata.registered_address,
-            //         'default_peration_place':self.pagedata.peration_place,
-            //         'default_founding_time':self.pagedata.founding_time,
-            //         'default_person':self.pagedata.contract_person,
-            //         'default_contract_phone':self.pagedata.contract_phone,
-            //         'default_contract_email':self.pagedata.contract_email,
-            //         'default_attachment_ids':self.pagedata.attachment_ids,
-            //         'default_attachment_note':self.pagedata.attachment_note,
-            //         'default_sub_project_id':self.tache_arr[tache_index].sub_project.sub_project_id,
-            //     }
-            // }
-            //
-            // var action = {
-            //     view_type: 'form',
-            //     view_mode: 'form',
-            //     views: [[false, 'form']],
-            //     res_model: self.tache_arr[parseInt(tache_index)].model_name,
-            //     res_id: self.tache_arr[tache_index].res_id,
-            //     name: self.tache_arr[tache_index].name,
-            //     type: 'ir.actions.act_window',
-            //     context: context,
-            //     target:'current'
-            // }
-            // self.do_action(action)
         },
         //发起按钮的点击事件
         initiate_func:function (e) {

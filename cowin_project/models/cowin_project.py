@@ -55,7 +55,7 @@ class Cowin_project(models.Model):
     examine_and_verify = fields.Char(string=u'审核校验', default=u'未开始审核')
 
 
-    image = fields.Binary("LOGO", default=_default_image, attachment=True,
+    image = fields.Binary("LOGO", attachment=True,
                           help="This field holds the image used as photo for the cowin_project, limited to 1024x1024px.")
 
     name = fields.Char(string=u"项目名称")
