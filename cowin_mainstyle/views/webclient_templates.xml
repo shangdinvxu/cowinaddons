@@ -102,9 +102,11 @@
             <div class="login_logo_wrap">
                 <t t-set="para" t-value="images"/>
                 <t t-foreach="para" t-as="item">
-                    <div>
-                        <img t-att-src="'data:image/png;base64,'+item" alt=""/>
-                    </div>
+                    <t t-if="item">
+                        <div>
+                            <img t-att-src="'data:image/png;base64,'+item" alt=""/>
+                        </div>
+                    </t>
                 </t>
             </div>
    		</xpath>
