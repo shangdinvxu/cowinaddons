@@ -16,8 +16,18 @@ class Cowin_sub_project_base_status(models.Model):
 
 
 
+    # 记录有多少人查看了该表!!!
+    @api.multi
+    def count_view_page_for_user(self):
+        self.ensure_one()
+        # status == 8 查看消息
+        self.sub_tache_id.sub_pro_approval_flow_settings_ids.send_current_approval_flow_settings_node_msg(status=8)
+        
 
-    # 公共表名, 用于在面包先线上显示出有意义的效果!!!
+
+
+
+
 
 
 

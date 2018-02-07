@@ -123,10 +123,13 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             info = info_first + u'您有一项[%s] 待处理' % self.sub_project_tache_id.name
 
         elif status == 3:
+            tmp2[u'operation'] = u'已暂缓'
             info = info_first + u'您发起的[%s] 已暂缓' % self.sub_project_tache_id.name
         elif status == 4:
+            tmp2[u'operation'] = u'已通过'
             info = info_first + u'您发起的[%s] 已审批通过' % self.sub_project_tache_id.name
         elif status == 5:
+            tmp2[u'operation'] = u'已拒绝'
             info = info_first + u'您发起的[%s] 已拒绝' % self.sub_project_tache_id.name
 
         elif status == 6:
@@ -135,8 +138,14 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
 
         elif status == 7:
+            tmp2[u'operation'] = u'已通过'
             info = info_first + u'您的[%s] 已投票通过' % self.sub_project_tache_id.name
 
+
+        # 查看 产生的消息记录
+        elif status == 8:
+            tmp2[u'operation'] = u'查看'
+            info = info_first + u'您查看了[%s]' % self.sub_project_tache_id.name
         else:
             tmp2[u'operation'] = u''
 
@@ -161,7 +170,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
             def send_message_():
                 if is_current_or_next:  # 当前发送消息
-                    # 通知消息
+                    # 操作记录通知消息
                     subtype_id = self.env.ref('cowin_project.init_project_mail_message_subtype_operation_record').id
                     channel_entity = self.meta_sub_project_id.project_id
 
@@ -176,7 +185,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                 else:
                     approval_role = tes.operation_role_id
                     channel_entity = self.meta_sub_project_id.project_id
-                    # 操作记录通知消息
+                    # 通知消息
                     subtype_id = self.env.ref('cowin_project.init_project_mail_message_subtype_notification').id
 
                     # 当前的用户

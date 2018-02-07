@@ -495,11 +495,11 @@ class Cowin_project(models.Model):
 
                     elif status == 6:
                         info = u'投票中...'
-                        approval_view_or_launch = None
+                        approval_view_or_launch = True
 
                     elif status == 7:
                         info = u'同意'
-                        approval_view_or_launch = None
+                        approval_view_or_launch = True
                     else:
                         pass
 
@@ -1689,6 +1689,14 @@ class Cowin_project(models.Model):
         # for record  in self:
         #     record.unlink()
 
+        # 记录有多少人查看了该表!!!
+    # @api.multi
+    # def count_view_page_for_user(self):
+    #     self.ensure_one()
+    #     # status == 8 查看消息
+    #     self.sub_tache_id.sub_pro_approval_flow_settings_ids.sub_pro_approval_flow_settings_ids.send_current_approval_flow_settings_node_msg(
+    #         status=8)
+
 
     def approval_view_action_action(self):
         return {
@@ -1702,6 +1710,10 @@ class Cowin_project(models.Model):
             'res_id': self.id,
             'target': 'current',
         }
+
+
+
+
 
     # 查看按钮的显示类型
     def rpc_approval_view_action_action(self, **kwargs):
@@ -1720,7 +1732,14 @@ class Cowin_project(models.Model):
 
         model_name = sub_tache_entity.tache_id.model_id.model_name
 
-        return self.env[model_name].browse(res_id).approval_view_action_action()
+        target_entity = self.env[model_name].browse(res_id)
+
+        # 记录查看的记录
+        target_entity.count_view_page_for_user()
+
+
+        # 查看的action
+        return target_entity.approval_view_action_action()
 
 
     # 每次发起之前,需要请求之前的数据,业务需求的原因,需要把之前老的数据填充到新建的实体之中!!!
