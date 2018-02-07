@@ -71,6 +71,59 @@
       </record>
 
 
+      <record model="ir.ui.view" id="cowin_hr_form_admin">
+      <field name="name">cowin_hr form </field>
+      <field name="model">hr.employee</field>
+      <field name="priority">16</field>
+      <!--<field name="inherit_id" ref="hr.view_employee_form"/>-->
+      <field name="arch" type="xml">
+          <form>
+              <sheet>
+                  <group>
+                        <field name="image" widget='image' class="oe_avatar" options='{"preview_image":"image_medium"}'/>
+                        <field name="name" placeholder="Employee's Name"/>
+                        <field name="label"  widget="priority"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="work_location"/>
+                        <field name="job_id"/>
+                        <field name="industry"/>
+                        <field name="work_phone"/>
+                        <field name="work_email" widget="email"/>
+                        <field name="identification_id" groups="hr.group_hr_user"/>
+                        <field name="passport_id" groups="hr.group_hr_user"/>
+                  </group>
+
+                 <group string="备用联系人信息" >
+                        <field name="backup_person"/>
+                        <field name="relation_to_me"/>
+                        <field name="identification_id_contract_person"/>
+                        <field name="mobile_phone_backup_contract_person"/>
+                 </group>
+
+                  <group>
+                      <field name="is_add_user"/>
+                      <field name="login_name" attrs="{'invisible': [('is_add_user', '=', False)]}"/>
+                  </group>
+
+
+                  <group>
+                      <field name="is_ventilation_control_supervisor"/>
+                      <field name="is_managing_partner"/>
+                      <field name="is_treasury_attache"/>
+                      <field name="is_chairman_of_the_investment_decision_committee"/>
+
+                      <field name="investment_decision_committee_id"/>
+                  </group>
+
+
+              </sheet>
+
+          </form>
+
+      </field>
+      </record>
+
+
    <record model="ir.ui.view" id="hr_employee_kanban_inherit">
       <field name="name">cowin_hr kanban</field>
       <field name="model">hr.employee</field>
