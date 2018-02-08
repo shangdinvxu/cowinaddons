@@ -1642,7 +1642,7 @@ class Cowin_project(models.Model):
                 reserve = True
             else:
                 reserve = False
-        res = res.sorted(key, reserve)
+            res = res.sorted(key, reserve)
 
         return res
 
