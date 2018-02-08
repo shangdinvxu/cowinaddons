@@ -48,7 +48,7 @@
     cursor: pointer;
 }
 .manage_team_btn_active{
-    color: #00B0DD;
+    color: #409eff;
 }
 .manage_team_btn span{
     float: right;
