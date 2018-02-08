@@ -349,7 +349,7 @@
 #process_tab_content .process_data_main_wrap .header_line .copy_this_setting{
     cursor: pointer;
     margin-left: 15px;
-    color: rgba(25, 158, 216, 1);
+    color: #409eff;
     font-weight: 500;
 }
 #process_tab_content #process_data .process_data_main_wrap .detail_line .team_role{
@@ -360,7 +360,7 @@
     margin-left: 200px;
 }
 #process_data .process_data_main_wrap .detail_line .team_role_names_wrap .add_new_role{
-     color: rgba(25, 158, 216, 1);
+     color: #409eff;
      cursor: pointer;
      font-weight: 500;
     margin-top: 4px;
@@ -431,7 +431,7 @@
 }
 .process_data_main_wrap .btns_wrap .confirm_project_team_setting{
     display: inline-block;
-    background-color: rgba(25, 158, 216, 1);
+    background-color: #409eff;
     color: white;
     padding: 10px 25px;
     cursor: pointer;
@@ -554,7 +554,7 @@
 .process_detail_container>.table .financing>td{
     border-top: none;
     font-size: 18px;
-    color: #00B0DD;
+    color: #409eff;
 }
 .process_detail_container>.table tr:not(.financing)>td{
     border-bottom: 1px solid #ddd;
@@ -568,16 +568,15 @@
     padding: 3px 10px;
     /*background-color: rgba(0, 176, 221, .3);*/
     margin-top: 5px;
-    color: #00B0DD;
+    color: #409eff;
     border-radius: 5px;
 }
 .add_new_invest{
-    color:#00B0DD;
     margin-bottom: 20px;
     font-size: 16px;
     cursor: pointer;
     color: white;
-    background-color: rgba(0, 176, 221, 1);
+    background-color: #409eff;
     border-radius: 25px;
     padding: 5px 10px;
     width: 150px;

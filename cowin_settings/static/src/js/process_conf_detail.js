@@ -144,7 +144,7 @@ odoo.define('cowin_settings.process_conf_detail', function (require) {
             var e = e || window.event;
             var target = e.target || e.srcElement;
 
-            if($(target).parents('tr').find('.tache_name').text()=='信息登记'){
+            if($(target).parents('tr').find('.tache_name').text()=='信息登记'||$(target).parents('tr').find('.tache_name').text()=='项目退出会议表决票'||$(target).parents('tr').find('.tache_name').text()=='投资决策委员会决议'){
                 var operate = false;
             }else {
                 var operate = true;

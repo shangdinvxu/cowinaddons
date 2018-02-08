@@ -267,3 +267,9 @@ a.oe_menu_toggler { background-color: transparent !important; }
     background-color: #409eff;
     border-color:#409eff;
 }
+.o_control_panel .breadcrumb > li > a{
+    color: #409eff;
+}
+.o_form_view .o_horizontal_separator{
+    color: #409eff;
+}
