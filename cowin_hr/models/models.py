@@ -344,7 +344,8 @@ class Cowin_hr(models.Model):
 
             # 'groups_id': [(4, self.env.ref('cowin_project.cowin_project_group_rule').id)],
             'groups_id': [(4, self.env.ref('cowin_project.cowin_project_menu_group').id),
-                          (4, self.env.ref('hr.group_hr_user').id),
+                          # (4, self.env.ref('hr.group_hr_user').id),
+                          (4, self.env.ref('base.group_user').id),
                           # (4, self.env.ref('cowin_project.cowin_project_group').id),]})
                           ]})
 
@@ -366,6 +367,16 @@ class Cowin_hr(models.Model):
 
         res_hr.write_special_user_role_or_group(vals)
         return res_hr
+    
+    @api.multi
+    def unlink(self):
+        self.ensure_one()
+        
+        if self.user_id:
+            self.user_id.unlink()
+            
+        return super(Cowin_hr, self).unlink()
+        
 
 
 
