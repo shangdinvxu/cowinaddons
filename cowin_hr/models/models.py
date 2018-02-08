@@ -371,7 +371,7 @@ class Cowin_hr(models.Model):
     @api.multi
     def unlink(self):
         self.ensure_one()
-        
+
         if self.user_id:
             self.user_id.unlink()
             

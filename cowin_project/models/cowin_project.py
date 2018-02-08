@@ -25,7 +25,7 @@ class Cowin_project(models.Model):
     _inherit = 'mail.thread'
 
     _name = 'cowin_project.cowin_project'
-    _order = "id DESC"
+    _order = "create_date DESC"
 
     # 这些公有的字段用于投前,投后区别
     created = False
