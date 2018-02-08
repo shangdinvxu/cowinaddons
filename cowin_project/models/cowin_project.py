@@ -1373,6 +1373,9 @@ class Cowin_project(models.Model):
         prev_or_post_investment = tuple(prev_or_post_investment) if prev_or_post_investment else ()
 
         entities = super(Cowin_project, self).search(args, offset, limit, order, count)
+
+
+
         # return entities
 
         if self.env.user.id == SUPERUSER_ID:
@@ -1631,6 +1634,15 @@ class Cowin_project(models.Model):
 
 
         res = reduce(lambda x, y: x | y, to_filter_projects, tem)
+        if order:
+            key, reserve = order.split(' ')
+            if reserve.upper() == 'ASC':
+                reserve = False
+            elif reserve.upper() == 'DESC':
+                reserve = True
+            else:
+                reserve = False
+        res = res.sorted(key, reserve)
 
         return res
 
