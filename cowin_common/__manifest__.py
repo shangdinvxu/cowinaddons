@@ -28,6 +28,7 @@
         'views/views.xml',
         'views/templates.xml',
         'views/init_approval_role.xml',
+        # 'views/init_data.xml',
 
     ],
     # only loaded in demonstration mode

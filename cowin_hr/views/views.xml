@@ -192,11 +192,11 @@
          <!---->
      <!--</delete>-->
       <!---->
-      <delete model="ir.ui.menu" id="hr.menu_hr_department_tree"/>
+      <!--<delete model="ir.ui.menu" id="hr.menu_hr_department_tree"/>-->
 
 
       <!-- 删除员工附属的的附加的action操作!!! -->
-      <delete model="ir.values" id="hr_employee_action_subordinate_hierachy_mutli"/>
+      <delete model="ir.values" id="hr.hr_employee_action_subordinate_hierachy_mutli"/>
 
 
        <!--<menuitem-->
