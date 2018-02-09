@@ -15,7 +15,7 @@
                 <field name="message_needaction_counter"/>
                 <templates>
                     <t t-name="kanban-box">
-                    <div class="oe_kanban_global_click">
+                    <div class="oe_kanban_global_click" id="cowin_hr_employee_item_kb_wrap">
                         <field name="category_ids"/>
                         <div class="o_kanban_image">
                             <img t-att-src="kanban_image('hr.employee', 'image_medium', record.id.value)"/>
@@ -28,25 +28,19 @@
                             </div>
                         </div>
                         <div class="oe_kanban_details">
-                            <strong>
+                              <strong>
                                 <field name="name"/>
-                            </strong>
-                            <ul>
+                             </strong>
+                             <ul>
                                 <li id="last_login"/>
                                 <li t-if="record.job_id.raw_value"><field name="job_id"/></li>
-                                <li t-if="record.work_location.raw_value"><field name="work_location"/></li>
-                                <li t-if="record.work_email.raw_value"><i class="fa fa-envelope"></i> <field name="work_email"/></li>
-                                <li t-if="record.work_phone.raw_value"><i class="fa fa-phone"></i> <field name="work_phone"/></li>
-                                <li t-if="record.mobile_phone.raw_value"><i class="fa fa-mobile"></i> <field name="mobile_phone"/></li>
-                            </ul>
-                            <div class="o_kanban_button">
-                                <button t-if="record.message_is_follower.raw_value" name="action_unfollow" type="object" class="o_follow_btn o_following btn btn-sm btn-default">
-                                    <span class="o_unfollow">Unfollow</span>
-                                    <span class="o_following">Following</span>
-                                </button>
-                                <button t-if="!record.message_is_follower.raw_value" name="action_follow" type="object" class="o_follow_btn o_follow btn btn-sm btn-primary">Follow</button>
-                            </div>
-                        </div>
+                                <li t-if="record.department_id.raw_value"><field name="department_id"/></li>
+                                <li t-if="record.work_phone.raw_value"> <span>联系电话：</span> <field name="work_phone"/></li>
+                                <li t-if="record.work_email.raw_value"> <span>邮箱：</span> <field name="work_email"/></li>
+                                <li t-if="record.identification_id.raw_value"> <span>身份证：</span> <field name="identification_id"/></li>
+                                 <li t-if="record.passport_id.raw_value"> <span>护照：</span> <field name="passport_id"/></li>
+                             </ul>
+                          </div>
                     </div>
                     </t>
                 </templates>
@@ -68,7 +62,7 @@
                 <field name="message_needaction_counter"/>
                 <templates>
                     <t t-name="kanban-box">
-                    <div class="oe_kanban_global_click">
+                    <div class="oe_kanban_global_click" id="cowin_hr_employee_item_kb_wrap">
                         <field name="category_ids"/>
                         <div class="o_kanban_image">
                             <img t-att-src="kanban_image('hr.employee', 'image_medium', record.id.value)"/>
@@ -81,25 +75,19 @@
                             </div>
                         </div>
                         <div class="oe_kanban_details">
-                            <strong>
+                              <strong>
                                 <field name="name"/>
-                            </strong>
-                            <ul>
+                             </strong>
+                             <ul>
                                 <li id="last_login"/>
                                 <li t-if="record.job_id.raw_value"><field name="job_id"/></li>
-                                <li t-if="record.work_location.raw_value"><field name="work_location"/></li>
-                                <li t-if="record.work_email.raw_value"><i class="fa fa-envelope"></i> <field name="work_email"/></li>
-                                <li t-if="record.work_phone.raw_value"><i class="fa fa-phone"></i> <field name="work_phone"/></li>
-                                <li t-if="record.mobile_phone.raw_value"><i class="fa fa-mobile"></i> <field name="mobile_phone"/></li>
-                            </ul>
-                            <div class="o_kanban_button">
-                                <button t-if="record.message_is_follower.raw_value" name="action_unfollow" type="object" class="o_follow_btn o_following btn btn-sm btn-default">
-                                    <span class="o_unfollow">Unfollow</span>
-                                    <span class="o_following">Following</span>
-                                </button>
-                                <button t-if="!record.message_is_follower.raw_value" name="action_follow" type="object" class="o_follow_btn o_follow btn btn-sm btn-primary">Follow</button>
-                            </div>
-                        </div>
+                                <li t-if="record.department_id.raw_value"><field name="department_id"/></li>
+                                <li t-if="record.work_phone.raw_value"> <span>联系电话：</span> <field name="work_phone"/></li>
+                                <li t-if="record.work_email.raw_value"> <span>邮箱：</span> <field name="work_email"/></li>
+                                <li t-if="record.identification_id.raw_value"> <span>身份证：</span> <field name="identification_id"/></li>
+                                 <li t-if="record.passport_id.raw_value"> <span>护照：</span> <field name="passport_id"/></li>
+                             </ul>
+                          </div>
                     </div>
                     </t>
                 </templates>
