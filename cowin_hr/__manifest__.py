@@ -30,6 +30,7 @@
         'security/ir.model.access.csv',
         'views/init_global_spec_appro_role_or_group_role.xml',
         'views/initadmin_relation_employee.xml',
+        'views/init_hr_kanpan_for_different_user.xml',
         'views/views.xml',
         'views/templates.xml',
         'views/sequences.xml',

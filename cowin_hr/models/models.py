@@ -419,4 +419,10 @@ class Cowin_hr(models.Model):
             else:
                 view_id = self.env.ref('cowin_hr.cowin_hr_form').id
 
+        elif view_type == 'kanban':
+            if self.env.user.id == SUPERUSER_ID:
+                view_id  = self.env.ref('cowin_hr.cowin_hr_kanban_view_employees_for_admin').id
+            else:
+                view_id = self.env.ref('cowin_hr.cowin_hr_kanban_view_employees').id
+
         return super(Cowin_hr, self).fields_view_get(view_id, view_type, toolbar, submenu)

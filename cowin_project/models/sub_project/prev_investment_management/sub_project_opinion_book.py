@@ -198,3 +198,11 @@ class Cowin_project_subproject_opinion_book(models.Model):
             'target': 'new',
             'context': res,
         }
+
+
+
+
+    # @api.model
+    # def fields_get(self, allfields=None, attributes=None):
+    #     if allfields and allfields['project_mumbers']:
+

@@ -156,6 +156,38 @@
       </field>
     </record>
 
+
+      <record model="ir.ui.view" id="hr_employee_kanban_inherit">
+      <field name="name">cowin_hr kanban</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+      <field name="arch" type="xml">
+
+           <!-- find field description and add the field XXX after it -->
+          <xpath expr="//div[@class='oe_kanban_global_click']" position="attributes">
+              <attribute name="class">oe_kanban_global_click</attribute>
+              <attribute name="id">cowin_hr_employee_item_kb_wrap</attribute>
+          </xpath>
+          <!-- find field description and add the field XXX after it -->
+          <xpath expr="//div[@class='oe_kanban_details']" position="replace">
+              <div class="oe_kanban_details">
+                  <strong>
+                    <field name="name"/>
+                 </strong>
+                 <ul>
+                    <li id="last_login"/>
+                    <li t-if="record.job_id.raw_value"><field name="job_id"/></li>
+                    <li t-if="record.department_id.raw_value"><field name="department_id"/></li>
+                    <li t-if="record.work_phone.raw_value"> <span>联系电话：</span> <field name="work_phone"/></li>
+                    <li t-if="record.work_email.raw_value"> <span>邮箱：</span> <field name="work_email"/></li>
+                    <li t-if="record.identification_id.raw_value"> <span>身份证：</span> <field name="identification_id"/></li>
+                     <li t-if="record.passport_id.raw_value"> <span>护照：</span> <field name="passport_id"/></li>
+                 </ul>
+              </div>
+          </xpath>
+      </field>
+    </record>
+
     <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="cowin_hr.action_window">

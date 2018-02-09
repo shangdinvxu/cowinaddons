@@ -80,7 +80,8 @@
                             <field name="the_amount_of_financing" required="1"/>
                             <field name="project_valuation" required="1"/>
                             <!---->
-                            <field name="project_mumbers" required="1"/>
+                            <field name="project_mumbers" required="1" options="{'create': false, 'create_edit': false}"/>/>
+                            <!--<field name="project_mumbers"/>-->
 
                         </group>
 
