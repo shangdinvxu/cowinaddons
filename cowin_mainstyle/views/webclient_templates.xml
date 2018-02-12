@@ -10,68 +10,69 @@
 
 	<!-- 对菜单数据进行折叠设置  -->
 
-    <template id="web.menu">
-        <ul class="nav navbar-nav navbar-left oe_application_menu_placeholder" style="display: none;">
-            <li t-foreach="menu_data['children']" t-as="menu">
-                <t t-call="web.menu_link"/>
-            </li>
-            <li id="menu_more_container" class="dropdown" style="display: none;">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
-                <ul id="menu_more" class="dropdown-menu"></ul>
-            </li>
-        </ul>
+    <!--<template id="web.menu">-->
+        <!--<ul class="nav navbar-nav navbar-left oe_application_menu_placeholder" style="display: none;">-->
+            <!--<li t-foreach="menu_data['children']" t-as="menu">-->
+                <!--<t t-call="web.menu_link"/>-->
+            <!--</li>-->
+            <!--<li id="menu_more_container" class="dropdown" style="display: none;">-->
+                <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>-->
+                <!--<ul id="menu_more" class="dropdown-menu"></ul>-->
+            <!--</li>-->
+        <!--</ul>-->
 
-        <ul class="nav navbar-nav navbar-right oe_user_menu_placeholder" style="display: none;"/>
-        <ul class="nav navbar-nav navbar-right oe_systray" style="display: none;"/>
-    </template>
+        <!--<ul class="nav navbar-nav navbar-right oe_user_menu_placeholder" style="display: none;"/>-->
+        <!--<ul class="nav navbar-nav navbar-right oe_systray" style="display: none;"/>-->
+    <!--</template>-->
 
-    <template id="web.menu_secondary">
+    <template id="cowin_mainstyle.menu_secondary" inherit_id="web.menu_secondary" >
+        <xpath expr="//div[@class='o_sub_menu_content']" position="replace">
+             <div class="o_sub_menu_content">
+                <t t-foreach="menu_data['children']" t-as="menu">
+                    <div style="display: none" class="oe_secondary_menu" t-att-data-menu-parent="menu['id']">
+                            <t t-call="web.menu_secondary_submenu"/>
+                    </div>
+                </t>
+            </div>
 
-        <div class="o_sub_menu_content">
-            <t t-foreach="menu_data['children']" t-as="menu">
-                <div style="display: none" class="oe_secondary_menu" t-att-data-menu-parent="menu['id']">
-                    <!--<t t-foreach="menu['children']" t-as="menu">-->
-                        <t t-call="web.menu_secondary_submenu"/>
-                    <!--</t>-->
-                </div>
-            </t>
-        </div>
-
-        <div class="o_sub_menu_footer">
+            <div class="o_sub_menu_footer">
             <!--Powered by <a href="http://www.odoo.com" target="_blank"><span>Odoo</span></a>-->
-        </div>
+            </div>
+        </xpath>
+
+
     </template>
 
-    <template id="web.menu_secondary_submenu">
-        <ul t-if="menu['children']" class="oe_secondary_submenu nav nav-pills nav-stacked">
-            <li t-foreach="menu['children']" t-as="menu">
-                <t t-call="web.menu_link"/>
-                <t t-call="web.menu_secondary_submenu"/>
-            </li>
-        </ul>
-    </template>
+    <!--<template id="web.menu_secondary_submenu">-->
+        <!--<ul t-if="menu['children']" class="oe_secondary_submenu nav nav-pills nav-stacked">-->
+            <!--<li t-foreach="menu['children']" t-as="menu">-->
+                <!--<t t-call="web.menu_link"/>-->
+                <!--<t t-call="web.menu_secondary_submenu"/>-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</template>-->
 
     <!-- 折叠选项,目前并没有实现 -->
-     <template id="web.menu_secondary_submenu_cowin_hr">
-          <ul t-if="menu['children']" class="oe_secondary_submenu nav nav-pills nav-stacked oe_menu_opened">
-               <li t-foreach="menu['children']" t-first="m" t-as="menu">
-                   <t t-if="m" >
-                        <t t-call="web.menu_link"/>
-                        <t t-call="web.menu_secondary_submenu_cowin_hr"/>
-                   </t>
-                </li>
-          </ul>
+     <!--<template id="web.menu_secondary_submenu_cowin_hr">-->
+          <!--<ul t-if="menu['children']" class="oe_secondary_submenu nav nav-pills nav-stacked oe_menu_opened">-->
+               <!--<li t-foreach="menu['children']" t-first="m" t-as="menu">-->
+                   <!--<t t-if="m" >-->
+                        <!--<t t-call="web.menu_link"/>-->
+                        <!--<t t-call="web.menu_secondary_submenu_cowin_hr"/>-->
+                   <!--</t>-->
+                <!--</li>-->
+          <!--</ul>-->
 
-         <ul t-if="menu['children']" class="oe_secondary_submenu nav nav-pills nav-stacked ">
-               <li t-foreach="menu['children']" t-first="m" t-as="menu">
-                   <t t-if="not m" >
-                        <t t-call="web.menu_link"/>
-                        <t t-call="web.menu_secondary_submenu"/>
-                   </t>
-                </li>
-          </ul>
+         <!--<ul t-if="menu['children']" class="oe_secondary_submenu nav nav-pills nav-stacked ">-->
+               <!--<li t-foreach="menu['children']" t-first="m" t-as="menu">-->
+                   <!--<t t-if="not m" >-->
+                        <!--<t t-call="web.menu_link"/>-->
+                        <!--<t t-call="web.menu_secondary_submenu"/>-->
+                   <!--</t>-->
+                <!--</li>-->
+          <!--</ul>-->
 
-     </template>
+     <!--</template>-->
 
 
     <!--   -->
