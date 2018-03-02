@@ -225,12 +225,12 @@ class Cowin_settings_process(models.Model):
 
 
 
-        if tache_parent_id is None:
-            # 考虑到需要过滤到主工程环节
-
-            tache_entity = [tache_entity for tache_entity in self.get_all_tache_entities()
-                              if not tache_entity.model_id.model_name == 'cowin_project.sub_payment_app_form'][0]
-            tache_parent_id = tache_entity.id
+        # if tache_parent_id is None:
+        #     # 考虑到需要过滤到主工程环节
+        #
+        #     tache_entity = [tache_entity for tache_entity in self.get_all_tache_entities()
+        #                       if not tache_entity.model_id.model_name == 'cowin_project.sub_payment_app_form'][0]
+        #     tache_parent_id = tache_entity.id
 
 
         description = kwargs.get('description')
