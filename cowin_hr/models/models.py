@@ -47,7 +47,7 @@ class Cowin_meta_sub_and_approval_role_and_hr_employee(models.Model):
     employee_id = fields.Many2one('hr.employee', string=u'用户')
 
 
-
+# 该model的目的在于 所属于的特殊的头衔需要独立存储起来使用, 例如对于风控总监, 管理合伙人,财务专员,投资决策委员会主席
 class Cowin_Global_Special_Approval_Role(models.Model):
     _name = 'cowin_project.global_spec_appro_role'
 
@@ -80,7 +80,7 @@ class Cowin_Global_Special_Approval_Role(models.Model):
 
 
 
-
+# 该model对应的意义在于对员工进行分组的操作 即  所属投资决策委员会
 class  Cowin_Global_Special_Approval_Group_role(models.Model):
     _name = 'cowin_project.global_spec_appro_group_role'
 
@@ -208,6 +208,8 @@ class Cowin_hr(models.Model):
                 'count_accumulation': c,
                 'employee_ids': [(3, self.id)],
             })
+
+            self.detach_self_from_project(role_name=u'风控总监')
         else:
             pass
 
@@ -237,6 +239,8 @@ class Cowin_hr(models.Model):
                 'employee_ids': [(3, self.id)],
             })
 
+            self.detach_self_from_project(role_name=u'管理合伙人')
+
         else:
             pass
 
@@ -261,6 +265,8 @@ class Cowin_hr(models.Model):
                 'count_accumulation': c,
                 'employee_ids': [(3, self.id)],
             })
+
+            self.detach_self_from_project(role_name=u'财务专员')
 
         else:
             pass
@@ -289,6 +295,8 @@ class Cowin_hr(models.Model):
                 'employee_ids': [(3, self.id)],
             })
 
+            self.detach_self_from_project(role_name=u'投资决策委员会主席')
+
         else:
             pass
 
@@ -305,6 +313,14 @@ class Cowin_hr(models.Model):
 
 
 
+
+    def detach_self_from_project(self, role_name=None):
+        # if self.env.user.has
+        if self.env.user.id != SUPERUSER_ID:
+            raise UserError(u'必须要是admin才能操作')
+
+        project_entities = self.env['cowin_project.cowin_project'].search([])
+        project_entities.detach_employee_from_project(employee_id=self.id, role_name=role_name)
 
 
 

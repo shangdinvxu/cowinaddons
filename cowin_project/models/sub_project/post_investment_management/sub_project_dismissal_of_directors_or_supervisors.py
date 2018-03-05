@@ -173,6 +173,12 @@ class sub_project_dismissal_of_directors_or_supervisors(models.Model):
             else:
                 res[nk] = v
 
+        # 默认的投资经理的数据我们需要去自定义添加
+        invest_manager_entity = self.env['cowin_common.approval_role'].search([('name', '=', u'投资经理')])
+        rel_entities = meta_sub_project_entity.sub_meta_pro_approval_settings_role_rel & invest_manager_entity.sub_meta_pro_approval_settings_role_rel
+
+        res['default_invest_manager_ids'] = [(6, 0, [rel.employee_id.id for rel in rel_entities])]
+
         res['default_reporter'] = self.env.user.employee_ids[0].id
 
         t_name = self._name + '_form_no_button'

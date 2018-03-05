@@ -1129,7 +1129,7 @@ class Cowin_project(models.Model):
 
 
 
-    # 获取权限配置数据
+    # 获取权限配置数据  项目管理团队
     def rpc_get_permission_configuration(self):
         res = []
         default_is_full = True
@@ -1209,7 +1209,7 @@ class Cowin_project(models.Model):
         }
 
 
-    # 保存权限配置数据
+    # 保存权限配置数据  项目管理团队
     def rpc_save_permission_configuration(self, **kwargs):
 
         meta_sub_project_infos = kwargs.get('meta_sub_project_infos')
@@ -2092,6 +2092,22 @@ class Cowin_project(models.Model):
                 'project_valuation': obj.project_valuation,
             })
         return res
+
+
+
+    @api.multi
+    def detach_employee_from_project(self, employee_id, role_name):
+        for rec in self:
+            for meta_sub_pro_entity in rec.meta_sub_project_ids:
+                approval_role_employee_rel_repr = meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel
+
+
+                for rel in approval_role_employee_rel_repr:
+                    if rel.employee_id.id == employee_id and role_name == rel.approval_role_id.name:
+                        rel.unlink()
+
+
+
 
 
 

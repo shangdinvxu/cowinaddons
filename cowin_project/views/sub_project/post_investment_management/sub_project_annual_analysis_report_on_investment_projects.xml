@@ -44,6 +44,7 @@
                             <field name="total_assets" required="1"/>
                             <field name="gross_liabilities" required="1"/>
                             <field name="trustee_id" required="1"/>
+                            <field name="accounting_firm" required="1"/>
                             <field name="securities_trader" required="1"/>
                             <field name="IPOplan" required="1"/>
                             <field name="company_status" required="1"/>
@@ -109,6 +110,7 @@
                             <field name="total_assets" required="1"/>
                             <field name="gross_liabilities" required="1"/>
                             <field name="trustee_id" required="1"/>
+                            <field name="accounting_firm" required="1"/>
                             <field name="securities_trader" required="1"/>
                             <field name="IPOplan" required="1"/>
                             <field name="company_status" required="1"/>
