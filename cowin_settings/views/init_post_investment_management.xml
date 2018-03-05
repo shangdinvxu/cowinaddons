@@ -30,7 +30,7 @@
         <record id="init_post_process_stage_1_tache_2" model="cowin_settings.process_tache">
             <field name="name">投资项目年度分析报告</field>
             <field name="stage_id" eval="ref('init_post_process_stage_1')"/>
-            <field name="parent_id" eval="ref('init_post_process_stage_1_tache_1')"/>
+            <field name="parent_id" eval="ref('init_process_stage_6_tache_3')"/>
             <field name="order_parent_id" eval="ref('init_post_process_stage_1_tache_1')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_17')"/>
@@ -46,7 +46,7 @@
         <record id="init_post_process_stage_2_tache_1" model="cowin_settings.process_tache">
             <field name="name">重大事项报告</field>
             <field name="stage_id" eval="ref('init_post_process_stage_2')"/>
-            <field name="parent_id" eval="ref('init_post_process_stage_1_tache_2')"/>
+            <field name="parent_id" eval="ref('init_process_stage_6_tache_3')"/>
             <field name="order_parent_id" eval="ref('init_post_process_stage_1_tache_2')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_18')"/>
@@ -56,7 +56,7 @@
         <record id="init_post_process_stage_2_tache_2" model="cowin_settings.process_tache">
             <field name="name">重大事项表决</field>
             <field name="stage_id" eval="ref('init_post_process_stage_2')"/>
-            <field name="parent_id" eval="ref('init_post_process_stage_2_tache_1')"/>
+            <field name="parent_id" eval="ref('init_process_stage_6_tache_3')"/>
             <field name="order_parent_id" eval="ref('init_post_process_stage_2_tache_1')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_19')"/>
@@ -72,7 +72,7 @@
         <record id="init_post_process_stage_3_tache_1" model="cowin_settings.process_tache">
             <field name="name">项目公司三会纪要</field>
             <field name="stage_id" eval="ref('init_post_process_stage_3')"/>
-            <field name="parent_id" eval="ref('init_post_process_stage_2_tache_2')"/>
+            <field name="parent_id" eval="ref('init_process_stage_6_tache_3')"/>
             <field name="order_parent_id" eval="ref('init_post_process_stage_2_tache_2')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_20')"/>
@@ -82,7 +82,7 @@
         <record id="init_post_process_stage_3_tache_2" model="cowin_settings.process_tache">
             <field name="name">三会授权书</field>
             <field name="stage_id" eval="ref('init_post_process_stage_3')"/>
-            <field name="parent_id" eval="ref('init_post_process_stage_3_tache_1')"/>
+            <field name="parent_id" eval="ref('init_process_stage_6_tache_3')"/>
             <field name="order_parent_id" eval="ref('init_post_process_stage_3_tache_1')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_21')"/>
@@ -99,7 +99,7 @@
         <record id="init_post_process_stage_4_tache_1" model="cowin_settings.process_tache">
             <field name="name">一般事项表决</field>
             <field name="stage_id" eval="ref('init_post_process_stage_4')"/>
-            <field name="parent_id" eval="ref('init_post_process_stage_3_tache_2')"/>
+            <field name="parent_id" eval="ref('init_process_stage_6_tache_3')"/>
             <field name="order_parent_id" eval="ref('init_post_process_stage_3_tache_2')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_22')"/>
@@ -109,7 +109,7 @@
         <record id="init_post_process_stage_4_tache_2" model="cowin_settings.process_tache">
             <field name="name">董事/监事解聘书</field>
             <field name="stage_id" eval="ref('init_post_process_stage_4')"/>
-            <field name="parent_id" eval="ref('init_post_process_stage_4_tache_1')"/>
+            <field name="parent_id" eval="ref('init_process_stage_6_tache_3')"/>
             <field name="order_parent_id" eval="ref('init_post_process_stage_4_tache_1')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_23')"/>
@@ -125,7 +125,7 @@
         <record id="init_post_process_stage_5_tache_1" model="cowin_settings.process_tache">
             <field name="name">投资退出申请书</field>
             <field name="stage_id" eval="ref('init_post_process_stage_5')"/>
-            <field name="parent_id" eval="ref('init_post_process_stage_4_tache_2')"/>
+            <field name="parent_id" eval="ref('init_process_stage_6_tache_3')"/>
             <field name="order_parent_id" eval="ref('init_post_process_stage_4_tache_2')"/>
             <field name="description"></field>
             <field name="model_id" eval="ref('init_custom_model_24')"/>
