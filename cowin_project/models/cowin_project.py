@@ -31,6 +31,8 @@ class Cowin_project(models.Model):
     created = False
     # prev_or_post_investment = True
 
+    _rec_name = 'display_for_breadcrumb'
+
     # innner_status_id = fields.Many2one('cowin_project.innner_status', string=u'主工程内部状态,标志区分投前/投后')
 
     @classmethod
@@ -46,6 +48,9 @@ class Cowin_project(models.Model):
     def _default_image(self):
         image_path = get_module_resource('web', 'static/src/img', 'placeholder.png')
         return tools.image_resize_image_big(open(image_path, 'rb').read().encode('base64'))
+
+    # 为了和子工程中中的_rec_name字段应用的场景的一致性!!!'
+    display_for_breadcrumb = fields.Char(default=u'信息登记')
 
     # 关联到settings中,把该字段看成配置选项的操作
     process_id = fields.Many2one('cowin_project.process', ondelete="cascade")
@@ -1719,7 +1724,7 @@ class Cowin_project(models.Model):
 
     def approval_view_action_action(self):
         return {
-            'name': self._name,
+            'name': u'项目设立',
             'type': 'ir.actions.act_window',
             'views': [[False, 'form']],
             'res_model': self._name,
