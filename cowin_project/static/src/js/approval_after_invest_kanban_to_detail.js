@@ -231,6 +231,8 @@ odoo.define('cowin_project.approval_after_invest_kanban_to_detail', function (re
             // console.log(action);
             //存储环节
             self.tache_arr = [];
+
+            this.action = action;
         },
         start: function () {
             var self = this;

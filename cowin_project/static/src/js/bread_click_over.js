@@ -102,6 +102,99 @@ odoo.define('linkloving_core.TreeView', function (require) {
                 });
             }
         },
+
+        do_load_state: function(state, warm) {
+            var self = this;
+            var action_loaded;
+
+
+
+            if (state.action) {
+                if (_.isString(state.action) && core.action_registry.contains(state.action)) {
+                    var action_client = {
+                        type: "ir.actions.client",
+                        tag: state.action,
+                        params: state,
+                        _push_me: state._push_me,
+                    };
+                    if (warm) {
+                    // if (false) {
+                        this.null_action();
+                    }
+                    action_loaded = this.do_action(action_client);
+                } else {
+                    var run_action = (!this.inner_widget || !this.inner_widget.action) || this.inner_widget.action.id !== state.action;
+
+                    //  自定义返回数据操作,构建历史操作信息
+                    if (this.inner_widget && this.inner_widget.action && this.inner_widget.action.type == 'ir.actions.client') {
+
+                        var custom_tags = ['process_kanban_to_detail', 'follow_invest_kanban_to_detail', 'approval_kanban_to_detail', 'approval_after_invest_kanban_to_detail', 'approval_after_invest_kanban_to_detail'];
+
+                        var run_history_back = _.contains(custom_tags, this.inner_widget.action.tag);
+
+
+                        if (run_history_back) {
+                            return this.history_back();
+                         }}
+
+
+
+                    if (run_action) {
+                        var add_context = {};
+                        if (state.active_id) {
+                            add_context.active_id = state.active_id;
+                        }
+                        if (state.active_ids) {
+                            // The jQuery BBQ plugin does some parsing on values that are valid integers.
+                            // It means that if there's only one item, it will do parseInt() on it,
+                            // otherwise it will keep the comma seperated list as string.
+                            add_context.active_ids = state.active_ids.toString().split(',').map(function(id) {
+                                return parseInt(id, 10) || id;
+                            });
+                        } else if (state.active_id) {
+                            add_context.active_ids = [state.active_id];
+                        }
+                        add_context.params = state;
+                        if (warm) {
+                            this.null_action();
+                        }
+                        action_loaded = this.do_action(state.action, {
+                            additional_context: add_context,
+                            res_id: state.id,
+                            view_type: state.view_type,
+                        });
+                    }
+                }
+            } else if (state.model && state.id) {
+                // TODO handle context & domain ?
+                if (warm) {
+                    this.null_action();
+                }
+                var action = {
+                    res_model: state.model,
+                    res_id: state.id,
+                    type: 'ir.actions.act_window',
+                    views: [[_.isNumber(state.view_id) ? state.view_id : false, 'form']]
+                };
+                action_loaded = this.do_action(action);
+            } else if (state.sa) {
+                // load session action
+                if (warm) {
+                    this.null_action();
+                }
+                action_loaded = this.rpc('/web/session/get_session_action',  {key: state.sa}).then(function(action) {
+                    if (action) {
+                        return self.do_action(action);
+                    }
+                });
+            }
+
+            return $.when(action_loaded || null).done(function() {
+                if (self.inner_widget && self.inner_widget.do_load_state) {
+                    return self.inner_widget.do_load_state(state, warm);
+                }
+            });
+        },
     });
 
 

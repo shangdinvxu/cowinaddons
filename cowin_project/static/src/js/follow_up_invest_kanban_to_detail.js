@@ -420,6 +420,7 @@ odoo.define('cowin_project.follow_up_invest_kanban_to_detail', function (require
             console.log(action)
             //存储环节
             self.tache_arr = [];
+            this.action = action;
         },
         start: function () {
             var self = this;

@@ -726,6 +726,8 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
 
             //项目管理团队是否完善
             self.perfect = true;
+
+            this.action = action;
         },
         start: function () {
             var self = this;
