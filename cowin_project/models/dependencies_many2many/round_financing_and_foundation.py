@@ -66,7 +66,7 @@ class Round_financing_and_Foundation(models.Model):
 
 
 
-
+# 项目管理团队内部使用的数据结构!!!
 class Cowin_meta_sub_and_approval_role_and_hr_employee_inherit(models.Model):
     _inherit = 'cowin_project.meta_sub_appro_role_hr_em'
     meta_sub_project_id = fields.Many2one('cowin_project.meat_sub_project', string=u'元子工程' , ondelete="cascade")

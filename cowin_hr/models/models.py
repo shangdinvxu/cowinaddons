@@ -36,7 +36,7 @@ class Cowin_common_approval_role_inherit(models.Model):
     sub_meta_pro_approval_settings_role_rel = fields.One2many('cowin_project.meta_sub_appro_role_hr_em', 'approval_role_id', string=u'员工')
 
 
-#
+# 自定义一套 元子工程 员工 审批角色的 表的概念
 class Cowin_meta_sub_and_approval_role_and_hr_employee(models.Model):
     _name = 'cowin_project.meta_sub_appro_role_hr_em'
     '''

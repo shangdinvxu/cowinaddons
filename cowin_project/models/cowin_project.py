@@ -1322,12 +1322,19 @@ class Cowin_project(models.Model):
         copy_meta_sub_pro_id = kwargs['copy_meta_sub_pro_id']
 
 
-        # current_meta_sub_pro_entity = self.meta_sub_project_ids.browse(current_meta_sub_pro_id)
+        current_meta_sub_pro_entity = self.meta_sub_project_ids.browse(current_meta_sub_pro_id)
         copy_meta_sub_pro_entity = self.meta_sub_project_ids.browse(copy_meta_sub_pro_id)
 
         # return copy_meta_sub_pro_entity.copy_data()
 
+        current_rel_entities = current_meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel
+        # 删除之前的配置,否则会出现sql约束的问题!!!
+        current_rel_entities.unlink()
+
+
+
         copy_rel_entities = copy_meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel
+
 
         res = []
         for c_rel_entity in copy_rel_entities:
