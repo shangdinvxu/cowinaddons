@@ -14,7 +14,7 @@
                         <field name="name"/>
                         <field name="the_amount_of_investment"/>
                         <field name="foundation_id"/>
-                        <field name="ownership_interest"/>
+                        <field name="ownership_interest" widget="progressbar"/>
                         <field name="round_financing_id"/>
                         <field name="the_amount_of_financing"/>
                         <field name="project_valuation"/>

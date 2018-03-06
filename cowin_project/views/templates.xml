@@ -2,6 +2,7 @@
     <data>
         <template id="project_static" name="cowin_project_assets" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
+                <script type="text/javascript" src="/cowin_project/static/src/js/custom_progress_bar.js"/>
                 <script type="text/javascript" src="/cowin_project/static/src/js/process.js"/>
                 <script type="text/javascript" src="/cowin_project/static/src/js/kanban_click.js"/>
                 <script type="text/javascript" src="/cowin_project/static/src/js/process_kanban_to_detail.js"/>
