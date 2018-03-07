@@ -399,7 +399,7 @@
                           (4, 0, {'view_mode': 'kanban', 'view_id': ref('project_process_kanban_view')}),
                           (4, 0, {'view_mode': 'list', 'view_id': ref('project_tree_view')})]"/>
             <field name="view_type">form</field>
-            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_mode">kanban,form</field>
         </record>
 
         <!--项目管理-项目审批-->
@@ -411,7 +411,7 @@
                 {'prev_or_post_investment':(1,2)}
             </field>
             <field name="view_type">form</field>
-            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_mode">kanban,form</field>
             <field name="view_id" ref="project_approval_view_kanban"/>
         </record>
 
@@ -427,7 +427,7 @@
                    eval="[(5, 0, 0),
                           (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_follow_up_invest_kanban_view')})]"/>
             <field name="view_type">form</field>
-            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_mode">kanban,form</field>
         </record>
 
         <!--投后管理-投后审批-->
@@ -442,7 +442,7 @@
                    eval="[(5, 0, 0),
                           (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_follow_up_invest_approval_kanban_view')})]"/>
             <field name="view_type">form</field>
-            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_mode">kanban,form</field>
         </record>
 
 
@@ -454,7 +454,7 @@
             <field name="view_ids"
                    eval="[(5, 0, 0),
                           (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_process_kanban_search_view')})]"/>
-            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_mode">kanban,form</field>
         </record>
 
         <!--消息-->

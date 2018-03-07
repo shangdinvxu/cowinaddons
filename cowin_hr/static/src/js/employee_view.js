@@ -43,12 +43,13 @@ odoo.define('petstore.employee_view', function (require) {
 			'onload window': 'func1'
 		},
 		func1:function () {
-			console.log('sssssss')
+			console.log('ssss66666sss')
 		},
 		func:function () {
 			console.log($("#scheduler_here"))
 		},
         init: function (parent, options) {
+            console.log('ssss66666sss');
             var self = this;
             this._super.apply(this, arguments);
             this.has_been_loaded = $.Deferred();
