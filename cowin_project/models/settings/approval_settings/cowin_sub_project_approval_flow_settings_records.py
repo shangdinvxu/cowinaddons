@@ -30,6 +30,9 @@ class Cowin_sub_project_approval_flow_settings_records(models.Model):
     approval_result = fields.Char(string=u'审批结果')
     approval_opinion = fields.Text(string=u'审批意见')
 
+    # 这个标志用来判断在审批记录里发起人是谁
+    is_launch_person = fields.Boolean(string=u'是否是发起人', default=False)
+
 
 
     approval_flow_count = fields.Integer(string=u'审核次数', default=0, help=u'用以甄别当前审核的可能发生重新发起等操作,也是用来' +

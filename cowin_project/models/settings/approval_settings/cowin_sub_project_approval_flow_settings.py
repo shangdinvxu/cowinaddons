@@ -203,10 +203,21 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                     # 通知消息
                     subtype_id = self.env.ref('cowin_project.init_project_mail_message_subtype_notification').id
 
-                    # 当前的用户
-                    rel_entities = self.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel & approval_role.sub_meta_pro_approval_settings_role_rel
+                    partner_ids = []
+                    # 这个过滤条件的目的在于发指定的消息给 提交的人
+                    if status == 3 or status == 4 or status == 5:
+                        last_record = None
+                        records = self.sub_pro_approval_flow_settings_record_ids.filtered(lambda e: e.is_launch_person == False)
+                        if records:
+                            last_record = records[-1]
+                        if last_record:
+                            partner_ids = [last_record.approval_person_id.user_id.partner_id.id]
 
-                    partner_ids = list(map(lambda rel: rel.employee_id.user_id.partner_id.id, rel_entities))
+                    else:
+                        # 当前的用户
+                        rel_entities = self.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel & approval_role.sub_meta_pro_approval_settings_role_rel
+
+                        partner_ids = list(map(lambda rel: rel.employee_id.user_id.partner_id.id, rel_entities))
                     id = self.env['res.users'].search([('id', '=', 1)]).partner_id.id
                     partner_ids.append(id)
 
@@ -735,6 +746,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         approval_flow_settings_record_info = {}
         approval_flow_settings_record_info['res_model'] = self.sub_project_tache_id.tache_id.model_id.model_name
         approval_flow_settings_record_info['res_id'] = self.sub_project_tache_id.res_id
+        approval_flow_settings_record_info['is_launch_peoson'] = True
 
         if is_launch_agin:
             approval_flow_settings_record_info['approval_result'] = u'重新发起'
