@@ -105,6 +105,12 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         tmp2[u'operation'] = u''
         tmp2[u'sub_tache_name'] = self.sub_project_tache_id.name
 
+        # 在审核操作时候  时记录审批结果,审批意见
+        tmp2[u'approval_result'] = u''
+        tmp2[u'approval_opinion'] = u''
+
+
+        # 用以通知消息的传输文本
         info = u''
 
         if status == 1:   # 提交的操作
@@ -119,7 +125,11 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         elif status == 2: # 待审批
 
 
-            tmp2[u'operation'] = u'待处理'
+            tmp2[u'operation'] = u'审核'
+            if self.sub_pro_approval_flow_settings_record_ids:
+                tmp2[u'approval_result'] = self.sub_pro_approval_flow_settings_record_ids[-1].approval_result
+                tmp2[u'approval_opinion'] = self.sub_pro_approval_flow_settings_record_ids[-1].approval_opinion
+
 
             info = info_first + u'您有一项[%s] 待处理' % self.sub_project_tache_id.name
 
@@ -128,6 +138,10 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             info = info_first + u'您发起的[%s] 已暂缓' % self.sub_project_tache_id.name
         elif status == 4:
             tmp2[u'operation'] = u'已通过'
+            if self.sub_pro_approval_flow_settings_record_ids:
+                tmp2[u'approval_result'] = self.sub_pro_approval_flow_settings_record_ids[-1].approval_result
+                tmp2[u'approval_opinion'] = self.sub_pro_approval_flow_settings_record_ids[-1].approval_opinion
+
             info = info_first + u'您发起的[%s] 已审批通过' % self.sub_project_tache_id.name
         elif status == 5:
             tmp2[u'operation'] = u'已拒绝'
@@ -503,27 +517,27 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         approval_roel_person = self.env.user.employee_ids[0].name
 
-        tmp2 = {}
-        tmp2[u'sub_project_name'] = sub_project_name
-        tmp2[u'round_financing_name'] = round_financing_name
-        tmp2[u'foundation_name'] = foundation_name
-        tmp2[u'approval_role_name'] = approval_role_name
-        tmp2[u'approval_roel_person'] = approval_roel_person
-        tmp2[u'operation_time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time() + 8 * 3600))
-        tmp2[u'operation'] = u''
-        tmp2[u'sub_tache_name'] = self.sub_project_tache_id.name
+        # tmp2 = {}
+        # tmp2[u'sub_project_name'] = sub_project_name
+        # tmp2[u'round_financing_name'] = round_financing_name
+        # tmp2[u'foundation_name'] = foundation_name
+        # tmp2[u'approval_role_name'] = approval_role_name
+        # tmp2[u'approval_roel_person'] = approval_roel_person
+        # tmp2[u'operation_time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time() + 8 * 3600))
+        # tmp2[u'operation'] = u''
+        # tmp2[u'sub_tache_name'] = self.sub_project_tache_id.name
 
 
         if (prevstatus, newstatus) == (1, 2):
             print(u'(1, 2) aciton...')
-            tmp2[u'operation'] = u'提交'
+            # tmp2[u'operation'] = u'提交'
             self.send_current_approval_flow_settings_node_msg(status=1)
             self.send_next_approval_flow_settings_node_msg(status=2)
             self.launch_or_relaunch_agin(self.is_launch_again)
             self.prev_status = self.status = newstatus
         elif (prevstatus, newstatus) == (1, 4):
             print(u'(1, 4) aciton...')
-            tmp2[u'operation'] = u'提交'
+            # tmp2[u'operation'] = u'提交'
             # self.message_post(json.dumps(tmp2))
             self.prev_status = self.status = newstatus
             self.send_current_approval_flow_settings_node_msg(status=1)
@@ -537,19 +551,19 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         elif (prevstatus, newstatus) == (2, 2):
             print(u'(2, 2) acion...')
-            tmp2[u'operation'] = u'同意'
+            # tmp2[u'operation'] = u'同意'
 
 
             # self.message_post(json.dumps(tmp2))
-            # self.send_current_approval_flow_settings_node_msg(status=2)
+            self.send_current_approval_flow_settings_node_msg(status=2)
             self.send_next_approval_flow_settings_node_msg(status=2)
             self.prev_status = self.status = newstatus
         elif (prevstatus, newstatus) == (2, 3):
-            tmp2[u'operation'] = u'暂缓'
+            # tmp2[u'operation'] = u'暂缓'
             self.process_put_off_staus()
 
             # self.message_post(json.dumps(tmp2))
-            # self.send_current_approval_flow_settings_node_msg(status=2)
+            self.send_current_approval_flow_settings_node_msg(status=2)
             self.send_next_approval_flow_settings_node_msg(status=3)
             # self.prev_status = self.status = 1
 
@@ -558,10 +572,10 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
 
         elif (prevstatus, newstatus) == (2, 4):
-            tmp2[u'operation'] = u'同意'
+            # tmp2[u'operation'] = u'同意'
             self.prev_status = self.status = newstatus
             # self.message_post(json.dumps(tmp2))
-            # self.send_current_approval_flow_settings_node_msg(status=2)
+            self.send_current_approval_flow_settings_node_msg(status=2)
             self.send_next_approval_flow_settings_node_msg(status=4)
             # 增加校验操作
             self.process_button_status_on_res_model(4)
@@ -570,7 +584,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         elif (prevstatus, newstatus) == (2, 5):
             self.prev_status = self.status = newstatus
-            tmp2[u'operation'] = u'拒绝'
+            # tmp2[u'operation'] = u'拒绝'
             # self.message_post(json.dumps(tmp2))
             # self.send_current_approval_flow_settings_node_msg(status=2)
             self.send_next_approval_flow_settings_node_msg(status=5)
@@ -589,7 +603,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         elif (prevstatus, newstatus) == (6, 7):
             # 投票同意
             self.prev_status = self.status = newstatus
-            tmp2[u'operation'] = u'投票同意'
+            # tmp2[u'operation'] = u'投票同意'
             # self.message_post(json.dumps(tmp2))
             # self.send_current_approval_flow_settings_node_msg(status=6)
             self.send_next_approval_flow_settings_node_msg(status=7)
@@ -600,7 +614,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         elif (prevstatus, newstatus) == (6, 5):
             # 投票同意
             self.prev_status = self.status = newstatus
-            tmp2[u'operation'] = u'投票拒绝'
+            # tmp2[u'operation'] = u'投票拒绝'
             # self.message_post(json.dumps(tmp2))
             # self.send_current_approval_flow_settings_node_msg(status=6)
             self.send_next_approval_flow_settings_node_msg(status=3)
