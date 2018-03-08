@@ -731,8 +731,14 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
         },
         start: function () {
             var self = this;
+            var action_manager = self.getParent();
+            if (action_manager.get_action_stack().length <= 1) {
+                var web_client = action_manager.getParent();
+                web_client.menu.$secondary_menus.show();
+                // return self.do_action(self.action);
+            }
 
-            return new Model("cowin_project.cowin_project")
+            var deffered = new Model("cowin_project.cowin_project")
                     .call("rpc_get_info", [parseInt(self.id)],{})
                     .then(function (result) {
                         result.no_initate = self.no_initate
@@ -751,7 +757,11 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
 
                         self.$el.append(QWeb.render('project_process_detail_tmp', {result: result}))
 
-                    })
+                    });
+
+            return deffered;
+
+            // return $.when(self.getParent().do_action(120), deffered);
         }
     });
     core.action_registry.add('process_kanban_to_detail', ProcessKanbanToDetail);

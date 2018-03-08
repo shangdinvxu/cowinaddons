@@ -202,7 +202,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                     res_id = self.meta_sub_project_id.project_id.id
 
                     channel_entity.message_post(info, message_type='comment', subtype='mail.mt_comment',
-                                                subtype_id=subtype_id)
+                                                subtype_id=subtype_id, partner_ids=partner_ids)
 
             # 用来发送消息!!!
             send_message_()
@@ -577,7 +577,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
             # 设定所有的子环节 once_or_more 为False
             self.set_all_sub_tache_entities_once_or_more_to_false()
-            self.set_all_sub_tache_entities_unlocked_to_false()
+            # self.set_all_sub_tache_entities_unlocked_to_false()
 
             # 处理投资抉择委员会议决议表 拒绝的情况   即, 需要添加可以添加新的基金伦次实体
             self.process_new_round_fund_entity()

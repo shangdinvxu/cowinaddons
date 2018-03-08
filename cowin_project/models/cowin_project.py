@@ -2106,7 +2106,7 @@ class Cowin_project(models.Model):
         return res
 
 
-
+    # 可能在主工程下面取消某个用户的时候,需要把有关的employee有关联的实体也要消除掉employee关系
     @api.multi
     def detach_employee_from_project(self, employee_id, role_name):
         for rec in self:

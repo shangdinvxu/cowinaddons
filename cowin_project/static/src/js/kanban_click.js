@@ -44,17 +44,26 @@ KanbanRecord.include({
                 }
                 var action = {
                     type: 'ir.actions.client',
-                    name: '项目流程详细',
+                    // name: '项目流程详细',
+                    name: self.record.name.raw_value,
                     tag: 'process_kanban_to_detail',
                     // id: this.record.id.raw_value,
                     active_id:this.record.id.raw_value,
-                    params:{'no_initate':no_initate,'active_id':this.record.id.raw_value,action:'process_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
-                }
+                    params:{
+                        'no_initate':no_initate,
+                        'active_id':this.record.id.raw_value,
+                        action:'process_kanban_to_detail',
+                        _push_me:false,
+                        model:'cowin_project.cowin_project',
+                        menu_id: 117,
+                    }
+                };
                 this.do_action(action);
             }else if(this.$el.eq(0).hasClass('project_approval_kanban')){
                 var action = {
                     type: 'ir.actions.client',
-                    name: '项目审批',
+                    // name: '项目审批',
+                    name: self.record.name.raw_value,
                     res_model:'cowin_project.cowin_project',
                     res_id:this.id,
                     tag: 'approval_kanban_to_detail',
@@ -65,7 +74,8 @@ KanbanRecord.include({
             }else if(this.$el.eq(0).hasClass('project_follow_up_invest_kanban')){
                 var action = {
                     type: 'ir.actions.client',
-                    name: '投后跟进',
+                    // name: '投后跟进',
+                    name: self.record.name.raw_value,
                     res_model:'cowin_project.cowin_project',
                     res_id:this.id,
                     tag: 'follow_invest_kanban_to_detail',
@@ -76,7 +86,8 @@ KanbanRecord.include({
             }else if(this.$el.eq(0).hasClass('project_after_invest_approval_kanban')){
                 var action = {
                     type: 'ir.actions.client',
-                    name: '投后审批',
+                    // name: '投后审批',
+                    name: self.record.name.raw_value,
                     tag: 'approval_after_invest_kanban_to_detail',
                     res_model:'cowin_project.cowin_project',
                     res_id:this.id,

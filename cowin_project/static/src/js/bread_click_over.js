@@ -26,51 +26,54 @@ odoo.define('linkloving_core.TreeView', function (require) {
             console.log(index);
 
             if(action.action_descr.tag=='process_kanban_to_detail'){
-                var my_action = {
-                    type: 'ir.actions.client',
-                    name: '项目流程详细',
-                    tag: 'process_kanban_to_detail',
-                    // id: this.record.id.raw_value,
-                    active_id:action.action_descr.active_id,
-                    params:{'no_initate':false,'active_id':action.action_descr.active_id,action:'process_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
-                }
+                // var my_action = {
+                //     type: 'ir.actions.client',
+                //     name: '项目流程详细',
+                //     // name: self.record.name.raw_value,
+                //     tag: 'process_kanban_to_detail',
+                //     // id: this.record.id.raw_value,
+                //     active_id:action.action_descr.active_id,
+                //     params:{'no_initate':false,'active_id':action.action_descr.active_id,action:'process_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
+                // };
                 self.clear_action_stack(self.action_stack.splice(self.action_stack.indexOf(action) + 0));
-                this.do_action(my_action);
+                return this.do_action(action.action_descr);
             }else if(action.action_descr.tag=='follow_invest_kanban_to_detail'){
-                var my_action = {
-                    type: 'ir.actions.client',
-                    name: '投后跟进详细',
-                    tag: 'follow_invest_kanban_to_detail',
-                    // id: this.record.id.raw_value,
-                    active_id:action.action_descr.active_id,
-                    params:{'no_initate':false,'active_id':action.action_descr.active_id,action:'follow_invest_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
-                }
+                // var my_action = {
+                //     type: 'ir.actions.client',
+                //     name: '投后跟进详细',
+                //     // name: self.record.name.raw_value,
+                //     tag: 'follow_invest_kanban_to_detail',
+                //     // id: this.record.id.raw_value,
+                //     active_id:action.action_descr.active_id,
+                //     params:{'no_initate':false,'active_id':action.action_descr.active_id,action:'follow_invest_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
+                // };
                 self.clear_action_stack(self.action_stack.splice(self.action_stack.indexOf(action) + 0));
-                this.do_action(my_action);
+                return this.do_action(action.action_descr);
             }else if(action.action_descr.tag=='approval_kanban_to_detail'){
-                var my_action = {
-                    type: 'ir.actions.client',
-                    name: '项目审批',
-                    tag: 'approval_kanban_to_detail',
-                    // id: this.record.id.raw_value,
-                    active_id:action.action_descr.active_id,
-                    params:{'active_id':action.action_descr.active_id,action:'approval_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
-                }
+                // var my_action = {
+                //     type: 'ir.actions.client',
+                //     name: '项目审批',
+                //     // name: self.record.name.raw_value,
+                //     tag: 'approval_kanban_to_detail',
+                //     // id: this.record.id.raw_value,
+                //     active_id:action.action_descr.active_id,
+                //     params:{'active_id':action.action_descr.active_id,action:'approval_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
+                // }
                 self.clear_action_stack(self.action_stack.splice(self.action_stack.indexOf(action) + 0));
-                this.do_action(my_action);
+                return this.do_action(action.action_descr);
             }else if(action.action_descr.tag=='approval_after_invest_kanban_to_detail'){
-                var my_action = {
-                    type: 'ir.actions.client',
-                    name: '投后审批',
-                    tag: 'approval_after_invest_kanban_to_detail',
-                    // id: this.record.id.raw_value,
-                    active_id:action.action_descr.active_id,
-                    params:{'active_id':action.action_descr.active_id,action:'approval_after_invest_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
-                }
+                // var my_action = {
+                //     type: 'ir.actions.client',
+                //     name: '投后审批',
+                //     // name: self.record.name.raw_value,
+                //     tag: 'approval_after_invest_kanban_to_detail',
+                //     // id: this.record.id.raw_value,
+                //     active_id:action.action_descr.active_id,
+                //     params:{'active_id':action.action_descr.active_id,action:'approval_after_invest_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
+                // };
                 self.clear_action_stack(self.action_stack.splice(self.action_stack.indexOf(action) + 0));
-                this.do_action(my_action);
-            }
-            else {
+                return this.do_action(action.action_descr);
+            } else {
                 return def.then(function() {
                     // Set the new inner_action/widget and update the action stack
                     var old_action = self.inner_action;
@@ -102,6 +105,9 @@ odoo.define('linkloving_core.TreeView', function (require) {
                 });
             }
         },
+
+
+
 
         do_load_state: function(state, warm) {
             var self = this;
