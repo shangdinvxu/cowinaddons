@@ -85,6 +85,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         tes = prev = self.current_approval_flow_node_id
 
+        # 需要通知下一个审批人审批的信息
         if not is_current_or_next:
             tes = next = self.current_approval_flow_node_id.parent_id
 
@@ -214,7 +215,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                             partner_ids = [last_record.approval_person_id.user_id.partner_id.id]
 
                     else:
-                        # 当前的用户
+                        # 下一个审批的用户角色
                         rel_entities = self.meta_sub_project_id.sub_meta_pro_approval_settings_role_rel & approval_role.sub_meta_pro_approval_settings_role_rel
 
                         partner_ids = list(map(lambda rel: rel.employee_id.user_id.partner_id.id, rel_entities))
@@ -223,8 +224,8 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
 
 
-                    model = self.meta_sub_project_id.project_id._name
-                    res_id = self.meta_sub_project_id.project_id.id
+                    # model = self.meta_sub_project_id.project_id._name
+                    # res_id = self.meta_sub_project_id.project_id.id
 
                     channel_entity.message_post(info, message_type='comment', subtype='mail.mt_comment',
                                                 subtype_id=subtype_id, partner_ids=partner_ids)
@@ -232,7 +233,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             # 用来发送消息!!!
             send_message_()
 
-
+        # 恢复到原来的审批节点之上
         self.current_approval_flow_node_id = prev
 
 
