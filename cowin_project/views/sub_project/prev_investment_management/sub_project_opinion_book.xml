@@ -30,7 +30,7 @@
                             <field name="the_amount_of_financing" string="本次融资金额(万元)" required="1"/>
                             <field name="project_valuation" string="估值(万元)" required="1"/>
                             <!---->
-                            <field name="project_mumbers" readonly="1"/>
+                            <field name="project_mumbers" required="1" options="{'no_create': True}"/>
                             <!--<field name="partner_opinion"/>-->
                             <!--<field name="business_director_option"/>-->
                             <!--<field name="policy_making_committee"/>-->
@@ -80,7 +80,7 @@
                             <field name="the_amount_of_financing" string="本次融资金额(万元)" required="1"/>
                             <field name="project_valuation" string="估值(万元)" required="1"/>
                             <!---->
-                            <field name="project_mumbers" required="1" options="{'create': false, 'create_edit': false}"/>/>
+                            <field name="project_mumbers" required="1" options="{'no_create': True}"/>
                             <!--<field name="project_mumbers"/>-->
 
                         </group>

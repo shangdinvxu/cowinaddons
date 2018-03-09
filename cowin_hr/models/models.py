@@ -360,8 +360,8 @@ class Cowin_hr(models.Model):
 
             # 'groups_id': [(4, self.env.ref('cowin_project.cowin_project_group_rule').id)],
             'groups_id': [(4, self.env.ref('cowin_project.cowin_project_menu_group').id),
-                          # (4, self.env.ref('hr.group_hr_user').id),
-                          (4, self.env.ref('base.group_user').id),
+                          (4, self.env.ref('hr.group_hr_user').id),
+                          # (4, self.env.ref('base.group_user').id),
                           # (4, self.env.ref('cowin_project.cowin_project_group').id),]})
                           ]})
 
