@@ -749,7 +749,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         approval_flow_settings_record_info = {}
         approval_flow_settings_record_info['res_model'] = self.sub_project_tache_id.tache_id.model_id.model_name
         approval_flow_settings_record_info['res_id'] = self.sub_project_tache_id.res_id
-        approval_flow_settings_record_info['is_launch_peoson'] = True
+        approval_flow_settings_record_info['is_launch_person'] = True
 
         if is_launch_agin:
             approval_flow_settings_record_info['approval_result'] = u'重新发起'
