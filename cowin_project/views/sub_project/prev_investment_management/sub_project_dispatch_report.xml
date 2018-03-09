@@ -22,7 +22,7 @@
 
                         <group>
 
-                                <field name="sub_pro_approval_flow_settings_record_ids" readonly="1">
+                                <field name="sub_pro_approval_flow_settings_record_ids" options='{"no_open":True}' readonly="1">
                                        <tree >
                                          <field name="approval_person_id" readonly="1" options='{"no_open":True}'/>
                                          <field name="approval_role_id" readonly="1"/>
@@ -56,7 +56,7 @@
 
                         <group>
 
-                                <field name="sub_pro_approval_flow_settings_record_ids" readonly="1">
+                                <field name="sub_pro_approval_flow_settings_record_ids" options='{"no_open":True}' readonly="1">
                                        <tree >
                                          <field name="approval_person_id" readonly="1" options='{"no_open":True}'/>
                                          <field name="approval_role_id" readonly="1"/>

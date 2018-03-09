@@ -322,7 +322,7 @@
                                 <field name="project_source" required="1"/>
                                 <field name="project_source_note"/>
                                 <field name="round_financing_id"/>
-                                <field name="the_amount_of_financing"/>
+                                <field name="the_amount_of_financing" string="本次融资金额(万元)"/>
 
                             </group>
                             <group>

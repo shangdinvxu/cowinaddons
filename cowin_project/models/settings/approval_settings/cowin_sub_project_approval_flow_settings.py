@@ -85,9 +85,11 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         tes = prev = self.current_approval_flow_node_id
 
+
+        # !!! 从代码的逻辑来看,审核节点已经位于下一个节点之上
         # 需要通知下一个审批人审批的信息
-        if not is_current_or_next:
-            tes = next = self.current_approval_flow_node_id.parent_id
+        # if not is_current_or_next:
+        #     tes = next = self.current_approval_flow_node_id.parent_id
 
         # approval_role_name = self.current_approval_flow_node_id.operation_role_id.name
         approval_role_name = tes.operation_role_id.name
@@ -208,7 +210,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
                     # 这个过滤条件的目的在于发指定的消息给 提交的人
                     if status == 3 or status == 4 or status == 5:
                         last_record = None
-                        records = self.sub_pro_approval_flow_settings_record_ids.filtered(lambda e: e.is_launch_person == False)
+                        records = self.sub_pro_approval_flow_settings_record_ids.filtered(lambda e: e.is_launch_person == True)
                         if records:
                             last_record = records[-1]
                         if last_record:

@@ -42,11 +42,11 @@
                             <group>
                                  <!--投资基金-->
                                 <field name="foundation_id" required="1" options='{"no_open":True}'/>
-                                <field name="the_amount_of_investment" required="1"/>
+                                <field name="the_amount_of_investment" string="本次投资金额(万元)" required="1"/>
                                 <field name="ownership_interest" widget="custome_fieldprogressBar" required="1"/>
                                 <field name="round_financing_id" required="1" options='{"no_open":True}'/>
-                                <field name="the_amount_of_financing" required="1"/>
-                                <field name="project_valuation" required="1"/>
+                                <field name="the_amount_of_financing" string="本次融资金额(万元)" required="1"/>
+                                <field name="project_valuation" string="估值(万元)" required="1"/>
                                 <!---->
                             </group>
 
@@ -115,17 +115,17 @@
 
                                  <!--投资基金-->
                                 <field name="foundation_id" required="1" options='{"no_open":True}'/>
-                                <field name="the_amount_of_investment" required="1"/>
+                                <field name="the_amount_of_investment" string="本次投资金额(万元)" required="1"/>
                                 <field name="ownership_interest" widget="custome_fieldprogressBar" required="1"/>
                                 <field name="round_financing_id" required="1" options='{"no_open":True}'/>
-                                <field name="the_amount_of_financing" required="1"/>
-                                <field name="project_valuation" required="1"/>
+                                <field name="the_amount_of_financing" string="本次融资金额(万元)" required="1"/>
+                                <field name="project_valuation" string="估值(万元)" required="1"/>
                                 <!---->
                             </group>
                         </group>
                         <group>
-                            <field name="sub_pro_approval_flow_settings_record_ids" readonly="1">
-                                <tree >
+                            <field name="sub_pro_approval_flow_settings_record_ids" options='{"no_open":True}' readonly="1" >
+                                <tree editable="bottom">
                                     <field name="approval_person_id" readonly="1" options='{"no_open":True}'/>
                                     <field name="approval_role_id" readonly="1"/>
                                     <field name="approval_result" readonly="1"/>
