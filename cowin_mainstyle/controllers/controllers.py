@@ -24,7 +24,7 @@ class Home(Home):
             resp.qcontext['error'] = u'用户名或密码错误'
         return resp
 
-#
+
 class Website(Website):
     @http.route('/', auth='public')
     def index(self, **kw):

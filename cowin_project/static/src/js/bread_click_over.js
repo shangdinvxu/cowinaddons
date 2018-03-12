@@ -25,52 +25,9 @@ odoo.define('linkloving_core.TreeView', function (require) {
             console.log(action);
             console.log(index);
 
-            if(action.action_descr.tag=='process_kanban_to_detail'){
-                // var my_action = {
-                //     type: 'ir.actions.client',
-                //     name: '项目流程详细',
-                //     // name: self.record.name.raw_value,
-                //     tag: 'process_kanban_to_detail',
-                //     // id: this.record.id.raw_value,
-                //     active_id:action.action_descr.active_id,
-                //     params:{'no_initate':false,'active_id':action.action_descr.active_id,action:'process_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
-                // };
-                self.clear_action_stack(self.action_stack.splice(self.action_stack.indexOf(action) + 0));
-                return this.do_action(action.action_descr);
-            }else if(action.action_descr.tag=='follow_invest_kanban_to_detail'){
-                // var my_action = {
-                //     type: 'ir.actions.client',
-                //     name: '投后跟进详细',
-                //     // name: self.record.name.raw_value,
-                //     tag: 'follow_invest_kanban_to_detail',
-                //     // id: this.record.id.raw_value,
-                //     active_id:action.action_descr.active_id,
-                //     params:{'no_initate':false,'active_id':action.action_descr.active_id,action:'follow_invest_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
-                // };
-                self.clear_action_stack(self.action_stack.splice(self.action_stack.indexOf(action) + 0));
-                return this.do_action(action.action_descr);
-            }else if(action.action_descr.tag=='approval_kanban_to_detail'){
-                // var my_action = {
-                //     type: 'ir.actions.client',
-                //     name: '项目审批',
-                //     // name: self.record.name.raw_value,
-                //     tag: 'approval_kanban_to_detail',
-                //     // id: this.record.id.raw_value,
-                //     active_id:action.action_descr.active_id,
-                //     params:{'active_id':action.action_descr.active_id,action:'approval_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
-                // }
-                self.clear_action_stack(self.action_stack.splice(self.action_stack.indexOf(action) + 0));
-                return this.do_action(action.action_descr);
-            }else if(action.action_descr.tag=='approval_after_invest_kanban_to_detail'){
-                // var my_action = {
-                //     type: 'ir.actions.client',
-                //     name: '投后审批',
-                //     // name: self.record.name.raw_value,
-                //     tag: 'approval_after_invest_kanban_to_detail',
-                //     // id: this.record.id.raw_value,
-                //     active_id:action.action_descr.active_id,
-                //     params:{'active_id':action.action_descr.active_id,action:'approval_after_invest_kanban_to_detail',_push_me:false,model:'cowin_project.cowin_project'}
-                // };
+            var custom_tags = ['process_kanban_to_detail', 'follow_invest_kanban_to_detail', 'approval_kanban_to_detail', 'approval_after_invest_kanban_to_detail', 'approval_after_invest_kanban_to_detail'];
+            var flag = _.contains(custom_tags, action.action_descr.tag);
+            if(flag){
                 self.clear_action_stack(self.action_stack.splice(self.action_stack.indexOf(action) + 0));
                 return this.do_action(action.action_descr);
             } else {
@@ -107,13 +64,9 @@ odoo.define('linkloving_core.TreeView', function (require) {
         },
 
 
-
-
         do_load_state: function(state, warm) {
             var self = this;
             var action_loaded;
-
-
 
             if (state.action) {
                 if (_.isString(state.action) && core.action_registry.contains(state.action)) {
@@ -141,7 +94,8 @@ odoo.define('linkloving_core.TreeView', function (require) {
 
                         if (run_history_back) {
                             return this.history_back();
-                         }}
+                         }
+                    }
 
 
 
