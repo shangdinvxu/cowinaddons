@@ -20,8 +20,8 @@ class Cowin_sub_project_base_status(models.Model):
     @api.multi
     def count_view_page_for_user(self):
         self.ensure_one()
-        # status == 8 查看消息
-        self.sub_tache_id.sub_pro_approval_flow_settings_ids.send_current_approval_flow_settings_node_msg(status=8)
+        # status == 9 查看消息
+        self.sub_tache_id.sub_pro_approval_flow_settings_ids.send_current_approval_flow_settings_node_msg(status=9)
         
 
 

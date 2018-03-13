@@ -165,11 +165,13 @@ class Prev_poll_status(models.Model):
             # 判断 发起过程 是触发下一个子环节
             # target_sub_tache_entity.check_or_not_next_sub_tache()
             # target_sub_tache_entity.trigger_next_subtache()
+            # 投票成功
             self.sub_tache_id.sub_pro_approval_flow_settings_ids.upate_status(7)
 
         elif self.voting_status == 3:
             # 不需要再做从新发起的状态!!!
-            target_sub_tache_entity.sub_pro_approval_flow_settings_ids.set_reject()
+            # 投票失败
+            target_sub_tache_entity.sub_pro_approval_flow_settings_ids.upate_status(8)
 
 
         return res

@@ -23,8 +23,8 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
     approval_flow_settings_id = fields.Many2one('cowin_project.approval_flow_settings', string=u'工程审批流', ondelete="restrict")
     meta_sub_project_id = fields.Many2one('cowin_project.meat_sub_project', string=u'元子工程实例', ondelete="cascade")
 
-    status = fields.Selection([(1, u'发起'), (2, u'审核中'), (3, u'暂缓(从新发起)'), (4, u'同意'), (5, u'拒绝'), (6, u'投票中'), (7, u'同意')],
-                     string=u'审核状态', default=1)
+    status = fields.Selection([(1, u'发起'), (2, u'审核中'), (3, u'暂缓(从新发起)'), (4, u'同意'), (5, u'拒绝'), (6, u'投票中'),
+                               (7, u'同意'), (8, u'投票拒绝')], string=u'审核状态', default=1)
     prev_status = fields.Integer(default=1)
 
     # 通道使用,发送通知消息
@@ -159,9 +159,12 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             tmp2[u'operation'] = u'已通过'
             info = info_first + u'您的[%s] 已投票通过' % self.sub_project_tache_id.name
 
+        elif status == 8:
+            tmp2[u'operation'] = u'拒绝'
+            info = info_first + u'您的[%s] 已投票拒绝' % self.sub_project_tache_id.name
 
         # 查看 产生的消息记录
-        elif status == 8:
+        elif status == 9:
             tmp2[u'operation'] = u'查看'
             info = info_first + u'您查看了[%s]' % self.sub_project_tache_id.name
         else:
@@ -172,7 +175,7 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
 
 
-        if status == 6:  # 投票的消息
+        if status == 6 or status == 7 or status == 8:  # 投票的消息
             partner_ids = self.meta_sub_project_id.investment_decision_committee_scope_id.employee_ids.mapped(
                 'user_id.partner_id.id')
 
@@ -614,6 +617,11 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
             # 审批拒绝操作的时候,也是需要改变相应的模型的button的按钮的状态!!!
             self.process_button_status_on_res_model(5)
 
+        elif (prevstatus, newstatus) == (2, 6):
+            # 投票通知
+            self.prev_status = self.status = newstatus
+            self.send_next_approval_flow_settings_node_msg(status=6)
+
         elif (prevstatus, newstatus) == (6, 7):
             # 投票同意
             self.prev_status = self.status = newstatus
@@ -625,13 +633,13 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
             self.process_button_status_on_res_model(4)
 
-        elif (prevstatus, newstatus) == (6, 5):
-            # 投票同意
+        elif (prevstatus, newstatus) == (6, 8):
+            # 投票拒绝
             self.prev_status = self.status = newstatus
             # tmp2[u'operation'] = u'投票拒绝'
             # self.message_post(json.dumps(tmp2))
             # self.send_current_approval_flow_settings_node_msg(status=6)
-            self.send_next_approval_flow_settings_node_msg(status=3)
+            self.send_next_approval_flow_settings_node_msg(status=8)
 
             # 设定所有的子环节 once_or_more 为Fasle
             self.set_all_sub_tache_entities_once_or_more_to_false()
@@ -683,10 +691,13 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
 
         elif new_status == 6:
             self.status = 6
-            self.send_next_approval_flow_settings_node_msg(status=6)
+            # self.send_next_approval_flow_settings_node_msg(status=6)
 
         elif new_status == 7:
             self.status = 7
+
+        elif new_status == 8:
+            self.status = 8
 
         else:
             pass

@@ -161,8 +161,8 @@ class Cowin_subprojerct_prcess_tache_status(models.Model):
 
                 # 同时不再考虑该子环节中审批节点的问题
                 sub_tache_entity.sub_pro_approval_flow_settings_ids[0].write({
-                    'status': 6,
-                    'prev_status': 6,
+                    'status': 2,
+                    'prev_status': 2,
                 })
                 # 同时不再考虑该子环节中审批节点的问题
                 sub_tache_entity.sub_pro_approval_flow_settings_ids[0].upate_status(new_status=6)

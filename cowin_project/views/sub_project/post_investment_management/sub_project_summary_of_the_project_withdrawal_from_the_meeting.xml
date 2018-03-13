@@ -29,7 +29,7 @@
                                 <!--投资基金-->
                                 <field name="foundation_id" readonly="1"/>
                                 <field name="the_amount_of_investment" readonly="1"/>
-                                <field name="ownership_interest" widget="custome_fieldprogressBar" readonly="1"/>
+                                <field name="ownership_interest" widget="custome_fieldprogressBar"/>
                                 <field name="round_financing_id" readonly="1"/>
                                 <field name="the_amount_of_financing" readonly="1"/>
                                 <field name="project_valuation" readonly="1"/>
@@ -79,7 +79,7 @@
                                 <!--投资基金-->
                                 <field name="foundation_id" readonly="1"/>
                                 <field name="the_amount_of_investment" readonly="1"/>
-                                <field name="ownership_interest" widget="custome_fieldprogressBar" readonly="1"/>
+                                <field name="ownership_interest" widget="custome_fieldprogressBar"/>
                                 <field name="round_financing_id" readonly="1"/>
                                 <field name="the_amount_of_financing" readonly="1"/>
                                 <field name="project_valuation" readonly="1"/>
