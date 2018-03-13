@@ -493,7 +493,7 @@ class Cowin_project(models.Model):
                             tache_info['once_or_more'] = False
 
 
-                    elif status == 5:
+                    elif status == 5 or status == 8:
                         # 拒绝
                         info = u'拒绝'
                         approval_view_or_launch = False
