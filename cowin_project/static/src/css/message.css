@@ -43,7 +43,7 @@
 
 
 .o_progressbar .o_progress{
-    width: 95%;
+    margin-right: 3px;
     border: 1px solid #7c7bad;
 }
 .o_progressbar .o_progressbar_value{
