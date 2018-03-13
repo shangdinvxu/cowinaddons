@@ -1721,7 +1721,7 @@ class Cowin_project(models.Model):
     #     self.sub_tache_id.sub_pro_approval_flow_settings_ids.sub_pro_approval_flow_settings_ids.send_current_approval_flow_settings_node_msg(
     #         status=8)
 
-
+    # 查看所做的action!!!
     def approval_view_action_action(self):
         return {
             'name': u'项目设立',
