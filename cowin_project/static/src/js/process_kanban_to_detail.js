@@ -501,24 +501,33 @@ odoo.define('cowin_project.process_kanban_to_detail', function (require) {
             var sel = [];
             var render_names = [];
             var weiyuan_id;
+            //投资决策委员是只读的
+            var is_readonly = false;
+
+            var add_sel_node = $(".manage_team_edit_wrap .detail_lines_wrap[meta_sub_pro_id="+ self.add_meta_sub_pro_id +"] .detail_line[approval_role_id="+ self.add_approval_role_id +"] .team_role_names_wrap");
             $('.selectpicker option:selected').each(function () {
                 if($(this).hasClass('weiyuan')){
                     var weiyuan = $(this).attr('data-id').split(', ');
                     weiyuan_id = parseInt($(this).attr('data-scope-id'));
-                    sel = weiyuan
+                    sel = weiyuan;
+                    is_readonly = true;
+                    add_sel_node.html('');
                 }else {
                     sel.push(parseInt($(this).attr('data-id')));
                 }
             })
-            var add_sel_node = $(".manage_team_edit_wrap .detail_lines_wrap[meta_sub_pro_id="+ self.add_meta_sub_pro_id +"] .detail_line[approval_role_id="+ self.add_approval_role_id +"] .team_role_names_wrap");
+
             $.each(sel,function (x,n) {
                 $.each(self.employee_infos,function (y,v) {
                     if(n == v.employee_id){
+                        if(weiyuan_id){
+                            v['weiyuan_approval_role_id'] = weiyuan_id
+                        }
                         render_names.push(v)
                     }
                 })
             })
-            $(add_sel_node).prepend(QWeb.render('names_tmpl', {result: render_names,is_admin:self.is_admin,edit:true,weiyuan: weiyuan_id,is_readonly:false}));
+            $(add_sel_node).prepend(QWeb.render('names_tmpl', {result: render_names,is_admin:self.is_admin,edit:true,weiyuan: weiyuan_id,is_readonly:is_readonly}));
             self.hide_add_new_sels();
 
         },

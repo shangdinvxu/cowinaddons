@@ -336,11 +336,13 @@
     <!--内部-->
     <t t-name="names_tmpl">
         <t t-foreach="result" t-as="item">
-            <span class="member_name" t-att-employee_id="item.employee_id" t-att-weiyuan="weiyuan">
+            <span class="member_name" t-att-employee_id="item.employee_id" t-att-weiyuan="item.weiyuan_approval_role_id">
                 <t t-esc="item.name"/>
                 <t t-if="edit==true">
                     <t t-if="is_readonly==false">
-                        <span class="fa fa-close"></span>
+                        <t t-if="!item.weiyuan_approval_role_id">
+                            <span class="fa fa-close"></span>
+                        </t>
                     </t>
                 </t>
             </span>
