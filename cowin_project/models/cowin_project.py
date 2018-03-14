@@ -268,40 +268,40 @@ class Cowin_project(models.Model):
     # 由于project表有许多其他的表动态关联到该project之中,所以,此方法的
     # 目的在于动态的查找出该project所对应的one2many的所有的对象实体,
     # 由于是动态的操作模型,所以该project不方便使用one2many的操作
-    def _check_view_status(self, foudation_id, round_financing):
-        '''
-
-        :param foudation_id:   基金 id
-        :param round_financing:  基金所在的某个轮次
-        :return:
-        '''
-        if not foudation_id or not round_financing:
-            return None
-
-        # 拿到该项目中配置信息的所有的环节数据
-        taches = self.process_id.get_all_taches()
-
-        t = None
-        temp = []
-        for tache in taches:
-            if tache.model_name:
-                # 当前表和model_name表属于同一张表,由于设计上的缺陷!!!
-                if tache.model_name == self._name:
-                    t = self.id
-                else:
-
-                    # 某个基金的stage(实例)/(记录)
-                    foudation = self.env['cowin_foudation.cowin_foudation'].browse(int(foudation_id))
-                    foudation_stage_id = foudation.get_round_financing(round_financing).id
-                    t = self.env[tache.model_name].search([('foudation_stage_id', '=', foudation_stage_id)]).id
-            else:
-                t = False
-            temp.append({'tache_id': tache,
-                         'model_name': tache.model_name,
-                         'res_id': t
-                         })
-
-        return temp
+    # def _check_view_status(self, foudation_id, round_financing):
+    #     '''
+    #
+    #     :param foudation_id:   基金 id
+    #     :param round_financing:  基金所在的某个轮次
+    #     :return:
+    #     '''
+    #     if not foudation_id or not round_financing:
+    #         return None
+    #
+    #     # 拿到该项目中配置信息的所有的环节数据
+    #     taches = self.process_id.get_all_taches()
+    #
+    #     t = None
+    #     temp = []
+    #     for tache in taches:
+    #         if tache.model_name:
+    #             # 当前表和model_name表属于同一张表,由于设计上的缺陷!!!
+    #             if tache.model_name == self._name:
+    #                 t = self.id
+    #             else:
+    #
+    #                 # 某个基金的stage(实例)/(记录)
+    #                 foudation = self.env['cowin_foudation.cowin_foudation'].browse(int(foudation_id))
+    #                 foudation_stage_id = foudation.get_round_financing(round_financing).id
+    #                 t = self.env[tache.model_name].search([('foudation_stage_id', '=', foudation_stage_id)]).id
+    #         else:
+    #             t = False
+    #         temp.append({'tache_id': tache,
+    #                      'model_name': tache.model_name,
+    #                      'res_id': t
+    #                      })
+    #
+    #     return temp
 
 
 
@@ -1178,6 +1178,7 @@ class Cowin_project(models.Model):
 
                 elif name in (u'投资决策委员'):
                     tmp2['employee_infos'] = [{'employee_id': e_entity.id,
+                                               'weiyuan_approval_role_id': approval_role_entity.id,
                                                'name': e_entity.name_related}
                                               for e_entity in meta_sub_pro_entity.investment_decision_committee_scope_id.employee_ids
                                               ]
@@ -2239,8 +2240,8 @@ class Cowin_project(models.Model):
 
 
 
-
-class Cowin_project_hr_inherited(models.Model):
-    _inherit = 'hr.employee'
+#
+# class Cowin_project_hr_inherited(models.Model):
+#     _inherit = 'hr.employee'
 
 
