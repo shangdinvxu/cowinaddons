@@ -1178,7 +1178,7 @@ class Cowin_project(models.Model):
 
                 elif name in (u'投资决策委员'):
                     tmp2['employee_infos'] = [{'employee_id': e_entity.id,
-                                               'weiyuan_approval_role_id': approval_role_entity.id,
+                                               'weiyuan_approval_role_id': meta_sub_pro_entity.investment_decision_committee_scope_id.id,
                                                'name': e_entity.name_related}
                                               for e_entity in meta_sub_pro_entity.investment_decision_committee_scope_id.employee_ids
                                               ]
