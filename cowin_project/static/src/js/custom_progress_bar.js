@@ -44,7 +44,7 @@ ProgressBar.include({
             if(max_value !== 100) {
                 this.$('.o_progressbar_value').html(utils.human_number(value) + " / " + utils.human_number(max_value));
             } else {
-                this.$('.o_progressbar_value').html(utils.human_number(value) + "%");
+                this.$('.o_progressbar_value').html(utils.round_decimals(value, 2) + "%");
             }
         } else if(isNaN(v)) {
             this.$('.o_progressbar_value').val(this.edit_max_value ? max_value : value);

@@ -1154,6 +1154,8 @@ class Cowin_project(models.Model):
             tmp['approval_role_infos'] = []
 
             approval_role_employee_rel_repr = meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel[0] if meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel else meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel
+
+            # 操作的虚拟角色人数
             approval_role_ids = approval_role_employee_rel_repr.approval_role_id.search([])
 
             employee_ids = approval_role_employee_rel_repr.employee_id.search([])
@@ -1168,12 +1170,22 @@ class Cowin_project(models.Model):
 
                 tmp2['is_readonly'] = False
 
+                # 和hr 模块里面的数据进行判断的操作!!!  切记
                 if name in (u'风控总监', u'财务专员', u'投资决策委员会主席'):
                     tmp2['is_readonly'] = True
                     t = self.env['cowin_project.global_spec_appro_role'].search([('name', '=', name)])
                     tmp2['employee_infos'] = [{'employee_id': e.id, 'name': e.name_related} for e in t.employee_ids]
 
-                elif name in (u'投资决策委员', u'管理合伙人'):
+                elif name in (u'投资决策委员'):
+                    tmp2['employee_infos'] = [{'employee_id': e_entity.id,
+                                               'name': e_entity.name_related}
+                                              for e_entity in meta_sub_pro_entity.investment_decision_committee_scope_id.employee_ids
+                                              ]
+
+
+                    tmp2['need_call_rpc'] = 'rpc_get_investment_decision_committee_infos'
+
+                elif name in (u'管理合伙人'):
                     tmp2['employee_infos'] = [{'employee_id': approval_employee_rel.employee_id.id,
                                                'name': approval_employee_rel.employee_id.name_related}
                                               for approval_employee_rel in
@@ -1183,10 +1195,10 @@ class Cowin_project(models.Model):
                     #
                     
 
-                    if name == u'管理合伙人':
-                        tmp2['need_call_rpc'] = 'rpc_get_managing_partner_infos'
-                    else:
-                        tmp2['need_call_rpc'] = 'rpc_get_investment_decision_committee_infos'
+                    # if name == u'管理合伙人':
+                    tmp2['need_call_rpc'] = 'rpc_get_managing_partner_infos'
+                    # else:
+                    #     tmp2['need_call_rpc'] = 'rpc_get_investment_decision_committee_infos'
 
                 else:
                     tmp2['employee_infos'] = [{'employee_id': approval_employee_rel.employee_id.id, 'name': approval_employee_rel.employee_id.name_related}
@@ -1291,6 +1303,11 @@ class Cowin_project(models.Model):
                 'employee_id': tuple_id[1],
             })
 
+
+
+        # 为了不去破坏之前的设计, 重新对所属的投资委员组进行重新赋值
+        meta_sub_project_entity.refresh_investment_decision_committee_scope()
+
     # 复制已有的配置,所有的主工程下面的子工程
 
     def rpc_copy_all_permission_configuration(self, **kwargs):
@@ -1329,6 +1346,9 @@ class Cowin_project(models.Model):
 
         current_meta_sub_pro_entity = self.meta_sub_project_ids.browse(current_meta_sub_pro_id)
         copy_meta_sub_pro_entity = self.meta_sub_project_ids.browse(copy_meta_sub_pro_id)
+
+        # 由于使用了 '投资决策委员' 的特殊性, 需要把该指定的位置给指定过去
+        current_meta_sub_pro_entity.investment_decision_committee_scope_id = copy_meta_sub_pro_entity.investment_decision_committee_scope_id
 
         # return copy_meta_sub_pro_entity.copy_data()
 
@@ -2105,6 +2125,36 @@ class Cowin_project(models.Model):
             })
         return res
 
+    # group_role_id 存在值 代表关联值,需要在project中添加值, 如果没有值的话,那么就需要删除该值
+    # 则 empolyee_id 需要删除的值
+    @api.multi
+    def attach_detach_employee_to_project(self, employee_id, role_name, group_role_id=None):
+        group_role_entity = self.env['cowin_project.global_spec_appro_group_role'].browse(group_role_id)
+        for rec in self:
+            for meta_sub_pro_entity in rec.meta_sub_project_ids:
+                approval_role_employee_rel_repr = meta_sub_pro_entity.sub_meta_pro_approval_settings_role_rel
+                approval_role_employee_rel_repr_single = approval_role_employee_rel_repr[0] if approval_role_employee_rel_repr else approval_role_employee_rel_repr
+                role_name_id = approval_role_employee_rel_repr_single.approval_role_id.search([('name', '=', role_name)]).id
+                # 如果存在就把该关系给去除掉
+                for rel in approval_role_employee_rel_repr:
+                    if rel.employee_id.id == employee_id and role_name == rel.approval_role_id.name:
+                        rel.unlink()
+                if employee_id and not group_role_id:
+                    approval_role_employee_rel_repr.create({
+                        'meta_sub_project_id': meta_sub_pro_entity.id,
+                        'employee_id': employee_id,
+                        'approval_role_id': role_name_id,
+
+                    })
+                elif group_role_entity:
+                    approval_role_employee_rel_repr.filtered(lambda rel: rel.approval_role_id.id == role_name_id).unlink()
+                    meta_sub_pro_entity.write({
+                        'sub_meta_pro_approval_settings_role_rel': [(0, 0, {
+                            'meta_sub_project_id': meta_sub_pro_entity.id,
+                            'employee_id': e.id,
+                            'approval_role_id': role_name_id,
+                        }) for e in  group_role_entity.employee_ids]
+                    })
 
     # 可能在主工程下面取消某个用户的时候,需要把有关的employee有关联的实体也要消除掉employee关系
     @api.multi
@@ -2157,7 +2207,40 @@ class Cowin_project(models.Model):
         }
 
 
+    @api.multi
+    def refresh_project(self):
+        approval_role_id = self.env['cowin_common.approval_role'].search([('name', '=', u'投资决策委员')]).id
+        for rec in self:
+            for meta_projcet_entity in rec.meta_sub_project_ids:
+                meta_projcet_entity.sub_meta_pro_approval_settings_role_rel.filtered(
+                            lambda rel: rel.approval_role_id.id == approval_role_id).unlink()
+                meta_projcet_entity.write({
+                        'sub_meta_pro_approval_settings_role_rel': [(0, 0, {
+                            'employee_id':e.id,
+                            'approval_role_id': approval_role_id,
+                        }) for e in meta_projcet_entity.investment_decision_committee_scope_id.employee_ids]
+                    })
+
+                # if add_or_delete:
+                #     meta_projcet_entity.sub_meta_pro_approval_settings_role_rel.filtered(
+                #         lambda rel: rel == u'投资决策委员' and rel.employee_id==employee_id).unlink()
+                #     meta_projcet_entity.write({
+                #         'sub_meta_pro_approval_settings_role_rel': [(0, 0, {
+                #             'employee_id':employee_id,
+                #             'approval_role_id': approval_role_id,
+                #         })]
+                #     })
+                #
+                # else:
+                #     meta_projcet_entity.sub_meta_pro_approval_settings_role_rel.filtered(
+                #         lambda rel: rel == u'投资决策委员' and rel.employee_id == employee_id).unlink()
 
 
+
+
+
+
+class Cowin_project_hr_inherited(models.Model):
+    _inherit = 'hr.employee'
 
 

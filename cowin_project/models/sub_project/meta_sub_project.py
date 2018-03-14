@@ -257,3 +257,19 @@ class Meat_sub_project(models.Model):
 
 
 
+    # 重新对投资委员的人就行赋值操作
+    @api.multi
+    def refresh_investment_decision_committee_scope(self):
+        self.ensure_one()
+
+        approval_role_id = self.env['cowin_common.approval_role'].search([('name', '=', u'投资决策委员')]).id
+        e_entities = self.investment_decision_committee_scope_id.employee_ids
+        for rel in self.sub_meta_pro_approval_settings_role_rel:
+            if rel.employee_id in e_entities and rel.approval_role_id.id == approval_role_id:
+                rel.unlink()
+
+
+        self.write({
+            'sub_meta_pro_approval_settings_role_rel': [(0, 0, {'employee_id': e.id, 'approval_role_id': approval_role_id})
+                                                        for e in e_entities]
+        })

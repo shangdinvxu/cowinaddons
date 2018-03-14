@@ -85,7 +85,9 @@ class  Cowin_Global_Special_Approval_Group_role(models.Model):
     _name = 'cowin_project.global_spec_appro_group_role'
 
     name = fields.Char(string=u'角色组名')
-    employee_ids = fields.Many2many('hr.employee', string=u'所属的员工')
+
+
+    employee_ids = fields.One2many('hr.employee', 'investment_decision_committee_id', string=u'所属的员工')
 
 
 
@@ -300,19 +302,41 @@ class Cowin_hr(models.Model):
         else:
             pass
 
+        # 刷新主工程中的条件
+        self.refresh_project()
+
+    def refresh_project(self):
+        project_entities_repr = self.env.get('cowin_project.cowin_project')
+        # 之所以这样写的目的在于 在模块更新的时候会出现引用其他模块出错的场景
+        if project_entities_repr != None:
+            project_entities = project_entities_repr.search([])
+            project_entities.refresh_project()
+        # if self.investment_decision_committee_id:
+        #     project_entities.refresh_project(employee_id=self.id, add_or_delete=True)
+        # else:
+        #     project_entities.refresh_project(employee_id=self.id, add_or_delete=False)
 
 
 
 
+        # if self.investment_decision_committee_id:
+        #     self.investment_decision_committee_id.write({
+        #         'employee_ids': [(4, self.id)],
+        #     })
+        # else:
+        #     pass
 
-        if self.investment_decision_committee_id:
-            self.investment_decision_committee_id.write({
-                'employee_ids': [(4, self.id)],
-            })
+        # 关联到主工程之中!!!
+        # self.attach_detach_self_to_project(u'投资决策委员')
 
 
 
-
+    # def attach_detach_self_to_project(self, role_name=None):
+    #     if self.env.user.id != SUPERUSER_ID:
+    #         raise UserError(u'必须要是admin才能操作')
+    #
+    #     project_entities = self.env['cowin_project.cowin_project'].search([])
+    #     project_entities.attach_detach_employee_to_project(employee_id=self.id, role_name=role_name, group_role_id=self.investment_decision_committee_id.id)
 
     def detach_self_from_project(self, role_name=None):
         # if self.env.user.has
@@ -386,11 +410,7 @@ class Cowin_hr(models.Model):
     
     @api.multi
     def unlink(self):
-        self.ensure_one()
-
-        if self.user_id:
-            self.user_id.unlink()
-            
+        self.mapped('user_id').unlink()
         return super(Cowin_hr, self).unlink()
         
 
@@ -398,11 +418,14 @@ class Cowin_hr(models.Model):
 
     @api.multi
     def write(self, vals):
-        if not vals.get('investment_decision_committee_id'):
-
-            self.investment_decision_committee_id.write({
-                'employee_ids': [(3, self.id)],
-            })
+        # if vals.get('investment_decision_committee_id'):
+        #
+        #     self.investment_decision_committee_id.write({
+        #         'employee_ids': [(3, self.id)],
+        #     })
+        #
+        # else:
+        #     self.attach_detach_self_to_project(self.id, self.investment_decision_committee_id.id)
 
         if vals.get('login_name'):
             login_name_strip = vals.get('login_name').strip()
