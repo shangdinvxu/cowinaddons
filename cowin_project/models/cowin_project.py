@@ -542,7 +542,7 @@ class Cowin_project(models.Model):
                     tache_info['sub_project']['name'] = meta_sub_project_entity.sub_project_ids.name
                     tache_info['sub_project']['project_number'] = meta_sub_project_entity.sub_project_ids.project_number
                     tache_info['sub_project'][
-                        'invest_manager_id'] = meta_sub_project_entity.sub_project_ids.invest_manager_id.id
+                        'invest_manager_ids'] = meta_sub_project_entity.sub_project_ids.invest_manager_ids.mapped('id')
 
 
 
