@@ -41,7 +41,7 @@
 
     <!-- Top menu item -->
 
-    <menuitem name="cowin_foundation" id="cowin_foundation.menu_root"/>
+    <menuitem name="基金" id="cowin_foundation.menu_root"/>
 
     <!-- menu categories -->
 

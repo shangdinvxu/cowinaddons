@@ -28,6 +28,7 @@
         'views/menu.xml',
         'views/cowin_foundation.xml',
         'views/templates.xml',
+        # 'demo/demo.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
