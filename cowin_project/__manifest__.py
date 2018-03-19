@@ -28,6 +28,8 @@
 
         # 数据之间初始化之间有依赖关系
         'security/project_security.xml',
+
+
         'security/ir.model.access.csv',
         'security/dependencies_many2many/ir.model.access.csv',
         'security/prev_post_vote_poll/ir.model.access.csv',
@@ -36,6 +38,9 @@
         'security/sub_project/ir.model.access.csv',
         'security/sub_project/prev_investment_management/ir.model.access.csv',
         'security/sub_project/post_investment_management/ir.model.access.csv',
+        'security/extension/ir.model.access.csv',
+
+
         'views/init_channel.xml',
         'views/init_mail_message_subtype.xml',
         'views/views.xml',
