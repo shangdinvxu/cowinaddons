@@ -1,23 +1,23 @@
 <odoo>
     <data>
 
-           <record id="object0" model="cowin_foundation.cowin_foudation">
+           <record id="object0" model="cowin_foundation.cowin_foundation">
              <field name="name">基金1</field>
            </record>
 
-           <record id="object1" model="cowin_foundation.cowin_foudation">
+           <record id="object1" model="cowin_foundation.cowin_foundation">
              <field name="name">基金2</field>
            </record>
 
-           <record id="object2" model="cowin_foundation.cowin_foudation">
+           <record id="object2" model="cowin_foundation.cowin_foundation">
              <field name="name">基金3</field>
            </record>
 
-           <record id="object3" model="cowin_foundation.cowin_foudation">
+           <record id="object3" model="cowin_foundation.cowin_foundation">
              <field name="name">基金4</field>
            </record>
 
-           <record id="object4" model="cowin_foundation.cowin_foudation">
+           <record id="object4" model="cowin_foundation.cowin_foundation">
              <field name="name">基金5</field>
            </record>
 

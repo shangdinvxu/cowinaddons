@@ -1,0 +1,27 @@
+<odoo>
+    <data>
+        <!-- 基金管理公司 -->
+        <record id="cowin_foundation_management_company_form" model="ir.ui.view">
+            <field name="name">cowin_foudation.management_company form</field>
+            <field name="model">cowin_foudation.management_company</field>
+            <field name="arch" type="xml">
+              <form>
+                  <group>
+                        <field name="name" require="1"/>
+                        <field name="management_company_adress" readonly="1"/>
+                        <field name="zip_code" readonly="1"/>
+                        <field name="management_company_chairman" require="1"/>
+                        <field name="contract_phone_for_chairman" require="1"/>
+                        <field name="management_company_manager" require="1"/>
+                        <field name="contract_phone_for_manager" require="1"/>
+                        <field name="management_company_daily_contact" require="1"/>
+                        <field name="contract_phone_for_daily_contact" require="1"/>
+
+                  </group>
+              </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

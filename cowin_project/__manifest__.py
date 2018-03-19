@@ -21,6 +21,7 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'cowin_hr', 'cowin_foundation','cowin_common', 'cowin_settings'],
+    # 'depends': ['base', 'cowin_hr','cowin_common', 'cowin_settings'],
 
     # always loaded
     'data': [

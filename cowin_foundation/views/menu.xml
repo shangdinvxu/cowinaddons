@@ -16,13 +16,13 @@
     -->
 
     <!-- actions opening views on models -->
-    <!--
-    <record model="ir.actions.act_window" id="cowin_foudation.action_window">
+
+    <record model="ir.actions.act_window" id="cowin_foundation.information_gathering_act_window">
       <field name="name">cowin_foudation window</field>
-      <field name="res_model">cowin_foudation.cowin_foudation</field>
+      <field name="res_model">cowin_foundation.cowin_foundation</field>
       <field name="view_mode">tree,form</field>
     </record>
-    -->
+
 
     <!-- server action to the one above -->
     <!--
@@ -40,14 +40,15 @@
     -->
 
     <!-- Top menu item -->
-    <!--
-    <menuitem name="cowin_foudation" id="cowin_foudation.menu_root"/>
-    -->
+
+    <menuitem name="cowin_foundation" id="cowin_foundation.menu_root"/>
+
     <!-- menu categories -->
-    <!--
-    <menuitem name="Menu 1" id="cowin_foudation.menu_1" parent="cowin_foudation.menu_root"/>
-    <menuitem name="Menu 2" id="cowin_foudation.menu_2" parent="cowin_foudation.menu_root"/>
-    -->
+
+    <menuitem name="基金信息收集表" id="cowin_foundation.menu_1" parent="cowin_foundation.menu_root"
+      action="cowin_foundation.information_gathering_act_window"/>
+    <!--<menuitem name="Menu 2" id="cowin_foudation.menu_2" parent="cowin_foudation.menu_root"/>-->
+
     <!-- actions -->
     <!--
     <menuitem name="List" id="cowin_foudation.menu_1_list" parent="cowin_foudation.menu_1"

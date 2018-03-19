@@ -47,7 +47,7 @@ class Cowin_project_subproject(models.Model):
     # project_source = fields.Selection([(1, u'朋友介绍'), (2, u'企业自荐')], string=u'项目来源')
     project_source = fields.Many2one('cowin_common.project_source', string=u'项目来源')
     project_source_note = fields.Char(string=u'项目来源备注')
-    invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
+    # invest_manager_id = fields.Many2one('hr.employee', string=u'投资经理')
     invest_manager_ids = fields.Many2many('hr.employee', string=u'投资经理')
 
     # ----- 某些字段可能在某个条件下是可编辑的,可能咋其他的条件下是可编辑的
@@ -58,7 +58,7 @@ class Cowin_project_subproject(models.Model):
     round_financing_and_foundation_id = fields.Many2one('cowin_project.round_financing_and_foundation',
                                                         string=u'基金轮次实体')
     round_financing_id = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
-
+    foundation_id = fields.Many2one('cowin_foundation.cowin_foundation', string=u'基金名称')
 
     # 由于轮次的使用需要依赖于外部的投资的介入,所以需要做一些指定的操作
     @api.onchange('round_financing_id')
@@ -102,7 +102,7 @@ class Cowin_project_subproject(models.Model):
 
 
 
-    foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金名称')
+
     the_amount_of_financing = fields.Float(string=u'本次融资金额')
     the_amount_of_investment = fields.Float(string=u'本次投资金额')
     ownership_interest = fields.Float(string=u'股份比例')

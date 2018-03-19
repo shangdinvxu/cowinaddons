@@ -17,7 +17,7 @@ class Cowin_round_financing_inherit(models.Model):
 
 
 class Cowin_foundation_inherit(models.Model):
-    _inherit = 'cowin_foundation.cowin_foudation'
+    _inherit = 'cowin_foundation.cowin_foundation'
 
     '''
            基金
@@ -50,7 +50,7 @@ class Round_financing_and_Foundation(models.Model):
 
 
     the_amount_of_investment = fields.Float(string=u'本次投资金额')
-    foundation_id = fields.Many2one('cowin_foundation.cowin_foudation', string=u'基金')
+    foundation_id = fields.Many2one('cowin_foundation.cowin_foundation', string=u'基金')
     ownership_interest = fields.Float(string=u'股份比例')
     round_financing_id = fields.Many2one('cowin_common.round_financing', string=u'融资轮次')
     the_amount_of_financing = fields.Float(string=u'本次融资额')

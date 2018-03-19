@@ -39,7 +39,7 @@ class Cowin_sub_project_approval_flow_settings_records(models.Model):
                                                                          u'解决多个用户同时审核的问题!!!')
 
     _sql_constraints = [
-        ('number_uniq', 'unique(approval_flow_count, sub_approval_settings_id, approval_flow_count, approval_role_id)', u'同一个角色只能审批一次!'),
+        ('number_uniq', 'unique(sub_approval_settings_id, approval_flow_count, approval_role_id)', u'同一个角色只能审批一次!'),
     ]
 
 

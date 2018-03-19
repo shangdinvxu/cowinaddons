@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+        <!-- 中介机构情况 -->
+        <record id="cowin_foundation_intermediary_info_form" model="ir.ui.view">
+            <field name="name">cowin_foudation.intermediary_info form</field>
+            <field name="model">cowin_foudation.intermediary_info</field>
+            <field name="arch" type="xml">
+              <form>
+                  <group>
+                        <field name="name" require="1"/>
+                        <field name="trustee_bank_adress" require="1"/>
+                        <field name="contract_person_for_trustee_bank" require="1"/>
+                        <field name="contract_phone_for_trustee_bank" require="1"/>
+
+
+                        <field name="auditing_offices" require="1"/>
+                        <field name="auditing_offices_adress" require="1"/>
+                        <field name="contract_person_for_auditing_offices" require="1"/>
+                        <field name="contract_phone_for_auditing_offices" require="1"/>
+
+                  </group>
+              </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

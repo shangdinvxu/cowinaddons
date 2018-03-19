@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+        <!-- 出资人信息 -->
+        <record id="cowin_foundation_sponsor_form" model="ir.ui.view">
+            <field name="name">cowin_foudation.sponsor form</field>
+            <field name="model">cowin_foudation.sponsor</field>
+            <field name="arch" type="xml">
+              <form>
+                  <group>
+                        <field name="name" require="1"/>
+                        <field name="registered_address" require="1"/>
+                        <field name="capital_contribution" require="1"/>
+                        <field name="capital_ratio" readonly="1"/>
+                        <field name="amount_of_payment" readonly="1"/>
+                        <field name="amount_of_payment_ratio" readonly="1"/>
+                        <field name="the_nature_of_the_investor" require="1"/>
+                        <field name="institutional_investor" readonly="1"/>
+                        <field name="mailing_address_of_shareholders" require="1"/>
+                        <field name="contract_person"/>
+                        <field name="contract_phone" readonly="1"/>
+                        <field name="ID_number" readonly="1"/>
+                        <field name="contract_email" readonly="1"/>
+                  </group>
+              </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
