@@ -18,7 +18,8 @@
     <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="cowin_foundation.information_gathering_act_window">
-      <field name="name">cowin_foudation window</field>
+      <!--<field name="name">cowin_foundation window</field>-->
+      <field name="name">基金</field>
       <field name="res_model">cowin_foundation.cowin_foundation</field>
       <field name="view_mode">tree,form</field>
     </record>
