@@ -13,6 +13,8 @@ class Cowin_foundation_sponsor(models.Model):
 
     name = fields.Char(string=u'出资人名称')
 
+    foundation_id = fields.Many2one('cowin_foundation.cowin_foundation', string=u'基金')
+
     registered_address = fields.Char(string=u'注册地址')
 
     capital_contribution = fields.Float(string=u'出资金额(万元)')
