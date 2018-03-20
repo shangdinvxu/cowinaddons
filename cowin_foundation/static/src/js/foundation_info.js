@@ -35,7 +35,12 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
         },
         start: function () {
             var self = this;
-            console.log('sss')
+            var defered = new Model("cowin_foundation.cowin_foundation")
+                    .call("rpc_get_full_info", [parseInt(self.id)],{})
+                    .then(function (result){
+                        console.log(result)
+                    });
+            return defered
         }
     });
 
