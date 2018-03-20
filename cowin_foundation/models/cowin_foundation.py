@@ -126,37 +126,31 @@ class Cowin_foundation(models.Model):
 
         return {'foundation_full_info': res}
 
-    @api.multi
     def get_foundation_info(self):
         if len(self) == 1:
 
             return self.copy_data()[0]
 
-    @api.multi
     def get_sponsor_info(self):
         if len(self) == 1:
 
             return self.sponsor_ids.get_sponsor_info()
 
-    @api.multi
     def get_partner_gp_info(self):
         if len(self) == 1:
 
             return self.partner_gp_ids.get_partner_gp_info()
 
-    @api.multi
     def get_management_company_info(self):
         if len(self) == 1:
 
             return self.manage_company_id.get_management_company_info()
 
-    @api.multi
     def get_intermediary_info(self):
         if len(self) == 1:
 
             return self.intermediary_id.get_intermediary_info()
 
-    @api.multi
     def get_settings_info(self):
         if len(self) == 1:
 
@@ -166,7 +160,7 @@ class Cowin_foundation(models.Model):
     @api.multi
     def rpc_get_full_info(self):
         '''
-            添加前端rpc调用接口的操作
+            添加前端rpc调用获得所有的数据
         :return:
         '''
         if len(self) == 1:
@@ -177,9 +171,64 @@ class Cowin_foundation(models.Model):
     @api.multi
     def rpc_get_foundation_info(self):
         '''
-            获得单个基金的信息接口
+            获得单个基金的信息
         :return:
         '''
 
         if len(self) == 1:
-            return self.get_foundation_info()
+            return {'foundation_info': self.get_foundation_info()}
+
+
+    @api.multi
+    def rpc_get_sponsor_info(self):
+        '''
+            获得多个出资人信息
+        :return:
+        '''
+        if len(self) == 1:
+
+            return {'sponsor_info': self.get_sponsor_info()}
+
+
+
+    @api.multi
+    def rpc_get_partner_gp_info(self):
+        '''
+            获得多个GP(普通合伙)信息
+        :return:
+        '''
+        if len(self) == 1:
+
+            return {'partner_gp_info': self.get_partner_gp_info()}
+
+
+    @api.multi
+    def rpc_get_management_company_info(self):
+        '''
+            获得单个基金管理信息
+        :return:
+        '''
+        if len(self) == 1:
+
+            return {'management_company_info': self.get_management_company_info()}
+
+    @api.multi
+    def rpc_get_intermediary_info(self):
+        '''
+            获得单个中介公司信息
+        :return:
+        '''
+        if len(self) == 1:
+
+            return {'intermediary_info': self.get_intermediary_info()}
+
+
+    @api.multi
+    def rpc_get_settings_info(self):
+        '''
+            获得单个配置信息
+        :return:
+        '''
+        if len(self) == 1:
+
+            return {'settings_info': self.get_settings_info()}
