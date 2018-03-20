@@ -1,0 +1,30 @@
+.o_web_client .o_main .o_view_manager_content .foundation_kanban_wrap .cowin_foundation_kanban {
+    box-shadow: none;
+    margin-left: 30px;
+    padding: 18px;
+    flex: none;
+    background-color: rgba(242, 242, 242, 1);
+    /*width: 80%;*/
+    min-width: 880px;
+}
+.o_web_client .o_main .o_view_manager_content .foundation_kanban_wrap .cowin_foundation_kanban .kanban_top{
+    overflow: hidden;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(161,161,161,.3);
+    font-weight: 700;
+}
+.o_web_client .o_main .o_view_manager_content .foundation_kanban_wrap .cowin_foundation_kanban .kanban_top>span:nth-child(2){
+    margin-left: 30px;
+}
+.o_web_client .o_main .o_view_manager_content .foundation_kanban_wrap .cowin_foundation_kanban .kanban_main{
+    margin-top: 12px;
+    display: flex;
+    justify-content: start;
+}
+.o_web_client .o_main .o_view_manager_content .foundation_kanban_wrap .cowin_foundation_kanban .kanban_main>div{
+    margin-right: 50px;
+    color: #797979;
+}
+.foundation_kanban_wrap .cowin_foundation_kanban .kanban_main>div>div{
+    margin-top: 8px;
+}

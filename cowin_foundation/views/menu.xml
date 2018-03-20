@@ -48,10 +48,8 @@
                                         <div>投资期限（年）：<t t-esc="record.term_of_investment.value"/></div>
                                     </div>
                                     <div>
-                                        <t t-foreach="record.manage_company_id.value" t-as="item">
-                                            <div>管理公司：<t t-esc="item.name"/></div>
-                                        </t>
 
+                                        <div>管理公司：<t t-esc="record.manage_company_id.value"/></div>
 
                                         <div>投资起始日：<t t-esc="record.start_date_of_investment.value"/></div>
                                         <div>基金首期出资时间：<t t-esc="record.first_investment_time_of_the_fund.value"/></div>
