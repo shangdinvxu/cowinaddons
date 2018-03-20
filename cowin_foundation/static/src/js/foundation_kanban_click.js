@@ -29,13 +29,13 @@ odoo.define('foundation.kanban',function (require) {
     var fields_registry = kanban_widgets.registry;
 
     KanbanRecord.include({
-        on_card_click: function () {
+        on_card_clicked: function () {
             var self = this;
             if(this.model === 'cowin_foundation.cowin_foundation'){
                 if(this.$el.eq(0).hasClass('foundation_infos_kanban')){
                     var action = {
                         type: 'ir.actions.client',
-                        name: self.name.name.raw_value,
+                        name: self.record.name.raw_value,
                         tag: 'foundation_info',
                         active_id: this.record.id.raw_value,
                         params:{
@@ -48,7 +48,7 @@ odoo.define('foundation.kanban',function (require) {
             }else {
                 this._super.apply(this, arguments);
             }
-        },
-    })
+        }
+    });
 
-})
+});

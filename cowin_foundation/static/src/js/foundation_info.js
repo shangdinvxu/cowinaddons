@@ -13,14 +13,12 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
     var ControlPanelMixin = require('web.ControlPanelMixin');
     var ControlPanel = require('web.ControlPanel');
     var Dialog = require('web.Dialog');
-    var ControlPanelMixin = require('web.ControlPanelMixin');
     var SearchView = require('web.SearchView');
     var data = require('web.data');
     var pyeval = require('web.pyeval');
     var _t = core._t;
 
-    var FoundationInfo = widget.extend({
-
+    var FoundationInfo = Widget.extend({
         init: function (parent, action, options) {
             this._super(parent);
             this._super.apply(this, arguments);
@@ -37,6 +35,7 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
         },
         start: function () {
             var self = this;
+            console.log('sss')
         }
     });
 
