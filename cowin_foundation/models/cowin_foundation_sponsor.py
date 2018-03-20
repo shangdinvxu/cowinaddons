@@ -47,5 +47,5 @@ class Cowin_foundation_sponsor(models.Model):
 
     @api.multi
     def get_sponsor_info(self):
-
-        return self.copy_data()
+        if self:
+            return self.copy_data()

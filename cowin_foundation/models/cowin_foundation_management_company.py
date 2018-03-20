@@ -33,6 +33,6 @@ class Cowin_foundation_management_company(models.Model):
 
     @api.multi
     def get_management_company_info(self):
-        self.ensure_one()
+        if len(self) == 1:
 
-        return self.copy_data()
+            return self.copy_data()[0]

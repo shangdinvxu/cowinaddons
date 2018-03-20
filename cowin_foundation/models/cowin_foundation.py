@@ -116,7 +116,7 @@ class Cowin_foundation(models.Model):
 
         res['sponsor_info'] = self.get_sponsor_info()
 
-        res['sponsor_gp_info'] = self.get_partner_gp_info()
+        res['partner_gp_info'] = self.get_partner_gp_info()
 
         res['management_company_info'] = self.get_management_company_info()
 
@@ -126,44 +126,41 @@ class Cowin_foundation(models.Model):
 
         return {'foundation_full_info': res}
 
-
-
     @api.multi
     def get_foundation_info(self):
+        if len(self) == 1:
 
-        self.ensure_one()
-
-        return self.copy_data()
+            return self.copy_data()[0]
 
     @api.multi
     def get_sponsor_info(self):
-        self.ensure_one()
+        if len(self) == 1:
 
-        return self.sponsor_ids.get_sponsor_info()
+            return self.sponsor_ids.get_sponsor_info()
 
     @api.multi
     def get_partner_gp_info(self):
-        self.ensure_one()
+        if len(self) == 1:
 
-        return self.partner_gp_ids.get_partner_gp_info()
+            return self.partner_gp_ids.get_partner_gp_info()
 
     @api.multi
     def get_management_company_info(self):
-        self.ensure_one()
+        if len(self) == 1:
 
-        return self.manage_company_id.get_management_company_info()
+            return self.manage_company_id.get_management_company_info()
 
     @api.multi
     def get_intermediary_info(self):
-        self.ensure_one()
+        if len(self) == 1:
 
-        return self.intermediary_id.get_intermediary_info()
+            return self.intermediary_id.get_intermediary_info()
 
     @api.multi
     def get_settings_info(self):
-        self.ensure_one()
+        if len(self) == 1:
 
-        return self.settings_id.get_settings_info()
+            return self.settings_id.get_settings_info()
 
 
     @api.multi
@@ -172,6 +169,6 @@ class Cowin_foundation(models.Model):
             添加前端rpc调用接口的操作
         :return:
         '''
-        self.ensure_one()
+        if len(self) == 1:
 
-        return self._get_info()
+            return self._get_info()

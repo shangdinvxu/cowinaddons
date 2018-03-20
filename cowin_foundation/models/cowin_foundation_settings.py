@@ -19,6 +19,5 @@ class Cowin_foundation_settings(models.Model):
 
     @api.multi
     def get_settings_info(self):
-        self.ensure_one()
-
-        return self.copy_data()
+        if len(self) == 1:
+            return self.copy_data()[0]
