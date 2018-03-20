@@ -9,7 +9,15 @@ class Cowin_foundation(models.Model):
         基金信息
     '''
 
-    manage_company_id = fields.Many2one('cowin_foudation.management_company', string='管理公司')
+    manage_company_id = fields.Many2one('cowin_foudation.management_company', string=u'管理公司')
+
+    intermediary_id = fields.Many2one('cowin_foudation.intermediary_info', string=u'中介机构情况')
+
+    settings_id = fields.Many2one('cowin_foudation.settings', string=u'设置')
+
+    sponsor_ids = fields.One2many('cowin_foudation.sponsor', 'foundation_id', string=u'出资人信息')
+
+    partner_gp_ids = fields.One2many('cowin_foudation.sponsor_gp', 'foundation_id', string=u'GP(普通合伙)信息')
 
     name = fields.Char(string=u'基金名称')
 
@@ -91,3 +99,79 @@ class Cowin_foundation(models.Model):
         return form_id
 
 
+
+
+
+    @api.multi
+    def _get_info(self):
+        '''
+            获得基金里面完整的完整的详细的信息
+        :return:  info
+        '''
+        self.ensure_one()
+
+        res = {}
+
+        res['foundation_info'] = self.get_foundation_info()
+
+        res['sponsor_info'] = self.get_sponsor_info()
+
+        res['sponsor_gp_info'] = self.get_partner_gp_info()
+
+        res['management_company_info'] = self.get_management_company_info()
+
+        res['intermediary_info'] = self.get_intermediary_info()
+
+        res['settings_info'] = self.get_settings_info()
+
+        return {'foundation_full_info': res}
+
+
+
+    @api.multi
+    def get_foundation_info(self):
+
+        self.ensure_one()
+
+        return self.copy_data()
+
+    @api.multi
+    def get_sponsor_info(self):
+        self.ensure_one()
+
+        return self.sponsor_ids.get_sponsor_info()
+
+    @api.multi
+    def get_partner_gp_info(self):
+        self.ensure_one()
+
+        return self.partner_gp_ids.get_partner_gp_info()
+
+    @api.multi
+    def get_management_company_info(self):
+        self.ensure_one()
+
+        return self.manage_company_id.get_management_company_info()
+
+    @api.multi
+    def get_intermediary_info(self):
+        self.ensure_one()
+
+        return self.intermediary_id.get_intermediary_info()
+
+    @api.muti
+    def get_settings_info(self):
+        self.ensure_one()
+
+        return self.settings_id.get_settings_info()
+
+
+    @api.multi
+    def rpc_get_full_info(self):
+        '''
+            添加前端rpc调用接口的操作
+        :return:
+        '''
+        self.ensure_one()
+
+        return self._get_info()

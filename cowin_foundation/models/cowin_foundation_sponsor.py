@@ -43,3 +43,9 @@ class Cowin_foundation_sponsor(models.Model):
     _sql_constraints = [
         ('name_key', 'UNIQUE (name)', u'出资人名称不能够相同')
     ]
+
+
+    @api.multi
+    def get_sponsor_info(self):
+
+        return self.copy_data()

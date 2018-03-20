@@ -43,3 +43,6 @@ class Cowin_foundation_GP(models.Model):
 
 
 
+    @api.multi
+    def get_partner_gp_info(self):
+        return self.copy_data()

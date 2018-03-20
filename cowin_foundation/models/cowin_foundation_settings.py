@@ -11,9 +11,14 @@ class Cowin_foundation_settings(models.Model):
 
     name = fields.Many2one('hr.employee', string=u'基金专员')
 
-    foundation_id = fields.Many2one('cowin_foundation.cowin_foundation', string=u'基金')
+    foundation_id = fields.One2many('cowin_foundation.cowin_foundation', 'settings_id', string=u'基金')
     # name = fields.Char()
 
 
 
 
+    @api.multi
+    def get_settings_info(self):
+        self.ensure_one()
+
+        return self.copy_data()

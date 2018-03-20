@@ -12,7 +12,8 @@ class Cowin_foundation_intermediary_info(models.Model):
 
     name = fields.Char(string=u'托管银行')
 
-    foundation_id = fields.Many2one('cowin_foundation.cowin_foundation', string=u'基金')
+    # foundation_id = fields.Many2one('cowin_foundation.cowin_foundation', string=u'基金')
+    foundation_ids = fields.One2many('cowin_foundation.cowin_foundation', 'intermediary_id', string=u'基金')
 
     trustee_bank_adress = fields.Char(string=u'托管银行地址')
 
@@ -27,3 +28,10 @@ class Cowin_foundation_intermediary_info(models.Model):
     contract_person_for_auditing_offices= fields.Char(string=u'联系人')
 
     contract_phone_for_auditing_offices = fields.Char(string=u'联系电话')
+
+
+    @api.muti
+    def get_intermediary_info(self):
+        self.ensure_one()
+
+        return self.copy_data()
