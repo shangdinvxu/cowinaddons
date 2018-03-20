@@ -172,3 +172,14 @@ class Cowin_foundation(models.Model):
         if len(self) == 1:
 
             return self._get_info()
+
+
+    @api.multi
+    def rpc_get_foundation_info(self):
+        '''
+            获得单个基金的信息接口
+        :return:
+        '''
+
+        if len(self) == 1:
+            return self.get_foundation_info()
