@@ -159,7 +159,7 @@ class Cowin_foundation(models.Model):
 
         return self.intermediary_id.get_intermediary_info()
 
-    @api.muti
+    @api.multi
     def get_settings_info(self):
         self.ensure_one()
 

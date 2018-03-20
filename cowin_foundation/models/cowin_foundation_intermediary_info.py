@@ -30,7 +30,7 @@ class Cowin_foundation_intermediary_info(models.Model):
     contract_phone_for_auditing_offices = fields.Char(string=u'联系电话')
 
 
-    @api.muti
+    @api.multi
     def get_intermediary_info(self):
         self.ensure_one()
 
