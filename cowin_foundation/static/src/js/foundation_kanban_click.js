@@ -39,6 +39,7 @@ odoo.define('foundation.kanban',function (require) {
                         tag: 'foundation_info',
                         active_id: this.record.id.raw_value,
                         params:{
+                            active_id:this.record.id.raw_value,
                             model: 'cowin_foundation.cowin_foundation',
                             action: 'foundation_info',
                         }

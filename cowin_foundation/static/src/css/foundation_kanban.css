@@ -28,3 +28,78 @@
 .foundation_kanban_wrap .cowin_foundation_kanban .kanban_main>div>div{
     margin-top: 8px;
 }
+
+
+/*基金信息收集表的 样式*/
+#foundation_info_container #foundation_tab{
+    background-color: white;
+    border-top: 1px solid #ddd;
+    padding-left: 20px;
+}
+#foundation_info_container #foundation_tab li a{
+    color: #409eff;
+    border: none;
+    border-radius: 0;
+}
+#foundation_info_container .nav-tabs > li.active > a, #foundation_info_container .nav-tabs > li.active > a:hover, #foundation_info_container .nav-tabs > li.active > a:focus{
+    background-color: #409eff;
+    border: none;
+    color: white!important;
+}
+#foundation_tab_content>div{
+    padding: 50px 100px;
+}
+#foundation_infos .basic_infos_wrap{
+    display: inline-block;
+    width: 100%;
+}
+#foundation_infos .basic_infos_wrap>table{
+    display: inline-table;
+    vertical-align: top;
+}
+#foundation_infos .basic_infos_wrap>table tr{
+    padding-bottom: 10px;
+    height: 30px;
+    font-size: 14px;
+}
+#foundation_infos .basic_infos_wrap>table tr td{
+    vertical-align: top;
+}
+#foundation_infos .basic_infos_wrap>table tr td:nth-child(1){
+    color: #949494;
+    padding-right: 30px;
+}
+#foundation_infos .basic_infos_wrap>table tr td:nth-child(2){
+    color: #5E5E5E;
+    max-width: 200px;
+    font-weight: 400;
+}
+#foundation_infos .foundation_info_labels_wrap{
+    width: 100%;
+    margin-top: 80px;
+}
+#foundation_infos .foundation_info_labels_wrap .info_label{
+    width: 100%;
+    padding: 10px 50px;
+    background-color: rgba(240, 241, 243, 0.5);
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #6B6B6B;
+}
+#foundation_infos .foundation_info_labels_wrap .info_label>div,#foundation_infos .foundation_info_labels_wrap .info_label>table{
+    display: inline-block;
+    vertical-align: top;
+}
+#foundation_infos .foundation_info_labels_wrap .info_label .digital{
+    font-size: 30px;
+    color: #419DFF;
+}
+#foundation_infos .foundation_info_labels_wrap .info_label .info_label_danwei{
+    color: #AEAEAE;
+}
+#foundation_infos .foundation_info_labels_wrap .info_label>table tr{
+    height: 36px;
+}
+#foundation_infos .foundation_info_labels_wrap .info_label>table tr td:nth-child(1){
+    padding-right: 15px;
+}

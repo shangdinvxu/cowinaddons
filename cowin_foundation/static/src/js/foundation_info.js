@@ -36,9 +36,11 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
         start: function () {
             var self = this;
             var defered = new Model("cowin_foundation.cowin_foundation")
-                    .call("rpc_get_full_info", [parseInt(self.id)],{})
+                    .call("rpc_get_foundation_info", [parseInt(self.id)],{})
                     .then(function (result){
-                        console.log(result)
+                        console.log(result);
+
+                        self.$el.append(QWeb.render('foundation_info_templ', {result: result.foundation_info}))
                     });
             return defered
         }
