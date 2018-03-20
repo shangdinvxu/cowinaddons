@@ -9,7 +9,7 @@ class Cowin_foundation(models.Model):
         基金信息
     '''
 
-    manage_company_ids = fields.One2many('cowin_foudation.management_company', 'foundation_id', string='管理公司',)
+    manage_company_id = fields.Many2one('cowin_foudation.management_company', string='管理公司')
 
     name = fields.Char(string=u'基金名称')
 
@@ -75,5 +75,19 @@ class Cowin_foundation(models.Model):
         ('name_key', 'UNIQUE (name)', u'基金名不能够相同')
     ]
 
+
+
+    @api.multi
+    def get_formview_id(self):
+        """ Return an view id to open the document ``self`` with. This method is
+            meant to be overridden in addons that want to give specific view ids
+            for example.
+        """
+        if len(self) > 1:
+            raise UserWarning(u'只能最多有一个实体')
+
+        form_id = self.env.ref('cowin_foundation.cowin_foundation_form').id
+
+        return form_id
 
 

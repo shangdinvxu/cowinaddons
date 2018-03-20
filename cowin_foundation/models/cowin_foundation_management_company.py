@@ -11,7 +11,7 @@ class Cowin_foundation_management_company(models.Model):
 
     name = fields.Char(string=u'基金管理公司名称')
 
-    foundation_id = fields.Many2one('cowin_foundation.cowin_foundation', string=u'基金')
+    foundation_ids = fields.One2many('cowin_foundation.cowin_foundation', 'manage_company_id', string=u'基金')
 
     management_company_adress = fields.Char(string=u'基金管理公司通讯地址')
 
@@ -28,3 +28,6 @@ class Cowin_foundation_management_company(models.Model):
     management_company_daily_contact = fields.Char(string=u'基金管理公司日常联系人')
 
     contract_phone_for_daily_contact = fields.Char(string=u'联系电话(手机/座机/传真)')
+
+
+

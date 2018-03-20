@@ -11,7 +11,7 @@
                     <field name="foundation_number"/>
                     <field name="registered_address"/>
                     <field name="foundation_type"/>
-                    <field name="manage_company_ids"/>
+                    <field name="manage_company_id"/>
                     <!--<field name="is_admin_user"/>-->
                     <field name="investment_field"/>
                     <field name="term_of_investment"/>
@@ -20,9 +20,9 @@
                     <field name="fund_investment_amonut"/>
                     <field name="fund_recognition_scale"/>
                     <field name="funds_in_place_at_present_amount"/>
-                    <field name="fund_recognition_scale"/>
-                    <field name="fund_recognition_scale"/>
-                    <field name="fund_recognition_scale"/>
+                    <!--<field name="fund_recognition_scale"/>-->
+                    <!--<field name="fund_recognition_scale"/>-->
+                    <!--<field name="fund_recognition_scale"/>-->
                     <templates>
                         <t t-name="kanban-box">
                             <div class="foundation_infos_kanban oe_kanban_global_click cowin_foundation_kanban">
@@ -48,9 +48,11 @@
                                         <div>投资期限（年）：<t t-esc="record.term_of_investment.value"/></div>
                                     </div>
                                     <div>
-                                        <t t-foreach="record.manage_company_ids" t-as="item">
+                                        <t t-foreach="record.manage_company_id.value" t-as="item">
                                             <div>管理公司：<t t-esc="item.name"/></div>
                                         </t>
+
+
                                         <div>投资起始日：<t t-esc="record.start_date_of_investment.value"/></div>
                                         <div>基金首期出资时间：<t t-esc="record.first_investment_time_of_the_fund.value"/></div>
                                         <div>基金投资金额（万元）：<t t-esc="record.fund_investment_amonut.value"/></div>
