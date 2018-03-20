@@ -9,6 +9,8 @@ class Cowin_foundation(models.Model):
         基金信息
     '''
 
+    manage_company_ids = fields.One2many('cowin_foudation.management_company', 'foundation_id', string='管理公司',)
+
     name = fields.Char(string=u'基金名称')
 
     foundation_number = fields.Char(string=u'基金编号')

@@ -1,61 +1,91 @@
 <odoo>
   <data>
-    <!-- explicit list view definition -->
-    <!--
-    <record model="ir.ui.view" id="cowin_foudation.list">
-      <field name="name">cowin_foudation list</field>
-      <field name="model">cowin_foudation.cowin_foudation</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
-        </tree>
-      </field>
-    </record>
-    -->
 
-    <!-- actions opening views on models -->
+        <!-- actions opening views on models -->
+        <record id="foundation_infos_kanban_view" model="ir.ui.view">
+            <field name="name">cowin_foundation.kanban</field>
+            <field name="model">cowin_foundation.cowin_foundation</field>
+            <field name="arch" type="xml">
+                <kanban class="foundation_kanban_wrap" delete="true" default_order="create_date desc">
+                    <field name="name"/>
+                    <field name="foundation_number"/>
+                    <field name="registered_address"/>
+                    <field name="foundation_type"/>
+                    <field name="manage_company_ids"/>
+                    <!--<field name="is_admin_user"/>-->
+                    <field name="investment_field"/>
+                    <field name="term_of_investment"/>
+                    <field name="start_date_of_investment"/>
+                    <field name="first_investment_time_of_the_fund"/>
+                    <field name="fund_investment_amonut"/>
+                    <field name="fund_recognition_scale"/>
+                    <field name="funds_in_place_at_present_amount"/>
+                    <field name="fund_recognition_scale"/>
+                    <field name="fund_recognition_scale"/>
+                    <field name="fund_recognition_scale"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="foundation_infos_kanban oe_kanban_global_click cowin_foundation_kanban">
+                                <!--<t t-if="record.is_admin_user.raw_value">-->
+                                    <div class="o_dropdown_kanban dropdown" groups="base.group_user">
+                                        <a class="dropdown-toggle btn" data-toggle="dropdown" href="#" >
+                                            <span class="fa fa-bars fa-lg"/>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <t t-if="widget.deletable"><li><a type="delete">Delete</a></li></t>
+                                        </ul>
+                                    </div>
+                                <!--</t>-->
+                                <div class="kanban_top">
+                                    <span><t t-esc="record.name.value"/></span>
+                                    <span>【<t t-esc="record.foundation_number.value"/>】</span>
+                                </div>
+                                <div class="kanban_main">
+                                    <div>
+                                        <div>注册地址：<t t-esc="record.registered_address.value"/></div>
+                                        <div>基金类型：<t t-esc="record.foundation_type.value"/></div>
+                                        <div>投资领域：<t t-esc="record.investment_field.value"/></div>
+                                        <div>投资期限（年）：<t t-esc="record.term_of_investment.value"/></div>
+                                    </div>
+                                    <div>
+                                        <t t-foreach="record.manage_company_ids" t-as="item">
+                                            <div>管理公司：<t t-esc="item.name"/></div>
+                                        </t>
+                                        <div>投资起始日：<t t-esc="record.start_date_of_investment.value"/></div>
+                                        <div>基金首期出资时间：<t t-esc="record.first_investment_time_of_the_fund.value"/></div>
+                                        <div>基金投资金额（万元）：<t t-esc="record.fund_investment_amonut.value"/></div>
+                                    </div>
+                                    <div>
+                                        <div>基金认缴规模（万元）：<t t-esc="record.fund_recognition_scale.value"/></div>
+                                        <div>基金目前到位金额（万元）<t t-esc="record.funds_in_place_at_present_amount.value"/></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
 
-    <record model="ir.actions.act_window" id="cowin_foundation.information_gathering_act_window">
-      <!--<field name="name">cowin_foundation window</field>-->
-      <field name="name">基金</field>
-      <field name="res_model">cowin_foundation.cowin_foundation</field>
-      <field name="view_mode">tree,form</field>
-    </record>
+        <record model="ir.actions.act_window" id="cowin_foundation.information_gathering_act_window">
+            <field name="name">基金</field>
+            <field name="res_model">cowin_foundation.cowin_foundation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="view_id" ref="foundation_infos_kanban_view"/>
+        </record>
 
 
-    <!-- server action to the one above -->
-    <!--
-    <record model="ir.actions.server" id="cowin_foudation.action_server">
-      <field name="name">cowin_foudation server</field>
-      <field name="model_id" ref="model_cowin_foudation_cowin_foudation"/>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": self._name,
-        }
-      </field>
-    </record>
-    -->
 
-    <!-- Top menu item -->
 
-    <menuitem name="基金" id="cowin_foundation.menu_root"/>
+        <!-- Top menu item -->
 
-    <!-- menu categories -->
+        <menuitem name="基金" id="cowin_foundation.menu_root"/>
 
-    <menuitem name="基金信息收集表" id="cowin_foundation.menu_1" parent="cowin_foundation.menu_root"
-      action="cowin_foundation.information_gathering_act_window"/>
-    <!--<menuitem name="Menu 2" id="cowin_foudation.menu_2" parent="cowin_foudation.menu_root"/>-->
+        <!-- menu categories -->
 
-    <!-- actions -->
-    <!--
-    <menuitem name="List" id="cowin_foudation.menu_1_list" parent="cowin_foudation.menu_1"
-              action="cowin_foudation.action_window"/>
-    <menuitem name="Server to list" id="cowin_foudation" parent="cowin_foudation.menu_2"
-              action="cowin_foudation.action_server"/>
-    -->
+        <menuitem name="基金信息收集表" id="cowin_foundation.menu_1" parent="cowin_foundation.menu_root"
+          action="cowin_foundation.information_gathering_act_window"/>
+
   </data>
 </odoo>
