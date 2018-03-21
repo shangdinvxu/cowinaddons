@@ -89,8 +89,38 @@
                         </div>
 
                     </div>
-
-
+                    <div class="foundation_files_wrap">
+                        <h3>基金募资报告</h3>
+                        <div>
+                            <t t-foreach="result.fund_raising_report_ids" t-as="file">
+                                <a t-attf-src="/web/content/#{file.id}?download=true"><t t-esc="file.name"/></a>
+                            </t>
+                        </div>
+                        <h3>基金备案证书</h3>
+                        <div>
+                            <t t-foreach="result.fund_record_certificate_ids" t-as="file">
+                                <a t-attf-href="/web/content/#{file.id}?download=true"><t t-esc="file.name"/></a>
+                            </t>
+                        </div>
+                        <h3>协议</h3>
+                        <div>
+                            <t t-foreach="result.agreement_ids" t-as="file">
+                                <a t-attf-href="/web/content/#{file.id}?download=true"><t t-esc="file.name"/></a>
+                            </t>
+                        </div>
+                        <h3>政府审批材料</h3>
+                        <div>
+                            <t t-foreach="result.government_approval_materials_ids" t-as="file">
+                                <a t-attf-href="/web/content/#{file.id}?download=true"><t t-esc="file.name"/></a>
+                            </t>
+                        </div>
+                        <h3>基金半年度报告</h3>
+                        <div>
+                            <t t-foreach="result.semi_annual_report_of_the_fund_ids" t-as="file">
+                                <a t-attf-href="/web/content/#{file.id}?download=true"><t t-esc="file.name"/></a>
+                            </t>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="">
 

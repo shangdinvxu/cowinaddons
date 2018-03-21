@@ -13,6 +13,7 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
     var ControlPanelMixin = require('web.ControlPanelMixin');
     var ControlPanel = require('web.ControlPanel');
     var Dialog = require('web.Dialog');
+    var ActionManager = require('web.ActionManager')
     var SearchView = require('web.SearchView');
     var data = require('web.data');
     var pyeval = require('web.pyeval');
@@ -43,7 +44,11 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                         self.$el.append(QWeb.render('foundation_info_templ', {result: result.foundation_info}))
                     });
             return defered
-        }
+        },
+        on_detach_callback: function() {
+            console.log('离开页面')
+        },
+
     });
 
     core.action_registry.add('foundation_info', FoundationInfo);

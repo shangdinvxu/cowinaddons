@@ -103,3 +103,6 @@
 #foundation_infos .foundation_info_labels_wrap .info_label>table tr td:nth-child(1){
     padding-right: 15px;
 }
+#foundation_infos .foundation_files_wrap a{
+    margin-right: 30px;
+}
