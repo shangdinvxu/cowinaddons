@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+import collections
 
 class Cowin_foundation(models.Model):
     _name = 'cowin_foundation.cowin_foundation'
@@ -126,10 +127,27 @@ class Cowin_foundation(models.Model):
 
         return {'foundation_full_info': res}
 
+    def copy_custom(self):
+        # 构建自定义的many2many数据存储
+        if len(self) == 1:
+            res = {}
+            for k in self._fields:
+                if self._fields[k].type in ('many2many', 'one2many', 'many2one'):
+                    res[k] = self[k].read(['name'])
+                    continue
+
+
+                res[k] = self[k]
+
+            return res
+
+
+
+
     def get_foundation_info(self):
         if len(self) == 1:
 
-            return self.copy_data()[0]
+            return self.copy_custom()
 
     def get_sponsor_info(self):
         if len(self) == 1:

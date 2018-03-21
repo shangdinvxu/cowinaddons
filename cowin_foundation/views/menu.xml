@@ -71,6 +71,13 @@
             <field name="view_id" ref="foundation_infos_kanban_view"/>
         </record>
 
+      <record model="ir.actions.act_window" id="cowin_foundation.information_gathering_act_window2">
+            <field name="name">基金</field>
+            <field name="res_model">cowin_foundation.cowin_foundation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
 
 
 
@@ -82,6 +89,9 @@
 
         <menuitem name="基金信息收集表" id="cowin_foundation.menu_1" parent="cowin_foundation.menu_root"
           action="cowin_foundation.information_gathering_act_window"/>
+
+      <menuitem name="基金信息收集表2" id="cowin_foundation.menu_2" parent="cowin_foundation.menu_root"
+          action="cowin_foundation.information_gathering_act_window2"/>
 
   </data>
 </odoo>
