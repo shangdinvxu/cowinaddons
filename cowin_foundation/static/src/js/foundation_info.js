@@ -20,6 +20,23 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
     var _t = core._t;
 
     var FoundationInfo = Widget.extend({
+
+        on_attach_callback: function() {
+            console.log('yfei');
+
+        },
+
+
+        on_detach_callback: function() {
+            console.log('离开页面');
+        },
+
+        do_push_state: function(state) {
+            this._super(state);
+        },
+
+
+
         init: function (parent, action, options) {
             this._super(parent);
             this._super.apply(this, arguments);
@@ -44,9 +61,6 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                         self.$el.append(QWeb.render('foundation_info_templ', {result: result.foundation_info}))
                     });
             return defered
-        },
-        on_detach_callback: function() {
-            console.log('离开页面')
         },
 
     });
