@@ -20,6 +20,13 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
     var _t = core._t;
 
     var FoundationInfo = Widget.extend({
+        events:{
+            'click .edit_foundation':'edit_foundation_func',
+        },
+        //基金情况表编辑
+        edit_foundation_func:function () {
+            this.do_action(this.form_id)
+        },
 
         on_attach_callback: function() {
             console.log('yfei');
@@ -57,7 +64,7 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                     .call("rpc_get_foundation_info", [parseInt(self.id)],{})
                     .then(function (result){
                         console.log(result);
-
+                        self.form_id = result.foundation_info.form_id;
                         self.$el.append(QWeb.render('foundation_info_templ', {result: result.foundation_info}))
                     });
             return defered

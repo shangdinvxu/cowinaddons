@@ -106,3 +106,13 @@
 #foundation_infos .foundation_files_wrap a{
     margin-right: 30px;
 }
+#foundation_infos .basic_infos_wrap{
+    position: relative;
+}
+#foundation_infos .edit_foundation{
+    cursor: pointer;
+    position: absolute;
+    right: 0px;
+    color: #409eff;
+    top: 0px;
+}

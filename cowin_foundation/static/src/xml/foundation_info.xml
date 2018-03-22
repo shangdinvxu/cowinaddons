@@ -37,6 +37,7 @@
                                 <tr><td>证券账户</td><td><t t-esc="result.securities_account"/></td></tr>
                             </tbody>
                         </table>
+                        <div class="edit_foundation"><i class="fa fa-edit"></i> 编辑</div>
                     </div>
                     <div class="foundation_info_labels_wrap">
                         <div class="info_label">
