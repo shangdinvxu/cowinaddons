@@ -133,6 +133,7 @@ class Cowin_foundation(models.Model):
         # 构建自定义的many2many数据存储
         if len(self) == 1:
             res = {}
+            res['form_id'] = self.get_formview_id()
             for k in self._fields:
                 if self._fields[k].type in ('many2many', 'one2many', 'many2one'):
                     res[k] = self[k].read(['name'])
