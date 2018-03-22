@@ -6,39 +6,41 @@
             <field name="model">cowin_foundation.cowin_foundation</field>
             <field name="arch" type="xml">
               <form>
-                  <group>
-                        <field name="name" require="1"/>
-                        <field name="foundation_number" require="1"/>
-                        <field name="registered_address" require="1"/>
-                        <field name="foundation_type" require="1"/>
-                        <field name="investment_field" require="1" options="{'no_create': 1}"/>
-                        <!--<field name="investment_field" require="1"/>-->
-                        <field name="term_of_investment" require="1"/>
-                        <field name="start_date_of_investment" require="1"/>
-                        <field name="registered_foundation_date" require="1"/>
-                        <field name="first_investment_time_of_the_fund" readonly="1"/>
-                        <field name="fund_investment_amonut" require="1"/>
-                        <field name="securities_account"/>
+                  <sheet>
+                      <group>
+                            <field name="name" require="1"/>
+                            <field name="foundation_number" require="1"/>
+                            <field name="registered_address" require="1"/>
+                            <field name="foundation_type" require="1"/>
+                            <field name="investment_field" require="1" options="{'no_create': 1}"/>
+                            <!--<field name="investment_field" require="1"/>-->
+                            <field name="term_of_investment" require="1"/>
+                            <field name="start_date_of_investment" require="1"/>
+                            <field name="registered_foundation_date" require="1"/>
+                            <field name="first_investment_time_of_the_fund" readonly="1"/>
+                            <field name="fund_investment_amonut" require="1"/>
+                            <field name="securities_account"/>
 
-                        <field name="fund_recognition_scale" readonly="1"/>
-                        <field name="funds_in_place_at_present_amount" readonly="1"/>
-                        <field name="funds_in_place_at_present_ratio" readonly="1"/>
-                        <field name="state_investor_commitment_capital_con_amount" readonly="1"/>
-                        <field name="current_state_investor_commitment_capital_con_amount" readonly="1"/>
-                        <field name="current_state_investor_commitment_capital_con_amount_ratio" readonly="1"/>
-                        <field name="commitment_con_by_social_contributors_amount" readonly="1"/>
-                        <field name="current_commitment_con_by_social_contributors_amount" readonly="1"/>
-                        <field name="current_commitment_con_by_social_contributors_amount_ratio" readonly="1"/>
-                        <field name="team_commitment_capital_con_amount_GP" readonly="1"/>
-                        <field name="current_team_commitment_capital_con_amount_GP" readonly="1"/>
-                        <field name="current_team_commitment_capital_con_amount_GP_ratio" readonly="1"/>
+                            <field name="fund_recognition_scale" readonly="1"/>
+                            <field name="funds_in_place_at_present_amount" readonly="1"/>
+                            <field name="funds_in_place_at_present_ratio" readonly="1"/>
+                            <field name="state_investor_commitment_capital_con_amount" readonly="1"/>
+                            <field name="current_state_investor_commitment_capital_con_amount" readonly="1"/>
+                            <field name="current_state_investor_commitment_capital_con_amount_ratio" readonly="1"/>
+                            <field name="commitment_con_by_social_contributors_amount" readonly="1"/>
+                            <field name="current_commitment_con_by_social_contributors_amount" readonly="1"/>
+                            <field name="current_commitment_con_by_social_contributors_amount_ratio" readonly="1"/>
+                            <field name="team_commitment_capital_con_amount_GP" readonly="1"/>
+                            <field name="current_team_commitment_capital_con_amount_GP" readonly="1"/>
+                            <field name="current_team_commitment_capital_con_amount_GP_ratio" readonly="1"/>
 
-                        <field name="fund_raising_report_ids" widget="many2many_binary" readonly="1"/>
-                        <field name="fund_record_certificate_ids" widget="many2many_binary"/>
-                        <field name="agreement_ids" widget="many2many_binary"/>
-                        <field name="government_approval_materials_ids" widget="many2many_binary"/>
-                        <field name="semi_annual_report_of_the_fund_ids" widget="many2many_binary"/>
-                  </group>
+                            <field name="fund_raising_report_ids" widget="many2many_binary" readonly="1"/>
+                            <field name="fund_record_certificate_ids" widget="many2many_binary"/>
+                            <field name="agreement_ids" widget="many2many_binary"/>
+                            <field name="government_approval_materials_ids" widget="many2many_binary"/>
+                            <field name="semi_annual_report_of_the_fund_ids" widget="many2many_binary"/>
+                      </group>
+                  </sheet>
               </form>
             </field>
         </record>
