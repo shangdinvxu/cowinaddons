@@ -44,6 +44,8 @@ odoo.define('foundation.kanban',function (require) {
                             action: 'foundation_info',
                         }
                     };
+
+
                     this.do_action(action);
                 }
             }else {

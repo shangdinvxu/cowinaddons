@@ -95,10 +95,29 @@ class Cowin_foundation(models.Model):
         if len(self) > 1:
             raise UserWarning(u'只能最多有一个实体')
 
-        form_id = self.env.ref('cowin_foundation.cowin_foundation_form').id
+        form_id = self.env.ref('cowin_foundation.information_gathering_act_window').id
 
         return form_id
 
+
+
+    @api.multi
+    def rpc_launch_action_return(self):
+        '''
+            让前端去获取一个自定义的action操作!!!
+        :return:
+        '''
+
+        action = {
+            'name': u'基金',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': self._name,
+            'type': 'ir.actions.act_window',
+            'target': 'new'
+        }
+
+        return action
 
 
 

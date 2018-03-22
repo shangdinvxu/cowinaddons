@@ -25,7 +25,20 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
         },
         //基金情况表编辑
         edit_foundation_func:function () {
-            this.do_action(this.form_id)
+            var action = {
+                'name': '基金',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'views': [[false, 'form']],
+                'res_id': this.id,
+                'res_model': 'cowin_foundation.cowin_foundation',
+                'type': 'ir.actions.act_window',
+                'target': 'new'
+            };
+
+            this.do_action(action)
+
+
         },
 
         on_attach_callback: function() {
