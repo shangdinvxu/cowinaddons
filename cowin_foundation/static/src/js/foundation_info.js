@@ -13,7 +13,7 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
     var ControlPanelMixin = require('web.ControlPanelMixin');
     var ControlPanel = require('web.ControlPanel');
     var Dialog = require('web.Dialog');
-    var ActionManager = require('web.ActionManager')
+    var ActionManager = require('web.ActionManager');
     var SearchView = require('web.SearchView');
     var data = require('web.data');
     var pyeval = require('web.pyeval');
