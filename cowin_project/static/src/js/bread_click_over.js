@@ -25,7 +25,7 @@ odoo.define('linkloving_core.TreeView', function (require) {
             console.log(action);
             console.log(index);
 
-            var custom_tags = ['process_kanban_to_detail', 'follow_invest_kanban_to_detail', 'approval_kanban_to_detail', 'approval_after_invest_kanban_to_detail', 'approval_after_invest_kanban_to_detail'];
+            var custom_tags = ['foundation_info','process_kanban_to_detail', 'follow_invest_kanban_to_detail', 'approval_kanban_to_detail', 'approval_after_invest_kanban_to_detail', 'approval_after_invest_kanban_to_detail'];
             var flag = _.contains(custom_tags, action.action_descr.tag);
             if(flag){
                 self.clear_action_stack(self.action_stack.splice(self.action_stack.indexOf(action) + 0));

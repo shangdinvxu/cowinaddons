@@ -33,21 +33,9 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                 'res_id': this.id,
                 'res_model': 'cowin_foundation.cowin_foundation',
                 'type': 'ir.actions.act_window',
-                'target': 'new'
+                'target': 'current'
             };
-
-            this.do_action(action)
-
-
-            // var options = {};
-            // options.additional_context = {};
-            // options.additional_context.active_id = this.id;
-            // options.additional_context.active_ids = [this.id];
-            // options.additional_context.active_mode = 'form';
-            // this.do_action(this.form_id, options);
-            //
-
-
+            this.do_action(action);
         },
 
         on_attach_callback: function() {
