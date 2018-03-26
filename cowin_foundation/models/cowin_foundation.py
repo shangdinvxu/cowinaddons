@@ -10,11 +10,11 @@ class Cowin_foundation(models.Model):
         基金信息
     '''
 
-    manage_company_id = fields.Many2one('cowin_foudation.management_company', string=u'管理公司')
+    manage_company_id = fields.Many2one('cowin_foudation.management_company', string=u'管理公司', ondelete='cascade')
 
-    intermediary_id = fields.Many2one('cowin_foudation.intermediary_info', string=u'中介机构情况')
+    intermediary_id = fields.Many2one('cowin_foudation.intermediary_info', string=u'中介机构情况', ondelete='cascade')
 
-    settings_id = fields.Many2one('cowin_foudation.settings', string=u'设置')
+    settings_id = fields.Many2one('cowin_foudation.settings', string=u'设置', ondelete='cascade')
 
     sponsor_ids = fields.One2many('cowin_foudation.sponsor', 'foundation_id', string=u'出资人信息')
 
@@ -272,3 +272,31 @@ class Cowin_foundation(models.Model):
         if len(self) == 1:
 
             return {'settings_info': self.get_settings_info()}
+
+
+
+    @api.multi
+    def unlink(self):
+        self.ensure_one()
+
+        # 删除 设置信息
+        self.settings_id.unlink()
+
+        # 删除 中介公司信息
+        self.intermediary_id.unlink()
+
+        # 删除管理公司信息
+        self.manage_company_id.unlink()
+
+
+        # 通过数据库软件来来进行删除!!!
+        # 删除出资人信息
+        # self.sponsor_ids.unlink()
+
+        # 删除GP团队信息
+        # self.partner_gp_ids.unlink()
+
+
+
+
+

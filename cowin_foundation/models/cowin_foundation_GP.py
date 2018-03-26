@@ -10,7 +10,7 @@ class Cowin_foundation_GP(models.Model):
 
     name = fields.Char(string=u'GP名称')
 
-    foundation_id = fields.Many2one('cowin_foundation.cowin_foundation', string=u'基金')
+    foundation_id = fields.Many2one('cowin_foundation.cowin_foundation', string=u'基金', ondelete='cascade')
 
     registered_address = fields.Char(string=u'注册地址')
 
