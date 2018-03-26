@@ -26,8 +26,12 @@
     'data': [
         'security/ir.model.access.csv',
         'views/menu.xml',
-        'views/cowin_foundation.xml',
         'views/templates.xml',
+        'views/cowin_foundation.xml',
+        'views/cowin_foundation_GP.xml',
+        'views/cowin_foundation_intermediary_info.xml',
+        'views/cowin_foundation_management_company.xml',
+        'views/cowin_foundation_sponsor.xml',
         # 'demo/demo.xml',
     ],
     # only loaded in demonstration mode

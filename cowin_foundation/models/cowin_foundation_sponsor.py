@@ -55,9 +55,16 @@ class Cowin_foundation_sponsor(models.Model):
             for k in rec._fields:
                 if rec._fields[k].type in ('many2many', 'one2many', 'many2one'):
                     tmp[k] = rec[k].read(['name'])
-                    continue
 
-                tmp[k] = rec[k]
+                elif rec._fields[k].type == 'selection':
+                    kk = rec[k]
+                    selection = rec._fields[k].selection
+                    vv = filter(lambda t: t[0] == kk, selection) # 理论上只会由一个
+                    tmp[kk] = vv[0][1] if vv else False  #  vv可以为空 (index, '描述')
+
+
+                else:
+                    tmp[k] = rec[k]
 
             res.append(tmp)
 

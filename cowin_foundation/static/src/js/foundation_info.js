@@ -39,11 +39,16 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                 'context':{'default_foundation_id': self.id},
             };
 
-            var options = {onclose: self.list_of_contributors_func};
+            // var options = {on_close: self.list_of_contributors_func};
+            var options = {
+                on_close: function () {
+                    self.list_of_contributors_func();
+                }
+            };
             this.do_action(action, options);
         },
         //出资人列表tab显示
-        list_of_contributors_func:function () {
+        list_of_contributors_func: function () {
             var self = this;
             new Model("cowin_foundation.cowin_foundation")
                     .call("rpc_get_sponsor_info", [parseInt(self.id)],{})
