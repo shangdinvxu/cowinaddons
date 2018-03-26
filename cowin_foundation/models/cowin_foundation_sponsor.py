@@ -44,8 +44,18 @@ class Cowin_foundation_sponsor(models.Model):
         ('name_key', 'UNIQUE (name)', u'出资人名称不能够相同')
     ]
 
-
+    # 获得出资人的列表的信息
     @api.multi
     def get_sponsor_info(self):
-        if self:
-            return self.copy_data()
+        # 构建自定义的many2many数据存储
+        for rec in self:
+            res = {}
+            res['form_id'] = self.get_formview_id()
+            for k in rec._fields:
+                if rec._fields[k].type in ('many2many', 'one2many', 'many2one'):
+                    res[k] = rec[k].read(['name'])
+                    continue
+
+                res[k] = rec[k]
+
+            return res

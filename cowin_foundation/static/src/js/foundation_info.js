@@ -33,9 +33,15 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                 'res_id': this.id,
                 'res_model': 'cowin_foundation.cowin_foundation',
                 'type': 'ir.actions.act_window',
-                'target': 'current'
+                'target': 'new'
             };
-            this.do_action(action);
+
+
+            var options = {};
+            options.on_close = function (i) {
+                console.log('kkkkkkkk');
+            };
+            this.do_action(action, options);
         },
 
         on_attach_callback: function() {
