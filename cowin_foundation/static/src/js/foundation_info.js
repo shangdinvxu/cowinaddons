@@ -22,7 +22,23 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
     var FoundationInfo = Widget.extend({
         events:{
             'click .edit_foundation':'edit_foundation_func',
-            'click #foundation_tab .list_of_contributors':'list_of_contributors_func'
+            'click #foundation_tab .list_of_contributors':'list_of_contributors_func',
+            'click .add_new_contributor':'add_new_contributor_func'
+        },
+        //新增出资人
+        add_new_contributor_func:function () {
+            var self = this;
+            var action = {
+                'name': '新增出资人',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'views': [[false, 'form']],
+                'res_model': 'cowin_foudation.sponsor',
+                'type': 'ir.actions.act_window',
+                'target': 'new',
+                'context':{'default_foundation_id': self.id},
+            };
+            this.do_action(action);
         },
         //出资人列表tab显示
         list_of_contributors_func:function () {
@@ -31,6 +47,8 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                     .call("get_sponsor_info", [parseInt(self.id)],{})
                     .then(function (result){
                         console.log(result);
+                        $('#list_of_contributors').html('');
+                        $('#list_of_contributors').append(QWeb.render('list_of_contributors_templ',{result:result}));
                     });
         },
         //基金情况表编辑
@@ -43,7 +61,7 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                 'res_id': this.id,
                 'res_model': 'cowin_foundation.cowin_foundation',
                 'type': 'ir.actions.act_window',
-                'target': 'current'
+                'target': 'current',
             };
             this.do_action(action);
         },
@@ -68,6 +86,7 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
             this.context = options.context || {};
 
             if(action.active_id){
+                //基金的id
                 this.id = action.active_id;
             }else {
                 this.id = action.params.active_id;
