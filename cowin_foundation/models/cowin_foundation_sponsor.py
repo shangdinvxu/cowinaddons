@@ -60,7 +60,7 @@ class Cowin_foundation_sponsor(models.Model):
                     kk = rec[k]
                     selection = rec._fields[k].selection
                     vv = filter(lambda t: t[0] == kk, selection) # 理论上只会由一个
-                    tmp[kk] = vv[0][1] if vv else False  #  vv可以为空 (index, '描述')
+                    tmp[k] = vv[0][1] if vv else False  #  vv可以为空 (index, '描述')
 
 
                 else:
