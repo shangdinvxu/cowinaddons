@@ -22,6 +22,16 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
     var FoundationInfo = Widget.extend({
         events:{
             'click .edit_foundation':'edit_foundation_func',
+            'click #foundation_tab .list_of_contributors':'list_of_contributors_func'
+        },
+        //出资人列表tab显示
+        list_of_contributors_func:function () {
+            var self = this;
+            new Model("cowin_foundation.cowin_foundation")
+                    .call("get_sponsor_info", [parseInt(self.id)],{})
+                    .then(function (result){
+                        console.log(result);
+                    });
         },
         //基金情况表编辑
         edit_foundation_func:function () {
@@ -33,22 +43,15 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                 'res_id': this.id,
                 'res_model': 'cowin_foundation.cowin_foundation',
                 'type': 'ir.actions.act_window',
-                'target': 'new'
+                'target': 'current'
             };
-
-
-            var options = {};
-            options.on_close = function (i) {
-                console.log('kkkkkkkk');
-            };
-            this.do_action(action, options);
+            this.do_action(action);
         },
 
         on_attach_callback: function() {
             console.log('yfei');
 
         },
-
 
         on_detach_callback: function() {
             console.log('离开页面');
@@ -57,8 +60,6 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
         do_push_state: function(state) {
             this._super(state);
         },
-
-
 
         init: function (parent, action, options) {
             this._super(parent);
@@ -80,7 +81,6 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                     .call("rpc_get_foundation_info", [parseInt(self.id)],{})
                     .then(function (result){
                         console.log(result);
-                        self.form_id = result.foundation_info.form_id;
                         self.$el.append(QWeb.render('foundation_info_templ', {result: result.foundation_info}))
                     });
             return defered
