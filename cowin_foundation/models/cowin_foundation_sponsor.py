@@ -48,14 +48,17 @@ class Cowin_foundation_sponsor(models.Model):
     @api.multi
     def get_sponsor_info(self):
         # 构建自定义的many2many数据存储
-        res = {}
+        res = []
         for rec in self:
-            res['form_id'] = self.get_formview_id()
+            tmp = {}
+            tmp['form_id'] = self.get_formview_id()
             for k in rec._fields:
                 if rec._fields[k].type in ('many2many', 'one2many', 'many2one'):
-                    res[k] = rec[k].read(['name'])
+                    tmp[k] = rec[k].read(['name'])
                     continue
 
-                res[k] = rec[k]
+                tmp[k] = rec[k]
+
+            res.append(tmp)
 
         return res

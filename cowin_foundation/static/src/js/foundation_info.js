@@ -44,7 +44,7 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
         list_of_contributors_func:function () {
             var self = this;
             new Model("cowin_foundation.cowin_foundation")
-                    .call("get_sponsor_info", [parseInt(self.id)],{})
+                    .call("rpc_get_sponsor_info", [parseInt(self.id)],{})
                     .then(function (result){
                         console.log(result);
                         $('#list_of_contributors').html('');
