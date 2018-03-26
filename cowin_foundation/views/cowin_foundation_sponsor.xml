@@ -5,7 +5,7 @@
             <field name="name">cowin_foudation.sponsor form</field>
             <field name="model">cowin_foudation.sponsor</field>
             <field name="arch" type="xml">
-              <form>
+              <form create="0">
                   <group>
                         <field name="name" require="1"/>
                         <field name="registered_address" require="1"/>
@@ -21,6 +21,11 @@
                         <field name="ID_number" readonly="1"/>
                         <field name="contract_email" readonly="1"/>
                   </group>
+
+                  <footer>
+                        <button type="object" name="button_save" string="Save"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                  </footer>
               </form>
             </field>
         </record>

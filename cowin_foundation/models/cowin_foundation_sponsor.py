@@ -69,3 +69,14 @@ class Cowin_foundation_sponsor(models.Model):
             res.append(tmp)
 
         return res
+
+
+    @api.multi
+    def button_save(self):
+        '''
+            这个方法不要调用,原理在于每次button调用之前都会提前走write方法!!!
+        :return:
+        '''
+        self.ensure_one()
+
+        pass
