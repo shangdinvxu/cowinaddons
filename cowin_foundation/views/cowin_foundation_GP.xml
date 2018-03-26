@@ -6,21 +6,30 @@
             <field name="model">cowin_foudation.sponsor_gp</field>
             <field name="arch" type="xml">
               <form>
-                  <group>
-                        <field name="name" require="1"/>
-                        <field name="registered_address" require="1"/>
-                        <field name="capital_contribution" require="1"/>
+                  <sheet>
+                      <group>
+                        <field name="name" required="1"/>
+                        <field name="registered_address" required="1"/>
+                        <field name="capital_contribution" required="1"/>
                         <field name="capital_ratio" readonly="1"/>
                         <field name="amount_of_payment" readonly="1"/>
                         <field name="amount_of_payment_ratio" readonly="1"/>
-                        <field name="the_nature_of_the_investor" require="1"/>
+                        <field name="the_nature_of_the_investor" required="1"/>
                         <field name="institutional_investor" readonly="1"/>
-                        <field name="mailing_address_of_shareholders" require="1"/>
+                        <field name="mailing_address_of_shareholders" required="1"/>
                         <field name="contract_person"/>
                         <field name="contract_phone" readonly="1"/>
                         <field name="ID_number" readonly="1"/>
                         <field name="contract_email" readonly="1"/>
-                  </group>
+                      </group>
+                      
+                  </sheet>
+                  
+                  
+                  <footer>
+                        <button type="object" name="button_save" string="Save"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                  </footer>
               </form>
             </field>
         </record>
