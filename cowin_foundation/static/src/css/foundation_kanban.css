@@ -116,3 +116,19 @@
     color: #409eff;
     top: 0px;
 }
+
+#foundation_tab_content #list_of_contributors{
+    width: 85%;
+    min-width: 900px;
+    padding: 30px;
+}
+#foundation_tab_content .add_new_contributor{
+    cursor: pointer;
+    width: fit-content;
+    margin-bottom: 10px;
+    color: #409eff;
+}
+#list_of_contributors .edit_list{
+    cursor: pointer;
+    color: #409eff;
+}

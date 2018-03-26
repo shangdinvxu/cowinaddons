@@ -134,6 +134,7 @@
 
     <!--出资人列表模板-->
     <t t-name="list_of_contributors_templ">
-        <div class="add_new_contributor">新增出资人</div>
+        <div class="add_new_contributor"><i class="fa fa-plus"></i> 新增出资人</div>
+        <table id="table"></table>
     </t>
 </templates>

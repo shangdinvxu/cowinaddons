@@ -38,7 +38,8 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                 'target': 'new',
                 'context':{'default_foundation_id': self.id},
             };
-            this.do_action(action);
+            var options = {onclose: self.list_of_contributors_func};
+            this.do_action(action, options);
         },
         //出资人列表tab显示
         list_of_contributors_func:function () {
@@ -48,7 +49,70 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                     .then(function (result){
                         console.log(result);
                         $('#list_of_contributors').html('');
-                        $('#list_of_contributors').append(QWeb.render('list_of_contributors_templ',{result:result}));
+                        $('#list_of_contributors').append(QWeb.render('list_of_contributors_templ',{result:result.sponsor_info}));
+
+                        //用bootstrap插件显示表格
+                        var columns = [
+                            {
+                                title:'',
+                                formatter: function (value, row, index) {
+                                    return index+1;
+                                }
+                            },{
+                                field: 'name',
+                                title: '出资人名称',
+                            },{
+                                field: 'registered_address',
+                                title: '注册地址',
+                            },{
+                                field: 'capital_contribution',
+                                title: '出资金额（万元）',
+                            },{
+                                field: 'capital_ratio',
+                                title: '出资比例',
+                            },{
+                                field: 'amount_of_payment',
+                                title: '实缴金额（万元）',
+                            },{
+                                field: 'amount_of_payment_ratio',
+                                title: '实缴比例',
+                            },{
+                                field: 'the_nature_of_the_investor',
+                                title: '出资人性质',
+                            },{
+                                field: 'institutional_investor',
+                                title: '是否投资机构',
+                                formatter: function (value) {
+                                    if(value==1) return '是'
+                                    else return '否'
+                                }
+                            },{
+                                field: 'mailing_address_of_shareholders',
+                                title: '股东邮寄地址',
+                            },{
+                                field: 'contract_person',
+                                title: '联系人',
+                            },{
+                                field: 'contract_phone',
+                                title: '联系电话',
+                            },{
+                                field: 'ID_number',
+                                title: '证件号码',
+                            },{
+                                field: 'contract_email',
+                                title: '邮箱',
+                            },{
+                                field: '',
+                                title: '操作',
+                                formatter: function () {
+                                    return '<span class="edit_list">编辑</span>'
+                                }
+                            }
+                        ];
+                        $('#list_of_contributors #table').bootstrapTable({
+                            columns:columns,
+                            data:result.sponsor_info,
+                        });
                     });
         },
         //基金情况表编辑
@@ -100,6 +164,7 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                     .call("rpc_get_foundation_info", [parseInt(self.id)],{})
                     .then(function (result){
                         console.log(result);
+                        self.$el.html('');
                         self.$el.append(QWeb.render('foundation_info_templ', {result: result.foundation_info}))
                     });
             return defered
