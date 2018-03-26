@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cowin_plugin_cowin_plugin,cowin_plugin.cowin_plugin,model_cowin_plugin_cowin_plugin,,1,0,0,0
