@@ -23,7 +23,31 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
         events:{
             'click .edit_foundation':'edit_foundation_func',
             'click #foundation_tab .list_of_contributors':'list_of_contributors_func',
-            'click .add_new_contributor':'add_new_contributor_func'
+            'click .add_new_contributor':'add_new_contributor_func',
+            'click .edit_list':'edit_list_func'
+        },
+        //编辑出资人
+        edit_list_func:function (e) {
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            var self = this;
+            var index = $(target).parents('tr').attr('data-index');
+            var action = {
+                'name': '编辑出资人',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'views': [[false, 'form']],
+                'res_model': 'cowin_foudation.sponsor',
+                'type': 'ir.actions.act_window',
+                'target': 'new',
+                'res_id': parseInt(self.sponsor_info[parseInt(index)].id)
+            };
+            var options = {
+                on_close: function () {
+                    self.list_of_contributors_func();
+                }
+            };
+            this.do_action(action, options);
         },
         //新增出资人
         add_new_contributor_func:function () {
@@ -38,8 +62,6 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                 'target': 'new',
                 'context':{'default_foundation_id': self.id},
             };
-
-            // var options = {on_close: self.list_of_contributors_func};
             var options = {
                 on_close: function () {
                     self.list_of_contributors_func();
@@ -54,6 +76,8 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                     .call("rpc_get_sponsor_info", [parseInt(self.id)],{})
                     .then(function (result){
                         console.log(result);
+                        //保存出资人信息到全局
+                        self.sponsor_info = result.sponsor_info;
                         $('#list_of_contributors').html('');
                         $('#list_of_contributors').append(QWeb.render('list_of_contributors_templ',{result:result.sponsor_info}));
 
