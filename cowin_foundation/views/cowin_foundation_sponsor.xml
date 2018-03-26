@@ -25,8 +25,8 @@
                   </sheet>
 
                   <footer>
-                        <button type="object" name="button_save" string="Save"/>
-                        <button string="Cancel" class="btn-default" special="cancel"/>
+                        <button type="object" name="button_save" string="保存"/>
+                        <button string="取消" class="btn-default" special="cancel"/>
                   </footer>
               </form>
             </field>

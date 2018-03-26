@@ -81,7 +81,7 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                         $('#list_of_contributors').html('');
                         $('#list_of_contributors').append(QWeb.render('list_of_contributors_templ',{result:result.sponsor_info}));
 
-                        //用bootstrap插件显示表格
+                        //用bootstrap table 插件显示表格
                         var columns = [
                             {
                                 title:'',
