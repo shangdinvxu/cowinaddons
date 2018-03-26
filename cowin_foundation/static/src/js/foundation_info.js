@@ -38,7 +38,11 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                 'target': 'new',
                 'context':{'default_foundation_id': self.id},
             };
-            var options = {onclose: self.list_of_contributors_func};
+            var options = {
+                on_close: function () {
+                    self.list_of_contributors_func();
+                } 
+            };
             this.do_action(action, options);
         },
         //出资人列表tab显示
