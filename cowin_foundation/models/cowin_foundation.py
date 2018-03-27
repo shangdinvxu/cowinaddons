@@ -28,7 +28,7 @@ class Cowin_foundation(models.Model):
 
     foundation_type = fields.Selection([(1, u'天使基金'), (2, u'VC基金'), (3, u'PE基金')], string=u'基金类型')
 
-    investment_field = fields.Many2many('cowin_common.cowin_industry', 'cowin_foudation_cowin_industry_rel', string=u'投资领域')
+    investment_field = fields.Many2one('cowin_common.cowin_industry', string=u'投资领域')
 
     term_of_investment = fields.Float(string=u'投资期限(年)')
 
