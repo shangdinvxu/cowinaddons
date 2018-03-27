@@ -149,15 +149,44 @@
             编辑
         </div>
         <div class="manage_company_basic_info_wrap">
-            <div>
-                <div>基金管理公司名称</div>
-                <div>基金管理公司通讯地址</div>
-                <div>邮编</div>
+           <table>
+               <tbody>
+                   <tr><td>基金管理公司名称</td><td><t t-esc="result.name"/></td></tr>
+                   <tr><td>基金管理公司通讯地址</td><td><t t-esc="result.management_company_adress"/></td></tr>
+                   <tr><td>邮编</td><td><t t-esc="result.zip_code"/></td></tr>
+               </tbody>
+           </table>
+        </div>
+        <div class="manage_company_labels_wrap">
+            <div class="person_item">
+                <div>
+                    <h2><t t-esc="result.management_company_chairman"/></h2>
+                    <span>基金管理公司董事长（或者创始人）</span>
+                </div>
+                <div>
+                    <h2><t t-esc="result.contract_phone_for_chairman"/></h2>
+                    <span>联系电话（手机/座机/传真）</span>
+                </div>
             </div>
-            <div>
-                <div></div>
-                <div></div>
-                <div></div>
+            <div class="person_item">
+                <div>
+                    <h2><t t-esc="result.management_company_manager"/></h2>
+                    <span>基金管理公司总经理（或者第二合伙人/第二负责人）</span>
+                </div>
+                <div>
+                    <h2><t t-esc="result.contract_phone_for_manager"/></h2>
+                    <span>联系电话（手机/座机/传真）</span>
+                </div>
+            </div>
+            <div class="person_item">
+                <div>
+                    <h2><t t-esc="result.management_company_daily_contact"/></h2>
+                    <span>基金管理公司日常联系人</span>
+                </div>
+                <div>
+                    <h2><t t-esc="result.contract_phone_for_daily_contact"/></h2>
+                    <span>联系电话（手机/座机/传真）</span>
+                </div>
             </div>
         </div>
     </t>
