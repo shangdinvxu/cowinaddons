@@ -6,18 +6,19 @@
             <field name="model">cowin_foudation.management_company</field>
             <field name="arch" type="xml">
               <form>
-                  <group>
-                        <field name="name" require="1"/>
-                        <field name="management_company_adress" readonly="1"/>
-                        <field name="zip_code" readonly="1"/>
-                        <field name="management_company_chairman" require="1"/>
-                        <field name="contract_phone_for_chairman" require="1"/>
-                        <field name="management_company_manager" require="1"/>
-                        <field name="contract_phone_for_manager" require="1"/>
-                        <field name="management_company_daily_contact" require="1"/>
-                        <field name="contract_phone_for_daily_contact" require="1"/>
-
-                  </group>
+                  <sheet>
+                        <group>
+                            <field name="name" require="1"/>
+                            <field name="management_company_adress" readonly="1"/>
+                            <field name="zip_code" readonly="1"/>
+                            <field name="management_company_chairman" require="1"/>
+                            <field name="contract_phone_for_chairman" require="1"/>
+                            <field name="management_company_manager" require="1"/>
+                            <field name="contract_phone_for_manager" require="1"/>
+                            <field name="management_company_daily_contact" require="1"/>
+                            <field name="contract_phone_for_daily_contact" require="1"/>
+                        </group>
+                  </sheet>
               </form>
             </field>
         </record>

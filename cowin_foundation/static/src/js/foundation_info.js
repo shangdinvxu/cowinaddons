@@ -30,16 +30,23 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
         },
         //编辑管理公司
         edit_manage_company_info_func:function () {
+            var self = this;
             var action = {
                 'name': '管理公司',
                 'view_type': 'form',
                 'view_mode': 'form',
                 'views': [[false, 'form']],
                 'res_model': 'cowin_foudation.management_company',
+                'res_id':this.manage_company_id,
                 'type': 'ir.actions.act_window',
-                'target': 'current',
+                'target': 'new',
             };
-            this.do_action(action);
+            var options = {
+                on_close: function () {
+                    self.manage_company_info_func();
+                }
+            };
+            this.do_action(action, options);
         },
         //管理公司情况tab显示
         manage_company_info_func:function () {
@@ -48,7 +55,8 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                     .call("rpc_get_management_company_info", [parseInt(self.id)],{})
                     .then(function (result){
                         console.log(result);
-                        $("#manage_company_info").append(QWeb.render('manage_company_info_templ',{result:result.management_company_info}))
+                        $("#manage_company_info").html('');
+                        $("#manage_company_info").append(QWeb.render('manage_company_info_templ',{result:result.management_company_info}));
                     });
         },
         //编辑出资人
@@ -219,6 +227,8 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                     .call("rpc_get_foundation_info", [parseInt(self.id)],{})
                     .then(function (result){
                         console.log(result);
+                        //管理公司的id
+                        self.manage_company_id = result.foundation_info.manage_company_id[0].id;
                         self.$el.html('');
                         self.$el.append(QWeb.render('foundation_info_templ', {result: result.foundation_info}))
                     });
