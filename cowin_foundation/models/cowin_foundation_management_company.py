@@ -38,3 +38,13 @@ class Cowin_foundation_management_company(models.Model):
         if len(self) == 1:
 
             return self.copy_data()[0]
+
+
+
+    @api.multi
+    def button_save(self):
+        '''
+           这个方法不要调用,原理在于每次button调用之前都会提前走write方法!!!
+            :return:
+        '''
+        pass
