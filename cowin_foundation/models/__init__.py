@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from . import cowin_foundation_node_base
 from . import cowin_foundation
 from . import cowin_foundation_sponsor
 from . import cowin_foundation_GP

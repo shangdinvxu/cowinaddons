@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 import collections
+import uuid
 
 class Cowin_foundation(models.Model):
     _name = 'cowin_foundation.cowin_foundation'
@@ -10,11 +11,16 @@ class Cowin_foundation(models.Model):
         基金信息
     '''
 
-    manage_company_id = fields.Many2one('cowin_foudation.management_company', string=u'管理公司', ondelete='cascade')
+    node_base_id = fields.Many2one('cowin_foudation.node_base', string=u'基本节点')
 
-    intermediary_id = fields.Many2one('cowin_foudation.intermediary_info', string=u'中介机构情况', ondelete='cascade')
+    # manage_company_id = fields.Many2one('cowin_foudation.management_company', string=u'管理公司', ondelete='cascade')
+    manage_company_id = fields.Many2one('cowin_foudation.management_company', string=u'管理公司')
 
-    settings_id = fields.Many2one('cowin_foudation.settings', string=u'设置', ondelete='cascade')
+    # intermediary_id = fields.Many2one('cowin_foudation.intermediary_info', string=u'中介机构情况', ondelete='cascade')
+    intermediary_id = fields.Many2one('cowin_foudation.intermediary_info', string=u'中介机构情况')
+
+    # settings_id = fields.Many2one('cowin_foudation.settings', string=u'设置', ondelete='cascade')
+    settings_id = fields.Many2one('cowin_foudation.settings', string=u'设置')
 
     sponsor_ids = fields.One2many('cowin_foudation.sponsor', 'foundation_id', string=u'出资人信息')
 
@@ -274,6 +280,31 @@ class Cowin_foundation(models.Model):
             return {'settings_info': self.get_settings_info()}
 
 
+    @api.multi
+    def create_node_base_for_many2one_field(self):
+        self.ensure_one()
+        name = str(uuid.uuid1())
+        node_base_entity = self.node_base_id.create({
+            'name': name,
+        })
+        settings_entity = self.settings_id.create({
+            'node_base_id': node_base_entity.id,
+        })
+        intermediary_entity = self.intermediary_id.create({
+            'node_base_id': node_base_entity.id,
+        })
+        manage_company_entity = self.manage_company_id.create({
+            'node_base_id': node_base_entity.id,
+        })
+
+        self.write({
+            'node_base_id': node_base_entity.id,
+            'settings_id': settings_entity.id,
+            'intermediary_id': intermediary_entity.id,
+            'manage_company_id': manage_company_entity.id,
+        })
+
+
 
     @api.model
     def create(self, vals):
@@ -281,17 +312,7 @@ class Cowin_foundation(models.Model):
         # 因为这类实体数据是一开始就存在
 
         res = super(Cowin_foundation, self).create(vals)
-
-        settings_entity = res.settings_id.create({})
-        intermediary_entity = res.intermediary_id.create({})
-        manage_company_entity = res.manage_company_id.create({})
-
-        res.write({
-            'settings_id': settings_entity.id,
-            'intermediary_id': intermediary_entity.id,
-            'manage_company_id': manage_company_entity.id,
-        })
-
+        res.create_node_base_for_many2one_field()
         return res
 
 
@@ -301,22 +322,10 @@ class Cowin_foundation(models.Model):
     def unlink(self):
         self.ensure_one()
 
-        # 删除 设置信息
-        self.settings_id.unlink()
+        # 设计级联删除,方便数据的管理
+        self.node_base_id.unlink()
+        return super(Cowin_foundation, self).unlink()
 
-        # 删除 中介公司信息
-        self.intermediary_id.unlink()
-
-        # 删除管理公司信息
-        self.manage_company_id.unlink()
-
-
-        # 通过数据库软件来来进行删除!!!
-        # 删除出资人信息
-        # self.sponsor_ids.unlink()
-
-        # 删除GP团队信息
-        # self.partner_gp_ids.unlink()
 
 
 

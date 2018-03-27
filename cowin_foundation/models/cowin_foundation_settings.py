@@ -11,6 +11,8 @@ class Cowin_foundation_settings(models.Model):
 
     name = fields.Many2one('hr.employee', string=u'基金专员')
 
+    node_base_id = fields.Many2one('cowin_foudation.node_base', string=u'基本节点')
+
     foundation_id = fields.One2many('cowin_foundation.cowin_foundation', 'settings_id', string=u'基金')
     # name = fields.Char()
 
