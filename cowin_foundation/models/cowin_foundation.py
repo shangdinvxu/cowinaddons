@@ -11,16 +11,16 @@ class Cowin_foundation(models.Model):
         基金信息
     '''
 
-    node_base_id = fields.Many2one('cowin_foudation.node_base', string=u'基本节点')
+    node_base_id = fields.Many2one('cowin_foundation.meta_foundation', string=u'基本节点', ondelete='cascade')
 
-    # manage_company_id = fields.Many2one('cowin_foudation.management_company', string=u'管理公司', ondelete='cascade')
-    manage_company_id = fields.Many2one('cowin_foudation.management_company', string=u'管理公司')
+    manage_company_id = fields.Many2one('cowin_foudation.management_company', string=u'管理公司', ondelete='cascade')
+    # manage_company_id = fields.Many2one('cowin_foudation.management_company', string=u'管理公司')
 
-    # intermediary_id = fields.Many2one('cowin_foudation.intermediary_info', string=u'中介机构情况', ondelete='cascade')
-    intermediary_id = fields.Many2one('cowin_foudation.intermediary_info', string=u'中介机构情况')
+    intermediary_id = fields.Many2one('cowin_foudation.intermediary_info', string=u'中介机构情况', ondelete='cascade')
+    # intermediary_id = fields.Many2one('cowin_foudation.intermediary_info', string=u'中介机构情况')
 
-    # settings_id = fields.Many2one('cowin_foudation.settings', string=u'设置', ondelete='cascade')
-    settings_id = fields.Many2one('cowin_foudation.settings', string=u'设置')
+    settings_id = fields.Many2one('cowin_foudation.settings', string=u'设置', ondelete='cascade')
+    # settings_id = fields.Many2one('cowin_foudation.settings', string=u'设置')
 
     sponsor_ids = fields.One2many('cowin_foudation.sponsor', 'foundation_id', string=u'出资人信息')
 
@@ -283,16 +283,21 @@ class Cowin_foundation(models.Model):
     @api.multi
     def create_node_base_for_many2one_field(self):
         self.ensure_one()
+
         name = str(uuid.uuid1())
+
         node_base_entity = self.node_base_id.create({
             'name': name,
         })
+
         settings_entity = self.settings_id.create({
             'node_base_id': node_base_entity.id,
         })
+
         intermediary_entity = self.intermediary_id.create({
             'node_base_id': node_base_entity.id,
         })
+
         manage_company_entity = self.manage_company_id.create({
             'node_base_id': node_base_entity.id,
         })

@@ -12,7 +12,7 @@ class Cowin_foundation_intermediary_info(models.Model):
 
     name = fields.Char(string=u'托管银行')
 
-    node_base_id = fields.Many2one('cowin_foudation.node_base', string=u'基本节点')
+    node_base_id = fields.Many2one('cowin_foundation.meta_foundation', string=u'基本节点', ondelete='cascade')
 
     # foundation_id = fields.Many2one('cowin_foundation.cowin_foundation', string=u'基金')
     foundation_ids = fields.One2many('cowin_foundation.cowin_foundation', 'intermediary_id', string=u'基金')
