@@ -18,6 +18,7 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
     var data = require('web.data');
     var pyeval = require('web.pyeval');
     var _t = core._t;
+    var test = require('cowin_plugin.test');
 
     var FoundationInfo = Widget.extend({
         events:{
@@ -230,9 +231,17 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                         //管理公司的id
                         self.manage_company_id = result.foundation_info.manage_company_id[0].id;
                         self.$el.html('');
-                        self.$el.append(QWeb.render('foundation_info_templ', {result: result.foundation_info}))
+                        self.$el.append(QWeb.render('foundation_info_templ', {result: result.foundation_info}));
+
+
+                        var widget = new test(self,'' ,{'aaa':'bbb'});
+                        widget.on("user_choose", self, self.user_choose);
+                        widget.appendTo(self.$el);
                     });
             return defered
+        },
+        user_choose:function () {
+            alert('sss')
         },
 
     });
