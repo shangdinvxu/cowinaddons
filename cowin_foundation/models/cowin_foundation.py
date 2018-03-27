@@ -275,6 +275,28 @@ class Cowin_foundation(models.Model):
 
 
 
+    @api.model
+    def create(self, vals):
+        # 默认开始创建关于基金的many2one的实体数据,
+        # 因为这类实体数据是一开始就存在
+
+        res = super(Cowin_foundation, self).create(vals)
+
+        settings_entity = res.settings_id.create({})
+        intermediary_entity = res.intermediary_id.create({})
+        manage_company_entity = res.manage_company_id.create({})
+
+        res.write({
+            'settings_id': settings_entity.id,
+            'intermediary_id': intermediary_entity.id,
+            'manage_company_id': manage_company_entity.id,
+        })
+
+        return res
+
+
+
+
     @api.multi
     def unlink(self):
         self.ensure_one()
