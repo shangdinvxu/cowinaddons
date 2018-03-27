@@ -132,3 +132,14 @@
     cursor: pointer;
     color: #409eff;
 }
+
+#manage_company_info .edit_manage_company_info{
+    float: right;
+    width: 80px;
+    color: #409eff;
+    cursor: pointer;
+}
+#manage_company_info .manage_company_basic_info_wrap{
+    display: flex;
+    justify-content: space-around;
+}

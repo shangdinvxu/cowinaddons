@@ -12,7 +12,7 @@
                 <li  class="active"><a href="#foundation_infos" data-toggle="tab">基金情况表</a></li>
                 <li><a class="list_of_contributors" href="#list_of_contributors" data-toggle="tab">出资人列表</a></li>
                 <li><a href="#" data-toggle="tab">GP团队</a></li>
-                <li><a href="#" data-toggle="tab">管理公司情况</a></li>
+                <li><a class="manage_company_info" href="#manage_company_info" data-toggle="tab">管理公司情况</a></li>
                 <li><a href="#" data-toggle="tab">中介机构情况</a></li>
                 <li><a href="#" data-toggle="tab">设置</a></li>
             </ul>
@@ -128,6 +128,10 @@
                 <div class="tab-pane fade" id="list_of_contributors">
 
                 </div>
+                <!--管理公司情况-->
+                <div class="tab-pane fade" id="manage_company_info">
+
+                </div>
             </div>
         </div>
     </t>
@@ -136,5 +140,25 @@
     <t t-name="list_of_contributors_templ">
         <div class="add_new_contributor"><i class="fa fa-plus"></i> 新增出资人</div>
         <table id="table"></table>
+    </t>
+
+    <!--管理公司情况模板-->
+    <t t-name="manage_company_info_templ">
+        <div class="edit_manage_company_info">
+            <i class="fa fa-edit"></i>
+            编辑
+        </div>
+        <div class="manage_company_basic_info_wrap">
+            <div>
+                <div>基金管理公司名称</div>
+                <div>基金管理公司通讯地址</div>
+                <div>邮编</div>
+            </div>
+            <div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
     </t>
 </templates>

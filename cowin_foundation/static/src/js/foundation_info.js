@@ -24,7 +24,32 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
             'click .edit_foundation':'edit_foundation_func',
             'click #foundation_tab .list_of_contributors':'list_of_contributors_func',
             'click .add_new_contributor':'add_new_contributor_func',
-            'click .edit_list':'edit_list_func'
+            'click .edit_list':'edit_list_func',
+            'click #foundation_tab .manage_company_info':'manage_company_info_func',
+            'click .edit_manage_company_info':'edit_manage_company_info_func'
+        },
+        //编辑管理公司
+        edit_manage_company_info_func:function () {
+            var action = {
+                'name': '管理公司',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'views': [[false, 'form']],
+                'res_model': 'cowin_foudation.management_company',
+                'type': 'ir.actions.act_window',
+                'target': 'current',
+            };
+            this.do_action(action);
+        },
+        //管理公司情况tab显示
+        manage_company_info_func:function () {
+            var self = this;
+            new Model("cowin_foundation.cowin_foundation")
+                    .call("rpc_get_management_company_info", [parseInt(self.id)],{})
+                    .then(function (result){
+                        console.log(result);
+                        $("#manage_company_info").append(QWeb.render('manage_company_info_templ',{result:result.management_company_info}))
+                    });
         },
         //编辑出资人
         edit_list_func:function (e) {
