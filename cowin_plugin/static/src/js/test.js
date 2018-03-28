@@ -30,7 +30,7 @@ odoo.define('cowin_plugin.test', function (require) {
                 uid: 1,
             };
 
-            this.dataset = new data.DataSetStatic(this, 'peng.peng', context, [1]);
+            this.dataset = new data.DataSetStatic(this, 'cowin_foundation.cowin_foundation', context, [16]);
             this.dataset.index = 0;
 
             this.views = {};

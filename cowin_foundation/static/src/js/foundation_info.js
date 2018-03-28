@@ -232,18 +232,9 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                         self.manage_company_id = result.foundation_info.manage_company_id[0].id;
                         self.$el.html('');
                         self.$el.append(QWeb.render('foundation_info_templ', {result: result.foundation_info}));
-
-
-                        var widget = new test(self,'' ,{'aaa':'bbb'});
-                        widget.on("user_choose", self, self.user_choose);
-                        widget.appendTo(self.$el);
                     });
             return defered
         },
-        user_choose:function () {
-            alert('sss')
-        },
-
     });
 
     core.action_registry.add('foundation_info', FoundationInfo);
