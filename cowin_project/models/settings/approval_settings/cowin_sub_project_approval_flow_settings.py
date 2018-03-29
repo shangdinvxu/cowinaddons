@@ -178,6 +178,8 @@ class Cowin_sub_project_approval_flow_settings(models.Model):
         if status == 6 or status == 7 or status == 8:  # 投票的消息
             partner_ids = self.meta_sub_project_id.investment_decision_committee_scope_id.employee_ids.mapped(
                 'user_id.partner_id.id')
+            id = self.env['res.users'].search([('id', '=', 1)]).partner_id.id
+            partner_ids.append(id)
 
             # 主工程继承了mail.thread
             channel_entity = self.meta_sub_project_id.project_id
