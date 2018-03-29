@@ -217,8 +217,8 @@
             name="人力资源"
             groups="hr.group_hr_manager,hr.group_hr_user,base.group_user"
             web_icon="hr,static/description/icon.png"
-            action="cowin_hr.action_window"
             sequence="75"/>
+      <!--action="cowin_hr.action_window"-->
 
       <delete model="ir.ui.menu" id="hr.menu_hr_department_tree"/>
 
@@ -243,10 +243,11 @@
      <menuitem
             id="hr.menu_open_view_employee_list_my"
             name="员工"
-            action="hr.open_view_employee_list_my"
+            action="cowin_hr.action_window"
             groups="hr.group_hr_manager,hr.group_hr_user,base.group_user"
             parent="hr.menu_hr_root"
             sequence="75"/>
+            <!--action="hr.open_view_employee_list_my"-->
 
 
 
