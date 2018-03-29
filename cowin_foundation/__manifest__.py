@@ -32,7 +32,7 @@
         'views/cowin_foundation_intermediary_info.xml',
         'views/cowin_foundation_management_company.xml',
         'views/cowin_foundation_sponsor.xml',
-        # 'demo/demo.xml',
+        'demo/demo.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
