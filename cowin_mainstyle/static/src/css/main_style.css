@@ -204,6 +204,7 @@ a.oe_menu_toggler { background-color: transparent !important; }
     float: left;
     margin-top: -8px;
     width: 219px;
+    height: 52px;
     margin-right: 32px;
 }
 .o_web_client > #oe_main_menu_navbar .cowin_nav_logo .oe_logo_edit{
