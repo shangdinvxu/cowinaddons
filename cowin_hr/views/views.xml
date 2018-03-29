@@ -220,7 +220,7 @@
             action="hr.open_view_employee_list_my"
             sequence="75"/>
 
-      <delete model="ir.ui.menu" id="hr.menu_hr_department"/>
+      <delete model="ir.ui.menu" id="hr.menu_hr_department_tree"/>
 
 
       <!---->
