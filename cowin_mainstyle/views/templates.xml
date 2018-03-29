@@ -23,8 +23,7 @@
                     </div>
                     <div class="navbar-collapse collapse">
                         <a class="o_sub_menu_logo cowin_nav_logo" t-att-href="'/web/?debug' if debug else '/web'">
-                            <span class="oe_logo_edit">Edit Company data</span>
-                            <img src='/web/binary/company_logo'/>
+                            凯风投资管理系统
                         </a>
                         <t t-call="web.menu"/>
                     </div>
