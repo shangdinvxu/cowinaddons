@@ -210,8 +210,8 @@
 
     <!--对hr模块中的顶级菜单,添加action动作,否则会出现顶级菜单忽略状态,继而第一个子菜单会继承下来  -->
 
-    <delete model="ir.ui.menu" id="hr.menu_hr_root"/>
-    <delete model="ir.ui.menu" id="hr.menu_hr_department"/>
+    <!--<delete model="ir.ui.menu" id="hr.menu_hr_root"/>-->
+    <!--<delete model="ir.ui.menu" id="hr.menu_hr_department"/>-->
     <menuitem
             id="hr.menu_hr_root"
             name="人力资源"
