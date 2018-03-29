@@ -504,7 +504,7 @@ class Cowin_project(models.Model):
 
                     elif status == 7:
                         info = u'同意'
-                        approval_view_or_launch = True
+                        approval_view_or_launch = False
                     else:
                         pass
 
