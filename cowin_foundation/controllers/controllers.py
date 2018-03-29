@@ -2,19 +2,19 @@
 from odoo import http
 
 # class CowinFoudation(http.Controller):
-#     @http.route('/cowin_foudation/cowin_foudation/', auth='public')
+#     @http.route('/cowin_foundation/cowin_foundation/', auth='public')
 #     def index(self, **kw):
 #         return "Hello, world"
 
-#     @http.route('/cowin_foudation/cowin_foudation/objects/', auth='public')
+#     @http.route('/cowin_foundation/cowin_foundation/objects/', auth='public')
 #     def list(self, **kw):
-#         return http.request.render('cowin_foudation.listing', {
-#             'root': '/cowin_foudation/cowin_foudation',
-#             'objects': http.request.env['cowin_foudation.cowin_foudation'].search([]),
+#         return http.request.render('cowin_foundation.listing', {
+#             'root': '/cowin_foundation/cowin_foundation',
+#             'objects': http.request.env['cowin_foundation.cowin_foundation'].search([]),
 #         })
 
-#     @http.route('/cowin_foudation/cowin_foudation/objects/<model("cowin_foudation.cowin_foudation"):obj>/', auth='public')
+#     @http.route('/cowin_foundation/cowin_foundation/objects/<model("cowin_foundation.cowin_foundation"):obj>/', auth='public')
 #     def object(self, obj, **kw):
-#         return http.request.render('cowin_foudation.object', {
+#         return http.request.render('cowin_foundation.object', {
 #             'object': obj
 #         })

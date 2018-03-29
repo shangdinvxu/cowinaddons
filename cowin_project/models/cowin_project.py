@@ -291,7 +291,7 @@ class Cowin_project(models.Model):
     #             else:
     #
     #                 # 某个基金的stage(实例)/(记录)
-    #                 foudation = self.env['cowin_foudation.cowin_foudation'].browse(int(foudation_id))
+    #                 foudation = self.env['cowin_foundation.cowin_foundation'].browse(int(foudation_id))
     #                 foudation_stage_id = foudation.get_round_financing(round_financing).id
     #                 t = self.env[tache.model_name].search([('foudation_stage_id', '=', foudation_stage_id)]).id
     #         else:

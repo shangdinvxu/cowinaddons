@@ -18,7 +18,7 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
     var data = require('web.data');
     var pyeval = require('web.pyeval');
     var _t = core._t;
-    var test = require('cowin_plugin.test');
+    // var test = require('cowin_plugin.test');
 
     var FoundationInfo = Widget.extend({
         events:{
@@ -37,7 +37,7 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                 'view_type': 'form',
                 'view_mode': 'form',
                 'views': [[false, 'form']],
-                'res_model': 'cowin_foudation.management_company',
+                'res_model': 'cowin_foundation.management_company',
                 'res_id':this.manage_company_id,
                 'type': 'ir.actions.act_window',
                 'target': 'new',
@@ -71,7 +71,7 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                 'view_type': 'form',
                 'view_mode': 'form',
                 'views': [[false, 'form']],
-                'res_model': 'cowin_foudation.sponsor',
+                'res_model': 'cowin_foundation.sponsor',
                 'type': 'ir.actions.act_window',
                 'target': 'new',
                 'res_id': parseInt(self.sponsor_info[parseInt(index)].id)
@@ -91,7 +91,7 @@ odoo.define('cowin_foundation.foundation_info', function (require) {
                 'view_type': 'form',
                 'view_mode': 'form',
                 'views': [[false, 'form']],
-                'res_model': 'cowin_foudation.sponsor',
+                'res_model': 'cowin_foundation.sponsor',
                 'type': 'ir.actions.act_window',
                 'target': 'new',
                 'context':{'default_foundation_id': self.id},

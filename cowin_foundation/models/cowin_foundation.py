@@ -13,14 +13,14 @@ class Cowin_foundation(models.Model):
 
     node_base_id = fields.Many2one('cowin_foundation.meta_foundation', string=u'基本节点', ondelete='cascade')
 
-    manage_company_id = fields.Many2one('cowin_foudation.management_company', string=u'管理公司', ondelete='cascade')
-    # manage_company_id = fields.Many2one('cowin_foudation.management_company', string=u'管理公司')
+    manage_company_id = fields.Many2one('cowin_foundation.management_company', string=u'管理公司', ondelete='cascade')
+    # manage_company_id = fields.Many2one('cowin_foundation.management_company', string=u'管理公司')
 
-    intermediary_id = fields.Many2one('cowin_foudation.intermediary_info', string=u'中介机构情况', ondelete='cascade')
-    # intermediary_id = fields.Many2one('cowin_foudation.intermediary_info', string=u'中介机构情况')
+    intermediary_id = fields.Many2one('cowin_foundation.intermediary_info', string=u'中介机构情况', ondelete='cascade')
+    # intermediary_id = fields.Many2one('cowin_foundation.intermediary_info', string=u'中介机构情况')
 
-    settings_id = fields.Many2one('cowin_foudation.settings', string=u'设置', ondelete='cascade')
-    # settings_id = fields.Many2one('cowin_foudation.settings', string=u'设置')
+    settings_id = fields.Many2one('cowin_foundation.settings', string=u'设置', ondelete='cascade')
+    # settings_id = fields.Many2one('cowin_foundation.settings', string=u'设置')
 
     sponsor_ids = fields.One2many('cowin_foundation.sponsor', 'foundation_id', string=u'出资人信息')
 

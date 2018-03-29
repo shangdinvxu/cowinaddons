@@ -14,7 +14,7 @@ class Cowin_project_subproject_call_up_record(models.Model):
     # 用于显示环节中的名称
     _rec_name = 'sub_tache_id'
 
-    # foundation_stage_id = fields.Many2one('cowin_foudation.cowin_foudation_stage', string=u'基金阶段')
+    # foundation_stage_id = fields.Many2one('cowin_foundation.cowin_foundation_stage', string=u'基金阶段')
 
 
     subproject_id = fields.Many2one('cowin_project.cowin_subproject', ondelete="cascade")
