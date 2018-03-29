@@ -31,6 +31,7 @@ class Cowin_settings_process(models.Model):
 
     # 该实例方法用于获取一条数据信息
     def get_info(self):
+        self.ensure_one()
         stages = []
 
         # 需要新的排序
@@ -93,8 +94,11 @@ class Cowin_settings_process(models.Model):
 
             stages.append(tmp_stage)
 
-        tache_name_infos = [{'id': 0, 'name': u'无条件'}]
-        # tache_name_infos = []
+        setting_entities = self.search([])
+        if self == setting_entities[0]:
+            tache_name_infos = [{'id': 0, 'name': u'无条件'}]
+        else:
+            tache_name_infos = []
 
         tmps = self.get_all_tache_entities_in_big().read(['name', 'parent_id'])
 
