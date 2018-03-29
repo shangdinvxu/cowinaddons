@@ -5,19 +5,19 @@ class cowin_project_attachment_rel(models.Model):
     _inherit = 'ir.attachment'
 
     # 基金募资报告
-    fund_raising_report_ids = fields.Many2many('cowin_foundation.cowin_foundation', 'cowin_foudation_fund_raising_report_rel')
+    fund_raising_report_ids = fields.Many2many('cowin_foundation.cowin_foundation', 'cowin_foundation_fund_raising_report_rel')
 
     # 基金备案证书
-    fund_record_certificate_ids = fields.Many2many('cowin_foundation.cowin_foundation', 'cowin_foudation_fund_record_certificate_rel')
+    fund_record_certificate_ids = fields.Many2many('cowin_foundation.cowin_foundation', 'cowin_foundation_fund_record_certificate_rel')
 
     # 协议
-    agreement_ids = fields.Many2many('cowin_foundation.cowin_foundation', 'cowin_foudation_agreement_rel')
+    agreement_ids = fields.Many2many('cowin_foundation.cowin_foundation', 'cowin_foundation_agreement_rel')
 
     # 政府审批材料
-    government_approval_materials_ids = fields.Many2many('cowin_foundation.cowin_foundation', 'cowin_foudation_government_approval_materials_rel')
+    government_approval_materials_ids = fields.Many2many('cowin_foundation.cowin_foundation', 'cowin_foundation_government_approval_materials_rel')
 
     # 基金半年度报告
-    semi_annual_report_of_the_fund_ids = fields.Many2many('cowin_foundation.cowin_foundation', 'cowin_foudation_semi_annual_report_of_the_fund_rel')
+    semi_annual_report_of_the_fund_ids = fields.Many2many('cowin_foundation.cowin_foundation', 'cowin_foundation_semi_annual_report_of_the_fund_rel')
 
 
 

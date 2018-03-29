@@ -1,2 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_cowin_foundation_cowin_foudation,cowin_foundation.cowin_foundation,model_cowin_foundation_cowin_foundation,,1,1,1,1
+access_cowin_foudation_sponsor_gp,cowin_foundation.sponsor_gp,model_cowin_foundation_sponsor_gp,,1,1,1,1
+access_cowin_foudation_intermediary_info,cowin_foundation.intermediary_info,model_cowin_foundation_intermediary_info,,1,1,1,1
+access_cowin_foudation_management_company,cowin_foundation.management_company,model_cowin_foundation_management_company,,1,1,1,1
+access_cowin_foudation_meta_foundation,cowin_foundation.meta_foundation,model_cowin_foundation_meta_foundation,,1,1,1,1
+access_cowin_foudation_settings,cowin_foundation.settings,model_cowin_foundation_settings,,1,1,1,1
+access_cowin_foudation_sponsor,cowin_foundation.sponsor,model_cowin_foundation_sponsor,,1,1,1,1

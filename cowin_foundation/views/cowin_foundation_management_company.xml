@@ -2,8 +2,8 @@
     <data>
         <!-- 基金管理公司 -->
         <record id="cowin_foundation_management_company_form" model="ir.ui.view">
-            <field name="name">cowin_foudation.management_company form</field>
-            <field name="model">cowin_foudation.management_company</field>
+            <field name="name">cowin_foundation.management_company form</field>
+            <field name="model">cowin_foundation.management_company</field>
             <field name="arch" type="xml">
               <form create="0" delete="0">
                   <sheet>

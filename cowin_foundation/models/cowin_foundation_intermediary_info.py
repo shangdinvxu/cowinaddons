@@ -4,7 +4,7 @@ from odoo import models, fields, api
 
 
 class Cowin_foundation_intermediary_info(models.Model):
-    _name = 'cowin_foudation.intermediary_info'
+    _name = 'cowin_foundation.intermediary_info'
 
     '''
         中介机构情况

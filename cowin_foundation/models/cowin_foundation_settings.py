@@ -3,7 +3,7 @@
 from odoo import models, fields, api
 
 class Cowin_foundation_settings(models.Model):
-    _name = 'cowin_foudation.settings'
+    _name = 'cowin_foundation.settings'
 
     '''
         基金配置信息

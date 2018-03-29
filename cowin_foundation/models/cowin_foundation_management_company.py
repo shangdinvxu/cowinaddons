@@ -3,7 +3,7 @@
 from odoo import models, fields, api
 
 class Cowin_foundation_management_company(models.Model):
-    _name = 'cowin_foudation.management_company'
+    _name = 'cowin_foundation.management_company'
 
     '''
         基金管理公司

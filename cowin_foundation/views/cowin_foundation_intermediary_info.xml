@@ -2,8 +2,8 @@
     <data>
         <!-- 中介机构情况 -->
         <record id="cowin_foundation_intermediary_info_form" model="ir.ui.view">
-            <field name="name">cowin_foudation.intermediary_info form</field>
-            <field name="model">cowin_foudation.intermediary_info</field>
+            <field name="name">cowin_foundation.intermediary_info form</field>
+            <field name="model">cowin_foundation.intermediary_info</field>
             <field name="arch" type="xml">
               <form create="0" delete="0">
                   <sheet>

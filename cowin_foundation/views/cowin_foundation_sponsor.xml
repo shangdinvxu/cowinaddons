@@ -2,8 +2,8 @@
     <data>
         <!-- 出资人信息 -->
         <record id="cowin_foundation_sponsor_form" model="ir.ui.view">
-            <field name="name">cowin_foudation.sponsor form</field>
-            <field name="model">cowin_foudation.sponsor</field>
+            <field name="name">cowin_foundation.sponsor form</field>
+            <field name="model">cowin_foundation.sponsor</field>
             <field name="arch" type="xml">
               <form create="0" delete="0">
                   <sheet>

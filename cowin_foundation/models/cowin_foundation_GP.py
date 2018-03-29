@@ -2,7 +2,7 @@
 from odoo import models, fields, api
 
 class Cowin_foundation_GP(models.Model):
-    _name = 'cowin_foudation.sponsor_gp'
+    _name = 'cowin_foundation.sponsor_gp'
 
     '''
         GP(普通合伙)信息

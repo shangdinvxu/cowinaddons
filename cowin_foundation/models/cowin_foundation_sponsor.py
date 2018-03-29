@@ -5,7 +5,7 @@ from odoo import models, fields, api
 
 
 class Cowin_foundation_sponsor(models.Model):
-    _name = 'cowin_foudation.sponsor'
+    _name = 'cowin_foundation.sponsor'
 
     '''
         出资人信息

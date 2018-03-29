@@ -22,9 +22,9 @@ class Cowin_foundation(models.Model):
     settings_id = fields.Many2one('cowin_foudation.settings', string=u'设置', ondelete='cascade')
     # settings_id = fields.Many2one('cowin_foudation.settings', string=u'设置')
 
-    sponsor_ids = fields.One2many('cowin_foudation.sponsor', 'foundation_id', string=u'出资人信息')
+    sponsor_ids = fields.One2many('cowin_foundation.sponsor', 'foundation_id', string=u'出资人信息')
 
-    partner_gp_ids = fields.One2many('cowin_foudation.sponsor_gp', 'foundation_id', string=u'GP(普通合伙)信息')
+    partner_gp_ids = fields.One2many('cowin_foundation.sponsor_gp', 'foundation_id', string=u'GP(普通合伙)信息')
 
     name = fields.Char(string=u'基金名称')
 
@@ -72,15 +72,15 @@ class Cowin_foundation(models.Model):
 
     current_team_commitment_capital_con_amount_GP_ratio = fields.Float(string=u'目前GP团队到位比率')
 
-    fund_raising_report_ids = fields.Many2many('ir.attachment', 'cowin_foudation_fund_raising_report_rel', string=u'基金募资报告')
+    fund_raising_report_ids = fields.Many2many('ir.attachment', 'cowin_foundation_fund_raising_report_rel', string=u'基金募资报告')
 
-    fund_record_certificate_ids = fields.Many2many('ir.attachment', 'cowin_foudation_fund_record_certificate_rel', string=u'基金备案证书')
+    fund_record_certificate_ids = fields.Many2many('ir.attachment', 'cowin_foundation_fund_record_certificate_rel', string=u'基金备案证书')
 
-    agreement_ids = fields.Many2many('ir.attachment', 'cowin_foudation_agreement_rel', string=u'协议')
+    agreement_ids = fields.Many2many('ir.attachment', 'cowin_foundation_agreement_rel', string=u'协议')
 
-    government_approval_materials_ids = fields.Many2many('ir.attachment', 'cowin_foudation_government_approval_materials_rel', string=u'政府审批材料')
+    government_approval_materials_ids = fields.Many2many('ir.attachment', 'cowin_foundation_government_approval_materials_rel', string=u'政府审批材料')
 
-    semi_annual_report_of_the_fund_ids = fields.Many2many('ir.attachment', 'cowin_foudation_semi_annual_report_of_the_fund_rel', string=u'基金半年度报告')
+    semi_annual_report_of_the_fund_ids = fields.Many2many('ir.attachment', 'cowin_foundation_semi_annual_report_of_the_fund_rel', string=u'基金半年度报告')
 
 
 
