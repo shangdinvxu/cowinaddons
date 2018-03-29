@@ -86,7 +86,8 @@ a.oe_menu_toggler { background-color: transparent !important; }
     padding-bottom: 1px;
 }
 .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus{
-    background-color:rgba(58, 143, 184, 1);
+    /*background-color:rgba(58, 143, 184, 1);*/
+    background-color: transparent;
 }
 
 .o_web_client > .o_main .o_sub_menu{
