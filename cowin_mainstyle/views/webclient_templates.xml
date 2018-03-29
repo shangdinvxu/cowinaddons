@@ -25,8 +25,7 @@
         <!--<ul class="nav navbar-nav navbar-right oe_systray" style="display: none;"/>-->
     <!--</template>-->
 
-    <template id="cowin_mainstyle.menu_secondary" inherit_id="web.menu_secondary" >
-        <xpath expr="//div[@class='o_sub_menu_content']" position="replace">
+    <template id="web.menu_secondary">
              <div class="o_sub_menu_content">
                 <t t-foreach="menu_data['children']" t-as="menu">
                     <div style="display: none" class="oe_secondary_menu" t-att-data-menu-parent="menu['id']">
@@ -38,9 +37,6 @@
             <div class="o_sub_menu_footer">
             <!--Powered by <a href="http://www.odoo.com" target="_blank"><span>Odoo</span></a>-->
             </div>
-        </xpath>
-
-
     </template>
 
     <!--<template id="web.menu_secondary_submenu">-->
