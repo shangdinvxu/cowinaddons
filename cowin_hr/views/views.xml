@@ -191,7 +191,7 @@
     <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="cowin_hr.action_window">
-      <field name="name">cowin_hr window</field>
+      <field name="name">员工</field>
       <field name="res_model">hr.employee</field>
       <field name="view_type">form</field>
       <field name="view_mode">kanban,form</field>
@@ -210,7 +210,7 @@
 
     <!--对hr模块中的顶级菜单,添加action动作,否则会出现顶级菜单忽略状态,继而第一个子菜单会继承下来  -->
 
-    <!--<delete model="ir.ui.menu" id="hr.menu_hr_root"/>-->
+    <delete model="ir.ui.menu" id="hr.menu_hr_root"/>
 
     <menuitem
             id="hr.menu_hr_root"
@@ -221,10 +221,6 @@
       <!--action="cowin_hr.action_window"-->
 
       <delete model="ir.ui.menu" id="hr.menu_hr_department_tree"/>
-
-
-      <!---->
-      <!--<delete model="ir.ui.menu" id="hr.menu_hr_department_tree"/>-->
 
 
       <!-- 删除员工附属的的附加的action操作!!! -->
